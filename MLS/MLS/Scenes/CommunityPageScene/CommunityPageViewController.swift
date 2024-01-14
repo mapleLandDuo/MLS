@@ -31,11 +31,7 @@ class CommunityPageViewController: BasicController {
 
     // MARK: - Components
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "자유게시판"
-        return label
-    }()
+    private let titleLabel = CustomLabel(text: "자유게시판", textColor: .black, fontSize: 20)
 
     private let searchButton: UIButton = {
         let button = UIButton()
@@ -129,7 +125,8 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: CommunityTableViewCell.identifier)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
+        cell.bind(date: "date1", title: "title1", upCount: "up1")
         return cell
     }
 }

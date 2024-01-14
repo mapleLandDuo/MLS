@@ -45,6 +45,7 @@
 		7751CEF72B5403AC000E5E74 /* CommunityPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEF62B5403AC000E5E74 /* CommunityPageViewController.swift */; };
 		7751CEF92B540411000E5E74 /* CommunityPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEF82B540411000E5E74 /* CommunityPageViewModel.swift */; };
 		7751CEFB2B5408FA000E5E74 /* CommunityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */; };
+		7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFC2B54129C000E5E74 /* CustomLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		7751CEF62B5403AC000E5E74 /* CommunityPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageViewController.swift; sourceTree = "<group>"; };
 		7751CEF82B540411000E5E74 /* CommunityPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageViewModel.swift; sourceTree = "<group>"; };
 		7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityTableViewCell.swift; sourceTree = "<group>"; };
+		7751CEFC2B54129C000E5E74 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +182,7 @@
 			children = (
 				082D0C332B53CF4800D84CE2 /* LaunchScreen.storyboard */,
 				7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */,
+				7751CEFC2B54129C000E5E74 /* CustomLabel.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				082D0C762B53D0F200D84CE2 /* MainPageViewController.swift in Sources */,
 				082D0C832B53D45700D84CE2 /* Post.swift in Sources */,
 				7751CEF92B540411000E5E74 /* CommunityPageViewModel.swift in Sources */,
+				7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */,
 				7751CEF72B5403AC000E5E74 /* CommunityPageViewController.swift in Sources */,
 				082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */,
 				7751CEF32B54025D000E5E74 /* UICollectionViewCell+.swift in Sources */,

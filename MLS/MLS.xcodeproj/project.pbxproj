@@ -13,7 +13,6 @@
 		082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C332B53CF4800D84CE2 /* LaunchScreen.storyboard */; };
 		082D0C3E2B53CF7500D84CE2 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C3D2B53CF7500D84CE2 /* Kingfisher */; };
 		082D0C412B53CF8A00D84CE2 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C402B53CF8A00D84CE2 /* SnapKit */; };
-		082D0C432B53CF8A00D84CE2 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C422B53CF8A00D84CE2 /* SnapKit-Dynamic */; };
 		082D0C462B53CF9B00D84CE2 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C452B53CF9B00D84CE2 /* IQKeyboardManagerSwift */; };
 		082D0C492B53CFC800D84CE2 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C482B53CFC800D84CE2 /* FirebaseAnalytics */; };
 		082D0C4B2B53CFC800D84CE2 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C4A2B53CFC800D84CE2 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -41,6 +40,8 @@
 		082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C772B53D11900D84CE2 /* BasicController.swift */; };
 		082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C7D2B53D26800D84CE2 /* Constants.swift */; };
 		082D0C832B53D45700D84CE2 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C822B53D45600D84CE2 /* Post.swift */; };
+		7751CEF32B54025D000E5E74 /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEF22B54025D000E5E74 /* UICollectionViewCell+.swift */; };
+		7751CEF52B540269000E5E74 /* UITableViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEF42B540269000E5E74 /* UITableViewCell+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,8 @@
 		082D0C772B53D11900D84CE2 /* BasicController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicController.swift; sourceTree = "<group>"; };
 		082D0C7D2B53D26800D84CE2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		082D0C822B53D45600D84CE2 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		7751CEF22B54025D000E5E74 /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
+		7751CEF42B540269000E5E74 /* UITableViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +79,6 @@
 				082D0C412B53CF8A00D84CE2 /* SnapKit in Frameworks */,
 				082D0C4D2B53CFC800D84CE2 /* FirebaseAnalyticsSwift in Frameworks */,
 				082D0C492B53CFC800D84CE2 /* FirebaseAnalytics in Frameworks */,
-				082D0C432B53CF8A00D84CE2 /* SnapKit-Dynamic in Frameworks */,
 				082D0C572B53CFC800D84CE2 /* FirebaseAuthCombine-Community in Frameworks */,
 				082D0C552B53CFC800D84CE2 /* FirebaseAuth in Frameworks */,
 				082D0C692B53CFC800D84CE2 /* FirebaseFunctionsCombine-Community in Frameworks */,
@@ -117,6 +119,7 @@
 				082D0C802B53D35000D84CE2 /* SharedViews */,
 				082D0C7B2B53D23E00D84CE2 /* Helper */,
 				082D0C792B53D22200D84CE2 /* Scenes */,
+				7751CEF12B54022A000E5E74 /* Extensions */,
 			);
 			path = MLS;
 			sourceTree = "<group>";
@@ -124,6 +127,7 @@
 		082D0C792B53D22200D84CE2 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				7751CEEF2B540140000E5E74 /* CommunityPageScene */,
 				082D0C7A2B53D22B00D84CE2 /* MainPageScene */,
 			);
 			path = Scenes;
@@ -181,6 +185,22 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		7751CEEF2B540140000E5E74 /* CommunityPageScene */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CommunityPageScene;
+			sourceTree = "<group>";
+		};
+		7751CEF12B54022A000E5E74 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7751CEF22B54025D000E5E74 /* UICollectionViewCell+.swift */,
+				7751CEF42B540269000E5E74 /* UITableViewCell+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -200,7 +220,6 @@
 			packageProductDependencies = (
 				082D0C3D2B53CF7500D84CE2 /* Kingfisher */,
 				082D0C402B53CF8A00D84CE2 /* SnapKit */,
-				082D0C422B53CF8A00D84CE2 /* SnapKit-Dynamic */,
 				082D0C452B53CF9B00D84CE2 /* IQKeyboardManagerSwift */,
 				082D0C482B53CFC800D84CE2 /* FirebaseAnalytics */,
 				082D0C4A2B53CFC800D84CE2 /* FirebaseAnalyticsOnDeviceConversion */,
@@ -287,10 +306,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
+				7751CEF52B540269000E5E74 /* UITableViewCell+.swift in Sources */,
 				082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */,
 				082D0C762B53D0F200D84CE2 /* MainPageViewController.swift in Sources */,
 				082D0C832B53D45700D84CE2 /* Post.swift in Sources */,
 				082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */,
+				7751CEF32B54025D000E5E74 /* UICollectionViewCell+.swift in Sources */,
 				082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -566,11 +587,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 082D0C3F2B53CF8A00D84CE2 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		082D0C422B53CF8A00D84CE2 /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 082D0C3F2B53CF8A00D84CE2 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
 		};
 		082D0C452B53CF9B00D84CE2 /* IQKeyboardManagerSwift */ = {
 			isa = XCSwiftPackageProductDependency;

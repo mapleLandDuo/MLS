@@ -44,6 +44,7 @@
 		7751CEF52B540269000E5E74 /* UITableViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEF42B540269000E5E74 /* UITableViewCell+.swift */; };
 		7751CEF72B5403AC000E5E74 /* CommunityPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEF62B5403AC000E5E74 /* CommunityPageViewController.swift */; };
 		7751CEF92B540411000E5E74 /* CommunityPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEF82B540411000E5E74 /* CommunityPageViewModel.swift */; };
+		7751CEFB2B5408FA000E5E74 /* CommunityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		7751CEF42B540269000E5E74 /* UITableViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+.swift"; sourceTree = "<group>"; };
 		7751CEF62B5403AC000E5E74 /* CommunityPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageViewController.swift; sourceTree = "<group>"; };
 		7751CEF82B540411000E5E74 /* CommunityPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageViewModel.swift; sourceTree = "<group>"; };
+		7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				082D0C332B53CF4800D84CE2 /* LaunchScreen.storyboard */,
+				7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
+				7751CEFB2B5408FA000E5E74 /* CommunityTableViewCell.swift in Sources */,
 				7751CEF52B540269000E5E74 /* UITableViewCell+.swift in Sources */,
 				082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */,
 				082D0C762B53D0F200D84CE2 /* MainPageViewController.swift in Sources */,

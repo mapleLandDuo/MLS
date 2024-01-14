@@ -11,7 +11,3 @@ import UIKit
 class Post {
     
 }
-
-class Test {
-    
-}

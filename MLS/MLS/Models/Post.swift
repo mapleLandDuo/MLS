@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
-class Post {
-    
+struct Post {
+    var title: String
+    var date: Date
+    var upCount: Int
 }

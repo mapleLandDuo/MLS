@@ -12,7 +12,8 @@ import SnapKit
 class CommunityPageViewController: BasicController {
     // MARK: - Property
 
-//    private let viewModel: CommunityPageViewModel
+    private let viewModel: CommunityPageViewModel
+    private var posts: [Post]?
     private var sortItems: [UIAction] {
         let first = UIAction(title: "최신순", image: UIImage(systemName: ""), handler: { [weak self] _ in
             // 정렬
@@ -51,15 +52,15 @@ class CommunityPageViewController: BasicController {
 
     let communityTableView = UITableView()
 
-//    init(viewModel: CommunityPageViewModel) {
-//        self.viewModel = viewModel
-//        super.init()
-//    }
-//
-//    @available(*, unavailable)
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
+    init(viewModel: CommunityPageViewModel) {
+        self.viewModel = viewModel
+        super.init()
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension CommunityPageViewController {
@@ -80,6 +81,7 @@ private extension CommunityPageViewController {
         communityTableView.delegate = self
         communityTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
         setUpConstraints()
+        self.posts = viewModel.getPost()
     }
 }
 
@@ -121,12 +123,14 @@ private extension CommunityPageViewController {
 
 extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        guard let posts = posts else { return 0 }
+        return posts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
-        cell.bind(date: "date1", title: "title1", upCount: "up1")
+        guard let posts = posts?[indexPath.row] else { return UITableViewCell() }
+        cell.bind(date: posts.date.toString(), title: posts.title, upCount: String(posts.upCount))
         return cell
     }
 }

@@ -10,7 +10,7 @@ struct Constants {
     struct Default {
         let vertical: CGFloat = 12
         let horizontal: CGFloat = 16
-        let radius: CGFloat = 4
+        let radius: CGFloat = 8
         let blockHeight: CGFloat = UIScreen.main.bounds.height * 0.05
     }
     static let defaults = Default()

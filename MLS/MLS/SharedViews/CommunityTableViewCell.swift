@@ -12,7 +12,15 @@ import SnapKit
 class CommunityTableViewCell: UITableViewCell {
     // MARK: Components
 
-    private let dateLabel = CustomLabel(text: "date", textColor: .gray, fontSize: 12)
+    private let postView: UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.systemOrange.cgColor
+        view.layer.cornerRadius = Constants.defaults.radius
+        return view
+    }()
+    
+    private let dateLabel = CustomLabel(text: "date", textColor: .gray, font: .systemFont(ofSize: 12))
     
     lazy var postStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [tagLabel, titleLabel, upCountLabel])
@@ -20,17 +28,23 @@ class CommunityTableViewCell: UITableViewCell {
         return view
     }()
     
-    private let tagLabel = CustomLabel(text: "tag", fontSize: 20)
+    private let tagLabel: UILabel = {
+        let label = CustomLabel(text: "tag", font: .boldSystemFont(ofSize: 20), padding: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5))
+        label.textAlignment = .center
+        label.layer.borderWidth = 2
+        label.layer.cornerRadius = Constants.defaults.radius
+        return label
+    }()
     
-    private let titleLabel = CustomLabel(text: "title", fontSize: 20)
+    private let titleLabel = CustomLabel(text: "title", font: .systemFont(ofSize: 20))
     
-    private let upCountLabel = CustomLabel(text: "upCount", textColor: .gray, fontSize: 16)
+    private let upCountLabel = CustomLabel(text: "upCount", textColor: .gray, font: .systemFont(ofSize: 16))
     
     // MARK: LifeCycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setUpConstraints()
+        setUp()
     }
 
     @available(*, unavailable)
@@ -40,12 +54,26 @@ class CommunityTableViewCell: UITableViewCell {
     
     // MARK: Methods
 
+    private func setUp() {
+        setUpcell()
+        setUpConstraints()
+    }
+    
+    private func setUpcell() {
+        postView.layer.borderWidth = 1
+        postView.layer.borderColor = UIColor.systemOrange.cgColor
+        postView.layer.cornerRadius = Constants.defaults.radius
+    }
+
     private func setUpConstraints() {
-        addSubview(dateLabel)
-        addSubview(postStackView)
-//        addSubview(titleLabel)
-//        addSubview(tagLabel)
-//        addSubview(upCountLabel)
+        addSubview(postView)
+        postView.addSubview(dateLabel)
+        postView.addSubview(postStackView)
+        
+        postView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical / 2)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
         
         dateLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(Constants.defaults.vertical)
@@ -63,16 +91,26 @@ class CommunityTableViewCell: UITableViewCell {
     }
     
     func bind(tag: Constants.PostType, title: String, date: String, upCount: String) {
-        setUpNormal(tag: tag)
+        setUpType(tag: tag)
         tagLabel.text = tag.rawValue
         titleLabel.text = title
         dateLabel.text = date
         upCountLabel.text = upCount
     }
     
-    private func setUpNormal(tag: Constants.PostType) {
-        if tag == .normal {
+    private func setUpType(tag: Constants.PostType) {
+        switch tag {
+        case .normal:
             tagLabel.isHidden = true
+        case .buy:
+            tagLabel.textColor = .systemBlue
+            tagLabel.layer.borderColor = UIColor.systemBlue.cgColor
+        case .sell:
+            tagLabel.textColor = .systemRed
+            tagLabel.layer.borderColor = UIColor.systemRed.cgColor
+        case .complete:
+            let attributeString = NSAttributedString(string: tag.rawValue, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+            tagLabel.attributedText = attributeString
         }
     }
 }

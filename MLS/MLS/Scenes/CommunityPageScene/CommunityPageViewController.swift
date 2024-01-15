@@ -33,7 +33,7 @@ class CommunityPageViewController: BasicController {
 
     // MARK: - Components
 
-    private let titleLabel = CustomLabel(text: "title", fontSize: 20)
+    private let titleLabel = CustomLabel(text: "title", textColor: .systemOrange, font: .boldSystemFont(ofSize: 30))
 
     private let searchButton: UIButton = {
         let button = UIButton()
@@ -47,11 +47,17 @@ class CommunityPageViewController: BasicController {
         button.setTitle("정렬", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.menu = self.menu
+        button.backgroundColor = .systemGray6
+        button.layer.cornerRadius = Constants.defaults.radius
         button.showsMenuAsPrimaryAction = true
         return button
     }()
 
-    let communityTableView = UITableView()
+    let communityTableView: UITableView = {
+        let view = UITableView()
+        view.separatorStyle = .none
+        return view
+    }()
 
     init(viewModel: CommunityPageViewModel, type: Constants.PostType) {
         self.viewModel = viewModel
@@ -84,7 +90,7 @@ private extension CommunityPageViewController {
         communityTableView.delegate = self
         communityTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
         setUpConstraints()
-        self.posts = viewModel.getPost()
+        posts = viewModel.getPost()
     }
 }
 
@@ -109,6 +115,8 @@ private extension CommunityPageViewController {
         sortButton.snp.makeConstraints {
             $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
             $0.centerY.equalTo(titleLabel)
+            $0.width.equalTo(50)
+            $0.height.equalTo(30)
         }
 
         searchButton.snp.makeConstraints {
@@ -122,12 +130,12 @@ private extension CommunityPageViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
         }
     }
-    
+
     func setUpPage(type: Constants.PostType) {
         switch type {
         case .normal:
             titleLabel.text = "자유게시판"
-            // 정렬 속성
+        // 정렬 속성
         case .sell, .buy, .complete:
             titleLabel.text = "거래게시판"
             // 정렬 속성
@@ -144,7 +152,7 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
         guard let posts = posts?[indexPath.row] else { return UITableViewCell() }
-        cell.bind(tag: self.type, title: posts.title, date: posts.date.toString(), upCount: String(posts.upCount))
+        cell.bind(tag: type, title: posts.title, date: posts.date.toString(), upCount: String(posts.upCount))
         return cell
     }
 }

@@ -16,8 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         print("[SceneDelegate]:", #function)
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = UINavigationController(rootViewController: MainPageViewController())
-//        window?.rootViewController = UINavigationController(rootViewController: CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .normal))
+//        window?.rootViewController = UINavigationController(rootViewController: MainPageViewController())
+        window?.rootViewController = UINavigationController(rootViewController: CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .buy))
         window?.makeKeyAndVisible()
     }
 

@@ -14,6 +14,7 @@ class CommunityPageViewController: BasicController {
 
     private let viewModel: CommunityPageViewModel
     private var posts: [Post]?
+    private var type = Constants.PostType.normal
     private var sortItems: [UIAction] {
         let first = UIAction(title: "최신순", image: UIImage(systemName: ""), handler: { [weak self] _ in
             // 정렬
@@ -32,7 +33,7 @@ class CommunityPageViewController: BasicController {
 
     // MARK: - Components
 
-    private let titleLabel = CustomLabel(text: "자유게시판", fontSize: 20)
+    private let titleLabel = CustomLabel(text: "title", fontSize: 20)
 
     private let searchButton: UIButton = {
         let button = UIButton()
@@ -52,9 +53,11 @@ class CommunityPageViewController: BasicController {
 
     let communityTableView = UITableView()
 
-    init(viewModel: CommunityPageViewModel) {
+    init(viewModel: CommunityPageViewModel, type: Constants.PostType) {
         self.viewModel = viewModel
         super.init()
+        self.type = type
+        setUpPage(type: self.type)
     }
 
     @available(*, unavailable)
@@ -119,6 +122,17 @@ private extension CommunityPageViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
         }
     }
+    
+    func setUpPage(type: Constants.PostType) {
+        switch type {
+        case .normal:
+            titleLabel.text = "자유게시판"
+            // 정렬 속성
+        case .sell, .buy, .complete:
+            titleLabel.text = "거래게시판"
+            // 정렬 속성
+        }
+    }
 }
 
 extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSource {
@@ -130,7 +144,7 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
         guard let posts = posts?[indexPath.row] else { return UITableViewCell() }
-        cell.bind(date: posts.date.toString(), title: posts.title, upCount: String(posts.upCount))
+        cell.bind(tag: self.type, title: posts.title, date: posts.date.toString(), upCount: String(posts.upCount))
         return cell
     }
 }

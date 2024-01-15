@@ -1,18 +1,18 @@
 //
-//  CommunityTableViewCell.swift
+//  TradeTableViewCell.swift
 //  MLS
 //
-//  Created by JINHUN CHOI on 2024/01/14.
+//  Created by JINHUN CHOI on 2024/01/15.
 //
 
 import UIKit
 
-import SnapKit
-
-class CommunityTableViewCell: UITableViewCell {
+class TradeTableViewCell: UITableViewCell {
     // MARK: Components
 
     private let dateLabel = CustomLabel(text: "date", textColor: .gray, fontSize: 12)
+    
+    private let tagLabel = CustomLabel(text: "tag", fontSize: 20)
     
     private let titleLabel = CustomLabel(text: "title", fontSize: 20)
     
@@ -36,6 +36,7 @@ class CommunityTableViewCell: UITableViewCell {
     private func setUpConstraints() {
         addSubview(dateLabel)
         addSubview(titleLabel)
+        addSubview(tagLabel)
         addSubview(upCountLabel)
         
         dateLabel.snp.makeConstraints {
@@ -43,9 +44,15 @@ class CommunityTableViewCell: UITableViewCell {
             $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
         }
         
-        titleLabel.snp.makeConstraints {
+        tagLabel.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom).inset(-Constants.defaults.vertical)
             $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.bottom.equalToSuperview().inset(Constants.defaults.vertical)
+        }
+        
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(dateLabel.snp.bottom).inset(-Constants.defaults.vertical)
+            $0.leading.equalTo(tagLabel.snp.trailing).inset(Constants.defaults.horizontal)
             $0.bottom.equalToSuperview().inset(Constants.defaults.vertical)
             $0.trailing.equalTo(upCountLabel.snp.leading).inset(Constants.defaults.horizontal)
         }
@@ -57,9 +64,13 @@ class CommunityTableViewCell: UITableViewCell {
         }
     }
     
-    func bind(date: String, title: String, upCount: String) {
-        dateLabel.text = date
+    func bind(tag: Constants.PostType, title: String, date: String, upCount: String) {
+        if tag == .normal {
+            tagLabel.isHidden = true
+        }
+        tagLabel.text = tag.rawValue
         titleLabel.text = title
+        dateLabel.text = date
         upCountLabel.text = upCount
     }
 }

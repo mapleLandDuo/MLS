@@ -16,6 +16,13 @@ struct Constants {
     static let defaults = Default()
     static let screenWidth = UIScreen.main.bounds.width
     static let screenHeight = UIScreen.main.bounds.height
+    
+    enum PostType: String {
+        case normal
+        case sell = "팝니다"
+        case buy = "삽니다"
+        case complete = "거래완료"
+    }
 }
 
 

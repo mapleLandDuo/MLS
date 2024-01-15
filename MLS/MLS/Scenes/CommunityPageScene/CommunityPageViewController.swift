@@ -32,7 +32,7 @@ class CommunityPageViewController: BasicController {
 
     // MARK: - Components
 
-    private let titleLabel = CustomLabel(text: "자유게시판", textColor: .black, fontSize: 20)
+    private let titleLabel = CustomLabel(text: "자유게시판", fontSize: 20)
 
     private let searchButton: UIButton = {
         let button = UIButton()

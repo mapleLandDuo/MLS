@@ -40,6 +40,7 @@
 		082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C772B53D11900D84CE2 /* BasicController.swift */; };
 		082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C7D2B53D26800D84CE2 /* Constants.swift */; };
 		082D0C832B53D45700D84CE2 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C822B53D45600D84CE2 /* Post.swift */; };
+		7707440A2B550D3100FCEDED /* TradeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770744092B550D3100FCEDED /* TradeTableViewCell.swift */; };
 		7751CEF32B54025D000E5E74 /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEF22B54025D000E5E74 /* UICollectionViewCell+.swift */; };
 		7751CEF52B540269000E5E74 /* UITableViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEF42B540269000E5E74 /* UITableViewCell+.swift */; };
 		7751CEF72B5403AC000E5E74 /* CommunityPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEF62B5403AC000E5E74 /* CommunityPageViewController.swift */; };
@@ -60,6 +61,7 @@
 		082D0C772B53D11900D84CE2 /* BasicController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicController.swift; sourceTree = "<group>"; };
 		082D0C7D2B53D26800D84CE2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		082D0C822B53D45600D84CE2 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		770744092B550D3100FCEDED /* TradeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeTableViewCell.swift; sourceTree = "<group>"; };
 		7751CEF22B54025D000E5E74 /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		7751CEF42B540269000E5E74 /* UITableViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+.swift"; sourceTree = "<group>"; };
 		7751CEF62B5403AC000E5E74 /* CommunityPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageViewController.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			children = (
 				082D0C332B53CF4800D84CE2 /* LaunchScreen.storyboard */,
 				7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */,
+				770744092B550D3100FCEDED /* TradeTableViewCell.swift */,
 				7751CEFC2B54129C000E5E74 /* CustomLabel.swift */,
 			);
 			path = SharedViews;
@@ -320,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7707440A2B550D3100FCEDED /* TradeTableViewCell.swift in Sources */,
 				7751CEFF2B541CF5000E5E74 /* Date+.swift in Sources */,
 				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
 				7751CEFB2B5408FA000E5E74 /* CommunityTableViewCell.swift in Sources */,

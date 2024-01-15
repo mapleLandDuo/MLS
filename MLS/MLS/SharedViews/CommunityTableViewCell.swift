@@ -23,8 +23,8 @@ class CommunityTableViewCell: UITableViewCell {
     private let dateLabel = CustomLabel(text: "date", textColor: .gray, font: .systemFont(ofSize: 12))
     
     lazy var postStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [tagLabel, titleLabel, upCountLabel])
-        view.spacing = Constants.defaults.horizontal
+        let view = UIStackView(arrangedSubviews: [tagLabel, titleLabel, upCountIcon, upCountLabel])
+        view.spacing = Constants.defaults.horizontal / 2
         return view
     }()
     
@@ -37,6 +37,12 @@ class CommunityTableViewCell: UITableViewCell {
     }()
     
     private let titleLabel = CustomLabel(text: "title", font: .systemFont(ofSize: 20))
+    
+    private let upCountIcon: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "orangeMushroom")?.resized(to: CGSize(width: 30, height: 30))
+        return view
+    }()
     
     private let upCountLabel = CustomLabel(text: "upCount", textColor: .gray, font: .systemFont(ofSize: 16))
     

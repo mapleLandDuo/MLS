@@ -14,6 +14,12 @@ class CommunityTableViewCell: UITableViewCell {
 
     private let dateLabel = CustomLabel(text: "date", textColor: .gray, fontSize: 12)
     
+    lazy var postStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [tagLabel, titleLabel, upCountLabel])
+        view.spacing = Constants.defaults.horizontal
+        return view
+    }()
+    
     private let tagLabel = CustomLabel(text: "tag", fontSize: 20)
     
     private let titleLabel = CustomLabel(text: "title", fontSize: 20)
@@ -36,33 +42,24 @@ class CommunityTableViewCell: UITableViewCell {
 
     private func setUpConstraints() {
         addSubview(dateLabel)
-        addSubview(titleLabel)
-        addSubview(tagLabel)
-        addSubview(upCountLabel)
+        addSubview(postStackView)
+//        addSubview(titleLabel)
+//        addSubview(tagLabel)
+//        addSubview(upCountLabel)
         
         dateLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(Constants.defaults.vertical)
             $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
         }
         
-        tagLabel.snp.makeConstraints {
+        postStackView.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom).inset(-Constants.defaults.vertical)
-            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             $0.bottom.equalToSuperview().inset(Constants.defaults.vertical)
         }
         
-        titleLabel.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom).inset(-Constants.defaults.vertical)
-            $0.leading.equalTo(tagLabel.snp.trailing).inset(-Constants.defaults.horizontal)
-            $0.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.trailing.equalTo(upCountLabel.snp.leading).inset(Constants.defaults.horizontal)
-        }
-        
-        upCountLabel.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
-            $0.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.centerY.equalTo(titleLabel)
-        }
+        tagLabel.setContentHuggingPriority(.required, for: .horizontal)
+        titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
     
     func bind(tag: Constants.PostType, title: String, date: String, upCount: String) {
@@ -76,13 +73,6 @@ class CommunityTableViewCell: UITableViewCell {
     private func setUpNormal(tag: Constants.PostType) {
         if tag == .normal {
             tagLabel.isHidden = true
-            tagLabel.snp.makeConstraints {
-                $0.size.equalTo(0)
-            }
-            
-            titleLabel.snp.remakeConstraints {
-                $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
-            }
         }
     }
 }

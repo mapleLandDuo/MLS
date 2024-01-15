@@ -14,6 +14,7 @@ class CommunityPageViewController: BasicController {
 
     private let viewModel: CommunityPageViewModel
     private var posts: [Post]?
+    lazy var numOfposts = self.posts?.count
     private var type = Constants.PostType.normal
     private var sortItems: [UIAction] {
         let first = UIAction(title: "최신순", image: UIImage(systemName: ""), handler: { [weak self] _ in
@@ -89,6 +90,7 @@ private extension CommunityPageViewController {
         communityTableView.dataSource = self
         communityTableView.delegate = self
         communityTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
+        communityTableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
         setUpConstraints()
         posts = viewModel.getPost()
     }
@@ -131,6 +133,12 @@ private extension CommunityPageViewController {
         }
     }
 
+    func setUpActions() {
+        searchButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.addSearchBar()
+        }), for: .touchUpInside)
+    }
+
     func setUpPage(type: Constants.PostType) {
         switch type {
         case .normal:
@@ -140,19 +148,37 @@ private extension CommunityPageViewController {
             titleLabel.text = "거래게시판"
             // 정렬 속성
         }
+        setUpActions()
+    }
+
+    func addSearchBar() {
+        guard let numOfposts = numOfposts else { return }
+        guard let posts = posts else { return }
+        let indexPath = IndexPath(row: posts.count, section: 0)
+        if communityTableView.cellForRow(at: indexPath) == nil {
+            self.numOfposts = numOfposts + 1
+            communityTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
+        } else {
+            self.numOfposts = numOfposts - 1
+            communityTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .top)
+        }
     }
 }
 
 extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let posts = posts else { return 0 }
-        return posts.count
+        guard let numOfposts = numOfposts else { return 0 }
+        return numOfposts
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
+        guard let postCell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
+        guard let searchCell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
         guard let posts = posts?[indexPath.row] else { return UITableViewCell() }
-        cell.bind(tag: type, title: posts.title, date: posts.date.toString(), upCount: String(posts.upCount))
-        return cell
+        if self.posts?.count != self.numOfposts && indexPath.row == 0 {
+            return searchCell
+        }
+        postCell.bind(tag: type, title: posts.title, date: posts.date.toString(), upCount: String(posts.upCount))
+        return postCell
     }
 }

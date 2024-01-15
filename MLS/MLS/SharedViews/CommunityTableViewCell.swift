@@ -58,20 +58,34 @@ class CommunityTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    
+    func bind(tag: Constants.PostType, title: String, date: String, upCount: String) {
+        setUpType(tag: tag)
+        tagLabel.text = tag.rawValue
+        titleLabel.text = title
+        dateLabel.text = date
+        upCountLabel.text = upCount
+    }
+    
+    
+}
+
+private extension CommunityTableViewCell {
     // MARK: Methods
 
-    private func setUp() {
+    func setUp() {
         setUpcell()
         setUpConstraints()
     }
     
-    private func setUpcell() {
+    func setUpcell() {
         postView.layer.borderWidth = 1
         postView.layer.borderColor = UIColor.systemOrange.cgColor
         postView.layer.cornerRadius = Constants.defaults.radius
     }
 
-    private func setUpConstraints() {
+    func setUpConstraints() {
         addSubview(postView)
         postView.addSubview(dateLabel)
         postView.addSubview(postStackView)
@@ -96,15 +110,7 @@ class CommunityTableViewCell: UITableViewCell {
         titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
     
-    func bind(tag: Constants.PostType, title: String, date: String, upCount: String) {
-        setUpType(tag: tag)
-        tagLabel.text = tag.rawValue
-        titleLabel.text = title
-        dateLabel.text = date
-        upCountLabel.text = upCount
-    }
-    
-    private func setUpType(tag: Constants.PostType) {
+    func setUpType(tag: Constants.PostType) {
         switch tag {
         case .normal:
             tagLabel.isHidden = true

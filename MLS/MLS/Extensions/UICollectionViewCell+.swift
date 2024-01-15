@@ -1,3 +1,4 @@
+
 //
 //  UICollectionViewCell+.swift
 //  MLS
@@ -12,4 +13,3 @@ extension UICollectionViewCell {
         return String(describing: self)
     }
 }
-

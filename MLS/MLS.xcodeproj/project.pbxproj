@@ -141,6 +141,7 @@
 		082D0C792B53D22200D84CE2 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				7751CEEF2B540140000E5E74 /* CommunityPageScene */,
 				082D0C7A2B53D22B00D84CE2 /* MainPageScene */,
 			);
 			path = Scenes;
@@ -344,6 +345,7 @@
 			files = (
 				08EF65052B5402A3004CC842 /* UITableViewCell+.swift in Sources */,
 				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
+				7751CEF52B540269000E5E74 /* UITableViewCell+.swift in Sources */,
 				082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */,
 				08EF65032B54025F004CC842 /* UICollectionViewCell+.swift in Sources */,
 				08EF65122B554710004CC842 /* UILabel+.swift in Sources */,

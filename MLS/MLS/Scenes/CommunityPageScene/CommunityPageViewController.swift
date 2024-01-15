@@ -15,7 +15,7 @@ class CommunityPageViewController: BasicController {
     private let viewModel: CommunityPageViewModel
     private var posts: [Post]?
     lazy var numOfposts = self.posts?.count
-    private var type = Constants.PostType.normal
+    private var type = BoardSeparatorType.normal
     private var sortItems: [UIAction] {
         let first = UIAction(title: "최신순", image: UIImage(systemName: ""), handler: { [weak self] _ in
             // 정렬
@@ -60,7 +60,7 @@ class CommunityPageViewController: BasicController {
         return view
     }()
 
-    init(viewModel: CommunityPageViewModel, type: Constants.PostType) {
+    init(viewModel: CommunityPageViewModel, type: BoardSeparatorType) {
         self.viewModel = viewModel
         super.init()
         self.type = type
@@ -91,6 +91,7 @@ private extension CommunityPageViewController {
         communityTableView.delegate = self
         communityTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
         communityTableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
+
         setUpConstraints()
         posts = viewModel.getPost()
     }
@@ -139,7 +140,7 @@ private extension CommunityPageViewController {
         }), for: .touchUpInside)
     }
 
-    func setUpPage(type: Constants.PostType) {
+    func setUpPage(type: BoardSeparatorType) {
         switch type {
         case .normal:
             titleLabel.text = "자유게시판"
@@ -175,10 +176,27 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
         guard let postCell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
         guard let searchCell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
         guard let posts = posts?[indexPath.row] else { return UITableViewCell() }
-        if self.posts?.count != self.numOfposts && indexPath.row == 0 {
+        if self.posts?.count != numOfposts && indexPath.row == 0 {
+            searchCell.searchBar.delegate = self
             return searchCell
         }
         postCell.bind(tag: type, title: posts.title, date: posts.date.toString(), upCount: String(posts.upCount))
         return postCell
+    }
+}
+
+extension CommunityPageViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // 서치바의 텍스트가 변경될 때 호출되는 메서드
+        // 텍스트가 변경될 때마다 원하는 동작을 수행할 수 있습니다.
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // 서치바의 검색 버튼이 클릭될 때 호출되는 메서드
+        // 검색 버튼이 클릭되었을 때 원하는 동작을 수행할 수 있습니다.
+    }
+
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        return true // searchBar를 편집할 수 있도록 합니다.
     }
 }

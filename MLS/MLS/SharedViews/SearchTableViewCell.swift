@@ -20,7 +20,7 @@ class SearchTableViewCell: UITableViewCell {
         return view
     }()
 
-    private let searchBar: UISearchBar = {
+    let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
         return searchBar
@@ -41,6 +41,10 @@ class SearchTableViewCell: UITableViewCell {
 
 private extension SearchTableViewCell {
     func setUp() {
+        setUpConstaraints()
+    }
+    
+    func setUpConstaraints() {
         addSubview(postView)
         postView.addSubview(searchBar)
 

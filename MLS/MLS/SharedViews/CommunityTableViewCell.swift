@@ -58,17 +58,14 @@ class CommunityTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
-    func bind(tag: Constants.PostType, title: String, date: String, upCount: String) {
+    // MARK: Bind
+    func bind(tag: BoardSeparatorType, title: String, date: String, upCount: String) {
         setUpType(tag: tag)
         tagLabel.text = tag.rawValue
         titleLabel.text = title
         dateLabel.text = date
         upCountLabel.text = upCount
     }
-    
-    
 }
 
 private extension CommunityTableViewCell {
@@ -81,7 +78,7 @@ private extension CommunityTableViewCell {
     
     func setUpcell() {
         postView.layer.borderWidth = 1
-        postView.layer.borderColor = UIColor.systemOrange.cgColor
+        postView.layer.borderColor = UIColor.systemGray4.cgColor
         postView.layer.cornerRadius = Constants.defaults.radius
     }
 
@@ -110,7 +107,7 @@ private extension CommunityTableViewCell {
         titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
     
-    func setUpType(tag: Constants.PostType) {
+    func setUpType(tag: BoardSeparatorType) {
         switch tag {
         case .normal:
             tagLabel.isHidden = true
@@ -121,8 +118,9 @@ private extension CommunityTableViewCell {
             tagLabel.textColor = .systemRed
             tagLabel.layer.borderColor = UIColor.systemRed.cgColor
         case .complete:
-            let attributeString = NSAttributedString(string: tag.rawValue, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+            let attributeString = NSAttributedString(string: tag.rawValue, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue, NSAttributedString.Key.foregroundColor: UIColor.gray])
             tagLabel.attributedText = attributeString
+            tagLabel.layer.borderColor = UIColor.gray.cgColor
         }
     }
 }

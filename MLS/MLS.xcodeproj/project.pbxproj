@@ -49,6 +49,12 @@
 		08EF650E2B551EB8004CC842 /* MainPageFeatureListPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF650D2B551EB8004CC842 /* MainPageFeatureListPostCell.swift */; };
 		08EF65122B554710004CC842 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65112B554710004CC842 /* UILabel+.swift */; };
 		08EF65142B554722004CC842 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65132B554722004CC842 /* UIColor+.swift */; };
+		08EF65172B554DA0004CC842 /* AddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65162B554DA0004CC842 /* AddPostViewController.swift */; };
+		08EF651B2B555BB7004CC842 /* InsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF651A2B555BB7004CC842 /* InsetTextField.swift */; };
+		08EF651E2B556C05004CC842 /* AddPostImageChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF651D2B556C05004CC842 /* AddPostImageChoiceCell.swift */; };
+		08EF65202B556C19004CC842 /* AddPostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF651F2B556C19004CC842 /* AddPostImageCell.swift */; };
+		08EF65222B5572C5004CC842 /* AddPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65212B5572C5004CC842 /* AddPostViewModel.swift */; };
+		08EF65242B5572E3004CC842 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65232B5572E3004CC842 /* Observable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +77,12 @@
 		08EF650D2B551EB8004CC842 /* MainPageFeatureListPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageFeatureListPostCell.swift; sourceTree = "<group>"; };
 		08EF65112B554710004CC842 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		08EF65132B554722004CC842 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		08EF65162B554DA0004CC842 /* AddPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewController.swift; sourceTree = "<group>"; };
+		08EF651A2B555BB7004CC842 /* InsetTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetTextField.swift; sourceTree = "<group>"; };
+		08EF651D2B556C05004CC842 /* AddPostImageChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostImageChoiceCell.swift; sourceTree = "<group>"; };
+		08EF651F2B556C19004CC842 /* AddPostImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostImageCell.swift; sourceTree = "<group>"; };
+		08EF65212B5572C5004CC842 /* AddPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewModel.swift; sourceTree = "<group>"; };
+		08EF65232B5572E3004CC842 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,7 +153,7 @@
 		082D0C792B53D22200D84CE2 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				7751CEEF2B540140000E5E74 /* CommunityPageScene */,
+				08EF65152B554D83004CC842 /* AddPostPageScene */,
 				082D0C7A2B53D22B00D84CE2 /* MainPageScene */,
 			);
 			path = Scenes;
@@ -163,6 +175,7 @@
 				082D0C7C2B53D24400D84CE2 /* Controllers */,
 				082D0C7D2B53D26800D84CE2 /* Constants.swift */,
 				08EF65092B540A4A004CC842 /* Typography.swift */,
+				08EF65232B5572E3004CC842 /* Observable.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -190,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				082D0C332B53CF4800D84CE2 /* LaunchScreen.storyboard */,
+				08EF651A2B555BB7004CC842 /* InsetTextField.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -237,6 +251,25 @@
 				08EF650D2B551EB8004CC842 /* MainPageFeatureListPostCell.swift */,
 			);
 			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		08EF65152B554D83004CC842 /* AddPostPageScene */ = {
+			isa = PBXGroup;
+			children = (
+				08EF65162B554DA0004CC842 /* AddPostViewController.swift */,
+				08EF65212B5572C5004CC842 /* AddPostViewModel.swift */,
+				08EF651C2B556BF3004CC842 /* Cells */,
+			);
+			path = AddPostPageScene;
+			sourceTree = "<group>";
+		};
+		08EF651C2B556BF3004CC842 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				08EF651D2B556C05004CC842 /* AddPostImageChoiceCell.swift */,
+				08EF651F2B556C19004CC842 /* AddPostImageCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -345,17 +378,22 @@
 			files = (
 				08EF65052B5402A3004CC842 /* UITableViewCell+.swift in Sources */,
 				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
-				7751CEF52B540269000E5E74 /* UITableViewCell+.swift in Sources */,
 				082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */,
+				08EF65202B556C19004CC842 /* AddPostImageCell.swift in Sources */,
 				08EF65032B54025F004CC842 /* UICollectionViewCell+.swift in Sources */,
+				08EF651B2B555BB7004CC842 /* InsetTextField.swift in Sources */,
+				08EF65172B554DA0004CC842 /* AddPostViewController.swift in Sources */,
 				08EF65122B554710004CC842 /* UILabel+.swift in Sources */,
 				08EF65082B54034D004CC842 /* MainPageFeatureDefaultsCell.swift in Sources */,
 				082D0C762B53D0F200D84CE2 /* MainPageViewController.swift in Sources */,
+				08EF65242B5572E3004CC842 /* Observable.swift in Sources */,
 				08EF64FE2B53FA89004CC842 /* MainPageViewModel.swift in Sources */,
 				082D0C832B53D45700D84CE2 /* Post.swift in Sources */,
 				082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */,
 				08EF650A2B540A4A004CC842 /* Typography.swift in Sources */,
 				08EF650C2B54134F004CC842 /* MainPageFeatureListCell.swift in Sources */,
+				08EF651E2B556C05004CC842 /* AddPostImageChoiceCell.swift in Sources */,
+				08EF65222B5572C5004CC842 /* AddPostViewModel.swift in Sources */,
 				082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */,
 				08EF650E2B551EB8004CC842 /* MainPageFeatureListPostCell.swift in Sources */,
 				08EF65142B554722004CC842 /* UIColor+.swift in Sources */,

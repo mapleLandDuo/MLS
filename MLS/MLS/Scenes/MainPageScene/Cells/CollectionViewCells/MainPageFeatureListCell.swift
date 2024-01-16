@@ -44,6 +44,7 @@ class MainPageFeatureListCell: UICollectionViewCell {
         let view = UITableView(frame: .zero, style: .plain)
         view.backgroundColor = .clear
         view.isScrollEnabled = false
+        view.separatorStyle = .none
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
         view.layer.cornerRadius = Constants.defaults.radius
@@ -53,6 +54,7 @@ class MainPageFeatureListCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUp()
+        titleLabel.startTextFlowAnimation(superViewWidth: Constants.screenWidth - (Constants.defaults.horizontal * 4))
     }
 
     @available(*, unavailable)

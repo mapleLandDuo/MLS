@@ -53,6 +53,7 @@
 		7751CEFF2B541CF5000E5E74 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFE2B541CF5000E5E74 /* Date+.swift */; };
 		775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */; };
 		775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */; };
+		775474C42B56795200C8DD61 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C32B56795200C8DD61 /* PostDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,7 @@
 		7751CEFE2B541CF5000E5E74 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		775474C32B56795200C8DD61 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */,
+				775474C32B56795200C8DD61 /* PostDetailView.swift */,
 				775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */,
 			);
 			path = PostDetailPageScene;
@@ -357,6 +360,7 @@
 				7751CEF92B540411000E5E74 /* CommunityPageViewModel.swift in Sources */,
 				7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */,
 				7751CEF72B5403AC000E5E74 /* CommunityPageViewController.swift in Sources */,
+				775474C42B56795200C8DD61 /* PostDetailView.swift in Sources */,
 				082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */,
 				770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */,
 				775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */,

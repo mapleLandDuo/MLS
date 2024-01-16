@@ -12,6 +12,8 @@ import SnapKit
 class PostDetailViewController: BasicController {
     // MARK: - Properties
 
+    let postDetailView = PostDetailView()
+
     let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
     lazy var safeAreaInsets = self.windowScene?.windows.first?.safeAreaInsets
     lazy var safeAreaHeight = UIScreen.main.bounds.height - self.safeAreaInsets!.top - self.safeAreaInsets!.bottom
@@ -31,13 +33,6 @@ class PostDetailViewController: BasicController {
         view.backgroundColor = .black
         return view
     }()
-
-    private let testLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .blue
-        label.text = "hello swift"
-        return label
-    }()
 }
 
 extension PostDetailViewController {
@@ -45,9 +40,20 @@ extension PostDetailViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        verticalScrollView.backgroundColor = .green
 
         setUp()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        let postDetailViewHeight = postDetailView.frame.height
+
+        verticalContentView.snp.remakeConstraints {
+            $0.edges.equalTo(verticalScrollView)
+            $0.width.equalTo(verticalScrollView)
+            $0.height.equalTo(safeAreaHeight + postDetailViewHeight + Constants.defaults.vertical)
+        }
     }
 }
 
@@ -55,12 +61,12 @@ private extension PostDetailViewController {
     // MARK: - SetUp
 
     func setUp() {
-        self.navigationController?.isNavigationBarHidden = true
-        
+        navigationController?.isNavigationBarHidden = true
+
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
         imageCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.identifier)
-        
+
         setUpConstraints()
     }
 }
@@ -76,6 +82,7 @@ private extension PostDetailViewController {
         view.addSubview(verticalScrollView)
         verticalScrollView.addSubview(verticalContentView)
         verticalContentView.addSubview(imageCollectionView)
+        verticalContentView.addSubview(postDetailView)
 
         verticalScrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
@@ -83,13 +90,18 @@ private extension PostDetailViewController {
 
         verticalContentView.snp.makeConstraints {
             $0.edges.equalTo(verticalScrollView)
-            $0.width.equalTo(verticalScrollView.frameLayoutGuide)
-            $0.height.equalTo(safeAreaHeight + 100)
+            $0.width.equalTo(verticalScrollView)
+            $0.height.equalTo(safeAreaHeight)
         }
 
         imageCollectionView.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(verticalContentView)
             $0.height.equalTo(safeAreaHeight)
+        }
+
+        postDetailView.snp.makeConstraints {
+            $0.top.equalTo(imageCollectionView.snp.bottom).inset(-Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }
 }

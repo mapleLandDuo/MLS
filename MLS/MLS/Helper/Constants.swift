@@ -11,7 +11,7 @@ struct Constants {
         let vertical: CGFloat = 12
         let horizontal: CGFloat = 16
         let radius: CGFloat = 8
-        let blockHeight: CGFloat = UIScreen.main.bounds.height * 0.05
+        let blockHeight: CGFloat = UIScreen.main.bounds.height * 0.06
     }
     static let defaults = Default()
     static let screenWidth = UIScreen.main.bounds.width

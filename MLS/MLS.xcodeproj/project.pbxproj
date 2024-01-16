@@ -51,6 +51,8 @@
 		7751CEFB2B5408FA000E5E74 /* CommunityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */; };
 		7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFC2B54129C000E5E74 /* CustomLabel.swift */; };
 		7751CEFF2B541CF5000E5E74 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFE2B541CF5000E5E74 /* Date+.swift */; };
+		775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */; };
+		775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +77,8 @@
 		7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityTableViewCell.swift; sourceTree = "<group>"; };
 		7751CEFC2B54129C000E5E74 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		7751CEFE2B541CF5000E5E74 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
+		775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +151,7 @@
 			children = (
 				082D0C7A2B53D22B00D84CE2 /* MainPageScene */,
 				7751CEEF2B540140000E5E74 /* CommunityPageScene */,
+				775474BD2B565A4D00C8DD61 /* PostDetailPageScene */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -226,6 +231,15 @@
 				7707440B2B554F5500FCEDED /* UIImage+.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		775474BD2B565A4D00C8DD61 /* PostDetailPageScene */ = {
+			isa = PBXGroup;
+			children = (
+				775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */,
+				775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */,
+			);
+			path = PostDetailPageScene;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -345,9 +359,11 @@
 				7751CEF72B5403AC000E5E74 /* CommunityPageViewController.swift in Sources */,
 				082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */,
 				770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */,
+				775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */,
 				7707440C2B554F5500FCEDED /* UIImage+.swift in Sources */,
 				7707440E2B55511E00FCEDED /* SearchTableViewCell.swift in Sources */,
 				7751CEF32B54025D000E5E74 /* UICollectionViewCell+.swift in Sources */,
+				775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */,
 				082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

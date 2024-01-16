@@ -178,25 +178,26 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
         guard let posts = posts?[indexPath.row] else { return UITableViewCell() }
         if self.posts?.count != numOfposts && indexPath.row == 0 {
             searchCell.searchBar.delegate = self
+            searchCell.isUserInteractionEnabled = true
+            searchCell.contentView.isUserInteractionEnabled = false
             return searchCell
         }
         postCell.bind(tag: type, title: posts.title, date: posts.date.toString(), upCount: String(posts.upCount))
         return postCell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    }
 }
 
 extension CommunityPageViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // 서치바의 텍스트가 변경될 때 호출되는 메서드
-        // 텍스트가 변경될 때마다 원하는 동작을 수행할 수 있습니다.
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        // 서치바의 검색 버튼이 클릭될 때 호출되는 메서드
-        // 검색 버튼이 클릭되었을 때 원하는 동작을 수행할 수 있습니다.
     }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        return true // searchBar를 편집할 수 있도록 합니다.
+        return true
     }
 }

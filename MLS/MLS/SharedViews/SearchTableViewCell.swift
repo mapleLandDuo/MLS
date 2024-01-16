@@ -12,14 +12,6 @@ import SnapKit
 class SearchTableViewCell: UITableViewCell {
     // MARK: Properties
 
-    private let postView: UIView = {
-        let view = UIView()
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.systemOrange.cgColor
-        view.layer.cornerRadius = Constants.defaults.radius
-        return view
-    }()
-
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
@@ -45,17 +37,12 @@ private extension SearchTableViewCell {
     }
     
     func setUpConstaraints() {
-        addSubview(postView)
-        postView.addSubview(searchBar)
 
-        postView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
+        addSubview(searchBar)
 
         searchBar.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }
 }

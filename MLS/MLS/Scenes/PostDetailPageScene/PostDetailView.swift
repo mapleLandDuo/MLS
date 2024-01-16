@@ -26,7 +26,7 @@ class PostDetailView: UIView {
     
     private let dateLabel = CustomLabel(text: "date", textColor: .gray, font: .systemFont(ofSize: 12))
     
-    private let postTitleLabel = CustomLabel(text: "title", font: .boldSystemFont(ofSize: 20))
+    private let postTitleLabel = CustomLabel(text: "title", font: .boldSystemFont(ofSize: 24))
     
     private let postContentLabel: CustomLabel = {
         let label = CustomLabel(text: "content", font: .systemFont(ofSize: 20))

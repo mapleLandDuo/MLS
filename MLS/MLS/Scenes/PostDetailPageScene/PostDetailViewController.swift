@@ -41,10 +41,43 @@ class PostDetailViewController: BasicController {
         view.backgroundColor = .systemGray6
         view.layer.cornerRadius = Constants.defaults.radius
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        view.clipsToBounds = true
         view.contentMode = .scaleAspectFit
         return view
     }()
+
+    lazy var addCommentStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [commentProfileImageView, commentTextView, commentButton])
+        view.axis = .horizontal
+        view.distribution = .fill
+        view.spacing = 10
+        return view
+    }()
+
+    private let commentProfileImageView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "photo")?.resized(to: CGSize(width: 40, height: 40))
+        view.clipsToBounds = true
+        view.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        view.layer.cornerRadius = view.frame.height / 2
+        return view
+    }()
+
+    private let commentTextView: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = " 댓글 입력"
+        textField.backgroundColor = .systemGray4
+        textField.layer.cornerRadius = Constants.defaults.radius
+        return textField
+    }()
+    
+    private let commentButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.circle.fill")?.resized(to: CGSize(width: 40, height: 40)), for: .normal)
+        button.tintColor = .gray
+        return button
+    }()
+
+    private let commentTableView = UITableView()
 }
 
 extension PostDetailViewController {
@@ -60,11 +93,12 @@ extension PostDetailViewController {
         super.viewDidLayoutSubviews()
 
         let postDetailViewHeight = postDetailView.frame.height
+        let commentStackViewHeight = addCommentStackView.frame.height
 
         verticalContentView.snp.remakeConstraints {
             $0.edges.equalTo(verticalScrollView)
             $0.width.equalTo(verticalScrollView)
-            $0.height.equalTo(safeAreaHeight + postDetailViewHeight + Constants.defaults.vertical)
+            $0.height.equalTo(safeAreaHeight + postDetailViewHeight + commentStackViewHeight + Constants.defaults.vertical * 2)
         }
     }
 }
@@ -80,6 +114,10 @@ private extension PostDetailViewController {
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
         imageCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.identifier)
+        
+        commentTableView.delegate = self
+        commentTableView.dataSource = self
+        commentTableView.register(<#T##nib: UINib?##UINib?#>, forCellReuseIdentifier: <#T##String#>)
 
         setUpConstraints()
     }
@@ -98,6 +136,7 @@ private extension PostDetailViewController {
         verticalContentView.addSubview(imageCollectionView)
         verticalContentView.addSubview(handleIamgeView)
         verticalContentView.addSubview(postDetailView)
+        verticalContentView.addSubview(addCommentStackView)
 
         verticalScrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
@@ -123,6 +162,24 @@ private extension PostDetailViewController {
 
         postDetailView.snp.makeConstraints {
             $0.top.equalTo(imageCollectionView.snp.bottom).inset(-Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+        addCommentStackView.snp.makeConstraints {
+            $0.top.equalTo(postDetailView.snp.bottom).inset(-Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+        commentProfileImageView.snp.makeConstraints {
+            $0.size.equalTo(40)
+        }
+        
+        commentButton.snp.makeConstraints {
+            $0.size.equalTo(40)
+        }
+        
+        commentTableView.snp.makeConstraints {
+            $0.top.equalTo(addCommentStackView.snp.bottom).inset(-Constants.defaults.vertical)
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }

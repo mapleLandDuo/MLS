@@ -54,6 +54,7 @@
 		775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */; };
 		775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */; };
 		775474C42B56795200C8DD61 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C32B56795200C8DD61 /* PostDetailView.swift */; };
+		775474C62B56A81300C8DD61 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 		775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		775474C32B56795200C8DD61 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
+		775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +243,7 @@
 				775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */,
 				775474C32B56795200C8DD61 /* PostDetailView.swift */,
 				775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */,
+				775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */,
 			);
 			path = PostDetailPageScene;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				7751CEFF2B541CF5000E5E74 /* Date+.swift in Sources */,
 				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
 				7751CEFB2B5408FA000E5E74 /* CommunityTableViewCell.swift in Sources */,
+				775474C62B56A81300C8DD61 /* CommentTableViewCell.swift in Sources */,
 				7751CEF52B540269000E5E74 /* UITableViewCell+.swift in Sources */,
 				082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */,
 				082D0C762B53D0F200D84CE2 /* MainPageViewController.swift in Sources */,

@@ -33,6 +33,24 @@ class MainPageViewController: BasicController {
         return view
     }()
     
+    private let sideMenuView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
+    
+    private let sideMenuEmptyView: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        return button
+    }()
+    
+    private let sideMenuTableView: UITableView = {
+        let view = UITableView()
+        view.backgroundColor = .systemGray4
+        return view
+    }()
+    
     init(viewModel: MainPageViewModel) {
         self.viewModel = viewModel
         super.init()
@@ -64,6 +82,8 @@ private extension MainPageViewController {
         setUpConstraints()
         featureCollectionView.delegate = self
         featureCollectionView.dataSource = self
+        menuButton.addTarget(self, action: #selector(didTapMenuButton), for: .primaryActionTriggered)
+        sideMenuEmptyView.addTarget(self, action: #selector(didTapMenuEmptySpace), for: .primaryActionTriggered)
     }
     
     func setUpConstraints() {
@@ -79,6 +99,46 @@ private extension MainPageViewController {
         featureCollectionView.snp.makeConstraints { make in
             make.top.equalTo(menuButton.snp.bottom).offset(Constants.defaults.vertical)
             make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        view.addSubview(sideMenuView)
+        sideMenuView.snp.makeConstraints { make in
+            make.height.equalTo(Constants.screenHeight)
+            make.width.equalTo(Constants.screenWidth)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.right.equalTo(view.snp.left)
+        }
+        sideMenuView.addSubview(sideMenuEmptyView)
+        sideMenuEmptyView.snp.makeConstraints { make in
+            make.height.equalTo(Constants.screenHeight)
+            make.width.equalTo(Constants.screenWidth * 0.3)
+            make.right.top.equalToSuperview()
+        }
+        sideMenuView.addSubview(sideMenuTableView)
+        sideMenuTableView.snp.makeConstraints { make in
+            make.top.left.equalToSuperview()
+            make.width.equalTo(Constants.screenWidth * 0.7)
+            make.height.equalTo(Constants.screenHeight)
+        }
+    }
+}
+
+private extension MainPageViewController {
+    @objc
+    func didTapMenuButton() {
+        switchMenuView(isOpen: true)
+    }
+    @objc
+    func didTapMenuEmptySpace() {
+        switchMenuView(isOpen: false)
+    }
+    
+    func switchMenuView(isOpen: Bool) {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self = self else { return }
+            let value: CGFloat = isOpen ? Constants.screenWidth : -Constants.screenWidth
+            self.sideMenuView.transform = CGAffineTransform(
+                translationX: self.sideMenuView.bounds.origin.x + value, y: self.sideMenuView.bounds.origin.y
+            )
         }
     }
 }

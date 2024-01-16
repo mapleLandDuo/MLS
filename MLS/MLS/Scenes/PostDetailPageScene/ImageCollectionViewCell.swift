@@ -19,6 +19,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         let view = UIImageView()
         view.clipsToBounds = true
         view.kf.indicatorType = .activity
+        view.contentMode = .scaleAspectFit
         return view
     }()
 

@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Kingfisher
 
 class PostDetailView: UIView {
     // MARK: - Components
@@ -110,5 +111,17 @@ private extension PostDetailView {
             $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
             $0.bottom.equalToSuperview()
         }
+    }
+}
+
+extension PostDetailView {
+    func updateUI(userImage: URL, date: Date, userName: String, title: String, content: String, postCount: Int, upCount: Int) {
+        userIamgeView.kf.setImage(with: userImage)
+        dateLabel.text = date.toString()
+        userNameLabel.text = userName
+        postTitleLabel.text = title
+        postContentLabel.text = content
+        postCountLabel.text = "조회수: \(postCount) / "
+        upCountLabel.text = String(upCount)
     }
 }

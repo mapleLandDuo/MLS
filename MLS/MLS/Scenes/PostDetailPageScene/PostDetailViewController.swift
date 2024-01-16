@@ -18,7 +18,7 @@ class PostDetailViewController: BasicController {
     lazy var safeAreaInsets = self.windowScene?.windows.first?.safeAreaInsets
     lazy var safeAreaHeight = UIScreen.main.bounds.height - self.safeAreaInsets!.top - self.safeAreaInsets!.bottom
 
-    let dummy = [URL(string: "https://blog.kakaocdn.net/dn/lOszd/btrOBLArMVV/rdorYnmzpEFKJPjTgl41n0/img.png"), URL(string: "https://blog.kakaocdn.net/dn/lOszd/btrOBLArMVV/rdorYnmzpEFKJPjTgl41n0/img.png")]
+    let dummy = [URL(string: "https://www.mancity.com/meta/media/kppnc3ji/team-lifting-trophy.png"), URL(string: "https://blog.kakaocdn.net/dn/lOszd/btrOBLArMVV/rdorYnmzpEFKJPjTgl41n0/img.png")]
 
     // MARK: - Components
 
@@ -31,6 +31,18 @@ class PostDetailViewController: BasicController {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         layout.scrollDirection = .horizontal
         view.backgroundColor = .black
+        view.isPagingEnabled = true
+        return view
+    }()
+
+    private let handleIamgeView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "pullIcon")?.resized(to: CGSize(width: 20, height: 16))
+        view.backgroundColor = .systemGray6
+        view.layer.cornerRadius = Constants.defaults.radius
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFit
         return view
     }()
 }
@@ -63,6 +75,8 @@ private extension PostDetailViewController {
     func setUp() {
         navigationController?.isNavigationBarHidden = true
 
+        verticalScrollView.delegate = self
+
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
         imageCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.identifier)
@@ -82,6 +96,7 @@ private extension PostDetailViewController {
         view.addSubview(verticalScrollView)
         verticalScrollView.addSubview(verticalContentView)
         verticalContentView.addSubview(imageCollectionView)
+        verticalContentView.addSubview(handleIamgeView)
         verticalContentView.addSubview(postDetailView)
 
         verticalScrollView.snp.makeConstraints {
@@ -97,6 +112,13 @@ private extension PostDetailViewController {
         imageCollectionView.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(verticalContentView)
             $0.height.equalTo(safeAreaHeight)
+        }
+
+        handleIamgeView.snp.makeConstraints {
+            $0.bottom.equalTo(imageCollectionView)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(60)
+            $0.height.equalTo(30)
         }
 
         postDetailView.snp.makeConstraints {
@@ -120,5 +142,13 @@ extension PostDetailViewController: UICollectionViewDelegateFlowLayout, UICollec
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+    }
+}
+
+extension PostDetailViewController: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.handleIamgeView.isHidden = true
+        }
     }
 }

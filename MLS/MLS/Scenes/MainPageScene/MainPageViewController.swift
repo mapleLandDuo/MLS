@@ -48,6 +48,7 @@ class MainPageViewController: BasicController {
     private let sideMenuTableView: UITableView = {
         let view = UITableView()
         view.backgroundColor = .systemGray4
+        view.separatorStyle = .none
         return view
     }()
     
@@ -82,6 +83,7 @@ private extension MainPageViewController {
         setUpConstraints()
         featureCollectionView.delegate = self
         featureCollectionView.dataSource = self
+        sideMenuTableView.dataSource = self
         menuButton.addTarget(self, action: #selector(didTapMenuButton), for: .primaryActionTriggered)
         sideMenuEmptyView.addTarget(self, action: #selector(didTapMenuEmptySpace), for: .primaryActionTriggered)
     }
@@ -181,9 +183,28 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
         case 0:
             return CGSize(width: Constants.screenWidth, height: Constants.defaults.blockHeight * 2)
         case 1:
-            return CGSize(width: Constants.screenWidth, height: (Constants.defaults.blockHeight * 4) + (Constants.defaults.vertical * 5) )
+            return CGSize(width: Constants.screenWidth, height: (Constants.defaults.blockHeight * 4) + (Constants.defaults.vertical * 6) )
         default:
             return CGSize()
         }
     }
+}
+
+
+extension MainPageViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.sideMenuItems.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = viewModel.sideMenuItems[indexPath.row].title
+//        cell.textLabel?.textColor = .systemGray
+        cell.imageView?.image = viewModel.sideMenuItems[indexPath.row].image
+        cell.imageView?.tintColor = .systemGray
+        cell.contentView.backgroundColor = .systemGray4
+        return cell
+    }
+    
+    
 }

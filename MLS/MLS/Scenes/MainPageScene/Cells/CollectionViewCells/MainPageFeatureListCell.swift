@@ -22,21 +22,23 @@ class MainPageFeatureListCell: UICollectionViewCell {
 
     private let trailingView: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemOrange
+        view.backgroundColor = .systemBackground
         view.layer.cornerRadius = Constants.defaults.radius
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.systemOrange.cgColor
         return view
     }()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.title1.font
-        label.textColor = .white
+        label.textColor = .systemOrange
         return label
     }()
     
     private let rightImageView: UIImageView = {
         let view = UIImageView()
-        view.tintColor = .white
+        view.tintColor = .systemOrange
         return view
     }()
     
@@ -47,6 +49,7 @@ class MainPageFeatureListCell: UICollectionViewCell {
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
         view.layer.cornerRadius = Constants.defaults.radius
+        view.separatorStyle = .none
         return view
     }()
     

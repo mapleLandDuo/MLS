@@ -35,9 +35,8 @@ private extension SearchTableViewCell {
     func setUp() {
         setUpConstaraints()
     }
-    
-    func setUpConstaraints() {
 
+    func setUpConstaraints() {
         addSubview(searchBar)
 
         searchBar.snp.makeConstraints {

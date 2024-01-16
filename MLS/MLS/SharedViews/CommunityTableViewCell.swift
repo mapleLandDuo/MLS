@@ -59,6 +59,7 @@ class CommunityTableViewCell: UITableViewCell {
     }
     
     // MARK: Bind
+
     func bind(tag: BoardSeparatorType, title: String, date: String, upCount: String) {
         setUpType(tag: tag)
         tagLabel.text = tag.rawValue

@@ -185,17 +185,14 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
         postCell.bind(tag: type, title: posts.title, date: posts.date.toString(), upCount: String(posts.upCount))
         return postCell
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
 }
 
 extension CommunityPageViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {}
 
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {}
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         return true

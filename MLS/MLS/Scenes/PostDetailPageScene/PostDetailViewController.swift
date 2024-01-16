@@ -12,6 +12,8 @@ import SnapKit
 class PostDetailViewController: BasicController {
     // MARK: - Properties
 
+    let commentDummy = ["이름", "댓글"]
+
     let postDetailView = PostDetailView()
 
     let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -19,6 +21,8 @@ class PostDetailViewController: BasicController {
     lazy var safeAreaHeight = UIScreen.main.bounds.height - self.safeAreaInsets!.top - self.safeAreaInsets!.bottom
 
     let dummy = [URL(string: "https://www.mancity.com/meta/media/kppnc3ji/team-lifting-trophy.png"), URL(string: "https://blog.kakaocdn.net/dn/lOszd/btrOBLArMVV/rdorYnmzpEFKJPjTgl41n0/img.png")]
+    
+    lazy var commentTableViewHeght: CGFloat = 0
 
     // MARK: - Components
 
@@ -69,7 +73,7 @@ class PostDetailViewController: BasicController {
         textField.layer.cornerRadius = Constants.defaults.radius
         return textField
     }()
-    
+
     private let commentButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.circle.fill")?.resized(to: CGSize(width: 40, height: 40)), for: .normal)
@@ -77,7 +81,11 @@ class PostDetailViewController: BasicController {
         return button
     }()
 
-    private let commentTableView = UITableView()
+    private let commentTableView: UITableView = {
+        let view = UITableView()
+        view.isScrollEnabled = false
+        return view
+    }()
 }
 
 extension PostDetailViewController {
@@ -98,8 +106,16 @@ extension PostDetailViewController {
         verticalContentView.snp.remakeConstraints {
             $0.edges.equalTo(verticalScrollView)
             $0.width.equalTo(verticalScrollView)
-            $0.height.equalTo(safeAreaHeight + postDetailViewHeight + commentStackViewHeight + Constants.defaults.vertical * 2)
+            $0.height.equalTo(safeAreaHeight + postDetailViewHeight + commentStackViewHeight + commentTableViewHeght + Constants.defaults.vertical * 3)
         }
+        
+        commentTableView.snp.remakeConstraints {
+            $0.top.equalTo(addCommentStackView.snp.bottom).inset(-Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(commentTableViewHeght)
+        }
+        
+        commentTableView.reloadData()
     }
 }
 
@@ -114,10 +130,10 @@ private extension PostDetailViewController {
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
         imageCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.identifier)
-        
+
         commentTableView.delegate = self
         commentTableView.dataSource = self
-        commentTableView.register(<#T##nib: UINib?##UINib?#>, forCellReuseIdentifier: <#T##String#>)
+        commentTableView.register(CommentTableViewCell.self, forCellReuseIdentifier: CommentTableViewCell.identifier)
 
         setUpConstraints()
     }
@@ -137,6 +153,7 @@ private extension PostDetailViewController {
         verticalContentView.addSubview(handleIamgeView)
         verticalContentView.addSubview(postDetailView)
         verticalContentView.addSubview(addCommentStackView)
+        verticalContentView.addSubview(commentTableView)
 
         verticalScrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
@@ -164,23 +181,23 @@ private extension PostDetailViewController {
             $0.top.equalTo(imageCollectionView.snp.bottom).inset(-Constants.defaults.vertical)
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
-        
+
         addCommentStackView.snp.makeConstraints {
             $0.top.equalTo(postDetailView.snp.bottom).inset(-Constants.defaults.vertical)
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
-        
+
         commentProfileImageView.snp.makeConstraints {
             $0.size.equalTo(40)
         }
-        
+
         commentButton.snp.makeConstraints {
             $0.size.equalTo(40)
         }
-        
+
         commentTableView.snp.makeConstraints {
             $0.top.equalTo(addCommentStackView.snp.bottom).inset(-Constants.defaults.vertical)
-            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }
@@ -207,5 +224,18 @@ extension PostDetailViewController: UIScrollViewDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.handleIamgeView.isHidden = true
         }
+    }
+}
+
+extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        commentTableViewHeght = tableView.contentSize.height
+        return 5
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableViewCell.identifier, for: indexPath) as? CommentTableViewCell else { return UITableViewCell() }
+        cell.bind(name: commentDummy[0], comment: commentDummy[1])
+        return cell
     }
 }

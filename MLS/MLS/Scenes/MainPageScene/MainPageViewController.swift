@@ -183,7 +183,7 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
         case 0:
             return CGSize(width: Constants.screenWidth, height: Constants.defaults.blockHeight * 2)
         case 1:
-            return CGSize(width: Constants.screenWidth, height: (Constants.defaults.blockHeight * 4) + (Constants.defaults.vertical * 6) )
+            return CGSize(width: Constants.screenWidth, height: (Constants.defaults.blockHeight * 4) + (Constants.defaults.vertical * 3) )
         default:
             return CGSize()
         }

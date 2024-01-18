@@ -59,7 +59,7 @@ private extension MainPageFeatureListPostCell {
         contentView.addSubview(trailingView)
         trailingView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
-            make.height.equalTo(Constants.defaults.blockHeight)
+//            make.height.equalTo(Constants.defaults.blockHeight)
             make.bottom.equalToSuperview().inset(Constants.defaults.vertical)
         }
         trailingView.addSubview(titleLabel)

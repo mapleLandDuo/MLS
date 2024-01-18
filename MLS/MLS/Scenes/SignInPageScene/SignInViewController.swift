@@ -35,15 +35,13 @@ class SignInViewController: BasicController {
         let button = UIButton()
         button.setTitle("자동 로그인", for: .normal)
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-        button.contentEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: Constants.defaults.horizontal)
-        button.titleEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: -Constants.defaults.horizontal / 2)
+        button.configuration?.imagePlacement = .leading
         button.setTitleColor(.label, for: .normal)
         button.titleLabel?.font = Typography.body3.font
         button.tintColor = .systemOrange
         return button
     }()
     
-//    private let signInButton = SharedButton(title: "로그인")
     private let signInButton: UIButton = {
         let button = UIButton()
         button.setTitle("로그인", for: .normal)

@@ -14,7 +14,7 @@ class MainPageFeatureListPostCell: UITableViewCell {
     private let trailingView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.borderColor = UIColor.systemOrange.cgColor
+        view.layer.borderColor = UIColor.systemGray4.cgColor
         view.layer.borderWidth = 1
         view.layer.cornerRadius = Constants.defaults.radius
         return view

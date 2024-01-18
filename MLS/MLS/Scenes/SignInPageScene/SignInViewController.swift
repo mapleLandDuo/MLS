@@ -19,26 +19,9 @@ class SignInViewController: BasicController {
         return view
     }()
     
-    private let emailTextField: UITextField = {
-        let view = UITextField()
-        view.placeholder = "이메일"
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.systemGray4.cgColor
-        view.layer.cornerRadius = Constants.defaults.radius
-        view.addPadding()
-        return view
-    }()
+    private let emailTextField = SharedTextField(type: .normal, placeHolder: "이메일")
     
-    private let passwordTextField: UITextField = {
-        let view = UITextField()
-        view.placeholder = "패스워드"
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.systemGray4.cgColor
-        view.layer.cornerRadius = Constants.defaults.radius
-        view.isSecureTextEntry = true
-        view.addPadding()
-        return view
-    }()
+    private let passwordTextField = SharedTextField(type: .password, placeHolder: "패스워드")
 
     private let missMatchLabel: UILabel = {
         let label = UILabel()

@@ -9,9 +9,9 @@ import UIKit
 
 class AddPostViewModel {
     let imageData:Observable<[UIImage?]> = Observable([])
-    let tempType: Bool
+    let type: BoardSeparatorType
     
-    init(tempType: Bool) {
-        self.tempType = tempType
+    init(type: BoardSeparatorType) {
+        self.type = type
     }
 }

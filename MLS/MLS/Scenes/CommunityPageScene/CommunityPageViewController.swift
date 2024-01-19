@@ -59,6 +59,15 @@ class CommunityPageViewController: BasicController {
         view.separatorStyle = .none
         return view
     }()
+    
+    private let addPostButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.backgroundColor = .systemOrange
+        button.layer.cornerRadius = Constants.defaults.blockHeight / 2
+        button.tintColor = .white
+        return button
+    }()
 
     init(viewModel: CommunityPageViewModel, type: BoardSeparatorType) {
         self.viewModel = viewModel
@@ -109,6 +118,7 @@ private extension CommunityPageViewController {
         view.addSubview(searchButton)
         view.addSubview(sortButton)
         view.addSubview(communityTableView)
+        view.addSubview(addPostButton)
 
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
@@ -132,12 +142,23 @@ private extension CommunityPageViewController {
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
         }
+        addPostButton.snp.makeConstraints { make in
+            make.width.height.equalTo(Constants.defaults.blockHeight)
+            make.right.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical * 2)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
+        }
     }
 
     func setUpActions() {
         searchButton.addAction(UIAction(handler: { [weak self] _ in
             self?.addSearchBar()
         }), for: .touchUpInside)
+        
+        addPostButton.addAction(UIAction(handler: { [weak self] _ in
+            guard let type = self?.type else { return }
+            let vc = AddPostViewController(viewModel: AddPostViewModel(type: type))
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }), for: .primaryActionTriggered)
     }
 
     func setUpPage(type: BoardSeparatorType) {

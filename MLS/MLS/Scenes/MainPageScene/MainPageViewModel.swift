@@ -21,9 +21,7 @@ class MainPageViewModel {
         ],
         [
             FeatureCellData(title: "최신글", image: UIImage(systemName: "chevron.forward.2")),
-            FeatureCellData(title: "사고팔고", image: UIImage(systemName: "chevron.forward.2")),
-            FeatureCellData(title: "Test", image: UIImage(systemName: "chevron.forward.2")),
-            FeatureCellData(title: "test2", image: UIImage(systemName: "chevron.forward.2"))
+            FeatureCellData(title: "사고팔고", image: UIImage(systemName: "chevron.forward.2"))
         ]
     ]
     var sideMenuItems: [FeatureCellData] = [

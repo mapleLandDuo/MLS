@@ -8,7 +8,8 @@
 import Foundation
 import UIKit
 
-struct Post {
+struct Post: Codable {
+    var id: UUID
     var title: String
     var date: Date
     var upCount: Int

@@ -9,7 +9,7 @@ import Foundation
 
 class CommunityPageViewModel {
     // Properties
-    private let dummy = [Post(title: "1번 제목", date: Date(), upCount: 1), Post(title: "2번 제목", date: Date(), upCount: 2), Post(title: "3번 제목", date: Date(), upCount: 3), Post(title: "4번 제목", date: Date(), upCount: 4)]
+    private let dummy = [Post(id: UUID(), title: "1번 제목", date: Date(), upCount: 1), Post(id: UUID(), title: "2번 제목", date: Date(), upCount: 2), Post(id: UUID(), title: "3번 제목", date: Date(), upCount: 3), Post(id: UUID(), title: "4번 제목", date: Date(), upCount: 4)]
 
     // Methods
     func getPost() -> [Post] {

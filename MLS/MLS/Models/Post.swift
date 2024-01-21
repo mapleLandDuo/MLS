@@ -11,6 +11,14 @@ import UIKit
 struct Post: Codable {
     var id: UUID
     var title: String
+    var postImages: [URL?]
+    var postContents: String
+    var user: String
+    var comment: [UUID]
     var date: Date
-    var upCount: Int
+    var likeCount: [String]
+    var viewCount: Int
+    var postType: BoardSeparatorType
+    var report: [String]
+    var state: Bool
 }

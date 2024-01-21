@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum BoardSeparatorType: String {
+enum BoardSeparatorType: String, Codable {
     case normal
     case sell = "팝니다"
     case buy = "삽니다"

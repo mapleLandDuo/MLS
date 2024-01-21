@@ -174,14 +174,14 @@ private extension AddPostViewController {
             make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
         }
 
-        
-        if viewModel.tempType {
+        switch viewModel.type {
+        case .normal:
             contentView.addSubview(postLabel)
             postLabel.snp.makeConstraints { make in
                 make.top.equalTo(titleTextField.snp.bottom).offset(Constants.defaults.vertical)
                 make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
             }
-        } else {
+        default :
             contentView.addSubview(tradeTitleLabel)
             tradeTitleLabel.snp.makeConstraints { make in
                 make.top.equalTo(titleTextField.snp.bottom).offset(Constants.defaults.vertical)
@@ -198,7 +198,6 @@ private extension AddPostViewController {
                 make.top.equalTo(segmentedController.snp.bottom).offset(Constants.defaults.vertical)
                 make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
             }
-
         }
         contentView.addSubview(postTextView)
         postTextView.snp.makeConstraints { make in

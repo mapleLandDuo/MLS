@@ -14,7 +14,7 @@ class MainPageFeatureListPostCell: UITableViewCell {
     private let trailingView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.borderColor = UIColor.systemOrange.cgColor
+        view.layer.borderColor = UIColor.systemGray4.cgColor
         view.layer.borderWidth = 1
         view.layer.cornerRadius = Constants.defaults.radius
         return view
@@ -59,7 +59,7 @@ private extension MainPageFeatureListPostCell {
         contentView.addSubview(trailingView)
         trailingView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
-            make.height.equalTo(Constants.defaults.blockHeight)
+//            make.height.equalTo(Constants.defaults.blockHeight)
             make.bottom.equalToSuperview().inset(Constants.defaults.vertical)
         }
         trailingView.addSubview(titleLabel)

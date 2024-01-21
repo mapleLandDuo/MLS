@@ -67,6 +67,7 @@ extension MainPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = .systemOrange
         setUp()
     }
     
@@ -74,6 +75,9 @@ extension MainPageViewController {
         self.navigationController?.navigationBar.isHidden = true
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
+    }
 }
 
 private extension MainPageViewController {
@@ -183,9 +187,26 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
         case 0:
             return CGSize(width: Constants.screenWidth, height: Constants.defaults.blockHeight * 2)
         case 1:
-            return CGSize(width: Constants.screenWidth, height: (Constants.defaults.blockHeight * 4) + (Constants.defaults.vertical * 6) )
+            return CGSize(width: Constants.screenWidth, height: (Constants.defaults.blockHeight * 4) + (Constants.defaults.vertical * 3) )
         default:
             return CGSize()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            print("도감 페이지")
+        } else {
+            switch indexPath.row {
+            case 0:
+                let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .normal)
+                self.navigationController?.pushViewController(vc, animated: true)
+            case 1:
+                let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .complete)
+                self.navigationController?.pushViewController(vc, animated: true)
+            default :
+                print("default")
+            }
         }
     }
 }

@@ -73,6 +73,8 @@
 		779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72BE2B56DA16007CB6C1 /* UIImage+.swift */; };
 		779B72C82B56DBC3007CB6C1 /* CommunityPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72C62B56DBC3007CB6C1 /* CommunityPageViewModel.swift */; };
 		779B72C92B56DBC3007CB6C1 /* CommunityPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72C72B56DBC3007CB6C1 /* CommunityPageViewController.swift */; };
+		77EF47562B5CD53C00181D35 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77EF47552B5CD53C00181D35 /* GoogleService-Info.plist */; };
+		77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF47582B5CD63800181D35 /* FirebaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,6 +121,8 @@
 		779B72BE2B56DA16007CB6C1 /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		779B72C62B56DBC3007CB6C1 /* CommunityPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityPageViewModel.swift; sourceTree = "<group>"; };
 		779B72C72B56DBC3007CB6C1 /* CommunityPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityPageViewController.swift; sourceTree = "<group>"; };
+		77EF47552B5CD53C00181D35 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		77EF47582B5CD63800181D35 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +180,8 @@
 		082D0C272B53CF4600D84CE2 /* MLS */ = {
 			isa = PBXGroup;
 			children = (
+				77EF47552B5CD53C00181D35 /* GoogleService-Info.plist */,
+				77EF47572B5CD62400181D35 /* Manager */,
 				082D0C812B53D44D00D84CE2 /* Models */,
 				082D0C7F2B53D33400D84CE2 /* Resource */,
 				082D0C802B53D35000D84CE2 /* SharedViews */,
@@ -358,6 +364,14 @@
 			path = CommunityPageScene;
 			sourceTree = "<group>";
 		};
+		77EF47572B5CD62400181D35 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				77EF47582B5CD63800181D35 /* FirebaseManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -452,6 +466,7 @@
 			files = (
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
+				77EF47562B5CD53C00181D35 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +492,7 @@
 				08EF65032B54025F004CC842 /* UICollectionViewCell+.swift in Sources */,
 				08D50A6D2B5936AF00E94442 /* SharedTextField.swift in Sources */,
 				08EF651B2B555BB7004CC842 /* InsetTextField.swift in Sources */,
+				77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */,
 				08EF65172B554DA0004CC842 /* AddPostViewController.swift in Sources */,
 				779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */,
 				08EF65122B554710004CC842 /* UILabel+.swift in Sources */,

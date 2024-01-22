@@ -203,7 +203,7 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
             searchCell.contentView.isUserInteractionEnabled = false
             return searchCell
         }
-        postCell.bind(tag: type, title: posts.title, date: posts.date.toString(), upCount: String(posts.upCount))
+        postCell.bind(tag: type, title: posts.title, date: posts.date.toString(), upCount: String(posts.likeCount.count))
         return postCell
     }
 

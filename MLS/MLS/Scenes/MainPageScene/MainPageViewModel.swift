@@ -24,12 +24,16 @@ class MainPageViewModel {
             FeatureCellData(title: "사고팔고", image: UIImage(systemName: "chevron.forward.2"))
         ]
     ]
-    var sideMenuItems: [FeatureCellData] = [
-        FeatureCellData(title: "test1", image: UIImage(systemName: "folder")),
-        FeatureCellData(title: "test2", image: UIImage(systemName: "folder")),
-        FeatureCellData(title: "test3", image: UIImage(systemName: "folder")),
-        FeatureCellData(title: "test4", image: UIImage(systemName: "folder")),
-        FeatureCellData(title: "test5", image: UIImage(systemName: "folder")),
-        FeatureCellData(title: "test6", image: UIImage(systemName: "folder")),
+    var sideMenuItems: [[FeatureCellData]] = [
+        [
+            FeatureCellData(title: "프로필")
+        ],
+        [
+            FeatureCellData(title: "자유 게시판", image: UIImage(systemName: "list.clipboard")),
+            FeatureCellData(title: "거래 게시판", image: UIImage(systemName: "list.clipboard"))
+        ],
+        [
+            FeatureCellData(title: "로그인", image: UIImage(systemName: "person.circle.fill"))
+        ]
     ]
 }

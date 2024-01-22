@@ -42,7 +42,6 @@ extension MainPageFeatureListPostCell {
     // MARK: - Bind
     func bind(text: String) {
         titleLabel.text = text
-//        titleLabel.startTextFlowAnimation(superViewWidth: Constants.screenWidth - (Constants.defaults.horizontal * 4))
     }
 }
 
@@ -59,7 +58,6 @@ private extension MainPageFeatureListPostCell {
         contentView.addSubview(trailingView)
         trailingView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
-//            make.height.equalTo(Constants.defaults.blockHeight)
             make.bottom.equalToSuperview().inset(Constants.defaults.vertical)
         }
         trailingView.addSubview(titleLabel)

@@ -41,13 +41,15 @@ class MainPageViewController: BasicController {
     
     private let sideMenuEmptyView: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .clear
+        button.backgroundColor = .systemGray4
+        button.isHidden = true
+        button.alpha = 0
         return button
     }()
     
     private let sideMenuTableView: UITableView = {
         let view = UITableView()
-        view.backgroundColor = .systemGray4
+        view.backgroundColor = .systemOrange
         view.separatorStyle = .none
         return view
     }()
@@ -85,9 +87,26 @@ private extension MainPageViewController {
 
     func setUp() {
         setUpConstraints()
+        setUpDelegate()
+        setUpAddTarget()
+        setUpRegistor()
+    }
+    
+    func setUpRegistor() {
+        featureCollectionView.register(MainPageFeatureDefaultsCell.self, forCellWithReuseIdentifier: MainPageFeatureDefaultsCell.identifier)
+        featureCollectionView.register(MainPageFeatureListCell.self, forCellWithReuseIdentifier: MainPageFeatureListCell.identifier)
+        sideMenuTableView.register(MainPageProfileCell.self, forCellReuseIdentifier: MainPageProfileCell.identifier)
+        sideMenuTableView.register(MainPageSideMenuFeatureCell.self, forCellReuseIdentifier: MainPageSideMenuFeatureCell.identifier)
+    }
+    
+    func setUpDelegate() {
         featureCollectionView.delegate = self
         featureCollectionView.dataSource = self
         sideMenuTableView.dataSource = self
+        sideMenuTableView.delegate = self
+    }
+    
+    func setUpAddTarget() {
         menuButton.addTarget(self, action: #selector(didTapMenuButton), for: .primaryActionTriggered)
         sideMenuEmptyView.addTarget(self, action: #selector(didTapMenuEmptySpace), for: .primaryActionTriggered)
     }
@@ -100,28 +119,18 @@ private extension MainPageViewController {
             make.height.width.equalTo(Constants.defaults.blockHeight)
         }
         view.addSubview(featureCollectionView)
-        featureCollectionView.register(MainPageFeatureDefaultsCell.self, forCellWithReuseIdentifier: MainPageFeatureDefaultsCell.identifier)
-        featureCollectionView.register(MainPageFeatureListCell.self, forCellWithReuseIdentifier: MainPageFeatureListCell.identifier)
         featureCollectionView.snp.makeConstraints { make in
             make.top.equalTo(menuButton.snp.bottom).offset(Constants.defaults.vertical)
             make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-        view.addSubview(sideMenuView)
-        sideMenuView.snp.makeConstraints { make in
-            make.height.equalTo(Constants.screenHeight)
-            make.width.equalTo(Constants.screenWidth)
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.right.equalTo(view.snp.left)
-        }
-        sideMenuView.addSubview(sideMenuEmptyView)
+        view.addSubview(sideMenuEmptyView)
         sideMenuEmptyView.snp.makeConstraints { make in
-            make.height.equalTo(Constants.screenHeight)
-            make.width.equalTo(Constants.screenWidth * 0.3)
-            make.right.top.equalToSuperview()
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        sideMenuView.addSubview(sideMenuTableView)
+        view.addSubview(sideMenuTableView)
         sideMenuTableView.snp.makeConstraints { make in
-            make.top.left.equalToSuperview()
+            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.right.equalTo(view.snp.left)
             make.width.equalTo(Constants.screenWidth * 0.7)
             make.height.equalTo(Constants.screenHeight)
         }
@@ -129,6 +138,8 @@ private extension MainPageViewController {
 }
 
 private extension MainPageViewController {
+    // MARK: - Method
+
     @objc
     func didTapMenuButton() {
         switchMenuView(isOpen: true)
@@ -139,11 +150,17 @@ private extension MainPageViewController {
     }
     
     func switchMenuView(isOpen: Bool) {
-        UIView.animate(withDuration: 0.3) { [weak self] in
+        sideMenuEmptyView.isHidden = !isOpen
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) { [weak self] in
             guard let self = self else { return }
-            let value: CGFloat = isOpen ? Constants.screenWidth : -Constants.screenWidth
-            self.sideMenuView.transform = CGAffineTransform(
-                translationX: self.sideMenuView.bounds.origin.x + value, y: self.sideMenuView.bounds.origin.y
+            if isOpen {
+                self.sideMenuEmptyView.alpha = 0.3
+            } else {
+                self.sideMenuEmptyView.alpha = 0
+            }
+            let value: CGFloat = isOpen ? Constants.screenWidth * 0.7 : -Constants.screenWidth * 0.7
+            self.sideMenuTableView.transform = CGAffineTransform(
+                translationX: self.sideMenuTableView.bounds.origin.x + value, y: self.sideMenuTableView.bounds.origin.y
             )
         }
     }
@@ -212,20 +229,56 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
 }
 
 
-extension MainPageViewController: UITableViewDataSource {
+extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.sideMenuItems[section].count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sideMenuItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = viewModel.sideMenuItems[indexPath.row].title
-//        cell.textLabel?.textColor = .systemGray
-        cell.imageView?.image = viewModel.sideMenuItems[indexPath.row].image
-        cell.imageView?.tintColor = .systemGray
-        cell.contentView.backgroundColor = .systemGray4
-        return cell
+        switch indexPath.section {
+        case 0:
+            guard let cell = sideMenuTableView.dequeueReusableCell(withIdentifier: MainPageProfileCell.identifier, for: indexPath) as? MainPageProfileCell else { return UITableViewCell() }
+            return cell
+        default:
+            guard let cell = sideMenuTableView.dequeueReusableCell(withIdentifier: MainPageSideMenuFeatureCell.identifier, for: indexPath) as? MainPageSideMenuFeatureCell else { return UITableViewCell() }
+            cell.bind(data: viewModel.sideMenuItems[indexPath.section][indexPath.row])
+            if indexPath.row != viewModel.sideMenuItems[indexPath.section].count - 1 { cell.makeSeparator() }
+            return cell
+        }
     }
     
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            print(indexPath.row)
+        case 1:
+            switch indexPath.row {
+            case 0:
+                let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .normal)
+                self.navigationController?.pushViewController(vc, animated: true)
+            default :
+                let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .complete)
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        case 2:
+            let vc = SignInViewController(viewModel: SignInViewModel())
+            self.navigationController?.pushViewController(vc, animated: true)
+        default:
+            print("default")
+        }
+    }
     
 }

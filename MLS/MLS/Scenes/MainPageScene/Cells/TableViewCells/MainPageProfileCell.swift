@@ -25,19 +25,11 @@ class MainPageProfileCell: UITableViewCell {
         return view
     }()
     
-    private let nickNameLabel: UILabel = {
+    private let discriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "temptemp"
         label.font = Typography.title2.font
-        return label
-    }()
-    
-    private let appVersionLabel: UILabel = {
-        let label = UILabel()
-        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else { return label }
-        label.text = "V" + version
-        label.textColor = .systemOrange
-        label.font = Typography.body2.font
+        label.textAlignment = .center
         return label
     }()
     
@@ -55,8 +47,8 @@ private extension MainPageProfileCell {
     // MARK: - SetUp
 
     func setUp() {
-        setUpConstraints()
         contentView.backgroundColor = .systemOrange
+        setUpConstraints()
     }
     
     func setUpConstraints() {
@@ -71,15 +63,19 @@ private extension MainPageProfileCell {
             make.left.equalToSuperview().inset(Constants.defaults.horizontal)
             make.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
         }
-        trailingView.addSubview(nickNameLabel)
-        nickNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(appIconImageView.snp.top)
+        trailingView.addSubview(discriptionLabel)
+        discriptionLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(appIconImageView.snp.centerY)
             make.left.equalTo(appIconImageView.snp.right).offset(Constants.defaults.horizontal)
+            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
         }
-        trailingView.addSubview(appVersionLabel)
-        appVersionLabel.snp.makeConstraints { make in
-            make.top.equalTo(nickNameLabel.snp.bottom).offset(Constants.defaults.vertical / 2)
-            make.left.equalTo(nickNameLabel.snp.left)
-        }
+        
     }
+}
+
+extension MainPageProfileCell {
+    func bind(discription: String?) {
+        discriptionLabel.text = discription
+    }
+
 }

@@ -75,6 +75,7 @@ extension MainPageViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+        self.sideMenuTableView.reloadData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -132,7 +133,6 @@ private extension MainPageViewController {
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
             make.right.equalTo(view.snp.left)
             make.width.equalTo(Constants.screenWidth * 0.7)
-            make.height.equalTo(Constants.screenHeight)
         }
     }
 }
@@ -231,22 +231,31 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
 
 extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.sideMenuItems[section].count
+        return viewModel.getSideMenuItems()[section].count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.sideMenuItems.count
+        return viewModel.getSideMenuItems().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
             guard let cell = sideMenuTableView.dequeueReusableCell(withIdentifier: MainPageProfileCell.identifier, for: indexPath) as? MainPageProfileCell else { return UITableViewCell() }
+            if viewModel.loginManager.isLogin() {
+                cell.bind(discription: "temptemp")
+            } else {
+                cell.bind(discription: "로그인")
+            }
             return cell
         default:
             guard let cell = sideMenuTableView.dequeueReusableCell(withIdentifier: MainPageSideMenuFeatureCell.identifier, for: indexPath) as? MainPageSideMenuFeatureCell else { return UITableViewCell() }
-            cell.bind(data: viewModel.sideMenuItems[indexPath.section][indexPath.row])
-            if indexPath.row != viewModel.sideMenuItems[indexPath.section].count - 1 { cell.makeSeparator() }
+            cell.bind(data: viewModel.getSideMenuItems()[indexPath.section][indexPath.row])
+            if indexPath.row != viewModel.getSideMenuItems()[indexPath.section].count - 1 {
+                cell.makeSeparator()
+            } else {
+                cell.removeSeparator()
+            }
             return cell
         }
     }
@@ -261,23 +270,31 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.section {
-        case 0:
-            print(indexPath.row)
-        case 1:
-            switch indexPath.row {
-            case 0:
-                let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .normal)
-                self.navigationController?.pushViewController(vc, animated: true)
-            default :
-                let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .complete)
+        guard let title = viewModel.getSideMenuItems()[indexPath.section][indexPath.row].title else { return }
+        if title == "프로필" {
+            if viewModel.loginManager.isLogin() {
+                print("profilePage")
+            } else {
+                let vc = SignInViewController(viewModel: SignInViewModel())
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-        case 2:
-            let vc = SignInViewController(viewModel: SignInViewModel())
+        } else if title == "자유 게시판" {
+            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .normal)
             self.navigationController?.pushViewController(vc, animated: true)
-        default:
-            print("default")
+        } else if title == "거래 게시판" {
+            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .complete)
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else if title == "로그아웃" {
+            IndicatorMaker.showLoading()
+            AlertMaker.showAlertAction2(vc: self, title: "로그아웃",message: "정말 로그아웃 하시겠습니까?",cancelTitle: "취소", completeTitle: "확인") {
+                let loginManger = LoginManager()
+                loginManger.logOut { [weak self] isLogOut in
+                    self?.sideMenuTableView.reloadData()
+                    IndicatorMaker.showLoading()
+                }
+            }
+        } else if title == "회원탈퇴" {
+            print("회원탈퇴")
         }
     }
     

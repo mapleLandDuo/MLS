@@ -17,6 +17,10 @@ class LoginManager {
     private let PostBooks: String = "PostBooks"
     let email = Auth.auth().currentUser?.email
     
+    func isLogin() -> Bool {
+        return Auth.auth().currentUser == nil ? false : true
+    }
+    
     func deleteUser(email: String) {
         Auth.auth().currentUser?.delete()
     }

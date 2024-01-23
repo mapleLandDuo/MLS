@@ -224,7 +224,7 @@ extension SignInViewController {
                 missMatchLabelShow(isShow: true, content: "이메일 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.")
             case .success:
                 missMatchLabelShow(isShow: false, content: nil)
-                AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인 버튼을 누르면 로그인 화면으로 돌아갑니다.") {
+                AlertMaker.showAlertAction1(vc: self, title: "로그인 성공", message: "확인 버튼을 누르면 메인 화면으로 돌아갑니다.") {
                     self.navigationController?.popViewController(animated: true)
                 }
             }

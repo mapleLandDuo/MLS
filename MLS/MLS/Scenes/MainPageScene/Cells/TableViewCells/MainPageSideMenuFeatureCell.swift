@@ -45,6 +45,10 @@ extension MainPageSideMenuFeatureCell {
         }
     }
     
+    func removeSeparator() {
+        separatorView.removeFromSuperview()
+    }
+    
     func bind(data: FeatureCellData) {
         textLabel?.text = data.title
         imageView?.image = data.image

@@ -29,7 +29,7 @@ class MainPageProfileCell: UITableViewCell {
         let label = UILabel()
         label.text = "temptemp"
         label.font = Typography.title2.font
-        label.textAlignment = .center
+//        label.textAlignment = .center
         return label
     }()
     
@@ -75,7 +75,14 @@ private extension MainPageProfileCell {
 
 extension MainPageProfileCell {
     func bind(discription: String?) {
+        guard let discription = discription else { return }
         discriptionLabel.text = discription
+        if discription == "로그인" {
+            discriptionLabel.snp.remakeConstraints { make in
+                make.centerY.centerX.equalToSuperview()
+            }
+        }
+        
     }
 
 }

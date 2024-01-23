@@ -29,14 +29,26 @@ class SignUpViewModel {
     var checkPasswordState: Observable<ValidationResult> = Observable(.empty)
     var isPrivacyAgree: Observable<Bool> = Observable(false)
     var isSignUpAble: Observable<Bool> = Observable(false)
-    var firebaseManager = FirebaseManager()
+    var loginManager = LoginManager()
 }
 
 extension SignUpViewModel {
     // MARK: - Method
 
-    func trySignUp(email: String, password: String, nickName: String) {
-        Auth.auth().createUser(withEmail: email, password: password)
+    func trySignUp(email: String, password: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void ) {
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            if error == nil {
+                self.loginManager.createUser(email: email, nickName: nickName) { isSuccess, errorMessage in
+                    if isSuccess {
+                        completion(true, nil)
+                    } else {
+                        completion(false, errorMessage)
+                    }
+                }
+            } else {
+                completion(false, error?.localizedDescription)
+            }
+        }
     }
     
     func isValidEmail(email: String) {
@@ -49,19 +61,18 @@ extension SignUpViewModel {
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
         if emailTest.evaluate(with: email) {
             emailState.value = .checking
-//            Firestore.firestore().collection("users").getDocuments { data, error in
-//                if error != nil {
-//                    print("[FirebaseManager][\(#function)]: \(String(describing: error?.localizedDescription))")
-//                } else {
-//                    guard let safeData = data else { return }
-//                    if safeData.documents.map({$0.documentID}).contains(email) {
-//                        self.emailState.value = .alreadyInUse
-//                    } else {
-//                        self.emailState.value = .available
-//                    }
-//                }
-//            }
-            self.emailState.value = .available
+            Firestore.firestore().collection("users").getDocuments { data, error in
+                if error != nil {
+                    print((String(describing: error?.localizedDescription)))
+                } else {
+                    guard let safeData = data else { return }
+                    if safeData.documents.map({$0.documentID}).contains(email) {
+                        self.emailState.value = .alreadyInUse
+                    } else {
+                        self.emailState.value = .available
+                    }
+                }
+            }
         } else {
             emailState.value = .unavailableFormat
         }

@@ -23,6 +23,7 @@ class SignUpViewController: BasicController {
     private let nickNameTextField = SharedTextField(type: .title, placeHolder: "닉네임을 입력해주세요.", title: "닉네임")
     private let passwordTextField = SharedTextField(type: .titlePassword, placeHolder: "비밀번호를 입력해주세요.", title: "비밀번호")
     private let checkPasswordTextField = SharedTextField(type: .titlePassword, placeHolder: "동일한 비밀번호를 입력해주세요.", title: "비밀번호 확인")
+    
     private let privacyAgreeButton: UIButton = {
         let button = UIButton()
         button.setTitle("개인정보 처리방침에 동의합니다.", for: .normal)
@@ -60,6 +61,7 @@ class SignUpViewController: BasicController {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
 extension SignUpViewController {
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -68,12 +70,13 @@ extension SignUpViewController {
         bind()
     }
 }
+
 private extension SignUpViewController {
     // MARK: - SetUp
-
     func setUp() {
         setUpConstraints()
         setUpDelegate()
+        setUpAddAction()
     }
     
     func setUpConstraints() {
@@ -126,11 +129,18 @@ private extension SignUpViewController {
             make.height.equalTo(Constants.defaults.blockHeight)
         }
     }
+    
     func setUpDelegate() {
         checkPasswordTextField.textField.delegate = self
         emailTextField.textField.delegate = self
         nickNameTextField.textField.delegate = self
         passwordTextField.textField.delegate = self
+    }
+    
+    func setUpAddAction() {
+        privacyAgreeButton.addTarget(self, action: #selector(didTapPrivacyAgreeButton), for: .primaryActionTriggered)
+//        privacyShowButton.addTarget(self, action: #selector(didTapPrivacyShowButton), for: .primaryActionTriggered)
+        signUpButton.addTarget(self, action: #selector(didTapBottomButton), for: .primaryActionTriggered)
     }
 }
 
@@ -205,6 +215,38 @@ private extension SignUpViewController {
                 self?.privacyAgreeButton.setImage(UIImage(systemName: "square"), for: .normal)
             }
         })
+    }
+}
+// MARK: - Method
+private extension SignUpViewController {
+    
+    @objc
+    func didTapPrivacyAgreeButton() {
+        viewModel.isPrivacyAgree.value?.toggle()
+    }
+    
+    @objc
+    func didTapBottomButton() {
+        IndicatorMaker.showLoading()
+        if viewModel.isValidSignUp() {
+            guard let email = self.emailTextField.textField.text else { return }
+            guard let password = self.passwordTextField.textField.text else { return }
+            guard let nickName = self.nickNameTextField.textField.text else { return }
+            
+            viewModel.trySignUp(email: email, password: password, nickName: nickName) { isSuccess, errorMessage in
+                if isSuccess {
+                    AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인 버튼을 누르면 로그인 화면으로 돌아갑니다.") {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                } else {
+                    AlertMaker.showAlertAction1(vc: self, title: "회원가입 실패", message: errorMessage)
+                }
+                IndicatorMaker.hideLoading()
+            }
+        } else {
+            AlertMaker.showAlertAction1(vc: self, title: "회원가입 실패", message: "입력하신 내용을 확인해 주세요.")
+            IndicatorMaker.hideLoading()
+        }
     }
 }
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct User {
+struct User: Codable {
     var id: String
     var nickName: String
     var state: UserState
@@ -16,7 +16,7 @@ struct User {
     var blockedUser: [String]
 }
 
-enum UserState {
+enum UserState: Codable {
     case blockUser
     case normal
 }

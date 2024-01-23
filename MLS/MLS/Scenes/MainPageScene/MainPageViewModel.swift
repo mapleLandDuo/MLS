@@ -30,9 +30,13 @@ class MainPageViewModel {
             FeatureCellData(title: "프로필")
         ],
         [
-            FeatureCellData(title: "자유 게시판", image: UIImage(systemName: "list.clipboard")),
-            FeatureCellData(title: "거래 게시판", image: UIImage(systemName: "list.clipboard"))
-        ],
+            FeatureCellData(title: "자유 게시판", image: UIImage(systemName: "list.bullet.rectangle.portrait.fill")),
+            FeatureCellData(title: "거래 게시판", image: UIImage(systemName: "list.bullet.rectangle.portrait.fill"))
+        ],[
+            FeatureCellData(title: "앱정보", image: UIImage(systemName: "info.circle.fill")),
+            FeatureCellData(title: "문의하기", image: UIImage(systemName: "questionmark.circle.fill")),
+            FeatureCellData(title: "개인정보처리 방침", image: UIImage(systemName: "hand.raised.circle.fill"))
+        ]
     ]
 
 }

@@ -285,14 +285,14 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .complete)
             self.navigationController?.pushViewController(vc, animated: true)
         } else if title == "로그아웃" {
-            IndicatorMaker.showLoading()
-            AlertMaker.showAlertAction2(vc: self, title: "로그아웃",message: "정말 로그아웃 하시겠습니까?",cancelTitle: "취소", completeTitle: "확인") {
+            AlertMaker.showAlertAction2(vc: self, title: "로그아웃",message: "정말로 로그아웃 하시겠습니까?", cancelTitle: "취소", completeTitle: "확인", nil, {
                 let loginManger = LoginManager()
+                IndicatorMaker.showLoading()
                 loginManger.logOut { [weak self] isLogOut in
                     self?.sideMenuTableView.reloadData()
-                    IndicatorMaker.showLoading()
+                    IndicatorMaker.hideLoading()
                 }
-            }
+            })
         } else if title == "회원탈퇴" {
             print("회원탈퇴")
         }

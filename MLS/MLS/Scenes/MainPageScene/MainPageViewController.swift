@@ -293,6 +293,10 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
                     IndicatorMaker.hideLoading()
                 }
             })
+        } else if title == "문의하기" {
+            let vc = QnaViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+            
         } else if title == "회원탈퇴" {
             print("회원탈퇴")
         } else if title == "시뮬레이터" {

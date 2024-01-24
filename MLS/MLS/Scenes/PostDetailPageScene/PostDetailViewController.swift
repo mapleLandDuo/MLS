@@ -50,21 +50,21 @@ class PostDetailViewController: BasicController {
     }()
 
     lazy var addCommentStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [commentProfileImageView, commentTextView, commentButton])
+        let view = UIStackView(arrangedSubviews: [commentTextView, commentButton])
         view.axis = .horizontal
         view.distribution = .fill
         view.spacing = 10
         return view
     }()
 
-    private let commentProfileImageView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "photo")?.resized(to: CGSize(width: 40, height: 40))
-        view.clipsToBounds = true
-        view.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        view.layer.cornerRadius = view.frame.height / 2
-        return view
-    }()
+//    private let commentProfileImageView: UIImageView = {
+//        let view = UIImageView()
+//        view.image = UIImage(systemName: "photo")?.resized(to: CGSize(width: 40, height: 40))
+//        view.clipsToBounds = true
+//        view.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+//        view.layer.cornerRadius = view.frame.height / 2
+//        return view
+//    }()
 
     private let commentTextView: UITextField = {
         let textField = UITextField()
@@ -187,9 +187,9 @@ private extension PostDetailViewController {
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
 
-        commentProfileImageView.snp.makeConstraints {
-            $0.size.equalTo(40)
-        }
+//        commentProfileImageView.snp.makeConstraints {
+//            $0.size.equalTo(40)
+//        }
 
         commentButton.snp.makeConstraints {
             $0.size.equalTo(40)

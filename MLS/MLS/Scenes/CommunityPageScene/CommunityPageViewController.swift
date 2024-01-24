@@ -207,7 +207,10 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
         return postCell
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let viewController = PostDetailViewController()
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension CommunityPageViewController: UISearchBarDelegate {

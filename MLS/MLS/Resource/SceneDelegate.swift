@@ -13,6 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         print("[SceneDelegate]:", #function)
         guard let windowScene = (scene as? UIWindowScene) else { return }
+       
         window = UIWindow(windowScene: windowScene)
 //         window?.rootViewController = UINavigationController(rootViewController: PostDetailViewController())
 //        window?.rootViewController = UINavigationController(rootViewController: CommunityPageViewController(viewModel: CommunityPageViewModel(), type: .complete))
@@ -20,7 +21,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
     }
 
-    func sceneDidDisconnect(_ scene: UIScene) {}
+    func sceneDidDisconnect(_ scene: UIScene) {
+        let userDefaultManager = UserDefaultsManager()
+        let loginManager = LoginManager()
+        if !userDefaultManager.getIsAutoLogin() {
+            loginManager.logOut { isLogOut in }
+            print("logOut")
+        }
+    }
 
     func sceneDidBecomeActive(_ scene: UIScene) {}
 

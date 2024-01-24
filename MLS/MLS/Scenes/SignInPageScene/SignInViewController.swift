@@ -92,12 +92,14 @@ extension SignInViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        bind()
     }
 }
 private extension SignInViewController {
     // MARK: - SetUp
     func setUp() {
         setUpConstraints()
+        setUpAddAction()
     }
     
     func setUpConstraints() {
@@ -126,12 +128,12 @@ private extension SignInViewController {
         view.addSubview(missMatchLabel)
         missMatchLabel.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom)
-            make.left.right.equalToSuperview().inset(Constants.defaults.vertical)
+            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
         }
         
         view.addSubview(autoLoginButton)
         autoLoginButton.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(Constants.defaults.vertical * 2)
+            make.top.equalTo(passwordTextField.snp.bottom).offset(Constants.defaults.vertical * 3)
             make.left.equalToSuperview().inset(Constants.defaults.horizontal)
         }
         
@@ -150,15 +152,92 @@ private extension SignInViewController {
             make.height.equalTo(Constants.defaults.blockHeight)
         }
     }
+    func setUpAddAction() {
+        signInButton.addTarget(self, action: #selector(didTapSignInButton), for: .primaryActionTriggered)
+        signUpButton.addTarget(self, action: #selector(didTapSignUpButton), for: .primaryActionTriggered)
+        autoLoginButton.addTarget(self, action: #selector(didTapAutoLoginButton), for: .primaryActionTriggered)
+        passwordFindButton.addTarget(self, action: #selector(didTapPasswordFindButton), for: .primaryActionTriggered)
+    }
 }
 
-extension UITextField {
-    func addPadding() {
-        // width값에 원하는 padding 값을 넣어줍니다.
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: Constants.defaults.horizontal, height: self.frame.height))
-        self.leftView = paddingView
-        self.leftViewMode = ViewMode.always
-        self.rightView = paddingView
-        self.rightViewMode = ViewMode.always
+private extension SignInViewController {
+    // MARK: - Bind
+    func bind() {
+        viewModel.isAutoLogin.bind({ [weak self] state in
+            guard let state = state else { return }
+            self?.viewModel.userDefaultManager.setAutoLogin(toggle: state)
+            if state {
+                self?.autoLoginButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+            } else {
+                self?.autoLoginButton.setImage(UIImage(systemName: "square"), for: .normal)
+            }
+        })
+    }
+}
+
+extension SignInViewController {
+    // MARK: - Method
+    
+    @objc
+    func didTapSignUpButton() {
+        let vc = SignUpViewController(viewModel: SignUpViewModel())
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc
+    func didTapAutoLoginButton() {
+        self.viewModel.isAutoLogin.value?.toggle()
+    }
+    
+    @objc
+    func didTapPasswordFindButton() {
+        let alert = UIAlertController(title: "비밀번호 재설정", message: "입력하신 이메일로 재설정 메일을 발송합니다.", preferredStyle: .alert)
+
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let yes = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            guard let email = alert.textFields?[0].text else { return }
+            guard let self = self else { return }
+            self.viewModel.passwordFind(email: email)
+        }
+        alert.addTextField()
+        alert.textFields?[0].placeholder = "example@example.com"
+        alert.addAction(yes)
+        alert.addAction(cancel)
+        present(alert, animated: true)
+    }
+    
+    @objc
+    func didTapSignInButton() {
+        
+        guard let email = emailTextField.textField.text else { return }
+        guard let password = passwordTextField.textField.text else { return }
+        IndicatorMaker.showLoading()
+        
+        viewModel.trySignIn(email: email, password: password, completion: { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .emptyEmail:
+                missMatchLabelShow(isShow: true, content: "이메일을 입력해 주세요.")
+            case .emptyPassword:
+                missMatchLabelShow(isShow: true, content: "패스워드를 입력해 주세요.")
+            case .fail:
+                missMatchLabelShow(isShow: true, content: "이메일 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.")
+            case .success:
+                missMatchLabelShow(isShow: false, content: nil)
+                AlertMaker.showAlertAction1(vc: self, title: "로그인 성공", message: "확인 버튼을 누르면 메인 화면으로 돌아갑니다.") {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+            IndicatorMaker.hideLoading()
+        })
+    }
+    
+    func missMatchLabelShow(isShow: Bool, content: String?) {
+        if isShow {
+            missMatchLabel.text = content
+            missMatchLabel.alpha = 1
+        } else {
+            missMatchLabel.alpha = 0
+        }
     }
 }

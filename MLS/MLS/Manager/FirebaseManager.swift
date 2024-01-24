@@ -9,6 +9,7 @@ import Foundation
 
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseStorage
 
 class FirebaseManager {
     static let firebaseManager = FirebaseManager()
@@ -26,7 +27,7 @@ class FirebaseManager {
         }
     }
 
-    func getPosts(completion: @escaping ([Post]?) -> Void) {
+    func loadPosts(completion: @escaping ([Post]?) -> Void) {
         db.collection("posts").getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
@@ -43,6 +44,28 @@ class FirebaseManager {
                     }
                 }
                 completion(posts)
+            }
+        }
+    }
+    
+    func saveImages(images: [UIImage?], completion: @escaping (URL?) -> Void) {
+        images.forEach { image in
+            guard let image = image, let imageData = image.jpegData(compressionQuality: 0.3) else { return }
+            let metaData = StorageMetadata()
+            metaData.contentType = "image/jpeg"
+            
+            let imageName = "\(UUID().uuidString) + \(String(Date().toString()))"
+            let firebaseReference = Storage.storage().reference().child("PostImages").child("\(imageName)")
+            firebaseReference.putData(imageData, metadata: metaData) { _, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                } else {
+                    print("성공")
+                    firebaseReference.downloadURL { url, _ in
+                        completion(url)
+                    }
+                }
             }
         }
     }

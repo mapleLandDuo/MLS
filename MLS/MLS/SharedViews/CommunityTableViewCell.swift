@@ -12,13 +12,7 @@ import SnapKit
 class CommunityTableViewCell: UITableViewCell {
     // MARK: Components
 
-    private let postView: UIView = {
-        let view = UIView()
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.systemOrange.cgColor
-        view.layer.cornerRadius = Constants.defaults.radius
-        return view
-    }()
+    private let postView = UIView()
     
     private let dateLabel = CustomLabel(text: "date", textColor: .gray, font: .systemFont(ofSize: 12))
     
@@ -73,7 +67,7 @@ private extension CommunityTableViewCell {
     // MARK: Methods
 
     func setUp() {
-        setUpcell()
+//        setUpcell()
         setUpConstraints()
     }
     
@@ -89,8 +83,7 @@ private extension CommunityTableViewCell {
         postView.addSubview(postStackView)
         
         postView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical / 2)
-            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.edges.equalToSuperview()
         }
         
         dateLabel.snp.makeConstraints {

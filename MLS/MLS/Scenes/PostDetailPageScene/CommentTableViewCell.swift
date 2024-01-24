@@ -13,14 +13,14 @@ import SnapKit
 class CommentTableViewCell: UITableViewCell {
     // MARK: Components
 
-    private let commentProfileImageView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "photo")?.resized(to: CGSize(width: 30, height: 30))
-        view.clipsToBounds = true
-        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        view.layer.cornerRadius = view.frame.height / 2
-        return view
-    }()
+//    private let commentProfileImageView: UIImageView = {
+//        let view = UIImageView()
+//        view.image = UIImage(systemName: "photo")?.resized(to: CGSize(width: 30, height: 30))
+//        view.clipsToBounds = true
+//        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+//        view.layer.cornerRadius = view.frame.height / 2
+//        return view
+//    }()
 
     private let commentProfileNameLabel = CustomLabel(text: "userName", font: .boldSystemFont(ofSize: 16))
 
@@ -79,20 +79,21 @@ private extension CommentTableViewCell {
     }
 
     func setUpConstraints() {
-        addSubview(commentProfileImageView)
+//        addSubview(commentProfileImageView)
         addSubview(commentProfileNameLabel)
         addSubview(optionStackView)
         addSubview(commentTextLabel)
 
-        commentProfileImageView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
-            $0.size.equalTo(30)
-        }
+//        commentProfileImageView.snp.makeConstraints {
+//            $0.top.equalToSuperview()
+//            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+//            $0.size.equalTo(30)
+//        }
 
         commentProfileNameLabel.snp.makeConstraints {
-            $0.leading.equalTo(commentProfileImageView.snp.trailing).inset(-Constants.defaults.horizontal)
-            $0.centerY.equalTo(commentProfileImageView)
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.trailing.equalTo(optionStackView).inset(-Constants.defaults.horizontal)
         }
 
         optionStackView.snp.makeConstraints {
@@ -101,7 +102,7 @@ private extension CommentTableViewCell {
         }
 
         commentTextLabel.snp.makeConstraints {
-            $0.top.equalTo(commentProfileImageView.snp.bottom).inset(-Constants.defaults.vertical / 2)
+            $0.top.equalTo(commentProfileNameLabel.snp.bottom).inset(-Constants.defaults.vertical / 2)
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             $0.bottom.equalToSuperview().inset(Constants.defaults.vertical / 2)
             $0.height.equalTo(30)

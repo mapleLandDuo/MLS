@@ -56,7 +56,6 @@ class CommunityPageViewController: BasicController {
 
     let communityTableView: UITableView = {
         let view = UITableView()
-        view.separatorStyle = .none
         return view
     }()
     
@@ -139,7 +138,8 @@ private extension CommunityPageViewController {
 
         communityTableView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).inset(-Constants.defaults.vertical)
-            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
+            $0.leading.equalTo(view.safeAreaLayoutGuide)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
         }
         addPostButton.snp.makeConstraints { make in
@@ -207,7 +207,10 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
         return postCell
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let viewController = PostDetailViewController()
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension CommunityPageViewController: UISearchBarDelegate {

@@ -295,6 +295,8 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             })
         } else if title == "회원탈퇴" {
             print("회원탈퇴")
+        } else if title == "시뮬레이터" {
+            print("시뮬레이터")
         }
     }
     

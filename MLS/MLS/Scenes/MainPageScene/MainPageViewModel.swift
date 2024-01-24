@@ -30,6 +30,9 @@ class MainPageViewModel {
             FeatureCellData(title: "프로필")
         ],
         [
+            FeatureCellData(title: "시뮬레이터", image: UIImage(systemName: "chevron.up.square.fill"))
+        ],
+        [
             FeatureCellData(title: "자유 게시판", image: UIImage(systemName: "list.bullet.rectangle.portrait.fill")),
             FeatureCellData(title: "거래 게시판", image: UIImage(systemName: "list.bullet.rectangle.portrait.fill"))
         ],[

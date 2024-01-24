@@ -65,11 +65,11 @@ private extension MainPageProfileCell {
         }
         trailingView.addSubview(discriptionLabel)
         discriptionLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(appIconImageView.snp.centerY)
+            make.top.equalTo(appIconImageView.snp.top)
+            make.bottom.equalTo(appIconImageView.snp.bottom)
             make.left.equalTo(appIconImageView.snp.right).offset(Constants.defaults.horizontal)
             make.right.equalToSuperview().inset(Constants.defaults.horizontal)
         }
-        
     }
 }
 
@@ -78,9 +78,13 @@ extension MainPageProfileCell {
         guard let discription = discription else { return }
         discriptionLabel.text = discription
         if discription == "로그인" {
-            discriptionLabel.snp.remakeConstraints { make in
-                make.centerY.centerX.equalToSuperview()
-            }
+            discriptionLabel.textAlignment = .center
+            discriptionLabel.backgroundColor = .systemGray4
+            discriptionLabel.layer.cornerRadius = Constants.defaults.radius
+            discriptionLabel.clipsToBounds = true
+        } else {
+            discriptionLabel.backgroundColor = .clear
+            discriptionLabel.textAlignment = .left
         }
         
     }

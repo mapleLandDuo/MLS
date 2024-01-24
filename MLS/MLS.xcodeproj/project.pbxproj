@@ -84,6 +84,8 @@
 		779B72C92B56DBC3007CB6C1 /* CommunityPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72C72B56DBC3007CB6C1 /* CommunityPageViewController.swift */; };
 		77C1ED062B613058003179B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77C1ED052B613058003179B4 /* GoogleService-Info.plist */; };
 		77C1ED092B614E74003179B4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 77C1ED082B614E74003179B4 /* FirebaseStorage */; };
+		77C1ED0C2B615471003179B4 /* QnaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C1ED0B2B615471003179B4 /* QnaViewController.swift */; };
+		77C1ED0E2B61590E003179B4 /* QnAPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */; };
 		77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF47582B5CD63800181D35 /* FirebaseManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -141,6 +143,8 @@
 		779B72C62B56DBC3007CB6C1 /* CommunityPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityPageViewModel.swift; sourceTree = "<group>"; };
 		779B72C72B56DBC3007CB6C1 /* CommunityPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityPageViewController.swift; sourceTree = "<group>"; };
 		77C1ED052B613058003179B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		77C1ED0B2B615471003179B4 /* QnaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnaViewController.swift; sourceTree = "<group>"; };
+		77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnAPageViewModel.swift; sourceTree = "<group>"; };
 		77EF47582B5CD63800181D35 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -216,6 +220,7 @@
 		082D0C792B53D22200D84CE2 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				77C1ED0A2B61544D003179B4 /* QnAPageScene */,
 				779B72C52B56DB9B007CB6C1 /* CommunityPageScene */,
 				08EF65152B554D83004CC842 /* AddPostPageScene */,
 				082D0C7A2B53D22B00D84CE2 /* MainPageScene */,
@@ -399,6 +404,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		77C1ED0A2B61544D003179B4 /* QnAPageScene */ = {
+			isa = PBXGroup;
+			children = (
+				77C1ED0B2B615471003179B4 /* QnaViewController.swift */,
+				77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */,
+			);
+			path = QnAPageScene;
+			sourceTree = "<group>";
+		};
 		77EF47572B5CD62400181D35 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -556,10 +570,12 @@
 				08D50A6B2B59137B00E94442 /* SignUpViewController.swift in Sources */,
 				7707440E2B55511E00FCEDED /* SearchTableViewCell.swift in Sources */,
 				779B72BD2B56DA0F007CB6C1 /* Date+.swift in Sources */,
+				77C1ED0C2B615471003179B4 /* QnaViewController.swift in Sources */,
 				775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */,
 				08EF650A2B540A4A004CC842 /* Typography.swift in Sources */,
 				08EF650C2B54134F004CC842 /* MainPageFeatureListCell.swift in Sources */,
 				08EF651E2B556C05004CC842 /* AddPostImageChoiceCell.swift in Sources */,
+				77C1ED0E2B61590E003179B4 /* QnAPageViewModel.swift in Sources */,
 				08EF65222B5572C5004CC842 /* AddPostViewModel.swift in Sources */,
 				08D50A672B590D9100E94442 /* SignInViewController.swift in Sources */,
 				082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */,

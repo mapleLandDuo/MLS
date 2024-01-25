@@ -123,8 +123,6 @@ private extension PostDetailViewController {
     // MARK: - SetUp
 
     func setUp() {
-        navigationController?.isNavigationBarHidden = true
-
         verticalScrollView.delegate = self
 
         imageCollectionView.delegate = self

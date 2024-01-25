@@ -16,14 +16,12 @@ class FirebaseManager {
 
     let db = Firestore.firestore()
 
-    func savePost(post: Post, completion: @escaping (Error?) -> Void) {
+    func savePost(post: Post) {
         do {
             let data = try Firestore.Encoder().encode(post)
-            db.collection("posts").document(post.id.uuidString).setData(data) { error in
-                completion(error)
-            }
+            db.collection("posts").document(post.id.uuidString).setData(data)
         } catch {
-            completion(error)
+            print(error)
         }
     }
 
@@ -47,26 +45,37 @@ class FirebaseManager {
             }
         }
     }
-    
-    func saveImages(images: [UIImage?], completion: @escaping (URL?) -> Void) {
+
+    func saveImages(images: [UIImage?], completion: @escaping ([URL?]) -> Void) {
+        var tempList = [URL?]()
+        let group = DispatchGroup()
+
         images.forEach { image in
             guard let image = image, let imageData = image.jpegData(compressionQuality: 0.3) else { return }
             let metaData = StorageMetadata()
             metaData.contentType = "image/jpeg"
-            
+
             let imageName = "\(UUID().uuidString) + \(String(Date().toString()))"
             let firebaseReference = Storage.storage().reference().child("PostImages").child("\(imageName)")
+
+            group.enter()
+
             firebaseReference.putData(imageData, metadata: metaData) { _, error in
                 if let error = error {
                     print(error.localizedDescription)
-                    return
+                    group.leave()
                 } else {
                     print("성공")
                     firebaseReference.downloadURL { url, _ in
-                        completion(url)
+                        tempList.append(url)
+                        group.leave()
                     }
                 }
             }
+        }
+
+        group.notify(queue: .main) {
+            completion(tempList)
         }
     }
 }

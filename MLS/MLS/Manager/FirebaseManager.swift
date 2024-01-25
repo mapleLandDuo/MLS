@@ -25,8 +25,8 @@ class FirebaseManager {
         }
     }
 
-    func loadPosts(completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").getDocuments { querySnapshot, error in
+    func loadPosts(type: BoardSeparatorType, completion: @escaping ([Post]?) -> Void) {
+        db.collection("posts").whereField("postType", isEqualTo: type.toString).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)

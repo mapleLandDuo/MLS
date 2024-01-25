@@ -17,7 +17,7 @@ class CommunityTableViewCell: UITableViewCell {
     private let dateLabel = CustomLabel(text: "date", textColor: .gray, font: .systemFont(ofSize: 12))
     
     lazy var postStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [tagLabel, titleLabel, upCountIcon, upCountLabel])
+        let view = UIStackView(arrangedSubviews: [tagLabel, titleLabel])
         view.spacing = Constants.defaults.horizontal / 2
         return view
     }()
@@ -67,7 +67,6 @@ private extension CommunityTableViewCell {
     // MARK: Methods
 
     func setUp() {
-//        setUpcell()
         setUpConstraints()
     }
     
@@ -79,22 +78,36 @@ private extension CommunityTableViewCell {
 
     func setUpConstraints() {
         addSubview(postView)
-        postView.addSubview(dateLabel)
         postView.addSubview(postStackView)
+        postView.addSubview(dateLabel)
+        postView.addSubview(upCountIcon)
+        postView.addSubview(upCountLabel)
         
         postView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
-        dateLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+        postStackView.snp.makeConstraints {
+            $0.top.equalTo(postView).inset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
         
-        postStackView.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom).inset(-Constants.defaults.vertical)
-            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
-            $0.bottom.equalToSuperview().inset(Constants.defaults.vertical)
+        dateLabel.snp.makeConstraints {
+            $0.top.equalTo(postStackView.snp.bottom).inset(-Constants.defaults.vertical / 2)
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.bottom.equalToSuperview().inset(Constants.defaults.horizontal / 2)
+        }
+        
+        upCountIcon.snp.makeConstraints {
+            $0.top.equalTo(postStackView.snp.bottom).inset(-Constants.defaults.vertical / 2)
+            $0.trailing.equalTo(upCountLabel.snp.leading).inset(-Constants.defaults.horizontal)
+            $0.bottom.equalToSuperview().inset(Constants.defaults.horizontal / 2)
+        }
+        
+        upCountLabel.snp.makeConstraints {
+            $0.top.equalTo(postStackView.snp.bottom).inset(-Constants.defaults.vertical / 2)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.bottom.equalToSuperview().inset(Constants.defaults.horizontal / 2)
         }
         
         tagLabel.setContentHuggingPriority(.required, for: .horizontal)

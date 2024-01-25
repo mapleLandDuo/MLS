@@ -222,6 +222,10 @@ private extension AddPostViewController {
 
     func setUpActions() {
         postButton.addAction(UIAction(handler: { [weak self] _ in
+            if self?.titleTextField.text == "" {
+                AlertMaker.showAlertAction1(vc: self, message: "제목은 필수입니다!")
+                return
+            }
             if let title = self?.titleTextField.text, let content = self?.postTextView.text, let user = self?.viewModel.getUser(), let type = self?.viewModel.type {
                 self?.viewModel.postData.value = Post(id: UUID(), title: title, postImages: [], postContents: content, user: user, comment: [], date: Date(), likeCount: [], viewCount: 0, postType: type, report: [], state: true)
             }

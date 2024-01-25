@@ -8,10 +8,32 @@
 import UIKit
 
 class AddPostViewModel {
-    let imageData:Observable<[UIImage?]> = Observable([])
+    // MARK: Properties
+
+    let loginManager = LoginManager()
+
+    let imageData: Observable<[UIImage?]> = Observable([])
+    let postData: Observable<Post> = Observable(nil)
     let type: BoardSeparatorType
-    
+
     init(type: BoardSeparatorType) {
         self.type = type
+    }
+}
+
+extension AddPostViewModel {
+    // MARK: Method
+
+    func savePost(post: Post, images: [UIImage?]) {
+        var post = post
+        FirebaseManager.firebaseManager.saveImages(images: images) { [weak self] urls in
+            self?.postData.value?.postImages = urls
+            post.postImages = urls
+            FirebaseManager.firebaseManager.savePost(post: post)
+        }
+    }
+
+    func getUser() -> String {
+        return loginManager.email ?? ""
     }
 }

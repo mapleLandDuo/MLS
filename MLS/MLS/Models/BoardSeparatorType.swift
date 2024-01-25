@@ -12,4 +12,8 @@ enum BoardSeparatorType: String, Codable {
     case sell = "팝니다"
     case buy = "삽니다"
     case complete = "거래완료"
+    
+    var toString: String {
+        return String(describing: self)
+    }
 }

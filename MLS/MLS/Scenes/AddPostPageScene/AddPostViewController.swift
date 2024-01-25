@@ -5,12 +5,13 @@
 //  Created by SeoJunYoung on 1/15/24.
 //
 
-import UIKit
-import SnapKit
 import PhotosUI
+import SnapKit
+import UIKit
 
 class AddPostViewController: BasicController {
     // MARK: - Property
+
     private let viewModel: AddPostViewModel
 
     // MARK: - Components
@@ -19,12 +20,12 @@ class AddPostViewController: BasicController {
         let view = UIScrollView()
         return view
     }()
-    
+
     private let contentView: UIView = {
         let view = UIView()
         return view
     }()
-    
+
     private let imageChoiceCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = .init(width: Constants.defaults.blockHeight * 2, height: Constants.defaults.blockHeight * 2)
@@ -41,7 +42,7 @@ class AddPostViewController: BasicController {
         label.font = Typography.title3.font
         return label
     }()
-    
+
     private let titleTextField: InsetTextField = {
         let view = InsetTextField()
         view.placeholder = "제목을 입력해 주세요."
@@ -51,14 +52,14 @@ class AddPostViewController: BasicController {
         view.layer.cornerRadius = Constants.defaults.radius
         return view
     }()
-    
+
     private let postLabel: UILabel = {
         let label = UILabel()
         label.text = "내용"
         label.font = Typography.title3.font
         return label
     }()
-    
+
     private let postTextView: UITextView = {
         let view = UITextView()
         view.textContainerInset = .init(
@@ -83,14 +84,14 @@ class AddPostViewController: BasicController {
         button.layer.cornerRadius = Constants.defaults.radius
         return button
     }()
-    
+
     lazy var tradeTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "거래 방식"
         label.font = Typography.title3.font
         return label
     }()
-    
+
     lazy var segmentedController: UISegmentedControl = {
         let view = UISegmentedControl(items: ["팝니다", "삽니다"])
         view.selectedSegmentIndex = 0
@@ -106,12 +107,13 @@ class AddPostViewController: BasicController {
         view.selectedSegmentTintColor = .systemOrange
         return view
     }()
-    
+
     init(viewModel: AddPostViewModel) {
         self.viewModel = viewModel
         super.init()
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -119,6 +121,7 @@ class AddPostViewController: BasicController {
 
 extension AddPostViewController {
     // MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -128,6 +131,7 @@ extension AddPostViewController {
 
 private extension AddPostViewController {
     // MARK: - Bind
+
     func bind() {
         viewModel.imageData.bind { [weak self] _ in
             self?.imageChoiceCollectionView.reloadData()
@@ -137,8 +141,10 @@ private extension AddPostViewController {
 
 private extension AddPostViewController {
     // MARK: - SetUp
+
     func setUp() {
         setUpConstraints()
+        setUpActions()
         titleTextField.delegate = self
         postTextView.delegate = self
         imageChoiceCollectionView.dataSource = self
@@ -146,7 +152,7 @@ private extension AddPostViewController {
         imageChoiceCollectionView.register(AddPostImageChoiceCell.self, forCellWithReuseIdentifier: AddPostImageChoiceCell.identifier)
         imageChoiceCollectionView.register(AddPostImageCell.self, forCellWithReuseIdentifier: AddPostImageCell.identifier)
     }
-    
+
     func setUpConstraints() {
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
@@ -181,7 +187,7 @@ private extension AddPostViewController {
                 make.top.equalTo(titleTextField.snp.bottom).offset(Constants.defaults.vertical)
                 make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
             }
-        default :
+        default:
             contentView.addSubview(tradeTitleLabel)
             tradeTitleLabel.snp.makeConstraints { make in
                 make.top.equalTo(titleTextField.snp.bottom).offset(Constants.defaults.vertical)
@@ -212,9 +218,26 @@ private extension AddPostViewController {
             make.height.equalTo(Constants.defaults.blockHeight)
             make.bottom.equalToSuperview()
         }
-
     }
 
+    func setUpActions() {
+        postButton.addAction(UIAction(handler: { [weak self] _ in
+            if self?.titleTextField.text == "" {
+                AlertMaker.showAlertAction1(vc: self, message: "제목은 필수입니다!")
+                return
+            }
+            if let title = self?.titleTextField.text, let content = self?.postTextView.text, let user = self?.viewModel.getUser(), let type = self?.viewModel.type {
+                self?.viewModel.postData.value = Post(id: UUID(), title: title, postImages: [], postContents: content, user: user, comment: [], date: Date(), likeCount: [], viewCount: 0, postType: type, report: [], state: true)
+            }
+            guard let postData = self?.viewModel.postData.value, let imageData = self?.viewModel.imageData.value else { return }
+            self?.viewModel.savePost(post: postData, images: imageData)
+            self?.navigationController?.popViewController(animated: true)
+        }), for: .touchUpInside)
+    }
+}
+
+private extension AddPostViewController {
+    // MARK: Method
 }
 
 extension AddPostViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -222,7 +245,7 @@ extension AddPostViewController: UICollectionViewDataSource, UICollectionViewDel
         guard let count = viewModel.imageData.value?.count else { return 1 }
         return count + 1
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             guard let cell = imageChoiceCollectionView.dequeueReusableCell(
@@ -246,7 +269,7 @@ extension AddPostViewController: UICollectionViewDataSource, UICollectionViewDel
             return cell
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             var configuration = PHPickerConfiguration()
@@ -254,7 +277,7 @@ extension AddPostViewController: UICollectionViewDataSource, UICollectionViewDel
             configuration.filter = .any(of: [.images])
             let picker = PHPickerViewController(configuration: configuration)
             picker.delegate = self
-            self.present(picker, animated: true)
+            present(picker, animated: true)
         }
     }
 }
@@ -262,11 +285,11 @@ extension AddPostViewController: UICollectionViewDataSource, UICollectionViewDel
 extension AddPostViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true, completion: nil)
-        self.viewModel.imageData.value = []
-        for i in 0..<results.count{
+        viewModel.imageData.value = []
+        for i in 0 ..< results.count {
             let itemProvider = results[i].itemProvider
-            if itemProvider.canLoadObject(ofClass: UIImage.self){
-                itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+            if itemProvider.canLoadObject(ofClass: UIImage.self) {
+                itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
                     guard let self = self else { return }
                     DispatchQueue.main.async {
                         self.viewModel.imageData.value!.append(image as? UIImage)
@@ -281,6 +304,7 @@ extension AddPostViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.layer.borderColor = UIColor.systemOrange.cgColor
     }
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.layer.borderColor = UIColor.systemGray4.cgColor
     }
@@ -290,6 +314,7 @@ extension AddPostViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.layer.borderColor = UIColor.systemOrange.cgColor
     }
+
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.layer.borderColor = UIColor.systemGray4.cgColor
     }

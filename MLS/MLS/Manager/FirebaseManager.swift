@@ -70,3 +70,16 @@ class FirebaseManager {
         }
     }
 }
+
+extension FirebaseManager  {
+    func saveDictionaryItemLink(item: DictionaryItemLink, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection("dictionaryItemLink").document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+}

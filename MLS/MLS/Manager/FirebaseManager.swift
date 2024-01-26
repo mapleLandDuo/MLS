@@ -13,6 +13,8 @@ import FirebaseStorage
 
 class FirebaseManager {
     static let firebaseManager = FirebaseManager()
+    
+    private init() { }
 
     let db = Firestore.firestore()
 

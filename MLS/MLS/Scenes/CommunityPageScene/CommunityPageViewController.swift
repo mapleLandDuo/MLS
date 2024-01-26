@@ -219,7 +219,7 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let viewController = PostDetailViewController()
+        let viewController = PostDetailViewController(viewModel: PostDetailViewModel())
         navigationController?.pushViewController(viewController, animated: true)
     }
 }

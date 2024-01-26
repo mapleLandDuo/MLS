@@ -12,7 +12,7 @@ import SnapKit
 class PostDetailViewController: BasicController {
     // MARK: - Properties
 
-    let commentDummy = ["이름", "댓글"]
+    private let viewModel: PostDetailViewModel
 
     let postDetailView = PostDetailView()
 
@@ -21,7 +21,7 @@ class PostDetailViewController: BasicController {
     lazy var safeAreaHeight = UIScreen.main.bounds.height - self.safeAreaInsets!.top - self.safeAreaInsets!.bottom
 
     let dummy = [URL(string: "https://www.mancity.com/meta/media/kppnc3ji/team-lifting-trophy.png"), URL(string: "https://blog.kakaocdn.net/dn/lOszd/btrOBLArMVV/rdorYnmzpEFKJPjTgl41n0/img.png")]
-    
+
     lazy var commentTableViewHeght: CGFloat = 0
 
     // MARK: - Components
@@ -86,6 +86,16 @@ class PostDetailViewController: BasicController {
         view.isScrollEnabled = false
         return view
     }()
+
+    init(viewModel: PostDetailViewModel) {
+        self.viewModel = viewModel
+        super.init()
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension PostDetailViewController {
@@ -93,8 +103,8 @@ extension PostDetailViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setUp()
+        bind()
     }
 
     override func viewDidLayoutSubviews() {
@@ -108,14 +118,19 @@ extension PostDetailViewController {
             $0.width.equalTo(verticalScrollView)
             $0.height.equalTo(safeAreaHeight + postDetailViewHeight + commentStackViewHeight + commentTableViewHeght + Constants.defaults.vertical * 3)
         }
-        
+
         commentTableView.snp.remakeConstraints {
             $0.top.equalTo(addCommentStackView.snp.bottom).inset(-Constants.defaults.vertical)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(commentTableViewHeght)
         }
-        
+
         commentTableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadComment()
     }
 }
 
@@ -135,15 +150,7 @@ private extension PostDetailViewController {
 
         setUpConstraints()
     }
-}
-
-private extension PostDetailViewController {
-    // MARK: - Bind
-}
-
-private extension PostDetailViewController {
-    // MARK: - Method
-
+    
     func setUpConstraints() {
         view.addSubview(verticalScrollView)
         verticalScrollView.addSubview(verticalContentView)
@@ -200,6 +207,26 @@ private extension PostDetailViewController {
     }
 }
 
+private extension PostDetailViewController {
+    // MARK: - Bind
+
+    func bind() {
+        viewModel.comments.bind { [weak self] _ in
+            self?.commentTableView.reloadData()
+        }
+    }
+}
+
+private extension PostDetailViewController {
+    // MARK: - Method
+    func loadComment() {
+        if let id = viewModel.post.value?.id {
+            viewModel.loadComment(postId: id.uuidString)
+        }
+    }
+    
+}
+
 extension PostDetailViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 2
@@ -233,7 +260,8 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableViewCell.identifier, for: indexPath) as? CommentTableViewCell else { return UITableViewCell() }
-        cell.bind(name: commentDummy[0], comment: commentDummy[1])
+        guard let item = viewModel.comments.value?[indexPath.row] else { return UITableViewCell() }
+        cell.bind(name: item.id.uuidString, comment: item.comment)
         return cell
     }
 }

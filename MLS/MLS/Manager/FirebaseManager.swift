@@ -16,6 +16,10 @@ class FirebaseManager {
 
     let db = Firestore.firestore()
 
+}
+
+extension FirebaseManager {
+    // MARK: Post
     func savePost(post: Post) {
         do {
             let data = try Firestore.Encoder().encode(post)
@@ -78,4 +82,38 @@ class FirebaseManager {
             completion(tempList)
         }
     }
+}
+
+extension FirebaseManager {
+    // MARK: Comment
+    func saveComment(postID: String, comment: Comment) {
+        do {
+            let data = try Firestore.Encoder().encode(comment)
+            db.collection("posts").document(postID).collection("comments").document(comment.id.uuidString).setData(data)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func loadComments(postID: String, completion: @escaping ([Comment]?) -> Void) {
+        db.collection("posts").document(postID).collection("comments").getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var comments: [Comment] = []
+                for document in querySnapshot?.documents ?? [] {
+                    do {
+                        let comment = try Firestore.Decoder().decode(Comment.self, from: document.data())
+                        comments.append(comment)
+                    } catch {
+                        completion(nil)
+                        return
+                    }
+                }
+                completion(comments)
+            }
+        }
+    }
+
 }

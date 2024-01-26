@@ -43,7 +43,7 @@ private extension ImageCollectionViewCell {
         addSubview(imageView)
 
         imageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(self)
         }
     }
 }

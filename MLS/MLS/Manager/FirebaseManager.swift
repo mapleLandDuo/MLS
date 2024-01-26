@@ -82,4 +82,24 @@ extension FirebaseManager  {
             completion(error)
         }
     }
+    func loadLinks(completion: @escaping ([DictionaryItemLink]?) -> Void) {
+        db.collection("dictionaryItemLink").getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var posts: [DictionaryItemLink] = []
+                for document in querySnapshot?.documents ?? [] {
+                    do {
+                        let post = try Firestore.Decoder().decode(DictionaryItemLink.self, from: document.data())
+                        posts.append(post)
+                    } catch {
+                        completion(nil)
+                        return
+                    }
+                }
+                completion(posts)
+            }
+        }
+    }
 }

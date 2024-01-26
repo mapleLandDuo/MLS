@@ -82,6 +82,18 @@ extension FirebaseManager  {
             completion(error)
         }
     }
+    
+    func saveDictionaryMonster(item: DictionaryMonster, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection("dictionaryMonster").document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    
     func loadLinks(completion: @escaping ([DictionaryItemLink]?) -> Void) {
         db.collection("dictionaryItemLink").getDocuments { querySnapshot, error in
             if let error = error {

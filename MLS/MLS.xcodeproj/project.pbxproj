@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		081E6FC82B640A8A00CF83F4 /* DictionaryMonster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FC72B640A8A00CF83F4 /* DictionaryMonster.swift */; };
 		082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C282B53CF4600D84CE2 /* AppDelegate.swift */; };
 		082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */; };
 		082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C312B53CF4800D84CE2 /* Assets.xcassets */; };
@@ -90,6 +91,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		081E6FC72B640A8A00CF83F4 /* DictionaryMonster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMonster.swift; sourceTree = "<group>"; };
 		082D0C252B53CF4600D84CE2 /* MLS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MLS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		082D0C282B53CF4600D84CE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -185,6 +187,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		081E6FC62B640A7900CF83F4 /* Dictionary */ = {
+			isa = PBXGroup;
+			children = (
+				081E6FC72B640A8A00CF83F4 /* DictionaryMonster.swift */,
+			);
+			path = Dictionary;
+			sourceTree = "<group>";
+		};
 		082D0C1C2B53CF4600D84CE2 = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +301,7 @@
 		082D0C812B53D44D00D84CE2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				081E6FC62B640A7900CF83F4 /* Dictionary */,
 				082D0C822B53D45600D84CE2 /* Post.swift */,
 				7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */,
 				08D50A7F2B5EB56E00E94442 /* User.swift */,
@@ -548,6 +559,7 @@
 				082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */,
 				08EF65202B556C19004CC842 /* AddPostImageCell.swift in Sources */,
 				08D50A882B5FD33B00E94442 /* UIWindow+.swift in Sources */,
+				081E6FC82B640A8A00CF83F4 /* DictionaryMonster.swift in Sources */,
 				08D50A692B590E3D00E94442 /* SignInViewModel.swift in Sources */,
 				08EF65032B54025F004CC842 /* UICollectionViewCell+.swift in Sources */,
 				08D50A6D2B5936AF00E94442 /* SharedTextField.swift in Sources */,

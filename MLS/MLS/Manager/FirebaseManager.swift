@@ -79,3 +79,58 @@ class FirebaseManager {
         }
     }
 }
+
+extension FirebaseManager  {
+    func saveDictionaryItemLink(item: DictionaryItemLink, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection("dictionaryItemLink").document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    
+    func saveDictionaryMonster(item: DictionaryMonster, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection("dictionaryMonster").document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    func saveDictionaryItem(item: DictionaryItem, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection("dictionaryItem").document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    
+    func loadLinks(completion: @escaping ([DictionaryItemLink]?) -> Void) {
+        db.collection("dictionaryItemLink").getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var posts: [DictionaryItemLink] = []
+                for document in querySnapshot?.documents ?? [] {
+                    do {
+                        let post = try Firestore.Decoder().decode(DictionaryItemLink.self, from: document.data())
+                        posts.append(post)
+                    } catch {
+                        completion(nil)
+                        return
+                    }
+                }
+                completion(posts)
+            }
+        }
+    }
+}

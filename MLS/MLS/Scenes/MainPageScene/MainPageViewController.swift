@@ -211,19 +211,16 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            print("도감 페이지")
-        } else {
-            switch indexPath.row {
-            case 0:
-                let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))
-                self.navigationController?.pushViewController(vc, animated: true)
-            case 1:
-                let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .complete))
-                self.navigationController?.pushViewController(vc, animated: true)
-            default :
-                print("default")
-            }
+        let title = viewModel.features[indexPath.section][indexPath.row].title
+        if title == "도감" {
+            let vc = DictionaryMainViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else if title == "최신글" {
+            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else if title == "사고팔고" {
+            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .complete))
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

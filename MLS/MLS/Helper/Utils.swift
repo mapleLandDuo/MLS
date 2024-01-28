@@ -7,8 +7,11 @@
 
 import UIKit
 
+import FirebaseAuth
+
 class Utils {
     static let utils = Utils()
+    static let currentUser = Auth.auth().currentUser?.email
     
     private init() {}
     

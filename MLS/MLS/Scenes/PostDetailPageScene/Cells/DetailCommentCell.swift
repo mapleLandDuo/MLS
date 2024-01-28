@@ -93,6 +93,9 @@ private extension DetailCommentCell {
 extension DetailCommentCell {
     // MARK: Method
     func bind(comment: Comment) {
+        if comment.user != Utils.currentUser {
+            optionStackView.isHidden = true
+        }
         commentProfileNameLabel.text = comment.user
         commentTextLabel.text = comment.comment
     }

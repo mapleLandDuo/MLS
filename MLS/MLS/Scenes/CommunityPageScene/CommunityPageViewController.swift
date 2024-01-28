@@ -183,7 +183,6 @@ private extension CommunityPageViewController {
 
     func getPosts() {
         viewModel.getPost { posts in
-            print(posts)
             self.viewModel.posts.value = posts
         }
     }

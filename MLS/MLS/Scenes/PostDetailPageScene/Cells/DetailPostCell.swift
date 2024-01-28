@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 class DetailPostCell: UITableViewCell {
     // MARK: Components
 
@@ -16,10 +18,11 @@ class DetailPostCell: UITableViewCell {
     
     private let postTitleLabel = CustomLabel(text: "title", font: .boldSystemFont(ofSize: 24))
     
-    private let postContentLabel: CustomLabel = {
-        let label = CustomLabel(text: "content", font: .systemFont(ofSize: 20))
-        label.numberOfLines = 0
-        return label
+    private let postContentTextView: UITextView = {
+        let textView = UITextView()
+        textView.isEditable = false
+        textView.font = .systemFont(ofSize: 20)
+        return textView
     }()
     
     private let spacerView = UIView()
@@ -64,7 +67,7 @@ private extension DetailPostCell {
     func setUpConstraints() {
         addSubview(postTitleLabel)
         addSubview(infoStackView)
-        addSubview(postContentLabel)
+        addSubview(postContentTextView)
         
         postTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(Constants.defaults.vertical)
@@ -76,7 +79,7 @@ private extension DetailPostCell {
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
         
-        postContentLabel.snp.makeConstraints {
+        postContentTextView.snp.makeConstraints {
             $0.top.equalTo(infoStackView.snp.bottom).inset(-Constants.defaults.vertical)
             $0.leading.trailing.bottom.equalToSuperview().inset(Constants.defaults.horizontal)
         }
@@ -93,7 +96,7 @@ extension DetailPostCell {
         postTitleLabel.text = post.title
         userNameLabel.text = post.user
         dateLabel.text = post.date.toString()
-        postContentLabel.text = post.postContent
+        postContentTextView.text = post.postContent
         postCountLabel.text = "\(String(post.viewCount))회"
         upCountLabel.text = String(post.likeCount.count)
     }

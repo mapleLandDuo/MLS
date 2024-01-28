@@ -159,12 +159,12 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailPostCell.identifier, for: indexPath) as? DetailPostCell,
                   let post = viewModel.post.value else { return UITableViewCell() }
+            cell.contentView.isUserInteractionEnabled = false
             cell.bind(post: post)
             return cell
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailCommentCell.identifier, for: indexPath) as? DetailCommentCell,
                   let comment = viewModel.comments.value?[indexPath.row] else { return UITableViewCell() }
-            print(comment)
             cell.bind(comment: comment)
             return cell
         default:

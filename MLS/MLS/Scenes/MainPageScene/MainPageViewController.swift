@@ -213,7 +213,7 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let title = viewModel.features[indexPath.section][indexPath.row].title
         if title == "도감" {
-            let vc = DictionaryMainViewController()
+            let vc = DictionaryMainViewController(viewModel: DictionaryMainViewModel())
             self.navigationController?.pushViewController(vc, animated: true)
         } else if title == "최신글" {
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))

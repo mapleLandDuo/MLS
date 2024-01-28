@@ -13,9 +13,7 @@ class CommunityPageViewController: BasicController {
     // MARK: - Property
 
     private let viewModel: CommunityPageViewModel
-    private var posts: [Post]?
-    lazy var numOfposts = self.posts?.count
-    private var type = BoardSeparatorType.normal
+
     private var sortItems: [UIAction] {
         let first = UIAction(title: "최신순", image: UIImage(systemName: ""), handler: { [weak self] _ in
             // 정렬
@@ -58,7 +56,7 @@ class CommunityPageViewController: BasicController {
         let view = UITableView()
         return view
     }()
-    
+
     private let addPostButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "plus"), for: .normal)
@@ -68,11 +66,10 @@ class CommunityPageViewController: BasicController {
         return button
     }()
 
-    init(viewModel: CommunityPageViewModel, type: BoardSeparatorType) {
+    init(viewModel: CommunityPageViewModel) {
         self.viewModel = viewModel
         super.init()
-        self.type = type
-        setUpPage(type: self.type)
+        setUpPage(type: self.viewModel.type)
     }
 
     @available(*, unavailable)
@@ -86,8 +83,13 @@ extension CommunityPageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setUp()
+        bind()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getPosts()
     }
 }
 
@@ -101,16 +103,7 @@ private extension CommunityPageViewController {
         communityTableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
 
         setUpConstraints()
-        posts = viewModel.getPost()
     }
-}
-
-private extension CommunityPageViewController {
-    // MARK: - Bind
-}
-
-private extension CommunityPageViewController {
-    // MARK: - Method
 
     func setUpConstraints() {
         view.addSubview(titleLabel)
@@ -153,9 +146,9 @@ private extension CommunityPageViewController {
         searchButton.addAction(UIAction(handler: { [weak self] _ in
             self?.addSearchBar()
         }), for: .touchUpInside)
-        
+
         addPostButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let type = self?.type else { return }
+            guard let type = self?.viewModel.type else { return }
             let vc = AddPostViewController(viewModel: AddPostViewModel(type: type))
             self?.navigationController?.pushViewController(vc, animated: true)
         }), for: .primaryActionTriggered)
@@ -172,16 +165,35 @@ private extension CommunityPageViewController {
         }
         setUpActions()
     }
+}
+
+private extension CommunityPageViewController {
+    // MARK: - Bind
+
+    func bind() {
+        viewModel.posts.bind { [weak self] _ in
+            self?.communityTableView.reloadData()
+        }
+    }
+}
+
+private extension CommunityPageViewController {
+    // MARK: - Method
+
+    func getPosts() {
+        viewModel.getPost { posts in
+            self.viewModel.posts.value = posts
+        }
+    }
 
     func addSearchBar() {
-        guard let numOfposts = numOfposts else { return }
-        guard let posts = posts else { return }
+        guard let posts = viewModel.posts.value else { return }
         let indexPath = IndexPath(row: posts.count, section: 0)
         if communityTableView.cellForRow(at: indexPath) == nil {
-            self.numOfposts = numOfposts + 1
+            viewModel.postsCount = viewModel.postsCount + 1
             communityTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
         } else {
-            self.numOfposts = numOfposts - 1
+            viewModel.postsCount = viewModel.postsCount - 1
             communityTableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .top)
         }
     }
@@ -189,21 +201,20 @@ private extension CommunityPageViewController {
 
 extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let numOfposts = numOfposts else { return 0 }
-        return numOfposts
+        return viewModel.postsCount
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let postCell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
         guard let searchCell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
-        guard let posts = posts?[indexPath.row] else { return UITableViewCell() }
-        if self.posts?.count != numOfposts && indexPath.row == 0 {
+        guard let posts = viewModel.posts.value?[indexPath.row] else { return UITableViewCell() }
+        if viewModel.posts.value?.count != viewModel.postsCount && indexPath.row == 0 {
             searchCell.searchBar.delegate = self
             searchCell.isUserInteractionEnabled = true
             searchCell.contentView.isUserInteractionEnabled = false
             return searchCell
         }
-        postCell.bind(tag: type, title: posts.title, date: posts.date.toString(), upCount: String(posts.likeCount.count))
+        postCell.bind(tag: viewModel.type, title: posts.title, date: posts.date.toString(), upCount: String(posts.likeCount.count))
         return postCell
     }
 

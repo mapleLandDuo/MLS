@@ -74,9 +74,8 @@ extension DetailImageCell: UICollectionViewDelegateFlowLayout, UICollectionViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier, for: indexPath) as? ImageCollectionViewCell,
-              let image = images?[indexPath.row] else { return UICollectionViewCell() }
-        cell.bind(imageUrl: image)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier, for: indexPath) as? ImageCollectionViewCell else { return UICollectionViewCell() }
+        cell.bind(imageUrl: images?[indexPath.row])
         return cell
     }
 

@@ -86,3 +86,15 @@ private extension DetailPostCell {
         postTitleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
 }
+
+extension DetailPostCell {
+    // MARK: Method
+    func bind(post: Post) {
+        postTitleLabel.text = post.title
+        userNameLabel.text = post.user
+        dateLabel.text = post.date.toString()
+        postContentLabel.text = post.postContent
+        postCountLabel.text = "\(String(post.viewCount))회"
+        upCountLabel.text = String(post.likeCount.count)
+    }
+}

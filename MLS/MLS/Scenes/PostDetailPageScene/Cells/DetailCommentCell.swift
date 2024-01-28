@@ -89,3 +89,11 @@ private extension DetailCommentCell {
         }
     }
 }
+
+extension DetailCommentCell {
+    // MARK: Method
+    func bind(comment: Comment) {
+        commentProfileNameLabel.text = comment.user
+        commentTextLabel.text = comment.comment
+    }
+}

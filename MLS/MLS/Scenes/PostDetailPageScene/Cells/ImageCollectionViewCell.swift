@@ -51,7 +51,7 @@ private extension ImageCollectionViewCell {
 extension ImageCollectionViewCell {
     // MARK: - Method
 
-    func bind(imageUrl: URL) {
+    func bind(imageUrl: URL?) {
         imageView.kf.setImage(with: imageUrl)
     }
 }

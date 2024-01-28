@@ -12,7 +12,7 @@ struct Post: Codable {
     var id: UUID
     var title: String
     var postImages: [URL?]
-    var postContents: String
+    var postContent: String
     var user: String
     var comment: [UUID]
     var date: Date

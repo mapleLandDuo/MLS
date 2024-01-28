@@ -9,6 +9,7 @@ import Foundation
 
 struct Comment: Codable {
     var id: UUID
+    var user: String
     var date: Date
     var likeCount: [String]
     var comment: String

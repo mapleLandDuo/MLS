@@ -99,6 +99,7 @@ private extension CommunityPageViewController {
     func setUp() {
         communityTableView.dataSource = self
         communityTableView.delegate = self
+        
         communityTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
         communityTableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
 
@@ -182,6 +183,7 @@ private extension CommunityPageViewController {
 
     func getPosts() {
         viewModel.getPost { posts in
+            print(posts)
             self.viewModel.posts.value = posts
         }
     }

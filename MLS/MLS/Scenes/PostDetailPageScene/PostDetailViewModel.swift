@@ -28,6 +28,4 @@ class PostDetailViewModel {
     func saveComment(postId: String, comment: Comment) {
         FirebaseManager.firebaseManager.saveComment(postID: postId, comment: comment)
     }
-    
-    
 }

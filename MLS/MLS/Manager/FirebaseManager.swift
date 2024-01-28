@@ -96,7 +96,7 @@ extension FirebaseManager {
     }
     
     func loadComments(postID: String, completion: @escaping ([Comment]?) -> Void) {
-        db.collection("posts").document(postID).collection("comments").getDocuments { querySnapshot, error in
+        db.collection("posts").document(postID).collection("comments").order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)

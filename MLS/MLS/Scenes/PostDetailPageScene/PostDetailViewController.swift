@@ -28,6 +28,15 @@ class PostDetailViewController: BasicController {
         view.sectionHeaderTopPadding = 0
         return view
     }()
+    
+    let commentButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.circle.fill")?.resized(to: CGSize(width: 40, height: 40)), for: .normal)
+        button.tintColor = .gray
+        return button
+    }()
+    
+    let commentTextField = SharedTextField(type: .normal, placeHolder: "댓글입력")
 
     init(viewModel: PostDetailViewModel) {
         self.viewModel = viewModel
@@ -47,6 +56,11 @@ extension PostDetailViewController {
         super.viewDidLoad()
         setUp()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getComment()
+    }
 }
 
 private extension PostDetailViewController {
@@ -61,6 +75,7 @@ private extension PostDetailViewController {
         totalTableView.register(DetailCommentCell.self, forCellReuseIdentifier: DetailCommentCell.identifier)
 
         setUpConstraints()
+        setUpActions()
     }
 
     func setUpConstraints() {
@@ -70,10 +85,47 @@ private extension PostDetailViewController {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
+    
+    func setUpActions() {
+        commentButton.addAction(UIAction(handler: { [weak self] _ in
+            guard let post = self?.viewModel.post.value else { return }
+            if let text = self?.commentTextField.textField.text {
+                let comment = Comment(
+                    id: UUID(),
+                    user: post.user,
+                    date: Date(),
+                    likeCount: [],
+                    comment: text,
+                    report: [],
+                    state: true)
+                self?.viewModel.saveComment(postId: post.id.uuidString, comment: comment)
+                self?.viewModel.comments.value?.insert(comment, at: 0)
+                self?.commentTextField.textField.text = ""
+                AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 완료 되었습니다.")
+            } else {
+                AlertMaker.showAlertAction1(vc: self, message: "댓글을 입력하세요.")
+            }
+        }), for: .touchUpInside)
+    }
 }
 
-extension PostDetailViewController {
+private extension PostDetailViewController {
+    // MARK: Bind
+    func bind() {
+        viewModel.comments.bind { [weak self] _ in
+            self?.totalTableView.reloadData()
+        }
+    }
+}
+
+private extension PostDetailViewController {
     // MARK: Method
+    func getComment() {
+        guard let id = viewModel.post.value?.id.uuidString else { return }
+        self.viewModel.loadComment(postId: id) {
+            self.totalTableView.reloadData()
+        }
+    }
 }
 
 extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
@@ -84,11 +136,14 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return viewModel.post.value?.postImages.isEmpty == true ? 0 : 1
+            if let count = viewModel.post.value?.postImages.count {
+                return count
+            }
+            return 0
         case 1:
             return 1
         case 2:
-            return 10
+            return viewModel.commentCount
         default:
             return 0
         }
@@ -109,6 +164,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailCommentCell.identifier, for: indexPath) as? DetailCommentCell,
                   let comment = viewModel.comments.value?[indexPath.row] else { return UITableViewCell() }
+            print(comment)
             cell.bind(comment: comment)
             return cell
         default:
@@ -132,13 +188,6 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 2 {
             let headerView = UIView()
-            let commentTextField = SharedTextField(type: .normal, placeHolder: "댓글입력")
-            let commentButton: UIButton = {
-                let button = UIButton()
-                button.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.circle.fill")?.resized(to: CGSize(width: 40, height: 40)), for: .normal)
-                button.tintColor = .gray
-                return button
-            }()
 
             headerView.addSubview(commentTextField)
             headerView.addSubview(commentButton)

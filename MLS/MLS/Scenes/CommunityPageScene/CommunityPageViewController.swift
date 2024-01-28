@@ -99,6 +99,7 @@ private extension CommunityPageViewController {
     func setUp() {
         communityTableView.dataSource = self
         communityTableView.delegate = self
+        
         communityTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
         communityTableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
 
@@ -219,7 +220,8 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let viewController = PostDetailViewController()
+        guard let post = viewModel.posts.value?[indexPath.row] else { return }
+        let viewController = PostDetailViewController(viewModel: PostDetailViewModel(post: post))
         navigationController?.pushViewController(viewController, animated: true)
     }
 }

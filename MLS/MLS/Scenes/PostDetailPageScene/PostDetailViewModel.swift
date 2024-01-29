@@ -29,7 +29,8 @@ class PostDetailViewModel {
         }
     }
     
-    func saveComment(postId: String, comment: Comment) {
+    func saveComment(postId: String, comment: Comment, completion: @escaping () -> Void) {
         FirebaseManager.firebaseManager.saveComment(postID: postId, comment: comment)
+        completion()
     }
 }

@@ -59,7 +59,11 @@ extension PostDetailViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getComment()
+        if let id = self.viewModel.post.value?.id {
+            self.viewModel.loadComment(postId: id.uuidString) {
+                self.totalTableView.reloadData()
+            }
+        }
     }
 }
 
@@ -98,10 +102,15 @@ private extension PostDetailViewController {
                     comment: text,
                     report: [],
                     state: true)
-                self?.viewModel.saveComment(postId: post.id.uuidString, comment: comment)
-                self?.viewModel.comments.value?.insert(comment, at: 0)
-                self?.commentTextField.textField.text = ""
-                AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 완료 되었습니다.")
+                self?.viewModel.saveComment(postId: post.id.uuidString, comment: comment) {
+                    self?.commentTextField.textField.text = ""
+                    AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 완료 되었습니다.")
+                    if let id = self?.viewModel.post.value?.id {
+                        self?.viewModel.loadComment(postId: id.uuidString) {
+                            self?.totalTableView.reloadData()
+                        }
+                    }
+                }
             } else {
                 AlertMaker.showAlertAction1(vc: self, message: "댓글을 입력하세요.")
             }
@@ -120,12 +129,6 @@ private extension PostDetailViewController {
 
 private extension PostDetailViewController {
     // MARK: Method
-    func getComment() {
-        guard let id = viewModel.post.value?.id.uuidString else { return }
-        self.viewModel.loadComment(postId: id) {
-            self.totalTableView.reloadData()
-        }
-    }
 }
 
 extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {

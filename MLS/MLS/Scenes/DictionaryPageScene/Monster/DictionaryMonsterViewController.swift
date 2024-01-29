@@ -21,25 +21,6 @@ class DictionaryMonsterViewController: BasicController {
         view.separatorStyle = .none
         return view
     }()
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.title1.font
-        label.text = "temp"
-        return label
-    }()
-    
-    private let imageView: UIImageView = {
-        let view = UIImageView()
-        view.backgroundColor = .blue
-        return view
-    }()
-    
-    private let defaultTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "기본 정보"
-        label.font = Typography.title2.font
-        return label
-    }()
     init(viewModel: DictionaryMonsterViewModel) {
         self.viewModel = viewModel
         super.init()

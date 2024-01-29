@@ -25,7 +25,7 @@ class MainPageProfileCell: UITableViewCell {
         return view
     }()
     
-    private let discriptionLabel: UILabel = {
+    private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "temptemp"
         label.font = Typography.title2.font
@@ -63,8 +63,8 @@ private extension MainPageProfileCell {
             make.left.equalToSuperview().inset(Constants.defaults.horizontal)
             make.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
         }
-        trailingView.addSubview(discriptionLabel)
-        discriptionLabel.snp.makeConstraints { make in
+        trailingView.addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(appIconImageView.snp.top)
             make.bottom.equalTo(appIconImageView.snp.bottom)
             make.left.equalTo(appIconImageView.snp.right).offset(Constants.defaults.horizontal)
@@ -74,17 +74,17 @@ private extension MainPageProfileCell {
 }
 
 extension MainPageProfileCell {
-    func bind(discription: String?) {
-        guard let discription = discription else { return }
-        discriptionLabel.text = discription
-        if discription == "로그인" {
-            discriptionLabel.textAlignment = .center
-            discriptionLabel.backgroundColor = .systemGray4
-            discriptionLabel.layer.cornerRadius = Constants.defaults.radius
-            discriptionLabel.clipsToBounds = true
+    func bind(description: String?) {
+        guard let description = description else { return }
+        descriptionLabel.text = description
+        if description == "로그인" {
+            descriptionLabel.textAlignment = .center
+            descriptionLabel.backgroundColor = .systemGray4
+            descriptionLabel.layer.cornerRadius = Constants.defaults.radius
+            descriptionLabel.clipsToBounds = true
         } else {
-            discriptionLabel.backgroundColor = .clear
-            discriptionLabel.textAlignment = .left
+            descriptionLabel.backgroundColor = .clear
+            descriptionLabel.textAlignment = .left
         }
         
     }

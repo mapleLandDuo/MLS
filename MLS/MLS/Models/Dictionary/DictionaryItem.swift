@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DictionaryItemLink: Codable {
+struct DictionaryNameLinkUpdateItem: Codable {
     var name: String
     var link: String
 }
@@ -23,7 +23,7 @@ struct DictionaryItem: Codable {
     var int: String?
     var luk: String?
     //아이템 설명
-    var discription: String?
+    var description: String?
     //분류
     var division: String
     //주 카테고리
@@ -31,12 +31,12 @@ struct DictionaryItem: Codable {
     //부 카테고리
     var subCategory: String
     //세부 정보
-    var detailDiscription: [String: String]
+    var detailDescription: [String: String]
     //드랍 테이블
-    var dropTable: [DictionaryItemDropTable]
+    var dropTable: [DictionaryNameDescription]
 }
 
-struct DictionaryItemDropTable: Codable {
+struct DictionaryNameDescription: Codable {
     var name: String
-    var discription: String
+    var description: String
 }

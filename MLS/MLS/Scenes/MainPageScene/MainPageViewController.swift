@@ -213,8 +213,16 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let title = viewModel.features[indexPath.section][indexPath.row].title
         if title == "도감" {
-            let vc = DictionaryMainViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+//            FirebaseManager.firebaseManager.loadItem(itemName: "노가다 목장갑") { data in
+//                guard let data = data else { return }
+//                let vc = DictionaryItemViewController(viewModel: DictionaryItemViewModel(item: data))
+//                self.navigationController?.pushViewController(vc, animated: true)
+//            }
+            FirebaseManager.firebaseManager.loadMonster(monsterName: "달팽이") { data in
+                guard let data = data else { return }
+                let vc = DictionaryMonsterViewController(viewModel: DictionaryMonsterViewModel(item: data))
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         } else if title == "최신글" {
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))
             self.navigationController?.pushViewController(vc, animated: true)
@@ -240,9 +248,9 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             guard let cell = sideMenuTableView.dequeueReusableCell(withIdentifier: MainPageProfileCell.identifier, for: indexPath) as? MainPageProfileCell else { return UITableViewCell() }
             if viewModel.loginManager.isLogin() {
-                cell.bind(discription: "temptemp")
+                cell.bind(description: "temptemp")
             } else {
-                cell.bind(discription: "로그인")
+                cell.bind(description: "로그인")
             }
             return cell
         default:

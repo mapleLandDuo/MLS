@@ -9,15 +9,6 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-//struct DictionaryMonster: Codable {
-
-//    //출몰지역
-//    let hauntArea: [String]
-//    //드랍 테이블
-//    let dropTable: [DictionaryMonsterDropTable]
-//}
-
-
 class DictionaryMonsterViewController: BasicController {
     // MARK: - Property
     let viewModel: DictionaryMonsterViewModel

@@ -15,11 +15,11 @@ class FirebaseManager {
     static let firebaseManager = FirebaseManager()
 
     let db = Firestore.firestore()
-
 }
 
 extension FirebaseManager {
     // MARK: Post
+
     func savePost(post: Post) {
         do {
             let data = try Firestore.Encoder().encode(post)
@@ -29,6 +29,7 @@ extension FirebaseManager {
         }
     }
 
+    // 게시글 전부 가져오기
     func loadPosts(type: BoardSeparatorType, completion: @escaping ([Post]?) -> Void) {
         db.collection("posts").whereField("postType", isEqualTo: type.toString).order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
@@ -46,6 +47,46 @@ extension FirebaseManager {
                     }
                 }
                 completion(posts)
+            }
+        }
+    }
+
+    // 게시글 id로 가져오기
+    func loadPost(id: String, completion: @escaping (Post?) -> Void) {
+        db.collection("posts").document(id).getDocument { documentSnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else if let documentSnapshot = documentSnapshot, documentSnapshot.exists, let data = documentSnapshot.data() {
+                do {
+                    let post = try Firestore.Decoder().decode(Post.self, from: data)
+                    completion(post)
+                } catch {
+                    print("데이터를 디코딩하지 못했습니다: \(error)")
+                    completion(nil)
+                }
+            } else {
+                print("문서가 존재하지 않습니다.")
+                completion(nil)
+            }
+        }
+    }
+
+    func updatePost(post: Post) {
+        do {
+            let data = try Firestore.Encoder().encode(post)
+            db.collection("posts").document(post.id.uuidString).updateData(data)
+        } catch {
+            print(error)
+        }
+    }
+
+    func deletePost(postID: String) {
+        db.collection("posts").document(postID).delete { error in
+            if let error = error {
+                print("게시글 삭제 실패: \(error)")
+            } else {
+                print("게시글 삭제 성공")
             }
         }
     }
@@ -86,6 +127,7 @@ extension FirebaseManager {
 
 extension FirebaseManager {
     // MARK: Comment
+
     func saveComment(postID: String, comment: Comment) {
         do {
             let data = try Firestore.Encoder().encode(comment)
@@ -94,7 +136,8 @@ extension FirebaseManager {
             print(error)
         }
     }
-    
+
+    // 게시글 댓글 가져오기
     func loadComments(postID: String, completion: @escaping ([Comment]?) -> Void) {
         db.collection("posts").document(postID).collection("comments").order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
@@ -115,10 +158,74 @@ extension FirebaseManager {
             }
         }
     }
+
+    // 유저 댓글 가져오기
+    func loadComments(userID: String, completion: @escaping ([Comment]?) -> Void) {
+        db.collection("posts").getDocuments { postQuerySnapshot, postError in
+            if let postError = postError {
+                print("게시물을 가져오지 못했습니다: \(postError)")
+                completion(nil)
+                return
+            }
+
+            var comments: [Comment] = []
+            let dispatchGroup = DispatchGroup()
+
+            for postDocument in postQuerySnapshot?.documents ?? [] {
+                let postID = postDocument.documentID
+                dispatchGroup.enter()
+
+                let commentsQuery = self.db.collection("posts").document(postID).collection("comments").whereField("user", isEqualTo: userID).order(by: "date", descending: true)
+
+                commentsQuery.getDocuments { commentsQuerySnapshot, commentsError in
+                    if let commentsError = commentsError {
+                        print("댓글을 가져오지 못했습니다: \(commentsError)")
+                        dispatchGroup.leave()
+                        return
+                    }
+
+                    for commentDocument in commentsQuerySnapshot?.documents ?? [] {
+                        do {
+                            let comment = try Firestore.Decoder().decode(Comment.self, from: commentDocument.data())
+                            comments.append(comment)
+                        } catch {
+                            print("댓글을 디코드하는데 실패했습니다.")
+                            dispatchGroup.leave()
+                            return
+                        }
+                    }
+
+                    dispatchGroup.leave()
+                }
+            }
+
+            dispatchGroup.notify(queue: .main) {
+                completion(comments)
+            }
+        }
+    }
+
+    func updateComment(postID: String, comment: Comment) {
+        do {
+            let data = try Firestore.Encoder().encode(comment)
+            db.collection("posts").document(postID).collection("comments").document(comment.id.uuidString).updateData(data)
+        } catch {
+            print(error)
+        }
+    }
+
+    func deleteComment(postID: String, commentID: String) {
+        db.collection("posts").document(postID).collection("comments").document(commentID).delete { error in
+            if let error = error {
+                print("댓글 삭제 실패: \(error)")
+            } else {
+                print("댓글 삭제 성공")
+            }
+        }
+    }
 }
 
-
-extension FirebaseManager  {
+extension FirebaseManager {
     func saveDictionaryItemLink(item: DictionaryItemLink, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
@@ -129,7 +236,7 @@ extension FirebaseManager  {
             completion(error)
         }
     }
-    
+
     func saveDictionaryMonster(item: DictionaryMonster, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
@@ -140,6 +247,7 @@ extension FirebaseManager  {
             completion(error)
         }
     }
+
     func saveDictionaryItem(item: DictionaryItem, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
@@ -150,7 +258,7 @@ extension FirebaseManager  {
             completion(error)
         }
     }
-    
+
     func loadLinks(completion: @escaping ([DictionaryItemLink]?) -> Void) {
         db.collection("dictionaryItemLink").getDocuments { querySnapshot, error in
             if let error = error {

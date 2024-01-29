@@ -14,7 +14,11 @@ class DictionaryMainViewController: BasicController {
 
     private let viewModel: DictionaryMainViewModel
 
-    private let mainTableView = UITableView()
+    private let mainTableView = UITableView(frame: .zero, style: .grouped)
+    
+    private let itemSearchBar = UISearchBar()
+    
+    private let monsterSearchBar = UISearchBar()
 
     init(viewModel: DictionaryMainViewModel) {
         self.viewModel = viewModel
@@ -84,5 +88,28 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
             cell.textLabel?.text = "LV. \(item) 몬스터"
             return cell
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        if section == 0 {
+            headerView.addSubview(itemSearchBar)
+            
+            itemSearchBar.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            
+            itemSearchBar.placeholder = "아이템을 검색하세요."
+        } else {
+            headerView.addSubview(monsterSearchBar)
+            
+            monsterSearchBar.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            
+            monsterSearchBar.placeholder = "몬스터를 검색하세요."
+        }
+
+        return headerView
     }
 }

@@ -33,10 +33,5 @@ struct DictionaryMonster: Codable {
     //회피율
     let evasionRate: Int
     //드랍 테이블
-    let dropTable: [DictionaryMonsterDropTable]
-}
-
-struct DictionaryMonsterDropTable: Codable {
-    let name: String
-    let discription: String
+    let dropTable: [DictionaryNameDescription]
 }

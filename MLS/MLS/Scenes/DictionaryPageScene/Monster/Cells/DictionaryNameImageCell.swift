@@ -60,7 +60,7 @@ extension DictionaryNameImageCell {
     // MARK: - bind
     func bind(item: DictionaryMonster) {
         nameLabel.text = item.name
-        let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon")
+        let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor=")
         dictionaryImageView.kf.setImage(with: url)
     }
     func bind(item: DictionaryItem) {

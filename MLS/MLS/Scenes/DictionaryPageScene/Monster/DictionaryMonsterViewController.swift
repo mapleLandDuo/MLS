@@ -9,13 +9,6 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-//var str: String?
-//var dex: String?
-//var int: String?
-//var luk: String?
-////아이템 설명
-//var discription: String?
-
 class DictionaryMonsterViewController: BasicController {
     // MARK: - Property
     let viewModel: DictionaryMonsterViewModel
@@ -45,7 +38,6 @@ extension DictionaryMonsterViewController {
         super.viewDidLoad()
         setUp()
     }
-
 }
 
 private extension DictionaryMonsterViewController {
@@ -68,36 +60,67 @@ private extension DictionaryMonsterViewController {
 }
 
 extension DictionaryMonsterViewController : UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
+        case 3:
+            return viewModel.getItem().hauntArea.count
         case 4:
             return viewModel.getItem().dropTable.count
         default:
             return 1
         }
     }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 5
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryNameImageCell.identifier, for: indexPath) as? DictionaryNameImageCell else { return UITableViewCell()}
             cell.bind(item: viewModel.getItem())
+            cell.selectionStyle = .none
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryMonsterDefaultCell.identifier, for: indexPath) as? DictionaryMonsterDefaultCell else { return UITableViewCell()}
             cell.bind(item: viewModel.getItem())
+            cell.selectionStyle = .none
             return cell
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryMonsterDetailCell.identifier, for: indexPath) as? DictionaryMonsterDetailCell else { return UITableViewCell()}
             cell.bind(item: viewModel.getItem())
+            cell.selectionStyle = .none
             return cell
         case 3:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryMonsterHauntAreaCell.identifier, for: indexPath) as? DictionaryMonsterHauntAreaCell else { return UITableViewCell()}
-            cell.bind(item: viewModel.getItem())
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell()}
+            let item = DictionaryNameDescription(name: viewModel.getItem().hauntArea[indexPath.row], description: "")
+            cell.bind(data: item)
+            cell.selectionStyle = .none
             return cell
         default:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell()}
-            cell.bind(item: viewModel.getItem().dropTable[indexPath.row])
+            cell.bind(data: viewModel.getItem().dropTable[indexPath.row])
+            cell.selectionStyle = .none
             return cell
+        }
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+            case 4:
+            let itemName = viewModel.getItem().dropTable[indexPath.row].name
+            if itemName == "메소" { return }
+            IndicatorMaker.showLoading()
+            FirebaseManager.firebaseManager.loadItem(itemName: itemName) { item in
+                guard let item = item else { return }
+                IndicatorMaker.hideLoading()
+                let vc = DictionaryItemViewController(viewModel: DictionaryItemViewModel(item: item))
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            
+        default:
+            return
         }
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -118,9 +141,7 @@ extension DictionaryMonsterViewController : UITableViewDelegate, UITableViewData
     }
     
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
-    }
+
     
     func makeHeaderView(title: String) -> UIView {
         let view: UIView = {

@@ -81,10 +81,20 @@ class FirebaseManager {
 }
 
 extension FirebaseManager  {
-    func saveDictionaryItemLink(item: DictionaryItemLink, completion: @escaping (Error?) -> Void) {
+    func updateDictionaryItemLink(item: DictionaryNameLinkUpdateItem, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
             db.collection("dictionaryItemLink").document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    func updateDictionaryMonsterLink(item: DictionaryNameLinkUpdateItem, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection("dictionaryMonsterLink").document(item.name).setData(data) { error in
                 completion(error)
             }
         } catch {
@@ -95,7 +105,7 @@ extension FirebaseManager  {
     func saveDictionaryMonster(item: DictionaryMonster, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
-            db.collection("dictionaryMonster").document(item.name).setData(data) { error in
+            db.collection("dictionaryMonsters").document(item.name).setData(data) { error in
                 completion(error)
             }
         } catch {
@@ -105,7 +115,7 @@ extension FirebaseManager  {
     func saveDictionaryItem(item: DictionaryItem, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
-            db.collection("dictionaryItem").document(item.name).setData(data) { error in
+            db.collection("dictionaryItems").document(item.name).setData(data) { error in
                 completion(error)
             }
         } catch {
@@ -113,16 +123,16 @@ extension FirebaseManager  {
         }
     }
     
-    func loadLinks(completion: @escaping ([DictionaryItemLink]?) -> Void) {
+    func loadItemLinks(completion: @escaping ([DictionaryNameLinkUpdateItem]?) -> Void) {
         db.collection("dictionaryItemLink").getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
             } else {
-                var posts: [DictionaryItemLink] = []
+                var posts: [DictionaryNameLinkUpdateItem] = []
                 for document in querySnapshot?.documents ?? [] {
                     do {
-                        let post = try Firestore.Decoder().decode(DictionaryItemLink.self, from: document.data())
+                        let post = try Firestore.Decoder().decode(DictionaryNameLinkUpdateItem.self, from: document.data())
                         posts.append(post)
                     } catch {
                         completion(nil)
@@ -133,16 +143,16 @@ extension FirebaseManager  {
             }
         }
     }
-    func loadMonster(completion: @escaping ([DictionaryMonster]?) -> Void) {
-        db.collection("dictionaryMonster").getDocuments { querySnapshot, error in
+    func loadMonsterLinks(completion: @escaping ([DictionaryNameLinkUpdateItem]?) -> Void) {
+        db.collection("dictionaryMonsterLink").getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
             } else {
-                var posts: [DictionaryMonster] = []
+                var posts: [DictionaryNameLinkUpdateItem] = []
                 for document in querySnapshot?.documents ?? [] {
                     do {
-                        let post = try Firestore.Decoder().decode(DictionaryMonster.self, from: document.data())
+                        let post = try Firestore.Decoder().decode(DictionaryNameLinkUpdateItem.self, from: document.data())
                         posts.append(post)
                     } catch {
                         completion(nil)
@@ -153,14 +163,30 @@ extension FirebaseManager  {
             }
         }
     }
-    func loadItem(completion: @escaping (DictionaryItem?) -> Void) {
-        db.collection("dictionaryItem").document("그륜힐").getDocument { querySnapshot, error in
+    func loadItem(itemName: String, completion: @escaping (DictionaryItem?) -> Void) {
+        db.collection("dictionaryItems").document(itemName).getDocument { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
             } else {
                 do {
                     let post = try Firestore.Decoder().decode(DictionaryItem.self, from: querySnapshot?.data())
+                    completion(post)
+                } catch {
+                    completion(nil)
+                    return
+                }
+            }
+        }
+    }
+    func loadMonster(monsterName: String, completion: @escaping (DictionaryMonster?) -> Void) {
+        db.collection("dictionaryMonsters").document(monsterName).getDocument { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                do {
+                    let post = try Firestore.Decoder().decode(DictionaryMonster.self, from: querySnapshot?.data())
                     completion(post)
                 } catch {
                     completion(nil)

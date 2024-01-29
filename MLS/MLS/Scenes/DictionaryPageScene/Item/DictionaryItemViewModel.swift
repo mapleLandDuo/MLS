@@ -25,7 +25,7 @@ extension DictionaryItemViewModel {
     
     func getDefaultInfoArray() -> [DictionaryNameDescription] {
         let datas = [
-            "description": item.discription,
+            "description": item.description,
             "str": item.str,
             "dex": item.dex,
             "luk": item.luk,
@@ -57,7 +57,7 @@ extension DictionaryItemViewModel {
     }
     
     func getDetailInfoArray() -> [DictionaryNameDescription] {
-        var temp = item.detailDiscription
+        var temp = item.detailDescription
         var array: [DictionaryNameDescription] = []
         if temp["물리공격력"] != nil {
             let item = DictionaryNameDescription(name: "물리공격력", description: temp["물리공격력"]!)

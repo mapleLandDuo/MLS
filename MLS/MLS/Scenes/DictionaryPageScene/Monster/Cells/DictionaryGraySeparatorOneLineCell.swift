@@ -67,16 +67,8 @@ private extension DictionaryGraySeparatorOneLineCell {
 
 extension DictionaryGraySeparatorOneLineCell {
     // MARK: - bind
-    func bind(item: DictionaryMonsterDropTable) {
-        nameLabel.text = item.name
-        descriptionLabel.text = item.discription
-    }
     func bind(data: DictionaryNameDescription) {
         nameLabel.text = data.name
         descriptionLabel.text = data.description
-    }
-    func bind(item: DictionaryItemDropTable) {
-        nameLabel.text = item.name
-        descriptionLabel.text = item.discription
     }
 }

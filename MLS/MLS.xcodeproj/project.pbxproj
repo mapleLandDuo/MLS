@@ -20,6 +20,7 @@
 		081E6FE92B66A41B00CF83F4 /* DictionaryGraySeparatorOneLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FE82B66A41B00CF83F4 /* DictionaryGraySeparatorOneLineCell.swift */; };
 		081E6FED2B67859200CF83F4 /* DictionaryItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FEC2B67859200CF83F4 /* DictionaryItemViewModel.swift */; };
 		081E6FF02B67900900CF83F4 /* DictionaryItemDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FEF2B67900900CF83F4 /* DictionaryItemDefaultCell.swift */; };
+		081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */; };
 		082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C282B53CF4600D84CE2 /* AppDelegate.swift */; };
 		082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */; };
 		082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C312B53CF4800D84CE2 /* Assets.xcassets */; };
@@ -116,6 +117,7 @@
 		081E6FE82B66A41B00CF83F4 /* DictionaryGraySeparatorOneLineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryGraySeparatorOneLineCell.swift; sourceTree = "<group>"; };
 		081E6FEC2B67859200CF83F4 /* DictionaryItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryItemViewModel.swift; sourceTree = "<group>"; };
 		081E6FEF2B67900900CF83F4 /* DictionaryItemDefaultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryItemDefaultCell.swift; sourceTree = "<group>"; };
+		081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUpdateManager.swift; sourceTree = "<group>"; };
 		082D0C252B53CF4600D84CE2 /* MLS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MLS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		082D0C282B53CF4600D84CE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -514,6 +516,7 @@
 				77EF47582B5CD63800181D35 /* FirebaseManager.swift */,
 				08D50A7D2B5EB0E800E94442 /* LoginManager.swift */,
 				08D50A8B2B5FD61E00E94442 /* UserDefaultsManager.swift */,
+				081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -686,6 +689,7 @@
 				08EF65222B5572C5004CC842 /* AddPostViewModel.swift in Sources */,
 				08D50A672B590D9100E94442 /* SignInViewController.swift in Sources */,
 				082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */,
+				081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */,
 				081E6FD32B663B6300CF83F4 /* DictionaryItemViewController.swift in Sources */,
 				08EF650E2B551EB8004CC842 /* MainPageFeatureListPostCell.swift in Sources */,
 				08EF65142B554722004CC842 /* UIColor+.swift in Sources */,

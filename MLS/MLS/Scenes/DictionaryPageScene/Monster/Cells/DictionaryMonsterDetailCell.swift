@@ -140,10 +140,10 @@ private extension DictionaryMonsterDetailCell {
 extension DictionaryMonsterDetailCell {
     // MARK: - bind
     func bind(item: DictionaryMonster) {
-        physicalDefenseLabel.text = "\(item.level)"
-        magicDefenseLabel.text = "\(item.exp)"
-        requiredAccuracyLabel.text = "\(item.hp)"
-        evasionRateLabel.text = "\(item.mp)"
+        physicalDefenseLabel.text = "\(item.physicalDefense)"
+        magicDefenseLabel.text = "\(item.magicDefense)"
+        requiredAccuracyLabel.text = "\(item.requiredAccuracy)"
+        evasionRateLabel.text = "\(item.evasionRate)"
         levelAccuracyLabel.text = item.levelAccuracy
     }
 }

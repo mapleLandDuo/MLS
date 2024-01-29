@@ -11,6 +11,13 @@
 		081E6FCE2B663A9800CF83F4 /* DictionaryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FCD2B663A9800CF83F4 /* DictionaryItem.swift */; };
 		081E6FD32B663B6300CF83F4 /* DictionaryItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FD22B663B6300CF83F4 /* DictionaryItemViewController.swift */; };
 		081E6FD52B663B7600CF83F4 /* DictionaryMonsterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FD42B663B7600CF83F4 /* DictionaryMonsterViewController.swift */; };
+		081E6FDC2B666DA200CF83F4 /* DictionaryNameImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FDB2B666DA200CF83F4 /* DictionaryNameImageCell.swift */; };
+		081E6FDE2B66704F00CF83F4 /* DictionaryMonsterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FDD2B66704F00CF83F4 /* DictionaryMonsterViewModel.swift */; };
+		081E6FE12B667D2E00CF83F4 /* DictionaryMonsterDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FE02B667D2E00CF83F4 /* DictionaryMonsterDefaultCell.swift */; };
+		081E6FE32B6686F100CF83F4 /* DictionaryMonsterDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FE22B6686F100CF83F4 /* DictionaryMonsterDetailCell.swift */; };
+		081E6FE52B668B7300CF83F4 /* DictionaryMonsterHauntAreaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FE42B668B7300CF83F4 /* DictionaryMonsterHauntAreaCell.swift */; };
+		081E6FE72B66902200CF83F4 /* DictionaryMonsterHauntAreaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FE62B66902200CF83F4 /* DictionaryMonsterHauntAreaCollectionViewCell.swift */; };
+		081E6FE92B66A41B00CF83F4 /* DictionaryMonsterDropTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FE82B66A41B00CF83F4 /* DictionaryMonsterDropTableCell.swift */; };
 		082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C282B53CF4600D84CE2 /* AppDelegate.swift */; };
 		082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */; };
 		082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C312B53CF4800D84CE2 /* Assets.xcassets */; };
@@ -98,6 +105,13 @@
 		081E6FCD2B663A9800CF83F4 /* DictionaryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryItem.swift; sourceTree = "<group>"; };
 		081E6FD22B663B6300CF83F4 /* DictionaryItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryItemViewController.swift; sourceTree = "<group>"; };
 		081E6FD42B663B7600CF83F4 /* DictionaryMonsterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMonsterViewController.swift; sourceTree = "<group>"; };
+		081E6FDB2B666DA200CF83F4 /* DictionaryNameImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryNameImageCell.swift; sourceTree = "<group>"; };
+		081E6FDD2B66704F00CF83F4 /* DictionaryMonsterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMonsterViewModel.swift; sourceTree = "<group>"; };
+		081E6FE02B667D2E00CF83F4 /* DictionaryMonsterDefaultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMonsterDefaultCell.swift; sourceTree = "<group>"; };
+		081E6FE22B6686F100CF83F4 /* DictionaryMonsterDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMonsterDetailCell.swift; sourceTree = "<group>"; };
+		081E6FE42B668B7300CF83F4 /* DictionaryMonsterHauntAreaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMonsterHauntAreaCell.swift; sourceTree = "<group>"; };
+		081E6FE62B66902200CF83F4 /* DictionaryMonsterHauntAreaCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMonsterHauntAreaCollectionViewCell.swift; sourceTree = "<group>"; };
+		081E6FE82B66A41B00CF83F4 /* DictionaryMonsterDropTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMonsterDropTableCell.swift; sourceTree = "<group>"; };
 		082D0C252B53CF4600D84CE2 /* MLS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MLS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		082D0C282B53CF4600D84CE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -222,8 +236,23 @@
 			isa = PBXGroup;
 			children = (
 				081E6FD42B663B7600CF83F4 /* DictionaryMonsterViewController.swift */,
+				081E6FDD2B66704F00CF83F4 /* DictionaryMonsterViewModel.swift */,
+				081E6FDA2B666D7B00CF83F4 /* Cells */,
 			);
 			path = Monster;
+			sourceTree = "<group>";
+		};
+		081E6FDA2B666D7B00CF83F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				081E6FDB2B666DA200CF83F4 /* DictionaryNameImageCell.swift */,
+				081E6FE02B667D2E00CF83F4 /* DictionaryMonsterDefaultCell.swift */,
+				081E6FE22B6686F100CF83F4 /* DictionaryMonsterDetailCell.swift */,
+				081E6FE42B668B7300CF83F4 /* DictionaryMonsterHauntAreaCell.swift */,
+				081E6FE62B66902200CF83F4 /* DictionaryMonsterHauntAreaCollectionViewCell.swift */,
+				081E6FE82B66A41B00CF83F4 /* DictionaryMonsterDropTableCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		082D0C1C2B53CF4600D84CE2 = {
@@ -588,20 +617,25 @@
 				775474C62B56A81300C8DD61 /* CommentTableViewCell.swift in Sources */,
 				08EF65052B5402A3004CC842 /* UITableViewCell+.swift in Sources */,
 				779B72C82B56DBC3007CB6C1 /* CommunityPageViewModel.swift in Sources */,
+				081E6FDC2B666DA200CF83F4 /* DictionaryNameImageCell.swift in Sources */,
 				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
 				082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */,
 				08EF65202B556C19004CC842 /* AddPostImageCell.swift in Sources */,
+				081E6FE32B6686F100CF83F4 /* DictionaryMonsterDetailCell.swift in Sources */,
 				08D50A882B5FD33B00E94442 /* UIWindow+.swift in Sources */,
 				081E6FC82B640A8A00CF83F4 /* DictionaryMonster.swift in Sources */,
 				08D50A692B590E3D00E94442 /* SignInViewModel.swift in Sources */,
 				08EF65032B54025F004CC842 /* UICollectionViewCell+.swift in Sources */,
+				081E6FE12B667D2E00CF83F4 /* DictionaryMonsterDefaultCell.swift in Sources */,
 				08D50A6D2B5936AF00E94442 /* SharedTextField.swift in Sources */,
 				08EF651B2B555BB7004CC842 /* InsetTextField.swift in Sources */,
 				08D50A7C2B5EA39300E94442 /* MainPageSideMenuFeatureCell.swift in Sources */,
+				081E6FE52B668B7300CF83F4 /* DictionaryMonsterHauntAreaCell.swift in Sources */,
 				77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */,
 				08EF65172B554DA0004CC842 /* AddPostViewController.swift in Sources */,
 				08D50A8A2B5FD46700E94442 /* AlertMaker.swift in Sources */,
 				779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */,
+				081E6FE92B66A41B00CF83F4 /* DictionaryMonsterDropTableCell.swift in Sources */,
 				08EF65122B554710004CC842 /* UILabel+.swift in Sources */,
 				08EF65082B54034D004CC842 /* MainPageFeatureDefaultsCell.swift in Sources */,
 				08D50A862B5FD30D00E94442 /* ActivityIndicator.swift in Sources */,
@@ -618,12 +652,14 @@
 				770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */,
 				08D50A7E2B5EB0E800E94442 /* LoginManager.swift in Sources */,
 				775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */,
+				081E6FE72B66902200CF83F4 /* DictionaryMonsterHauntAreaCollectionViewCell.swift in Sources */,
 				08D50A8C2B5FD61E00E94442 /* UserDefaultsManager.swift in Sources */,
 				08D50A782B5E96DA00E94442 /* MainPageProfileCell.swift in Sources */,
 				08D50A6B2B59137B00E94442 /* SignUpViewController.swift in Sources */,
 				081E6FD52B663B7600CF83F4 /* DictionaryMonsterViewController.swift in Sources */,
 				7707440E2B55511E00FCEDED /* SearchTableViewCell.swift in Sources */,
 				779B72BD2B56DA0F007CB6C1 /* Date+.swift in Sources */,
+				081E6FDE2B66704F00CF83F4 /* DictionaryMonsterViewModel.swift in Sources */,
 				77C1ED0C2B615471003179B4 /* QnaViewController.swift in Sources */,
 				775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */,
 				08EF650A2B540A4A004CC842 /* Typography.swift in Sources */,
@@ -780,7 +816,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W5QTRMS954;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MLS/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -811,7 +847,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W5QTRMS954;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MLS/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

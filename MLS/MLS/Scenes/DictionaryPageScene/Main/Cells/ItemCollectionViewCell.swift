@@ -44,7 +44,8 @@ private extension ItemCollectionViewCell {
 
     func setUp() {
         self.layer.cornerRadius = Constants.defaults.radius
-        self.backgroundColor = .red
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.systemOrange.cgColor
         
         setUpConstraints()
     }

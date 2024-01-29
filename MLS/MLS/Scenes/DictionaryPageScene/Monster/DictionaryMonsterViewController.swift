@@ -9,6 +9,13 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+//var str: String?
+//var dex: String?
+//var int: String?
+//var luk: String?
+////아이템 설명
+//var discription: String?
+
 class DictionaryMonsterViewController: BasicController {
     // MARK: - Property
     let viewModel: DictionaryMonsterViewModel
@@ -50,7 +57,7 @@ private extension DictionaryMonsterViewController {
         tableView.register(DictionaryMonsterDefaultCell.self, forCellReuseIdentifier: DictionaryMonsterDefaultCell.identifier)
         tableView.register(DictionaryMonsterDetailCell.self, forCellReuseIdentifier: DictionaryMonsterDetailCell.identifier)
         tableView.register(DictionaryMonsterHauntAreaCell.self, forCellReuseIdentifier: DictionaryMonsterHauntAreaCell.identifier)
-        tableView.register(DictionaryMonsterDropTableCell.self, forCellReuseIdentifier: DictionaryMonsterDropTableCell.identifier)
+        tableView.register(DictionaryGraySeparatorOneLineCell.self, forCellReuseIdentifier: DictionaryGraySeparatorOneLineCell.identifier)
     }
     func setUpConstraints() {
         view.addSubview(tableView)
@@ -88,7 +95,7 @@ extension DictionaryMonsterViewController : UITableViewDelegate, UITableViewData
             cell.bind(item: viewModel.getItem())
             return cell
         default:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryMonsterDropTableCell.identifier, for: indexPath) as? DictionaryMonsterDropTableCell else { return UITableViewCell()}
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell()}
             cell.bind(item: viewModel.getItem().dropTable[indexPath.row])
             return cell
         }

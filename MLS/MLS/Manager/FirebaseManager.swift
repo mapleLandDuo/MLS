@@ -153,4 +153,20 @@ extension FirebaseManager  {
             }
         }
     }
+    func loadItem(completion: @escaping (DictionaryItem?) -> Void) {
+        db.collection("dictionaryItem").document("그륜힐").getDocument { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                do {
+                    let post = try Firestore.Decoder().decode(DictionaryItem.self, from: querySnapshot?.data())
+                    completion(post)
+                } catch {
+                    completion(nil)
+                    return
+                }
+            }
+        }
+    }
 }

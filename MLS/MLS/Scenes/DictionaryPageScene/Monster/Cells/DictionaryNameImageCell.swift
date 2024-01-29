@@ -21,7 +21,6 @@ class DictionaryNameImageCell: UITableViewCell {
     
     private let dictionaryImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .blue
         return imageView
     }()
 
@@ -61,7 +60,13 @@ extension DictionaryNameImageCell {
     // MARK: - bind
     func bind(item: DictionaryMonster) {
         nameLabel.text = item.name
-        dictionaryImageView.image = UIImage(systemName: "folder")
+        let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon")
+        dictionaryImageView.kf.setImage(with: url)
+    }
+    func bind(item: DictionaryItem) {
+        nameLabel.text = item.name
+        let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon")
+        dictionaryImageView.kf.setImage(with: url)
     }
 
 }

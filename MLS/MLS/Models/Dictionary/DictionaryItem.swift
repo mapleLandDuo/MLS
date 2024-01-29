@@ -40,3 +40,8 @@ struct DictionaryItemDropTable: Codable {
     var name: String
     var discription: String
 }
+
+struct DictionaryNameDescription: Codable {
+    var name: String
+    var description: String
+}

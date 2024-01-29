@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class DictionaryMonsterDropTableCell: UITableViewCell {
+class DictionaryGraySeparatorOneLineCell: UITableViewCell {
     // MARK: - Componetns
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -16,7 +16,7 @@ class DictionaryMonsterDropTableCell: UITableViewCell {
         return label
     }()
     
-    private let discriptionLabel: UILabel = {
+    private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.title3.font
         return label
@@ -43,7 +43,7 @@ class DictionaryMonsterDropTableCell: UITableViewCell {
     }
 }
 
-private extension DictionaryMonsterDropTableCell {
+private extension DictionaryGraySeparatorOneLineCell {
     func setUp() {
         setUpConstraints()
     }
@@ -54,7 +54,7 @@ private extension DictionaryMonsterDropTableCell {
             make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
         }
         stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(discriptionLabel)
+        stackView.addArrangedSubview(descriptionLabel)
         contentView.addSubview(bottomSeparatorView)
         bottomSeparatorView.snp.makeConstraints { make in
             make.top.equalTo(stackView.snp.bottom).offset(Constants.defaults.vertical)
@@ -65,10 +65,18 @@ private extension DictionaryMonsterDropTableCell {
     }
 }
 
-extension DictionaryMonsterDropTableCell {
+extension DictionaryGraySeparatorOneLineCell {
     // MARK: - bind
     func bind(item: DictionaryMonsterDropTable) {
         nameLabel.text = item.name
-        discriptionLabel.text = item.discription
+        descriptionLabel.text = item.discription
+    }
+    func bind(data: DictionaryNameDescription) {
+        nameLabel.text = data.name
+        descriptionLabel.text = data.description
+    }
+    func bind(item: DictionaryItemDropTable) {
+        nameLabel.text = item.name
+        descriptionLabel.text = item.discription
     }
 }

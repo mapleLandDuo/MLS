@@ -225,8 +225,10 @@ extension FirebaseManager {
     }
 }
 
+
 extension FirebaseManager  {
     func updateDictionaryItemLink(item: DictionaryNameLinkUpdateItem, completion: @escaping (Error?) -> Void) {
+
         do {
             let data = try Firestore.Encoder().encode(item)
             db.collection("dictionaryItemLink").document(item.name).setData(data) { error in
@@ -257,6 +259,7 @@ extension FirebaseManager  {
             completion(error)
         }
     }
+
     func saveDictionaryItem(item: DictionaryItem, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
@@ -267,8 +270,10 @@ extension FirebaseManager  {
             completion(error)
         }
     }
+
     
     func loadItemLinks(completion: @escaping ([DictionaryNameLinkUpdateItem]?) -> Void) {
+
         db.collection("dictionaryItemLink").getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")

@@ -15,11 +15,11 @@ class FirebaseManager {
     static let firebaseManager = FirebaseManager()
 
     let db = Firestore.firestore()
-
 }
 
 extension FirebaseManager {
     // MARK: Post
+
     func savePost(post: Post) {
         do {
             let data = try Firestore.Encoder().encode(post)
@@ -86,6 +86,7 @@ extension FirebaseManager {
 
 extension FirebaseManager {
     // MARK: Comment
+
     func saveComment(postID: String, comment: Comment) {
         do {
             let data = try Firestore.Encoder().encode(comment)
@@ -94,7 +95,7 @@ extension FirebaseManager {
             print(error)
         }
     }
-    
+
     func loadComments(postID: String, completion: @escaping ([Comment]?) -> Void) {
         db.collection("posts").document(postID).collection("comments").order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
@@ -117,8 +118,30 @@ extension FirebaseManager {
     }
 }
 
+extension FirebaseManager {
+    // MARK: Search
 
-extension FirebaseManager  {
+    func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping ([T]) -> Void) {
+        db.collection("monsters").whereField("name", arrayContains: [name]).getDocuments { querySnapshot, err in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                var temp: [T] = []
+                for document in querySnapshot!.documents {
+                    do {
+                        let data = try Firestore.Decoder().decode(T.self, from: document.data())
+                        temp.append(data)
+                    } catch {
+                        print("Error decoding data: \(error)")
+                    }
+                }
+                completion(temp)
+            }
+        }
+    }
+}
+
+extension FirebaseManager {
     func saveDictionaryItemLink(item: DictionaryItemLink, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
@@ -129,7 +152,7 @@ extension FirebaseManager  {
             completion(error)
         }
     }
-    
+
     func saveDictionaryMonster(item: DictionaryMonster, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
@@ -140,6 +163,7 @@ extension FirebaseManager  {
             completion(error)
         }
     }
+
     func saveDictionaryItem(item: DictionaryItem, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
@@ -150,7 +174,7 @@ extension FirebaseManager  {
             completion(error)
         }
     }
-    
+
     func loadLinks(completion: @escaping ([DictionaryItemLink]?) -> Void) {
         db.collection("dictionaryItemLink").getDocuments { querySnapshot, error in
             if let error = error {

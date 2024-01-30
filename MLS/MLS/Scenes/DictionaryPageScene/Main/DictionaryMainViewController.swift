@@ -46,8 +46,10 @@ private extension DictionaryMainViewController {
     func setUp() {
         mainTableView.delegate = self
         mainTableView.dataSource = self
-        
         mainTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: ItemTableViewCell.identifier)
+        
+        itemSearchBar.delegate = self
+        monsterSearchBar.delegate = self
 
         setUpConstraints()
     }
@@ -112,4 +114,20 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
 
         return headerView
     }
+}
+
+extension DictionaryMainViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else { return }
+            if searchBar == itemSearchBar {
+                FirebaseManager.firebaseManager.searchData(name: text, type: DictionaryItem.self) { [weak self] item in
+                    
+                }
+            } else if searchBar == monsterSearchBar {
+                FirebaseManager.firebaseManager.searchData(name: text, type: DictionaryMonster.self) { [weak self] monster in
+                    
+                }
+            }
+            searchBar.resignFirstResponder()
+        }
 }

@@ -38,6 +38,18 @@ extension DictionaryMainViewModel {
     func getItemMenuCount() -> Int {
         return itemMenus.count
     }
+    
+    func searchItem(name: String, completion: @escaping ([DictionaryItem]) -> Void) {
+        FirebaseManager.firebaseManager.searchData(name: name, type: DictionaryItem.self) { data in
+            completion(data)
+        }
+    }
+    
+    func searchMonster(name: String, completion: @escaping ([DictionaryMonster]) -> Void) {
+        FirebaseManager.firebaseManager.searchData(name: name, type: DictionaryMonster.self) { data in
+            completion(data)
+        }
+    }
 }
 
 struct ItemMenu {

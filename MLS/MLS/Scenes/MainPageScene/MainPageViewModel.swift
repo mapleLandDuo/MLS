@@ -10,7 +10,7 @@ import UIKit
 
 struct FeatureCellData {
     var title: String?
-    var discription: String?
+    var description: String?
     var image: UIImage?
 }
 
@@ -18,7 +18,7 @@ class MainPageViewModel {
     let loginManager = LoginManager()
     var features: [[FeatureCellData]] = [
         [
-            FeatureCellData(title: "도감", discription: "몬스터 도감, 아이템 도감", image: UIImage(systemName: "book.closed"))
+            FeatureCellData(title: "도감", description: "몬스터 도감, 아이템 도감", image: UIImage(systemName: "book.closed"))
         ],
         [
             FeatureCellData(title: "최신글", image: UIImage(systemName: "chevron.forward.2")),

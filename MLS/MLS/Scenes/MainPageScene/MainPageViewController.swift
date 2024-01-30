@@ -240,9 +240,9 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             guard let cell = sideMenuTableView.dequeueReusableCell(withIdentifier: MainPageProfileCell.identifier, for: indexPath) as? MainPageProfileCell else { return UITableViewCell() }
             if viewModel.loginManager.isLogin() {
-                cell.bind(discription: "temptemp")
+                cell.bind(description: "temptemp")
             } else {
-                cell.bind(discription: "로그인")
+                cell.bind(description: "로그인")
             }
             return cell
         default:

@@ -22,6 +22,9 @@
 		081E6FF02B67900900CF83F4 /* DictionaryItemDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FEF2B67900900CF83F4 /* DictionaryItemDefaultCell.swift */; };
 		081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */; };
 		081E6FFE2B68F8E800CF83F4 /* DictionaryGraySeparatorDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FFD2B68F8E800CF83F4 /* DictionaryGraySeparatorDescriptionCell.swift */; };
+		081E70032B69130000CF83F4 /* AppInfoPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E70022B69130000CF83F4 /* AppInfoPageViewController.swift */; };
+		081E700A2B69208100CF83F4 /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E70092B69208100CF83F4 /* ProfilePageViewController.swift */; };
+		081E700C2B69212800CF83F4 /* ProfilePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E700B2B69212800CF83F4 /* ProfilePageViewModel.swift */; };
 		082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C282B53CF4600D84CE2 /* AppDelegate.swift */; };
 		082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */; };
 		082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C312B53CF4800D84CE2 /* Assets.xcassets */; };
@@ -132,6 +135,9 @@
 		081E6FEF2B67900900CF83F4 /* DictionaryItemDefaultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryItemDefaultCell.swift; sourceTree = "<group>"; };
 		081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUpdateManager.swift; sourceTree = "<group>"; };
 		081E6FFD2B68F8E800CF83F4 /* DictionaryGraySeparatorDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryGraySeparatorDescriptionCell.swift; sourceTree = "<group>"; };
+		081E70022B69130000CF83F4 /* AppInfoPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoPageViewController.swift; sourceTree = "<group>"; };
+		081E70092B69208100CF83F4 /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
+		081E700B2B69212800CF83F4 /* ProfilePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewModel.swift; sourceTree = "<group>"; };
 		082D0C252B53CF4600D84CE2 /* MLS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MLS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		082D0C282B53CF4600D84CE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -301,6 +307,23 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		081E70012B6912DC00CF83F4 /* AppInfoPageScene */ = {
+			isa = PBXGroup;
+			children = (
+				081E70022B69130000CF83F4 /* AppInfoPageViewController.swift */,
+			);
+			path = AppInfoPageScene;
+			sourceTree = "<group>";
+		};
+		081E70082B69206F00CF83F4 /* ProfilePageScene */ = {
+			isa = PBXGroup;
+			children = (
+				081E70092B69208100CF83F4 /* ProfilePageViewController.swift */,
+				081E700B2B69212800CF83F4 /* ProfilePageViewModel.swift */,
+			);
+			path = ProfilePageScene;
+			sourceTree = "<group>";
+		};
 		082D0C1C2B53CF4600D84CE2 = {
 			isa = PBXGroup;
 			children = (
@@ -335,6 +358,7 @@
 		082D0C792B53D22200D84CE2 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				081E70082B69206F00CF83F4 /* ProfilePageScene */,
 				0886E7E62B62849A00B014F8 /* DictionaryPageScene */,
 				77C1ED0A2B61544D003179B4 /* QnAPageScene */,
 				779B72C52B56DB9B007CB6C1 /* CommunityPageScene */,
@@ -343,6 +367,7 @@
 				775474BD2B565A4D00C8DD61 /* PostDetailPageScene */,
 				08D50A622B590D0A00E94442 /* SignInPageScene */,
 				08D50A632B590D1900E94442 /* SignUpPageScene */,
+				081E70012B6912DC00CF83F4 /* AppInfoPageScene */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -696,6 +721,7 @@
 				779B72C92B56DBC3007CB6C1 /* CommunityPageViewController.swift in Sources */,
 				775474C62B56A81300C8DD61 /* CommentTableViewCell.swift in Sources */,
 				08EF65052B5402A3004CC842 /* UITableViewCell+.swift in Sources */,
+				081E700A2B69208100CF83F4 /* ProfilePageViewController.swift in Sources */,
 				779B72C82B56DBC3007CB6C1 /* CommunityPageViewModel.swift in Sources */,
 				081E6FDC2B666DA200CF83F4 /* DictionaryNameImageCell.swift in Sources */,
 				77082A512B63F90A00187906 /* DetailPostCell.swift in Sources */,
@@ -720,6 +746,7 @@
 				08D50A8A2B5FD46700E94442 /* AlertMaker.swift in Sources */,
 				779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */,
 				081E6FE92B66A41B00CF83F4 /* DictionaryGraySeparatorOneLineCell.swift in Sources */,
+				081E70032B69130000CF83F4 /* AppInfoPageViewController.swift in Sources */,
 				08EF65122B554710004CC842 /* UILabel+.swift in Sources */,
 				08EF65082B54034D004CC842 /* MainPageFeatureDefaultsCell.swift in Sources */,
 				77082A4F2B63F8E100187906 /* DetailImageCell.swift in Sources */,
@@ -766,6 +793,7 @@
 				082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */,
 				778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */,
 				081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */,
+				081E700C2B69212800CF83F4 /* ProfilePageViewModel.swift in Sources */,
 				081E6FD32B663B6300CF83F4 /* DictionaryItemViewController.swift in Sources */,
 				08EF650E2B551EB8004CC842 /* MainPageFeatureListPostCell.swift in Sources */,
 				08EF65142B554722004CC842 /* UIColor+.swift in Sources */,

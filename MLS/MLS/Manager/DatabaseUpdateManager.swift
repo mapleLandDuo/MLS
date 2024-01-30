@@ -24,9 +24,8 @@ class DatabaseUpdateManager {
                     let itemName = name.trimmingCharacters(in: .whitespacesAndNewlines)
                     let itemCode = code.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: " ", with: "")
                     let itemLink = itemCode
-                    let firebaseManager = FirebaseManager()
                     let item = DictionaryNameLinkUpdateItem(name: itemName, link: itemLink)
-                    firebaseManager.updateDictionaryMonsterLink(item: item) { _ in
+                    FirebaseManager.firebaseManager.updateDictionaryMonsterLink(item: item) { _ in
                         print(i,":성공")
                     }
                 }

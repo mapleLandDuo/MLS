@@ -138,7 +138,7 @@ private extension AddPostViewController {
         }
         
         viewModel.postData.bind { [weak self] post in
-            self?.post
+            self?.updatePostUI()
         }
     }
 }

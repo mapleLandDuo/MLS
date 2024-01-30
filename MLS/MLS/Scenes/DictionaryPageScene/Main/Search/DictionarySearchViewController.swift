@@ -74,8 +74,10 @@ extension DictionarySearchViewController: UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch viewModel.type {
         case .item:
+            print("itemCount = \(viewModel.getItemListCount())")
             return viewModel.getItemListCount()
         case .monster:
+            print("monsterCount = \(viewModel.getMonsterListCount())")
             return viewModel.getMonsterListCount()
             
         }

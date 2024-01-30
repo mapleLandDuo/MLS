@@ -122,14 +122,18 @@ extension FirebaseManager {
     // MARK: Search
 
     func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping ([T]) -> Void) {
+        print("itemName \(name)")
         db.collection("monsters").whereField("name", arrayContains: [name]).getDocuments { querySnapshot, err in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
                 var temp: [T] = []
+                print("querySnapshot \(querySnapshot?.count)")
                 for document in querySnapshot!.documents {
                     do {
+                        print("document \(document)")
                         let data = try Firestore.Decoder().decode(T.self, from: document.data())
+                        print("data \(data)")
                         temp.append(data)
                     } catch {
                         print("Error decoding data: \(error)")

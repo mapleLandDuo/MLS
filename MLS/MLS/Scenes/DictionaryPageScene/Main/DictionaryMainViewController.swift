@@ -15,9 +15,9 @@ class DictionaryMainViewController: BasicController {
     private let viewModel: DictionaryMainViewModel
 
     private let mainTableView = UITableView(frame: .zero, style: .grouped)
-    
+
     private let itemSearchBar = UISearchBar()
-    
+
     private let monsterSearchBar = UISearchBar()
 
     init(viewModel: DictionaryMainViewModel) {
@@ -47,7 +47,7 @@ private extension DictionaryMainViewController {
         mainTableView.delegate = self
         mainTableView.dataSource = self
         mainTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: ItemTableViewCell.identifier)
-        
+
         itemSearchBar.delegate = self
         monsterSearchBar.delegate = self
 
@@ -91,24 +91,24 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
             return cell
         }
     }
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         if section == 0 {
             headerView.addSubview(itemSearchBar)
-            
+
             itemSearchBar.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
-            
+
             itemSearchBar.placeholder = "아이템을 검색하세요."
         } else {
             headerView.addSubview(monsterSearchBar)
-            
+
             monsterSearchBar.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
-            
+
             monsterSearchBar.placeholder = "몬스터를 검색하세요."
         }
 
@@ -119,15 +119,21 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
 extension DictionaryMainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else { return }
-            if searchBar == itemSearchBar {
-                FirebaseManager.firebaseManager.searchData(name: text, type: DictionaryItem.self) { [weak self] item in
-                    
-                }
-            } else if searchBar == monsterSearchBar {
-                FirebaseManager.firebaseManager.searchData(name: text, type: DictionaryMonster.self) { [weak self] monster in
-                    
-                }
+        if searchBar == itemSearchBar {
+            viewModel.searchItem(name: text) { [weak self] item in
+                let viewModel = DictionarySearchViewModel(type: .item)
+                viewModel.itemList.value = item
+                let vc = DictionarySearchViewController(viewModel: viewModel)
+                self?.navigationController?.pushViewController(vc, animated: true)
             }
-            searchBar.resignFirstResponder()
+        } else if searchBar == monsterSearchBar {
+            viewModel.searchMonster(name: text) { [weak self] item in
+                let viewModel = DictionarySearchViewModel(type: .monster)
+                viewModel.monsterList.value = item
+                let vc = DictionarySearchViewController(viewModel: viewModel)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
         }
+        searchBar.resignFirstResponder()
+    }
 }

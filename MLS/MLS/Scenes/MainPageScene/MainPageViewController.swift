@@ -191,6 +191,16 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
             ) as? MainPageFeatureListCell else {
                 return UICollectionViewCell()
             }
+            switch indexPath.row {
+            case 0:
+                viewModel.getMainPost(type: .normal) { posts in
+                    cell.posts.value = posts
+                }
+            default:
+                viewModel.getMainPost(type: .complete) { posts in
+                    cell.posts.value = posts
+                }
+            }
             cell.bind(data: viewModel.features[indexPath.section][indexPath.row])
             return cell
         default:

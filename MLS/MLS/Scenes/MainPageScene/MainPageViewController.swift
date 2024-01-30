@@ -298,6 +298,9 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             print("회원탈퇴")
         } else if title == "시뮬레이터" {
             print("시뮬레이터")
+        } else if title == "앱정보" {
+            let vc = AppInfoPageViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     

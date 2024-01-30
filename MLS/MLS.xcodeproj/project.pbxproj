@@ -22,6 +22,7 @@
 		081E6FF02B67900900CF83F4 /* DictionaryItemDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FEF2B67900900CF83F4 /* DictionaryItemDefaultCell.swift */; };
 		081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */; };
 		081E6FFE2B68F8E800CF83F4 /* DictionaryGraySeparatorDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FFD2B68F8E800CF83F4 /* DictionaryGraySeparatorDescriptionCell.swift */; };
+		081E70032B69130000CF83F4 /* AppInfoPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E70022B69130000CF83F4 /* AppInfoPageViewController.swift */; };
 		082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C282B53CF4600D84CE2 /* AppDelegate.swift */; };
 		082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */; };
 		082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C312B53CF4800D84CE2 /* Assets.xcassets */; };
@@ -132,6 +133,7 @@
 		081E6FEF2B67900900CF83F4 /* DictionaryItemDefaultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryItemDefaultCell.swift; sourceTree = "<group>"; };
 		081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUpdateManager.swift; sourceTree = "<group>"; };
 		081E6FFD2B68F8E800CF83F4 /* DictionaryGraySeparatorDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryGraySeparatorDescriptionCell.swift; sourceTree = "<group>"; };
+		081E70022B69130000CF83F4 /* AppInfoPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoPageViewController.swift; sourceTree = "<group>"; };
 		082D0C252B53CF4600D84CE2 /* MLS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MLS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		082D0C282B53CF4600D84CE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -301,6 +303,14 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		081E70012B6912DC00CF83F4 /* AppInfoPageScene */ = {
+			isa = PBXGroup;
+			children = (
+				081E70022B69130000CF83F4 /* AppInfoPageViewController.swift */,
+			);
+			path = AppInfoPageScene;
+			sourceTree = "<group>";
+		};
 		082D0C1C2B53CF4600D84CE2 = {
 			isa = PBXGroup;
 			children = (
@@ -343,6 +353,7 @@
 				775474BD2B565A4D00C8DD61 /* PostDetailPageScene */,
 				08D50A622B590D0A00E94442 /* SignInPageScene */,
 				08D50A632B590D1900E94442 /* SignUpPageScene */,
+				081E70012B6912DC00CF83F4 /* AppInfoPageScene */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -720,6 +731,7 @@
 				08D50A8A2B5FD46700E94442 /* AlertMaker.swift in Sources */,
 				779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */,
 				081E6FE92B66A41B00CF83F4 /* DictionaryGraySeparatorOneLineCell.swift in Sources */,
+				081E70032B69130000CF83F4 /* AppInfoPageViewController.swift in Sources */,
 				08EF65122B554710004CC842 /* UILabel+.swift in Sources */,
 				08EF65082B54034D004CC842 /* MainPageFeatureDefaultsCell.swift in Sources */,
 				77082A4F2B63F8E100187906 /* DetailImageCell.swift in Sources */,

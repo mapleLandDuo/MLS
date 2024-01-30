@@ -18,8 +18,6 @@ class PostDetailViewController: BasicController {
     lazy var safeAreaInsets = self.windowScene?.windows.first?.safeAreaInsets
     lazy var safeAreaHeight = UIScreen.main.bounds.height - self.safeAreaInsets!.top - self.safeAreaInsets!.bottom
 
-//    let dummy = [URL(string: "https://www.mancity.com/meta/media/kppnc3ji/team-lifting-trophy.png"), URL(string: "https://blog.kakaocdn.net/dn/lOszd/btrOBLArMVV/rdorYnmzpEFKJPjTgl41n0/img.png")]
-
     // MARK: - Components
 
     private let totalTableView: UITableView = {
@@ -28,15 +26,20 @@ class PostDetailViewController: BasicController {
         view.sectionHeaderTopPadding = 0
         return view
     }()
-    
-    let commentButton: UIButton = {
+
+    lazy var commentButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.circle.fill")?.resized(to: CGSize(width: 40, height: 40)), for: .normal)
         button.tintColor = .gray
+        button.isUserInteractionEnabled = self.viewModel.isLogin()
         return button
     }()
-    
-    let commentTextField = SharedTextField(type: .normal, placeHolder: "댓글입력")
+
+    lazy var commentTextField: SharedTextField = {
+        let textField = SharedTextField(type: .normal, placeHolder: "댓글입력")
+        textField.isUserInteractionEnabled = self.viewModel.isLogin()
+        return textField
+    }()
 
     init(viewModel: PostDetailViewModel) {
         self.viewModel = viewModel
@@ -56,11 +59,11 @@ extension PostDetailViewController {
         super.viewDidLoad()
         setUp()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let id = self.viewModel.post.value?.id {
-            self.viewModel.loadComment(postId: id.uuidString) {
+        if let id = viewModel.post.value?.id {
+            viewModel.loadComment(postId: id.uuidString) {
                 self.totalTableView.reloadData()
             }
         }
@@ -89,11 +92,15 @@ private extension PostDetailViewController {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
-    
+
     func setUpActions() {
         commentButton.addAction(UIAction(handler: { [weak self] _ in
             guard let post = self?.viewModel.post.value else { return }
             if let text = self?.commentTextField.textField.text {
+                if text == "" {
+                    AlertMaker.showAlertAction1(vc: self, message: "댓글을 입력하세요.")
+                    return
+                }
                 let comment = Comment(
                     id: UUID(),
                     user: post.user,
@@ -120,6 +127,7 @@ private extension PostDetailViewController {
 
 private extension PostDetailViewController {
     // MARK: Bind
+
     func bind() {
         viewModel.comments.bind { [weak self] _ in
             self?.totalTableView.reloadData()

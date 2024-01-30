@@ -532,8 +532,8 @@
 			isa = PBXGroup;
 			children = (
 				775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */,
-				775474C32B56795200C8DD61 /* PostDetailView.swift */,
 				77082A492B63A26200187906 /* PostDetailViewModel.swift */,
+				775474C32B56795200C8DD61 /* PostDetailView.swift */,
 				77082A4D2B63F8C000187906 /* Cells */,
 			);
 			path = PostDetailPageScene;

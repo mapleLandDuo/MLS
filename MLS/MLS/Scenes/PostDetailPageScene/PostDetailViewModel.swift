@@ -9,6 +9,8 @@ import Foundation
 
 class PostDetailViewModel {
     //MARK: Properties
+    var loginManager = LoginManager()
+    
     var comments: Observable<[Comment]> = Observable(nil)
 //    var commentCount: Observable<Int> = Observable(0)
     lazy var commentCount = 0
@@ -32,5 +34,9 @@ class PostDetailViewModel {
     func saveComment(postId: String, comment: Comment, completion: @escaping () -> Void) {
         FirebaseManager.firebaseManager.saveComment(postID: postId, comment: comment)
         completion()
+    }
+    
+    func isLogin() -> Bool {
+        return loginManager.isLogin()
     }
 }

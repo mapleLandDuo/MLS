@@ -70,10 +70,6 @@ private extension PostDetailView {
 
     func setUp() {
         setUpConstraints()
-        postContentLabel.text = "contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent"
-        self.layer.borderColor = UIColor.systemOrange.cgColor
-        self.layer.borderWidth = 1
-        self.layer.cornerRadius = Constants.defaults.radius
     }
     
     func setUpConstraints() {

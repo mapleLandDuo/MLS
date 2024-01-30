@@ -119,7 +119,6 @@ extension MainPageFeatureListCell: UITableViewDataSource {
 
 extension MainPageFeatureListCell {
     func bind(data: FeatureCellData) {
-        print("bind")
         titleLabel.text = data.title
         rightImageView.image = data.image
     }

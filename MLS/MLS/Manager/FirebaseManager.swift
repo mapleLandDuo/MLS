@@ -123,11 +123,12 @@ extension FirebaseManager {
         }
     }
 
-    func deletePost(postID: String) {
+    func deletePost(postID: String, completion: @escaping () -> Void) {
         db.collection("posts").document(postID).delete { error in
             if let error = error {
                 print("게시글 삭제 실패: \(error)")
             } else {
+                completion()
                 print("게시글 삭제 성공")
             }
         }
@@ -183,7 +184,6 @@ extension FirebaseManager {
     func loadComments(postID: String, completion: @escaping ([Comment]?) -> Void) {
         db.collection("posts").document(postID).collection("comments").order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
-                print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
             } else {
                 var comments: [Comment] = []
@@ -256,12 +256,13 @@ extension FirebaseManager {
         }
     }
 
-    func deleteComment(postID: String, commentID: String) {
+    func deleteComment(postID: String, commentID: String, completion: @escaping () -> Void) {
         db.collection("posts").document(postID).collection("comments").document(commentID).delete { error in
             if let error = error {
                 print("댓글 삭제 실패: \(error)")
             } else {
                 print("댓글 삭제 성공")
+                completion()
             }
         }
     }

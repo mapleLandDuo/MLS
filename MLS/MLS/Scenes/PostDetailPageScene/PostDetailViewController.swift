@@ -58,13 +58,14 @@ extension PostDetailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        bind()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let id = viewModel.post.value?.id {
             viewModel.loadComment(postId: id.uuidString) {
-                self.totalTableView.reloadData()
+                self.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
             }
         }
     }
@@ -115,7 +116,7 @@ private extension PostDetailViewController {
                     AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 완료 되었습니다.")
                     if let id = self?.viewModel.post.value?.id {
                         self?.viewModel.loadComment(postId: id.uuidString) {
-                            self?.totalTableView.reloadData()
+                            self?.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
                         }
                     }
                 }
@@ -127,11 +128,22 @@ private extension PostDetailViewController {
 
     func setUpNavigation() {
         let modifyMenu = UIAction(title: "수정", handler: { [weak self] _ in
-            // 수정
+            guard let type = self?.viewModel.post.value?.postType,
+                  let post = self?.viewModel.post,
+                  let images = post.value?.postImages else { return }
+            let vm = AddPostViewModel(type: type)
+            vm.postData = post
+            let vc = AddPostViewController(viewModel: vm)
+            self?.navigationController?.pushViewController(vc, animated: true)
         })
 
         let deleteMenu = UIAction(title: "삭제", attributes: .destructive, handler: { [weak self] _ in
-            // 삭제
+            AlertMaker.showAlertAction2(vc: self, title: "정말 삭제하시겠습니까?", message: "영구적으로 삭제됩니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
+                guard let postId = self?.viewModel.post.value?.id else { return }
+                self?.viewModel.deletPost(postId: postId.uuidString) {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            })
         })
 
         let reportMenu = UIAction(title: "신고하기", attributes: .destructive, handler: { [weak self] _ in
@@ -152,7 +164,8 @@ private extension PostDetailViewController {
 
     func bind() {
         viewModel.comments.bind { [weak self] _ in
-            self?.totalTableView.reloadData()
+            print(self?.viewModel.comments)
+            self?.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
         }
     }
 }
@@ -257,15 +270,19 @@ extension PostDetailViewController: DetailCommentCellDelegate {
     func tapDeleteButton(cell: DetailCommentCell, comment: Comment) {
         guard let postId = viewModel.post.value?.id.uuidString else { return }
         viewModel.deleteComment(postId: postId, commentId: comment.id.uuidString) {
-            AlertMaker.showAlertAction1(vc: self, message: "댓글 수정 완료")
-            self.totalTableView.reloadData()
+            self.viewModel.loadComment(postId: postId) {
+                AlertMaker.showAlertAction1(vc: self, message: "댓글 삭제 완료")
+            }
         }
     }
-    
+
     func tapModifyButton(cell: DetailCommentCell, comment: Comment) {
         guard let postId = viewModel.post.value?.id.uuidString else { return }
         viewModel.updateComment(postId: postId, comment: comment) {
-            self.totalTableView.reloadData()
+            // 수정
+//            AlertMaker.showAlertAction1(vc: self, title: "댓글 수정") {
+//                self.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
+//            }
         }
     }
 }

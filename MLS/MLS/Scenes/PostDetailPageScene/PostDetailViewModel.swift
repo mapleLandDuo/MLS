@@ -24,15 +24,17 @@ class PostDetailViewModel {
     // MARK: Method
 
     func deletPost(postId: String, completion: @escaping () -> Void) {
-        FirebaseManager.firebaseManager.deletePost(postID: postId)
+        FirebaseManager.firebaseManager.deletePost(postID: postId) {
+            completion()
+        }
     }
     
     func loadComment(postId: String, completion: @escaping () -> Void) {
         FirebaseManager.firebaseManager.loadComments(postID: postId) { comments in
-            self.comments.value = comments
             if let count = comments?.count {
                 self.commentCount = count
             }
+            self.comments.value = comments
             completion()
         }
     }
@@ -48,8 +50,9 @@ class PostDetailViewModel {
     }
     
     func deleteComment(postId: String, commentId: String, completion: @escaping () -> Void) {
-        FirebaseManager.firebaseManager.deleteComment(postID: postId, commentID: commentId)
-        completion()
+        FirebaseManager.firebaseManager.deleteComment(postID: postId, commentID: commentId) {
+            completion()
+        }
     }
     
     func isLogin() -> Bool {

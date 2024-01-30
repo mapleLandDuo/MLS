@@ -99,7 +99,6 @@ extension DictionarySearchViewController: UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionarySearchCell.identifier, for: indexPath) as? DictionarySearchCell,
               let url = viewModel.getURL() else { return UITableViewCell() }
-        print(viewModel.type)
         switch viewModel.type {
         case .item:
 //            guard let item = viewModel.itemList.value?[indexPath.row] else { return UITableViewCell() }
@@ -111,5 +110,19 @@ extension DictionarySearchViewController: UITableViewDelegate, UITableViewDataSo
             cell.bind(imageUrl: url, title: item.name, level: String(item.level))
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch viewModel.type {
+        case .item:
+            guard let item = viewModel.item.value else { return }
+            let vc = DictionaryItemViewController(viewModel: DictionaryItemViewModel(item: item))
+            navigationController?.pushViewController(vc, animated: true)
+        case .monster:
+            guard let item = viewModel.monster.value else { return }
+            let vc = DictionaryMonsterViewController(viewModel: DictionaryMonsterViewModel(item: item))
+            navigationController?.pushViewController(vc, animated: true)
+            
+        }
     }
 }

@@ -49,17 +49,18 @@ private extension DictionarySearchCell {
         
         searchImageView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.size.equalTo(40)
         }
         
         searchTitleLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.leading.equalTo(searchImageView.snp.trailing).inset(Constants.defaults.horizontal)
+            $0.leading.equalTo(searchImageView.snp.trailing).inset(-Constants.defaults.horizontal)
         }
         
         searchLevelLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.leading.equalTo(searchTitleLabel.snp.trailing).inset(Constants.defaults.horizontal)
+            $0.leading.equalTo(searchTitleLabel.snp.trailing).inset(-Constants.defaults.horizontal)
             $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }
@@ -71,6 +72,6 @@ extension DictionarySearchCell {
     func bind(imageUrl: URL, title: String, level: String) {
         searchImageView.kf.setImage(with: imageUrl)
         searchTitleLabel.text = title
-        searchLevelLabel.text = level
+        searchLevelLabel.text = "LV. \(level)"
     }
 }

@@ -39,15 +39,19 @@ extension DictionaryMainViewModel {
         return itemMenus.count
     }
     
-    func searchItem(name: String, completion: @escaping ([DictionaryItem]) -> Void) {
+    func searchItem(name: String, completion: @escaping (DictionaryItem) -> Void) {
         FirebaseManager.firebaseManager.searchData(name: name, type: DictionaryItem.self) { data in
-            completion(data)
+            if let data = data {
+                completion(data)
+            }
         }
     }
     
-    func searchMonster(name: String, completion: @escaping ([DictionaryMonster]) -> Void) {
+    func searchMonster(name: String, completion: @escaping (DictionaryMonster) -> Void) {
         FirebaseManager.firebaseManager.searchData(name: name, type: DictionaryMonster.self) { data in
-            completion(data)
+            if let data = data {
+                completion(data)
+            }
         }
     }
 }

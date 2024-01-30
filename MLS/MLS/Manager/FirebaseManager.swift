@@ -228,36 +228,66 @@ extension FirebaseManager {
 extension FirebaseManager {
     // MARK: Search
 
-    func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping ([T]) -> Void) {
-        print("itemName \(name)")
-        db.collection("monsters").whereField("name", arrayContains: [name]).getDocuments { querySnapshot, err in
+//    func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping ([T]) -> Void) {
+//        print("itemName \(name)")
+//        let collectionName = getCollectionName(for: type)
+//        db.collection(collectionName).whereField("name", arrayContains: [name]).getDocuments { querySnapshot, err in
+//            if let err = err {
+//                print("Error getting documents: \(err)")
+//            } else {
+//                var temp: [T] = []
+//                print("querySnapshot \(querySnapshot?.count)")
+//                for document in querySnapshot!.documents {
+//                    do {
+//                        print("document \(document)")
+//                        let data = try Firestore.Decoder().decode(T.self, from: document.data())
+//                        print("data \(data)")
+//                        temp.append(data)
+//                    } catch {
+//                        print("Error decoding data: \(error)")
+//                    }
+//                }
+//                completion(temp)
+//            }
+//        }
+//    }
+
+    func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping (T?) -> Void) {
+        let collectionName = getCollectionName(for: type)
+        db.collection(collectionName).document(name).getDocument { documentSnapshot, err in
             if let err = err {
-                print("Error getting documents: \(err)")
+                print("검색 데이터 없음: \(err)")
             } else {
-                var temp: [T] = []
-                print("querySnapshot \(querySnapshot?.count)")
-                for document in querySnapshot!.documents {
-                    do {
-                        print("document \(document)")
+                do {
+                    if let document = documentSnapshot, document.exists {
                         let data = try Firestore.Decoder().decode(T.self, from: document.data())
-                        print("data \(data)")
-                        temp.append(data)
-                    } catch {
-                        print("Error decoding data: \(error)")
+                        completion(data)
+                    } else {
+                        print("검색 데이터 없음")
+                        completion(nil)
                     }
+                } catch {
+                    print("검색 데이터 디코딩 실패: \(error)")
+                    completion(nil)
                 }
-                completion(temp)
             }
+        }
+    }
+
+    func getCollectionName<T>(for type: T.Type) -> String {
+        switch type {
+        case is DictionaryItem.Type:
+            return "dictionaryItems"
+        case is DictionaryMonster.Type:
+            return "dictionaryMonsters"
+        default:
+            return "defaultCollection"
         }
     }
 }
 
 extension FirebaseManager {
-    func saveDictionaryItemLink(item: DictionaryItemLink, completion: @escaping (Error?) -> Void) {
-
-extension FirebaseManager  {
     func updateDictionaryItemLink(item: DictionaryNameLinkUpdateItem, completion: @escaping (Error?) -> Void) {
-
         do {
             let data = try Firestore.Encoder().encode(item)
             db.collection("dictionaryItemLink").document(item.name).setData(data) { error in
@@ -278,7 +308,7 @@ extension FirebaseManager  {
             completion(error)
         }
     }
-    
+
     func saveDictionaryMonster(item: DictionaryMonster, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
@@ -301,9 +331,7 @@ extension FirebaseManager  {
         }
     }
 
-    
     func loadItemLinks(completion: @escaping ([DictionaryNameLinkUpdateItem]?) -> Void) {
-
         db.collection("dictionaryItemLink").getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
@@ -323,6 +351,7 @@ extension FirebaseManager  {
             }
         }
     }
+
     func loadMonsterLinks(completion: @escaping ([DictionaryNameLinkUpdateItem]?) -> Void) {
         db.collection("dictionaryMonsterLink").getDocuments { querySnapshot, error in
             if let error = error {
@@ -343,6 +372,7 @@ extension FirebaseManager  {
             }
         }
     }
+
     func loadItem(itemName: String, completion: @escaping (DictionaryItem?) -> Void) {
         db.collection("dictionaryItems").document(itemName).getDocument { querySnapshot, error in
             if let error = error {
@@ -359,6 +389,7 @@ extension FirebaseManager  {
             }
         }
     }
+
     func loadMonster(monsterName: String, completion: @escaping (DictionaryMonster?) -> Void) {
         db.collection("dictionaryMonsters").document(monsterName).getDocument { querySnapshot, error in
             if let error = error {
@@ -376,4 +407,3 @@ extension FirebaseManager  {
         }
     }
 }
-

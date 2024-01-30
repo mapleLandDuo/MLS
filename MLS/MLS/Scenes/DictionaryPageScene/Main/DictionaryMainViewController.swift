@@ -122,14 +122,14 @@ extension DictionaryMainViewController: UISearchBarDelegate {
         if searchBar == itemSearchBar {
             viewModel.searchItem(name: text) { [weak self] item in
                 let viewModel = DictionarySearchViewModel(type: .item)
-                viewModel.itemList.value = item
+                viewModel.item.value = item
                 let vc = DictionarySearchViewController(viewModel: viewModel)
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
         } else if searchBar == monsterSearchBar {
             viewModel.searchMonster(name: text) { [weak self] item in
                 let viewModel = DictionarySearchViewModel(type: .monster)
-                viewModel.monsterList.value = item
+                viewModel.monster.value = item
                 let vc = DictionarySearchViewController(viewModel: viewModel)
                 self?.navigationController?.pushViewController(vc, animated: true)
             }

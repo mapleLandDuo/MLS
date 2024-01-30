@@ -11,11 +11,13 @@ import SnapKit
 
 class DictionarySearchViewController: BasicController {
     // MARK: Properties
+
     private let viewModel: DictionarySearchViewModel
-    
+
     // MARK: Components
+
     private let searchTableView = UITableView()
-    
+
     init(viewModel: DictionarySearchViewModel) {
         self.viewModel = viewModel
         super.init()
@@ -34,6 +36,7 @@ extension DictionarySearchViewController {
         super.viewDidLoad()
         setUp()
         bind()
+        searchTableView.reloadData()
     }
 }
 
@@ -43,13 +46,14 @@ private extension DictionarySearchViewController {
     func setUp() {
         searchTableView.delegate = self
         searchTableView.dataSource = self
-        
+        searchTableView.register(DictionarySearchCell.self, forCellReuseIdentifier: DictionarySearchCell.identifier)
+
         setUpConstraints()
     }
 
     func setUpConstraints() {
         view.addSubview(searchTableView)
-        
+
         searchTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -58,40 +62,53 @@ private extension DictionarySearchViewController {
 
 private extension DictionarySearchViewController {
     // MARK: Bind
-    
+
     func bind() {
-        viewModel.itemList.bind { [weak self] _ in
+        viewModel.item.bind { [weak self] _ in
             self?.searchTableView.reloadData()
         }
-        
-        viewModel.monsterList.bind { [weak self] _ in
+
+        viewModel.monster.bind { [weak self] _ in
             self?.searchTableView.reloadData()
         }
+
+//        viewModel.itemList.bind { [weak self] _ in
+//            self?.searchTableView.reloadData()
+//        }
+//
+//        viewModel.monsterList.bind { [weak self] _ in
+//            self?.searchTableView.reloadData()
+//        }
     }
 }
 
 extension DictionarySearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch viewModel.type {
-        case .item:
-            print("itemCount = \(viewModel.getItemListCount())")
-            return viewModel.getItemListCount()
-        case .monster:
-            print("monsterCount = \(viewModel.getMonsterListCount())")
-            return viewModel.getMonsterListCount()
-            
-        }
+//        switch viewModel.type {
+//        case .item:
+//            print("itemCount = \(viewModel.getItemListCount())")
+//            return viewModel.getItemListCount()
+//        case .monster:
+//            print("monsterCount = \(viewModel.getMonsterListCount())")
+//            return viewModel.getMonsterListCount()
+//
+//        }
+        return 1
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionarySearchCell.identifier, for: indexPath) as? DictionarySearchCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionarySearchCell.identifier, for: indexPath) as? DictionarySearchCell,
+              let url = viewModel.getURL() else { return UITableViewCell() }
+        print(viewModel.type)
         switch viewModel.type {
         case .item:
-            guard let item = viewModel.itemList.value?[indexPath.row] else { return UITableViewCell() }
-//            cell.bind(imageUrl: item?., title: item.name, level: item.level)
+//            guard let item = viewModel.itemList.value?[indexPath.row] else { return UITableViewCell() }
+            guard let item = viewModel.item.value else { return UITableViewCell() }
+            cell.bind(imageUrl: url, title: item.name, level: item.level)
         case .monster:
-            guard let item = viewModel.monsterList.value?[indexPath.row] else { return UITableViewCell() }
-//            cell.bind(imageUrl: item?., title: item?.name, level: item?.level)
+//            guard let item = viewModel.monsterList.value?[indexPath.row] else { return UITableViewCell() }
+            guard let item = viewModel.monster.value else { return UITableViewCell() }
+            cell.bind(imageUrl: url, title: item.name, level: String(item.level))
         }
         return cell
     }

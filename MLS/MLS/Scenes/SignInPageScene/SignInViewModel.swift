@@ -45,6 +45,7 @@ class SignInViewModel {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
             guard let self = self else { return }
             if error == nil {
+                Utils.currentUser = Auth.auth().currentUser?.email
                 completion(.success)
             } else {
                 completion(.fail)

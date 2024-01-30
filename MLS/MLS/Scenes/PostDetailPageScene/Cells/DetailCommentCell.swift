@@ -7,30 +7,49 @@
 
 import UIKit
 
+protocol DetailCommentCellDelegate: AnyObject {
+    func tapDeleteButton(cell: DetailCommentCell, comment: Comment)
+    func tapModifyButton(cell: DetailCommentCell, comment: Comment)
+}
+
 class DetailCommentCell: UITableViewCell {
+    // MAKR: Properties
+    weak var delegate: DetailCommentCellDelegate?
+    var comment: Comment?
+    
     // MARK: Components
 
     private let commentProfileNameLabel = CustomLabel(text: "userName", font: .boldSystemFont(ofSize: 16))
 
     lazy var optionStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [deletebutton, modifybutton])
+        let view = UIStackView(arrangedSubviews: [modifybutton, deletebutton])
         view.axis = .horizontal
         return view
     }()
 
-    private let deletebutton: UIButton = {
+    lazy var deletebutton: UIButton = {
         let button = UIButton()
         button.setTitle("삭제", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 12)
         button.setTitleColor(.red, for: .normal)
+        button.addAction(UIAction(handler: { [weak self] _ in
+            if let self = self, let comment = self.comment {
+                self.delegate?.tapDeleteButton(cell: self, comment: comment)
+            }
+        }), for: .touchUpInside)
         return button
     }()
 
-    private let modifybutton: UIButton = {
+    lazy var modifybutton: UIButton = {
         let button = UIButton()
         button.setTitle("수정", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 12)
         button.setTitleColor(.black, for: .normal)
+        button.addAction(UIAction(handler: { [weak self] _ in
+            if let self = self, let comment = self.comment {
+                self.delegate?.tapModifyButton(cell: self, comment: comment)
+            }
+        }), for: .touchUpInside)
         return button
     }()
 
@@ -96,7 +115,9 @@ extension DetailCommentCell {
         if comment.user != Utils.currentUser {
             optionStackView.isHidden = true
         }
-        commentProfileNameLabel.text = comment.user
+        comment.user.toNickName { [weak self] nickName in
+            self?.commentProfileNameLabel.text = nickName
+        }
         commentTextLabel.text = comment.comment
     }
 }

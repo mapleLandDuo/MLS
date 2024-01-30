@@ -20,6 +20,24 @@ class FirebaseManager {
 }
 
 extension FirebaseManager {
+    // MARK: User
+    func getNickname(userEmail: String, completion: @escaping (String?) -> Void) {
+        db.collection("users").document(userEmail).getDocument { (document, error) in
+            if let error = error {
+                print("닉네임 가져오지 못함: \(error)")
+                completion(nil)
+            } else if let document = document, document.exists {
+                let name = document.get("nickName") as? String
+                completion(name)
+            } else {
+                print("닉네임 가져오지 못함")
+                completion(nil)
+            }
+        }
+    }
+}
+
+extension FirebaseManager {
     // MARK: Post
 
     func savePost(post: Post) {

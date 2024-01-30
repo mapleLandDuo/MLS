@@ -94,7 +94,9 @@ extension DetailPostCell {
     // MARK: Method
     func bind(post: Post) {
         postTitleLabel.text = post.title
-        userNameLabel.text = post.user
+        post.user.toNickName { [weak self] nickName in
+            self?.userNameLabel.text = nickName
+        }
         dateLabel.text = post.date.toString()
         postContentTextView.text = post.postContent
         postCountLabel.text = "\(String(post.viewCount))회"

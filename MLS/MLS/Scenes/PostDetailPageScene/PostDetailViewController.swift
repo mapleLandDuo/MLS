@@ -83,6 +83,7 @@ private extension PostDetailViewController {
 
         setUpConstraints()
         setUpActions()
+        setUpNavigation()
     }
 
     func setUpConstraints() {
@@ -122,6 +123,27 @@ private extension PostDetailViewController {
                 AlertMaker.showAlertAction1(vc: self, message: "댓글을 입력하세요.")
             }
         }), for: .touchUpInside)
+    }
+
+    func setUpNavigation() {
+        let modifyMenu = UIAction(title: "수정", handler: { [weak self] _ in
+            // 수정
+        })
+
+        let deleteMenu = UIAction(title: "삭제", attributes: .destructive, handler: { [weak self] _ in
+            // 삭제
+        })
+
+        let reportMenu = UIAction(title: "신고하기", attributes: .destructive, handler: { [weak self] _ in
+            // 신고
+        })
+
+        let loginMenu = UIMenu(children: [modifyMenu, deleteMenu])
+        let logoutMenu = UIMenu(children: [reportMenu])
+
+        let navigationMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: viewModel.isLogin() ? loginMenu : logoutMenu)
+
+        navigationItem.rightBarButtonItem = navigationMenu
     }
 }
 
@@ -176,6 +198,9 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailCommentCell.identifier, for: indexPath) as? DetailCommentCell,
                   let comment = viewModel.comments.value?[indexPath.row] else { return UITableViewCell() }
+            cell.delegate = self
+            cell.comment = comment
+            cell.contentView.isUserInteractionEnabled = false
             cell.bind(comment: comment)
             return cell
         default:
@@ -225,5 +250,22 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             return 60
         }
         return 0
+    }
+}
+
+extension PostDetailViewController: DetailCommentCellDelegate {
+    func tapDeleteButton(cell: DetailCommentCell, comment: Comment) {
+        guard let postId = viewModel.post.value?.id.uuidString else { return }
+        viewModel.deleteComment(postId: postId, commentId: comment.id.uuidString) {
+            AlertMaker.showAlertAction1(vc: self, message: "댓글 수정 완료")
+            self.totalTableView.reloadData()
+        }
+    }
+    
+    func tapModifyButton(cell: DetailCommentCell, comment: Comment) {
+        guard let postId = viewModel.post.value?.id.uuidString else { return }
+        viewModel.updateComment(postId: postId, comment: comment) {
+            self.totalTableView.reloadData()
+        }
     }
 }

@@ -52,7 +52,7 @@ class CommunityPageViewController: BasicController {
         return button
     }()
 
-    let communityTableView: UITableView = {
+    private let communityTableView: UITableView = {
         let view = UITableView()
         return view
     }()
@@ -99,7 +99,7 @@ private extension CommunityPageViewController {
     func setUp() {
         communityTableView.dataSource = self
         communityTableView.delegate = self
-        
+
         communityTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
         communityTableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
 
@@ -149,9 +149,17 @@ private extension CommunityPageViewController {
         }), for: .touchUpInside)
 
         addPostButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let type = self?.viewModel.type else { return }
-            let vc = AddPostViewController(viewModel: AddPostViewModel(type: type))
-            self?.navigationController?.pushViewController(vc, animated: true)
+            guard let type = self?.viewModel.type,
+                  let isLogin = self?.viewModel.isLogin() else { return }
+            if isLogin {
+                let vc = AddPostViewController(viewModel: AddPostViewModel(type: type))
+                self?.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                AlertMaker.showAlertAction1(vc: self, message: "로그인이 필요합니다.") {
+                    let vc = SignUpViewController(viewModel: SignUpViewModel())
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
         }), for: .primaryActionTriggered)
     }
 

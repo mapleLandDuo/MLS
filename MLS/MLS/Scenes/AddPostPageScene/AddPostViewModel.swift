@@ -12,8 +12,8 @@ class AddPostViewModel {
 
     let loginManager = LoginManager()
 
-    let imageData: Observable<[UIImage?]> = Observable([])
-    let postData: Observable<Post> = Observable(nil)
+    var imageData: Observable<[UIImage?]> = Observable([])
+    var postData: Observable<Post> = Observable(nil)
     let type: BoardSeparatorType
 
     init(type: BoardSeparatorType) {

@@ -136,6 +136,10 @@ private extension AddPostViewController {
         viewModel.imageData.bind { [weak self] _ in
             self?.imageChoiceCollectionView.reloadData()
         }
+        
+        viewModel.postData.bind { [weak self] post in
+            self?.updatePostUI()
+        }
     }
 }
 
@@ -251,6 +255,13 @@ private extension AddPostViewController {
 
 private extension AddPostViewController {
     // MARK: Method
+    func updatePostUI() {
+        guard let title = viewModel.postData.value?.title,
+              let content = viewModel.postData.value?.postContent else { return }
+        titleTextField.text = title
+        postTextView.text = content
+        imageChoiceCollectionView.reloadData()
+    }
 }
 
 extension AddPostViewController: UICollectionViewDataSource, UICollectionViewDelegate {

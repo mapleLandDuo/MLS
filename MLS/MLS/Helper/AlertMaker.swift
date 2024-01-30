@@ -67,7 +67,7 @@ class AlertMaker {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
             
-            let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { action in
+            let cancelAction = UIAlertAction(title: cancelTitle, style: .destructive) { action in
                 cancelHandler?()
             }
             let completeAction = UIAlertAction(title: completeTitle, style: .default) { action in

@@ -11,7 +11,7 @@ import FirebaseAuth
 
 class Utils {
     static let utils = Utils()
-    static let currentUser = Auth.auth().currentUser?.email
+    static var currentUser = Auth.auth().currentUser?.email
     
     private init() {}
     

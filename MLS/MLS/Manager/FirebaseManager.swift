@@ -20,6 +20,24 @@ class FirebaseManager {
 }
 
 extension FirebaseManager {
+    // MARK: User
+    func getNickname(userEmail: String, completion: @escaping (String?) -> Void) {
+        db.collection("users").document(userEmail).getDocument { (document, error) in
+            if let error = error {
+                print("닉네임 가져오지 못함: \(error)")
+                completion(nil)
+            } else if let document = document, document.exists {
+                let name = document.get("nickName") as? String
+                completion(name)
+            } else {
+                print("닉네임 가져오지 못함")
+                completion(nil)
+            }
+        }
+    }
+}
+
+extension FirebaseManager {
     // MARK: Post
 
     func savePost(post: Post) {
@@ -73,6 +91,51 @@ extension FirebaseManager {
             }
         }
     }
+    
+    // 게시글 개수로 가져오기
+    func loadPosts(type: BoardSeparatorType, itemCount: Int, completion: @escaping ([Post]?) -> Void) {
+        db.collection("posts").whereField("postType", isEqualTo: type.toString).order(by: "date", descending: true).limit(to: itemCount).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var posts: [Post] = []
+                for document in querySnapshot?.documents ?? [] {
+                    do {
+                        let post = try Firestore.Decoder().decode(Post.self, from: document.data())
+                        posts.append(post)
+                    } catch {
+                        completion(nil)
+                        return
+                    }
+                }
+                completion(posts)
+            }
+        }
+    }
+    
+    // 본인 게시글 가져오기
+    func loadMyPosts(completion: @escaping ([Post]?) -> Void) {
+        guard let email = Utils.currentUser else { return }
+        db.collection("posts").whereField("user", isEqualTo: email).order(by: "date", descending: true).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var posts: [Post] = []
+                for document in querySnapshot?.documents ?? [] {
+                    do {
+                        let post = try Firestore.Decoder().decode(Post.self, from: document.data())
+                        posts.append(post)
+                    } catch {
+                        completion(nil)
+                        return
+                    }
+                }
+                completion(posts)
+            }
+        }
+    }
 
     func updatePost(post: Post) {
         do {
@@ -83,11 +146,12 @@ extension FirebaseManager {
         }
     }
 
-    func deletePost(postID: String) {
+    func deletePost(postID: String, completion: @escaping () -> Void) {
         db.collection("posts").document(postID).delete { error in
             if let error = error {
                 print("게시글 삭제 실패: \(error)")
             } else {
+                completion()
                 print("게시글 삭제 성공")
             }
         }
@@ -143,7 +207,6 @@ extension FirebaseManager {
     func loadComments(postID: String, completion: @escaping ([Comment]?) -> Void) {
         db.collection("posts").document(postID).collection("comments").order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
-                print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
             } else {
                 var comments: [Comment] = []
@@ -216,12 +279,13 @@ extension FirebaseManager {
         }
     }
 
-    func deleteComment(postID: String, commentID: String) {
+    func deleteComment(postID: String, commentID: String, completion: @escaping () -> Void) {
         db.collection("posts").document(postID).collection("comments").document(commentID).delete { error in
             if let error = error {
                 print("댓글 삭제 실패: \(error)")
             } else {
                 print("댓글 삭제 성공")
+                completion()
             }
         }
     }

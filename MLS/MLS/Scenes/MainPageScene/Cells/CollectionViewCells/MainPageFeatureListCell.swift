@@ -5,19 +5,14 @@
 //  Created by SeoJunYoung on 1/14/24.
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
 class MainPageFeatureListCell: UICollectionViewCell {
-    
     // MARK: - Property
 
-    var dummy = [
-        "클레릭 육성법 공략글 입니다. 1 안녕하세요 클레릭 육성법 공략글 입니다. 2",
-        "안녕하세요 클레릭 육성법 공략글 입니다. 2 얼씨구 절씨구1 얼씨구 절씨구2 얼씨구 절씨구3",
-        "얼씨구 절씨구1 얼씨구 절씨구2 얼씨구 절씨구3"
-    ]
-    
+    var posts: Observable<[Post]> = Observable(nil)
+
     // MARK: - Components
 
     private let trailingView: UIView = {
@@ -28,20 +23,20 @@ class MainPageFeatureListCell: UICollectionViewCell {
         view.layer.borderColor = UIColor.systemOrange.cgColor
         return view
     }()
-    
+
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.title1.font
         label.textColor = .systemOrange
         return label
     }()
-    
+
     private let rightImageView: UIImageView = {
         let view = UIImageView()
         view.tintColor = .systemOrange
         return view
     }()
-    
+
     private let postListTableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
         view.backgroundColor = .clear
@@ -53,10 +48,11 @@ class MainPageFeatureListCell: UICollectionViewCell {
         view.separatorStyle = .none
         return view
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUp()
+        postsBind()
         titleLabel.startTextFlowAnimation(superViewWidth: Constants.screenWidth - (Constants.defaults.horizontal * 4))
     }
 
@@ -74,7 +70,7 @@ private extension MainPageFeatureListCell {
         postListTableView.dataSource = self
         postListTableView.register(MainPageFeatureListPostCell.self, forCellReuseIdentifier: MainPageFeatureListPostCell.identifier)
     }
-    
+
     func setUpConstraints() {
         contentView.addSubview(trailingView)
         trailingView.snp.makeConstraints { make in
@@ -104,16 +100,19 @@ private extension MainPageFeatureListCell {
 
 extension MainPageFeatureListCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummy.count
+        guard let count = posts.value?.count else { return 0 }
+        return count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = postListTableView.dequeueReusableCell(
             withIdentifier: MainPageFeatureListPostCell.identifier, for: indexPath
-        ) as? MainPageFeatureListPostCell else {
+        ) as? MainPageFeatureListPostCell,
+              let item = posts.value?[indexPath.row]
+        else {
             return UITableViewCell()
         }
-        cell.bind(text: dummy[indexPath.row])
+        cell.bind(text: item.title)
         return cell
     }
 }
@@ -122,5 +121,11 @@ extension MainPageFeatureListCell {
     func bind(data: FeatureCellData) {
         titleLabel.text = data.title
         rightImageView.image = data.image
+    }
+    
+    func postsBind() {
+        posts.bind { [weak self] _ in
+            self?.postListTableView.reloadData()
+        }
     }
 }

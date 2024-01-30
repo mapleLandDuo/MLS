@@ -33,7 +33,7 @@ class MainPageFeatureDefaultsCell: UICollectionViewCell {
         return label
     }()
     
-    private let discriptionLabel: UILabel = {
+    private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.body1.font
         label.textColor = .white
@@ -83,7 +83,7 @@ private extension MainPageFeatureDefaultsCell {
             make.right.equalTo(rightImageView.snp.left)
         }
         labelStackView.addArrangedSubview(titleLabel)
-        labelStackView.addArrangedSubview(discriptionLabel)
+        labelStackView.addArrangedSubview(descriptionLabel)
 
     }
 }
@@ -93,7 +93,7 @@ extension MainPageFeatureDefaultsCell {
 
     func bind(data: FeatureCellData) {
         titleLabel.text = data.title
-        discriptionLabel.text = data.discription
+        descriptionLabel.text = data.description
         rightImageView.image = data.image
     }
 }

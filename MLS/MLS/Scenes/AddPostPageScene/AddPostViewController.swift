@@ -231,7 +231,7 @@ private extension AddPostViewController {
                     id: UUID(),
                     title: title,
                     postImages: [],
-                    postContents: content,
+                    postContent: content,
                     user: user,
                     comment: [],
                     date: Date(),

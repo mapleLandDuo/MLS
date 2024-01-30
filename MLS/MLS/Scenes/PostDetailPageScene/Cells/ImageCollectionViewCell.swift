@@ -43,7 +43,7 @@ private extension ImageCollectionViewCell {
         addSubview(imageView)
 
         imageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(self)
         }
     }
 }
@@ -51,7 +51,7 @@ private extension ImageCollectionViewCell {
 extension ImageCollectionViewCell {
     // MARK: - Method
 
-    func bind(imageUrl: URL) {
+    func bind(imageUrl: URL?) {
         imageView.kf.setImage(with: imageUrl)
     }
 }

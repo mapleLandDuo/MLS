@@ -227,7 +227,20 @@ private extension AddPostViewController {
                 return
             }
             if let title = self?.titleTextField.text, let content = self?.postTextView.text, let user = self?.viewModel.getUser(), let type = self?.viewModel.type {
-                self?.viewModel.postData.value = Post(id: UUID(), title: title, postImages: [], postContent: content, user: user, comment: [], date: Date(), likeCount: [], viewCount: 0, postType: type, report: [], state: true)
+                self?.viewModel.postData.value = Post(
+                    id: UUID(),
+                    title: title,
+                    postImages: [],
+                    postContent: content,
+                    user: user,
+                    comment: [],
+                    date: Date(),
+                    likeCount: [],
+                    viewCount: 0,
+                    postType: type,
+                    report: [],
+                    state: true
+                )
             }
             guard let postData = self?.viewModel.postData.value, let imageData = self?.viewModel.imageData.value else { return }
             self?.viewModel.savePost(post: postData, images: imageData)

@@ -27,9 +27,7 @@ class MainPageProfileCell: UITableViewCell {
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "temptemp"
         label.font = Typography.title2.font
-//        label.textAlignment = .center
         return label
     }()
     
@@ -84,7 +82,7 @@ extension MainPageProfileCell {
             descriptionLabel.clipsToBounds = true
         } else {
             descriptionLabel.backgroundColor = .clear
-            descriptionLabel.textAlignment = .left
+            descriptionLabel.textAlignment = .center
         }
         
     }

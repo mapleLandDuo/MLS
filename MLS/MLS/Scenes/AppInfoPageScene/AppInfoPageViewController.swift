@@ -32,6 +32,7 @@ class AppInfoPageViewController: BasicController {
         view.layer.borderWidth = 1
         view.layer.cornerRadius = Constants.defaults.radius
         view.layer.borderColor = UIColor.systemGray4.cgColor
+        view.clipsToBounds = true
         return view
     }()
     

@@ -15,7 +15,8 @@ class SignInViewController: BasicController {
     private let logoImageView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = .systemOrange
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .scaleAspectFill
+        view.image = UIImage(named: "AppLogo")
         return view
     }()
     
@@ -107,7 +108,7 @@ private extension SignInViewController {
         logoImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(Constants.screenHeight * 0.1)
             make.centerX.equalToSuperview()
-            make.width.equalTo(Constants.screenWidth / 2)
+            make.width.equalTo(Constants.screenWidth * 0.7)
             make.height.equalTo(Constants.screenHeight * 0.05)
         }
         

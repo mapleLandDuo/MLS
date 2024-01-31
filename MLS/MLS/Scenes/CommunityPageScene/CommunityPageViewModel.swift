@@ -24,13 +24,15 @@ class CommunityPageViewModel {
 
 extension CommunityPageViewModel {
     // Methods
-    func getPost(completion: @escaping ([Post]) -> Void){
+    func getPost(completion: @escaping ([Post]?) -> Void){
         switch type {
         case .normal:
             FirebaseManager.firebaseManager.loadPosts(type: [.normal]) { [weak self] post in
                 if let post = post {
                     self?.postsCount = post.count
                     completion(post)
+                } else {
+                    completion(nil)
                 }
             }
         case .buy, .sell, .complete:
@@ -38,6 +40,8 @@ extension CommunityPageViewModel {
                 if let post = post {
                     self?.postsCount = post.count
                     completion(post)
+                } else {
+                    completion(nil)
                 }
             }
         }

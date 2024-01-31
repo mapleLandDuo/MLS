@@ -192,14 +192,18 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
             ) as? MainPageFeatureListCell else {
                 return UICollectionViewCell()
             }
-            switch indexPath.row {
+            switch indexPath.row {   
             case 0:
+                IndicatorMaker.showLoading()
                 viewModel.getMainPost(type: .normal) { posts in
                     cell.posts.value = posts
+                    IndicatorMaker.hideLoading()
                 }
             default:
+                IndicatorMaker.showLoading()
                 viewModel.getMainPost(type: .complete) { posts in
                     cell.posts.value = posts
+                    IndicatorMaker.hideLoading()
                 }
             }
             cell.bind(data: viewModel.features[indexPath.section][indexPath.row])
@@ -251,7 +255,12 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             guard let cell = sideMenuTableView.dequeueReusableCell(withIdentifier: MainPageProfileCell.identifier, for: indexPath) as? MainPageProfileCell else { return UITableViewCell() }
             if viewModel.loginManager.isLogin() {
-                cell.bind(description: "temptemp")
+                IndicatorMaker.showLoading()
+                guard let email = Utils.currentUser else { return UITableViewCell() }
+                FirebaseManager.firebaseManager.getNickname(userEmail: email) { nickName in
+                    IndicatorMaker.hideLoading()
+                    cell.bind(description: nickName)
+                }
             } else {
                 cell.bind(description: "로그인")
             }

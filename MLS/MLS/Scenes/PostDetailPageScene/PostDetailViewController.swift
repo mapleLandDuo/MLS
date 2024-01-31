@@ -166,13 +166,18 @@ private extension PostDetailViewController {
         })
 
         let reportMenu = UIAction(title: "신고하기", attributes: .destructive, handler: { [weak self] _ in
-            // 신고
+            guard let postID = self?.viewModel.post.value?.id.uuidString else { return }
+            AlertMaker.showAlertAction2(vc: self, title: "정말 신고하시겠습니까?", message: "신고는 취소할 수 없습니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
+                self?.viewModel.reportPost(postID: postID) {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            })
         })
 
         let loginMenu = UIMenu(children: [modifyMenu, deleteMenu])
         let logoutMenu = UIMenu(children: [reportMenu])
 
-        let navigationMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: viewModel.isLogin() ? loginMenu : logoutMenu)
+        let navigationMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: viewModel.checkMyPost() ? loginMenu : logoutMenu)
 
         navigationItem.rightBarButtonItem = navigationMenu
     }
@@ -300,5 +305,14 @@ extension PostDetailViewController: DetailCommentCellDelegate {
         self.commentTextField.textField.text = comment.comment
         viewModel.isEditing = true
         viewModel.editingComment = comment
+    }
+    
+    func tapReportButton(cell: DetailCommentCell, comment: Comment) {
+        guard let postId = viewModel.post.value?.id.uuidString else { return }
+        AlertMaker.showAlertAction2(vc: self, title: "정말 신고하시겠습니까?", message: "신고는 취소할 수 없습니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
+            self.viewModel.reportComment(postID: postId, commentID: comment.id.uuidString) {
+                self.viewModel.loadComment(postId: postId)
+            }
+        })
     }
 }

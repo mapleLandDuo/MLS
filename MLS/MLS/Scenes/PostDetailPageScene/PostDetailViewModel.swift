@@ -59,6 +59,22 @@ class PostDetailViewModel {
         }
     }
     
+    func reportPost(postID: String, completion: @escaping () -> Void) {
+        FirebaseManager.firebaseManager.reportPost(postID: postID) {
+            completion()
+        }
+    }
+    
+    func reportComment(postID: String, commentID: String, completion: @escaping () -> Void) {
+        FirebaseManager.firebaseManager.reportComment(postId: postID, commentId: commentID) {
+            completion()
+        }
+    }
+    
+    func checkMyPost() -> Bool {
+        return post.value?.user == Utils.currentUser
+    }
+    
     func isLogin() -> Bool {
         return loginManager.isLogin()
     }

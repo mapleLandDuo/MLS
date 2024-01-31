@@ -25,7 +25,7 @@ class CommunityPageViewModel {
 extension CommunityPageViewModel {
     // Methods
     func getPost(completion: @escaping ([Post]) -> Void){
-        FirebaseManager.firebaseManager.loadPosts(type: self.type) { [weak self] post in
+        FirebaseManager.firebaseManager.loadPosts(type: [self.type]) { [weak self] post in
             if let post = post {
                 self?.postsCount = post.count
                 completion(post)

@@ -100,6 +100,6 @@ extension DetailPostCell {
         dateLabel.text = post.date.toString()
         postContentTextView.text = post.postContent
         postCountLabel.text = "\(String(post.viewCount))회"
-        upCountLabel.text = String(post.likeCount.count)
+        upCountLabel.text = String(post.likeCounts.count)
     }
 }

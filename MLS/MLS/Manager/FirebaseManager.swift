@@ -13,16 +13,17 @@ import FirebaseStorage
 
 class FirebaseManager {
     static let firebaseManager = FirebaseManager()
-    
-    private init() { }
+
+    private init() {}
 
     let db = Firestore.firestore()
 }
 
 extension FirebaseManager {
     // MARK: User
+
     func getNickname(userEmail: String, completion: @escaping (String?) -> Void) {
-        db.collection("users").document(userEmail).getDocument { (document, error) in
+        db.collection("users").document(userEmail).getDocument { document, error in
             if let error = error {
                 print("닉네임 가져오지 못함: \(error)")
                 completion(nil)
@@ -91,7 +92,7 @@ extension FirebaseManager {
             }
         }
     }
-    
+
     // 게시글 개수로 가져오기
     func loadPosts(type: BoardSeparatorType, itemCount: Int, completion: @escaping ([Post]?) -> Void) {
         db.collection("posts").whereField("postType", isEqualTo: type.toString).order(by: "date", descending: true).limit(to: itemCount).getDocuments { querySnapshot, error in
@@ -113,7 +114,7 @@ extension FirebaseManager {
             }
         }
     }
-    
+
     // 본인 게시글 가져오기
     func loadMyPosts(completion: @escaping ([Post]?) -> Void) {
         guard let email = Utils.currentUser else { return }
@@ -469,6 +470,46 @@ extension FirebaseManager {
                     completion(nil)
                     return
                 }
+            }
+        }
+    }
+}
+
+extension FirebaseManager {
+    // MARK: Report
+
+    func reportUser(userID: String, newReport: [String], completion: @escaping () -> Void) {
+        db.collection("users").document(userID).updateData([
+            "report": newReport
+        ]) { error in
+            if error != nil {
+                print("업데이트 실패")
+            } else {
+                completion()
+            }
+        }
+    }
+
+    func reportPost(postId: String, newReport: [String], completion: @escaping () -> Void) {
+        db.collection("posts").document(postId).updateData([
+            "report": newReport
+        ]) { error in
+            if error != nil {
+                print("업데이트 실패")
+            } else {
+                completion()
+            }
+        }
+    }
+
+    func reportComment(postId: String, commentId: String, newReport: [String], completion: @escaping () -> Void) {
+        db.collection("posts").document(postId).collection("comments").document(commentId).updateData([
+            "report": newReport
+        ]) { error in
+            if error != nil {
+                print("업데이트 실패")
+            } else {
+                completion()
             }
         }
     }

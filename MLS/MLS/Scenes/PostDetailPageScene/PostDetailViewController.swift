@@ -107,10 +107,10 @@ private extension PostDetailViewController {
                     id: UUID(),
                     user: post.user,
                     date: Date(),
-                    likeCount: [],
+                    likeCounts: [],
                     comment: text,
-                    report: [],
-                    state: true)
+                    reports: [],
+                    state: .normal)
                 self?.viewModel.saveComment(postId: post.id.uuidString, comment: comment) {
                     self?.commentTextField.textField.text = ""
                     AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 완료 되었습니다.")

@@ -237,13 +237,12 @@ private extension AddPostViewController {
                     postImages: [],
                     postContent: content,
                     user: user,
-                    comment: [],
                     date: Date(),
-                    likeCount: [],
+                    likeCounts: [],
                     viewCount: 0,
                     postType: type,
-                    report: [],
-                    state: true
+                    reports: [],
+                    state: .normal
                 )
             }
             guard let postData = self?.viewModel.postData.value, let imageData = self?.viewModel.imageData.value else { return }

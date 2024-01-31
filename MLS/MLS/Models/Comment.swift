@@ -11,8 +11,8 @@ struct Comment: Codable {
     var id: UUID
     var user: String
     var date: Date
-    var likeCount: [String]
+    var likeCounts: [String]
     var comment: String
-    var report:[String]
-    var state: Bool
+    var reports:[String]
+    var state: State
 }

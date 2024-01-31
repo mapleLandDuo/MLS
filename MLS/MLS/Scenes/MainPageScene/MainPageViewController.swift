@@ -79,6 +79,7 @@ extension MainPageViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
         self.sideMenuTableView.reloadData()
+        self.featureCollectionView.reloadData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -298,7 +299,7 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))
             self.navigationController?.pushViewController(vc, animated: true)
         } else if title == "거래 게시판" {
-            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .complete))
+            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .buy))
             self.navigationController?.pushViewController(vc, animated: true)
         } else if title == "로그아웃" {
             AlertMaker.showAlertAction2(vc: self, title: "로그아웃",message: "정말로 로그아웃 하시겠습니까?", cancelTitle: "취소", completeTitle: "확인", nil, {

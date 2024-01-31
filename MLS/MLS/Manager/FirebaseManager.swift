@@ -50,8 +50,8 @@ extension FirebaseManager {
     }
 
     // 게시글 전부 가져오기
-    func loadPosts(type: BoardSeparatorType, completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").whereField("postType", isEqualTo: type.toString).order(by: "date", descending: true).getDocuments { querySnapshot, error in
+    func loadPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
+        db.collection("posts").whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -93,8 +93,8 @@ extension FirebaseManager {
     }
     
     // 게시글 개수로 가져오기
-    func loadPosts(type: BoardSeparatorType, itemCount: Int, completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").whereField("postType", isEqualTo: type.toString).order(by: "date", descending: true).limit(to: itemCount).getDocuments { querySnapshot, error in
+    func loadPosts(type: [BoardSeparatorType], itemCount: Int, completion: @escaping ([Post]?) -> Void) {
+        db.collection("posts").whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).limit(to: itemCount).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -194,10 +194,11 @@ extension FirebaseManager {
 extension FirebaseManager {
     // MARK: Comment
 
-    func saveComment(postID: String, comment: Comment) {
+    func saveComment(postID: String, comment: Comment, completion: @escaping () -> Void) {
         do {
             let data = try Firestore.Encoder().encode(comment)
             db.collection("posts").document(postID).collection("comments").document(comment.id.uuidString).setData(data)
+            completion()
         } catch {
             print(error)
         }
@@ -207,6 +208,7 @@ extension FirebaseManager {
     func loadComments(postID: String, completion: @escaping ([Comment]?) -> Void) {
         db.collection("posts").document(postID).collection("comments").order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
+                print(error)
                 completion(nil)
             } else {
                 var comments: [Comment] = []
@@ -270,12 +272,12 @@ extension FirebaseManager {
         }
     }
 
-    func updateComment(postID: String, comment: Comment) {
+    func updateComment(postID: String, comment: Comment, completion: @escaping () -> Void) {
         do {
             let data = try Firestore.Encoder().encode(comment)
             db.collection("posts").document(postID).collection("comments").document(comment.id.uuidString).updateData(data)
+            completion()
         } catch {
-            print(error)
         }
     }
 
@@ -293,30 +295,6 @@ extension FirebaseManager {
 
 extension FirebaseManager {
     // MARK: Search
-
-//    func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping ([T]) -> Void) {
-//        print("itemName \(name)")
-//        let collectionName = getCollectionName(for: type)
-//        db.collection(collectionName).whereField("name", arrayContains: [name]).getDocuments { querySnapshot, err in
-//            if let err = err {
-//                print("Error getting documents: \(err)")
-//            } else {
-//                var temp: [T] = []
-//                print("querySnapshot \(querySnapshot?.count)")
-//                for document in querySnapshot!.documents {
-//                    do {
-//                        print("document \(document)")
-//                        let data = try Firestore.Decoder().decode(T.self, from: document.data())
-//                        print("data \(data)")
-//                        temp.append(data)
-//                    } catch {
-//                        print("Error decoding data: \(error)")
-//                    }
-//                }
-//                completion(temp)
-//            }
-//        }
-//    }
 
     func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping (T?) -> Void) {
         let collectionName = getCollectionName(for: type)

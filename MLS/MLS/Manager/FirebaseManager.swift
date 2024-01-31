@@ -619,3 +619,38 @@ extension FirebaseManager {
         }
     }
 }
+
+extension FirebaseManager {
+    // UpCount
+    func setUpCount(postID: String, completion: @escaping (Bool) -> Void) {
+        guard let myEmail = Utils.currentUser else { return }
+        db.collection("posts").document(postID).getDocument { document, error in
+            if let document = document, document.exists {
+                guard let reports = document.get("likes") as? [String] else { return }
+                if reports.contains(myEmail) {
+                    self.db.collection("posts").document(postID).updateData([
+                        "likes": FieldValue.arrayRemove([myEmail])
+                    ]) { error in
+                        if let error = error {
+                            print("상대방 데이터에서 기존 내 아이디 삭제 실패 \(error)")
+                        } else {
+                            completion(false)
+                        }
+                    }
+                } else {
+                    self.db.collection("posts").document(postID).updateData([
+                        "likes": FieldValue.arrayUnion([myEmail])
+                    ]) { error in
+                        if let error = error {
+                            print("상대방 데이터에 내 아이디 저장 실패 \(error)")
+                        } else {
+                            completion(true)
+                        }
+                    }
+                }
+            } else {
+                print("문서가 존재하지 않습니다.")
+            }
+        }
+    }
+}

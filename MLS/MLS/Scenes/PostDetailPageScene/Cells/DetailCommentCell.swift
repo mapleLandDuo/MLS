@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 protocol DetailCommentCellDelegate: AnyObject {
     func tapDeleteButton(cell: DetailCommentCell, comment: Comment)
     func tapModifyButton(cell: DetailCommentCell, comment: Comment)
@@ -20,7 +22,7 @@ class DetailCommentCell: UITableViewCell {
     
     // MARK: Components
 
-    private let commentProfileNameLabel = CustomLabel(text: "userName", font: .boldSystemFont(ofSize: 16))
+    private let commentProfileNameLabel = CustomLabel(text: "", font: .boldSystemFont(ofSize: 16))
 
     lazy var optionStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [modifyButton, deleteButton, reportButton])
@@ -68,7 +70,7 @@ class DetailCommentCell: UITableViewCell {
     }()
 
     private let commentTextLabel: CustomLabel = {
-        let label = CustomLabel(text: "comment", font: .systemFont(ofSize: 16))
+        let label = CustomLabel(text: "", font: .systemFont(ofSize: 16))
         label.numberOfLines = 0
         return label
     }()

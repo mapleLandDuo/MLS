@@ -9,14 +9,9 @@ import UIKit
 
 import SnapKit
 
-protocol DetailPostCellDelegate: AnyObject {
-    func tapUpCountButton(cell: DetailPostCell)
-}
+
 
 class DetailPostCell: UITableViewCell {
-    // MARK: Properties
-    weak var delegate: DetailPostCellDelegate?
-    
     // MARK: Components
 
     private let userNameLabel = CustomLabel(text: "", font: .boldSystemFont(ofSize: 16))
@@ -35,7 +30,7 @@ class DetailPostCell: UITableViewCell {
     private let spacerView = UIView()
     
     lazy var infoStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [userNameLabel, dateLabel, postCountLabel, upCountIcon, upCountLabel, spacerView])
+        let view = UIStackView(arrangedSubviews: [userNameLabel, dateLabel, postCountLabel, spacerView])
         view.axis = .horizontal
         view.spacing = Constants.defaults.horizontal / 2
         return view
@@ -43,32 +38,7 @@ class DetailPostCell: UITableViewCell {
     
     private let postCountLabel = CustomLabel(text: "postCount", textColor: .gray, font: .systemFont(ofSize: 12))
     
-    private let upCountIcon: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "orangeMushroom")?.resized(to: CGSize(width: 30, height: 30))
-        return view
-    }()
     
-    private let upCountLabel = CustomLabel(text: "upCount", textColor: .gray, font: .systemFont(ofSize: 12))
-
-    lazy var upCountButton: UIButton = {
-        let button = UIButton()
-        button.clipsToBounds = false
-        button.setImage(UIImage(systemName: "hand.thumbsup"), for: .normal)
-        button.tintColor = .black
-        button.backgroundColor = .systemGray6
-        button.layer.cornerRadius = Constants.defaults.radius
-        button.layer.borderColor = UIColor.systemGray4.cgColor
-        button.layer.borderWidth = 1
-        button.layer.shadowOpacity = 0.1
-        button.layer.shadowRadius = 2
-        button.addAction(UIAction(handler: { [weak self] _ in
-            if let self = self {
-                self.delegate?.tapUpCountButton(cell: self)
-            }
-        }), for: .touchUpInside)
-        return button
-    }()
     
     // MARK: LifeCycle
 
@@ -94,7 +64,6 @@ private extension DetailPostCell {
         addSubview(postTitleLabel)
         addSubview(infoStackView)
         addSubview(postContentTextView)
-        addSubview(upCountButton)
         
         postTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(Constants.defaults.vertical)
@@ -111,13 +80,6 @@ private extension DetailPostCell {
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
         
-        upCountButton.snp.makeConstraints {
-            $0.top.equalTo(postContentTextView.snp.bottom).inset(-Constants.defaults.vertical)
-            $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.size.equalTo(60)
-        }
-        
         spacerView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         
         postTitleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -127,7 +89,7 @@ private extension DetailPostCell {
 extension DetailPostCell {
     // MARK: Method
 
-    func bind(post: Post, isUp: Bool) {
+    func bind(post: Post) {
         postTitleLabel.text = post.title
         post.user.toNickName { [weak self] nickName in
             self?.userNameLabel.text = nickName
@@ -135,7 +97,5 @@ extension DetailPostCell {
         dateLabel.text = post.date.toString()
         postContentTextView.text = post.postContent
         postCountLabel.text = "\(String(post.viewCount))회"
-        upCountLabel.text = String(post.likes.count)
-        upCountButton.setImage(isUp ? UIImage(systemName: "hand.thumbsup.fill") : UIImage(systemName: "hand.thumbsup"), for: .normal)
     }
 }

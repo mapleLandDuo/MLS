@@ -80,6 +80,7 @@ private extension PostDetailViewController {
         totalTableView.register(DetailImageCell.self, forCellReuseIdentifier: DetailImageCell.identifier)
         totalTableView.register(DetailPostCell.self, forCellReuseIdentifier: DetailPostCell.identifier)
         totalTableView.register(DetailCommentCell.self, forCellReuseIdentifier: DetailCommentCell.identifier)
+        totalTableView.register(DetailLikeCell.self, forCellReuseIdentifier: DetailLikeCell.identifier)
 
         setUpConstraints()
         setUpActions()
@@ -189,17 +190,17 @@ private extension PostDetailViewController {
 
     func bind() {
         viewModel.comments.bind { [weak self] _ in
-            self?.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
+            self?.totalTableView.reloadSections(IndexSet(integer: 3), with: .automatic)
         }
 
         viewModel.isUp.bind { [weak self] _ in
-            self?.totalTableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+            self?.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
         }
         
         viewModel.post.bind { [weak self] _ in
             guard let post = self?.viewModel.post.value else { return }
             self?.viewModel.checkLikeCount(post: post)
-            self?.totalTableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+            self?.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
         }
     }
 }
@@ -215,7 +216,7 @@ private extension PostDetailViewController {
 
 extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -228,6 +229,8 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             return 1
         case 2:
+            return 1
+        case 3:
             return viewModel.commentCount
         default:
             return 0
@@ -243,13 +246,19 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailPostCell.identifier, for: indexPath) as? DetailPostCell,
+                  let post = viewModel.post.value else { return UITableViewCell() }
+            cell.contentView.isUserInteractionEnabled = false
+            cell.bind(post: post)
+            return cell
+        case 2:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailLikeCell.identifier, for: indexPath) as? DetailLikeCell,
                   let post = viewModel.post.value,
                   let isUp = viewModel.isUp.value else { return UITableViewCell() }
             cell.delegate = self
             cell.contentView.isUserInteractionEnabled = false
             cell.bind(post: post, isUp: isUp)
             return cell
-        case 2:
+        case 3:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailCommentCell.identifier, for: indexPath) as? DetailCommentCell,
                   let comment = viewModel.comments.value?[indexPath.row] else { return UITableViewCell() }
             cell.delegate = self
@@ -269,6 +278,8 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             return 500
         case 2:
+            return 100
+        case 3:
             return 70
         default:
             return 0
@@ -276,7 +287,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 2 {
+        if section == 3 {
             let headerView = UIView()
 
             headerView.addSubview(commentTextField)
@@ -302,7 +313,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 2 {
+        if section == 3 {
             return 70
         }
         return 0
@@ -335,8 +346,8 @@ extension PostDetailViewController: DetailCommentCellDelegate {
     }
 }
 
-extension PostDetailViewController: DetailPostCellDelegate {
-    func tapUpCountButton(cell: DetailPostCell) {
+extension PostDetailViewController: DetailLikeCellDelegate {
+    func tapUpCountButton(cell: DetailLikeCell) {
         guard let postID = viewModel.post.value?.id.uuidString else { return }
         viewModel.setLikeCount(postID: postID) {
             

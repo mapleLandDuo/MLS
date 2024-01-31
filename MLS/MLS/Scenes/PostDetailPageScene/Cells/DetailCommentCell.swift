@@ -53,8 +53,11 @@ class DetailCommentCell: UITableViewCell {
         return button
     }()
 
-    private let commentTextLabel = CustomLabel(text: "comment", font: .systemFont(ofSize: 16))
-
+    private let commentTextLabel: CustomLabel = {
+        let label = CustomLabel(text: "comment", font: .systemFont(ofSize: 16))
+        label.numberOfLines = 0
+        return label
+    }()
     // MARK: LifeCycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -104,7 +107,6 @@ private extension DetailCommentCell {
             $0.top.equalTo(commentProfileNameLabel.snp.bottom).inset(-Constants.defaults.vertical / 2)
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             $0.bottom.equalToSuperview().inset(Constants.defaults.vertical / 2)
-            $0.height.equalTo(30)
         }
     }
 }

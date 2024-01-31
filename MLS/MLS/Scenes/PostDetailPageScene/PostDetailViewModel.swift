@@ -17,6 +17,9 @@ class PostDetailViewModel {
     lazy var commentCount = 0
     var post: Observable<Post> = Observable(nil)
     
+    var isEditing = false
+    var editingComment: Comment?
+    
     init(post: Post) {
         self.post.value = post
     }
@@ -29,24 +32,25 @@ class PostDetailViewModel {
         }
     }
     
-    func loadComment(postId: String, completion: @escaping () -> Void) {
+    func loadComment(postId: String) {
         FirebaseManager.firebaseManager.loadComments(postID: postId) { comments in
             if let count = comments?.count {
                 self.commentCount = count
             }
             self.comments.value = comments
-            completion()
         }
     }
     
     func saveComment(postId: String, comment: Comment, completion: @escaping () -> Void) {
-        FirebaseManager.firebaseManager.saveComment(postID: postId, comment: comment)
-        completion()
+        FirebaseManager.firebaseManager.saveComment(postID: postId, comment: comment) {
+            completion()
+        }
     }
     
     func updateComment(postId: String, comment: Comment, completion: @escaping () -> Void) {
-        FirebaseManager.firebaseManager.updateComment(postID: postId, comment: comment)
-        completion()
+        FirebaseManager.firebaseManager.updateComment(postID: postId, comment: comment) {
+            completion()
+        }
     }
     
     func deleteComment(postId: String, commentId: String, completion: @escaping () -> Void) {

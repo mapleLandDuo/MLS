@@ -194,10 +194,11 @@ extension FirebaseManager {
 extension FirebaseManager {
     // MARK: Comment
 
-    func saveComment(postID: String, comment: Comment) {
+    func saveComment(postID: String, comment: Comment, completion: @escaping () -> Void) {
         do {
             let data = try Firestore.Encoder().encode(comment)
             db.collection("posts").document(postID).collection("comments").document(comment.id.uuidString).setData(data)
+            completion()
         } catch {
             print(error)
         }
@@ -207,6 +208,7 @@ extension FirebaseManager {
     func loadComments(postID: String, completion: @escaping ([Comment]?) -> Void) {
         db.collection("posts").document(postID).collection("comments").order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
+                print(error)
                 completion(nil)
             } else {
                 var comments: [Comment] = []
@@ -270,12 +272,12 @@ extension FirebaseManager {
         }
     }
 
-    func updateComment(postID: String, comment: Comment) {
+    func updateComment(postID: String, comment: Comment, completion: @escaping () -> Void) {
         do {
             let data = try Firestore.Encoder().encode(comment)
             db.collection("posts").document(postID).collection("comments").document(comment.id.uuidString).updateData(data)
+            completion()
         } catch {
-            print(error)
         }
     }
 

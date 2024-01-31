@@ -187,4 +187,11 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
         
         return view
     }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y > 0 {
+            navigationItem.title = viewModel.item.name
+        } else {
+            navigationItem.title = nil
+        }
+    }
 }

@@ -127,6 +127,7 @@ extension FirebaseManager {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
                         posts.append(post)
                     } catch {
+                        print("decoding Fail")
                         completion(nil)
                         return
                     }

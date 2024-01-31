@@ -15,9 +15,9 @@ class ProfilePageViewController: BasicController {
 
     // MARK: - Components
     
-    private let nickNameLabel: UILabel = {
+    lazy var nickNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "temp"
+        label.text = viewModel.nickName
         label.font = Typography.title1.font
         return label
     }()
@@ -73,8 +73,11 @@ extension ProfilePageViewController {
         bind()
     }
     override func viewWillAppear(_ animated: Bool) {
-        viewModel.loadPosts()
-        viewModel.loadNickName()
+        IndicatorMaker.showLoading()
+        viewModel.loadPosts() {
+            IndicatorMaker.hideLoading()
+        }
+        
     }
 }
 private extension ProfilePageViewController {
@@ -128,9 +131,6 @@ private extension ProfilePageViewController {
     func bind() {
         viewModel.posts.bind { [weak self] _ in
             self?.postTableView.reloadData()
-        }
-        viewModel.nickName.bind { [weak self] nickName in
-            self?.nickNameLabel.text = nickName
         }
     }
 }

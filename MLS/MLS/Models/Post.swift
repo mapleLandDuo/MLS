@@ -14,7 +14,7 @@ struct Post: Codable {
     var postContent: String
     var user: String
     var date: Date
-    var likeCounts: [String]
+    var likes: [String]
     var viewCount: Int
     var postType: BoardSeparatorType
     var reports: [String]

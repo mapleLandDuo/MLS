@@ -7,9 +7,12 @@
 
 import UIKit
 
+import SnapKit
+
 protocol DetailCommentCellDelegate: AnyObject {
     func tapDeleteButton(cell: DetailCommentCell, comment: Comment)
     func tapModifyButton(cell: DetailCommentCell, comment: Comment)
+    func tapReportButton(cell: DetailCommentCell, comment: Comment)
 }
 
 class DetailCommentCell: UITableViewCell {
@@ -19,15 +22,15 @@ class DetailCommentCell: UITableViewCell {
     
     // MARK: Components
 
-    private let commentProfileNameLabel = CustomLabel(text: "userName", font: .boldSystemFont(ofSize: 16))
+    private let commentProfileNameLabel = CustomLabel(text: "", font: .boldSystemFont(ofSize: 16))
 
     lazy var optionStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [modifybutton, deletebutton])
+        let view = UIStackView(arrangedSubviews: [modifyButton, deleteButton, reportButton])
         view.axis = .horizontal
         return view
     }()
 
-    lazy var deletebutton: UIButton = {
+    lazy var deleteButton: UIButton = {
         let button = UIButton()
         button.setTitle("삭제", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 12)
@@ -40,7 +43,7 @@ class DetailCommentCell: UITableViewCell {
         return button
     }()
 
-    lazy var modifybutton: UIButton = {
+    lazy var modifyButton: UIButton = {
         let button = UIButton()
         button.setTitle("수정", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 12)
@@ -52,9 +55,22 @@ class DetailCommentCell: UITableViewCell {
         }), for: .touchUpInside)
         return button
     }()
+    
+    lazy var reportButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("신고", for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 12)
+        button.setTitleColor(.black, for: .normal)
+        button.addAction(UIAction(handler: { [weak self] _ in
+            if let self = self, let comment = self.comment {
+                self.delegate?.tapReportButton(cell: self, comment: comment)
+            }
+        }), for: .touchUpInside)
+        return button
+    }()
 
     private let commentTextLabel: CustomLabel = {
-        let label = CustomLabel(text: "comment", font: .systemFont(ofSize: 16))
+        let label = CustomLabel(text: "", font: .systemFont(ofSize: 16))
         label.numberOfLines = 0
         return label
     }()
@@ -115,7 +131,10 @@ extension DetailCommentCell {
     // MARK: Method
     func bind(comment: Comment) {
         if comment.user != Utils.currentUser {
-            optionStackView.isHidden = true
+            deleteButton.isHidden = true
+            modifyButton.isHidden = true
+        } else {
+            reportButton.isHidden = true
         }
         comment.user.toNickName { [weak self] nickName in
             self?.commentProfileNameLabel.text = nickName

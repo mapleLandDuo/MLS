@@ -148,7 +148,7 @@ extension ProfilePageViewController: UITableViewDelegate, UITableViewDataSource 
         cell.bind(tag: datas[indexPath.row].postType,
                   title: datas[indexPath.row].title,
                   date: datas[indexPath.row].date.toString(),
-                  upCount: String(datas[indexPath.row].likeCounts.count))
+                  upCount: String(datas[indexPath.row].likes.count))
                   return cell
     }
     

@@ -16,6 +16,7 @@ class PostDetailViewModel {
 //    var commentCount: Observable<Int> = Observable(0)
     lazy var commentCount = 0
     var post: Observable<Post> = Observable(nil)
+    var isUp: Observable<Bool> = Observable(false)
     
     var isEditing = false
     var editingComment: Comment?
@@ -57,6 +58,33 @@ class PostDetailViewModel {
         FirebaseManager.firebaseManager.deleteComment(postID: postId, commentID: commentId) {
             completion()
         }
+    }
+    
+    func reportPost(postID: String, completion: @escaping () -> Void) {
+        FirebaseManager.firebaseManager.reportPost(postID: postID) {
+            completion()
+        }
+    }
+    
+    func reportComment(postID: String, commentID: String, completion: @escaping () -> Void) {
+        FirebaseManager.firebaseManager.reportComment(postId: postID, commentId: commentID) {
+            completion()
+        }
+    }
+    
+    func setLikeCount(postID: String, completion: @escaping () -> Void) {
+        FirebaseManager.firebaseManager.setUpCount(postID: postID) { isUp in
+            self.isUp.value = isUp
+        }
+    }
+    
+    func checkMyPost() -> Bool {
+        return post.value?.user == Utils.currentUser
+    }
+    
+    func checkLikeCount(post: Post) {
+        guard let myEmail = Utils.currentUser else { return }
+        self.isUp.value = post.likes.contains(myEmail)
     }
     
     func isLogin() -> Bool {

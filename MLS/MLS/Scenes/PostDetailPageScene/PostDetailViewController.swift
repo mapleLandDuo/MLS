@@ -84,6 +84,7 @@ private extension PostDetailViewController {
         setUpConstraints()
         setUpActions()
         setUpNavigation()
+        checkLike()
     }
 
     func setUpConstraints() {
@@ -97,7 +98,7 @@ private extension PostDetailViewController {
     func setUpActions() {
         commentButton.addAction(UIAction(handler: { [weak self] _ in
             guard let post = self?.viewModel.post.value,
-            let isEditing = self?.viewModel.isEditing else { return }
+                  let isEditing = self?.viewModel.isEditing else { return }
             if let text = self?.commentTextField.textField.text {
                 if text == "" {
                     AlertMaker.showAlertAction1(vc: self, message: "댓글을 입력하세요.")
@@ -166,13 +167,18 @@ private extension PostDetailViewController {
         })
 
         let reportMenu = UIAction(title: "신고하기", attributes: .destructive, handler: { [weak self] _ in
-            // 신고
+            guard let postID = self?.viewModel.post.value?.id.uuidString else { return }
+            AlertMaker.showAlertAction2(vc: self, title: "정말 신고하시겠습니까?", message: "신고는 취소할 수 없습니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
+                self?.viewModel.reportPost(postID: postID) {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            })
         })
 
         let loginMenu = UIMenu(children: [modifyMenu, deleteMenu])
         let logoutMenu = UIMenu(children: [reportMenu])
 
-        let navigationMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: viewModel.isLogin() ? loginMenu : logoutMenu)
+        let navigationMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: viewModel.checkMyPost() ? loginMenu : logoutMenu)
 
         navigationItem.rightBarButtonItem = navigationMenu
     }
@@ -185,11 +191,20 @@ private extension PostDetailViewController {
         viewModel.comments.bind { [weak self] _ in
             self?.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
         }
+
+        viewModel.isUp.bind { [weak self] _ in
+            self?.totalTableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        }
     }
 }
 
 private extension PostDetailViewController {
     // MARK: Method
+
+    func checkLike() {
+        guard let post = viewModel.post.value else { return }
+        viewModel.checkLikeCount(post: post)
+    }
 }
 
 extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
@@ -222,9 +237,11 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailPostCell.identifier, for: indexPath) as? DetailPostCell,
-                  let post = viewModel.post.value else { return UITableViewCell() }
+                  let post = viewModel.post.value,
+                  let isUp = viewModel.isUp.value else { return UITableViewCell() }
+            cell.delegate = self
             cell.contentView.isUserInteractionEnabled = false
-            cell.bind(post: post)
+            cell.bind(post: post, isUp: isUp)
             return cell
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailCommentCell.identifier, for: indexPath) as? DetailCommentCell,
@@ -297,8 +314,26 @@ extension PostDetailViewController: DetailCommentCellDelegate {
     }
 
     func tapModifyButton(cell: DetailCommentCell, comment: Comment) {
-        self.commentTextField.textField.text = comment.comment
+        commentTextField.textField.text = comment.comment
         viewModel.isEditing = true
         viewModel.editingComment = comment
+    }
+
+    func tapReportButton(cell: DetailCommentCell, comment: Comment) {
+        guard let postId = viewModel.post.value?.id.uuidString else { return }
+        AlertMaker.showAlertAction2(vc: self, title: "정말 신고하시겠습니까?", message: "신고는 취소할 수 없습니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
+            self.viewModel.reportComment(postID: postId, commentID: comment.id.uuidString) {
+                self.viewModel.loadComment(postId: postId)
+            }
+        })
+    }
+}
+
+extension PostDetailViewController: DetailPostCellDelegate {
+    func tapUpCountButton(cell: DetailPostCell) {
+        guard let postID = viewModel.post.value?.id.uuidString else { return }
+        viewModel.setLikeCount(postID: postID) {
+            print("UPUPUPUP")
+        }
     }
 }

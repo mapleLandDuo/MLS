@@ -654,3 +654,17 @@ extension FirebaseManager {
         }
     }
 }
+
+extension FirebaseManager {
+    // MARK: ViewCount
+
+    func updateViewCount(postID: String) {
+        db.collection("posts").document(postID).updateData([
+            "viewCount": FieldValue.increment(Int64(1))
+        ]) { error in
+            if let error = error {
+                print("뷰카운트 증가 실패: \(error)")
+            }
+        }
+    }
+}

@@ -190,7 +190,9 @@ private extension CommunityPageViewController {
     // MARK: - Method
 
     func getPosts() {
+        IndicatorMaker.showLoading()
         viewModel.getPost { posts in
+            IndicatorMaker.hideLoading()
             self.viewModel.posts.value = posts
         }
     }

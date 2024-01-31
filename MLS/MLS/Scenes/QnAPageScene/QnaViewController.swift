@@ -79,9 +79,11 @@ extension QnaViewController: UITableViewDelegate, UITableViewDataSource {
             cell.imageView?.tintColor = .systemOrange
             cell.imageView?.image = item.icon
             cell.textLabel?.text = item.title
+            cell.selectionStyle = .none
         } else {
             let item = self.viewModel.getQuestionList()[indexPath.row]
             cell.textLabel?.text = "\(indexPath.row + 1) . \(item.title)"
+            cell.selectionStyle = .none
         }
         return cell
     }
@@ -135,7 +137,7 @@ extension QnaViewController: MFMailComposeViewControllerDelegate {
         if MFMailComposeViewController.canSendMail() {
             let compseViewController = MFMailComposeViewController()
             compseViewController.mailComposeDelegate = self
-            compseViewController.setToRecipients(["test@naver.com"])
+            compseViewController.setToRecipients(["maplelands2024@gmail.com"])
             compseViewController.setSubject("문의하기")
             compseViewController.setMessageBody("문의 내용을 자세하게 입력해 주세요!", isHTML: false)
 

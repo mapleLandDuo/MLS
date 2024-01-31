@@ -100,11 +100,13 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
             guard let cell = tableView.dequeueReusableCell(withIdentifier: IconDescriptionTableViewCell.identifier, for: indexPath) as? IconDescriptionTableViewCell else { return UITableViewCell() }
             let item = viewModel.getItemMenu()[indexPath.row]
             cell.bind(iconUrl: item.image, description: item.title)
+            cell.selectionStyle = .none
             return cell
         default:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
             let item = viewModel.getMonsterMenu()[indexPath.row]
             cell.bind(name: "LV. \(item)", description: "몬스터")
+            cell.selectionStyle = .none
             return cell
         }
     }
@@ -179,8 +181,14 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
 extension DictionaryMainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else { return }
+        IndicatorMaker.showLoading()
         if searchBar == itemSearchBar {
             viewModel.searchItem(name: text) { [weak self] item in
+                IndicatorMaker.hideLoading()
+                guard let item = item else {
+                    AlertMaker.showAlertAction1(title: "검색 결과가 없습니다.")
+                    return
+                }
                 let viewModel = DictionarySearchViewModel(type: .item)
                 viewModel.item.value = item
                 let vc = DictionarySearchViewController(viewModel: viewModel)
@@ -188,6 +196,11 @@ extension DictionaryMainViewController: UISearchBarDelegate {
             }
         } else if searchBar == monsterSearchBar {
             viewModel.searchMonster(name: text) { [weak self] item in
+                IndicatorMaker.hideLoading()
+                guard let item = item else {
+                    AlertMaker.showAlertAction1(title: "검색 결과가 없습니다.")
+                    return
+                }
                 let viewModel = DictionarySearchViewModel(type: .monster)
                 viewModel.monster.value = item
                 let vc = DictionarySearchViewController(viewModel: viewModel)

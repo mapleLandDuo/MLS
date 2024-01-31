@@ -14,11 +14,26 @@ class DictionaryMainViewController: BasicController {
 
     private let viewModel: DictionaryMainViewModel
 
-    private let mainTableView = UITableView(frame: .zero, style: .grouped)
+    private let mainTableView: UITableView = {
+        let view = UITableView(frame: .zero, style: .grouped)
+        view.backgroundColor = .white
+        view.separatorStyle = .none
+        return view
+    }()
 
-    private let itemSearchBar = UISearchBar()
+    private let itemSearchBar: UISearchBar = {
+        let bar = UISearchBar()
+        bar.backgroundImage = UIImage()
+        bar.placeholder = "아이템을 검색하세요."
+        return bar
+    }()
 
-    private let monsterSearchBar = UISearchBar()
+    private let monsterSearchBar: UISearchBar = {
+        let bar = UISearchBar()
+        bar.backgroundImage = UIImage()
+        bar.placeholder = "몬스터를 검색하세요."
+        return bar
+    }()
 
     init(viewModel: DictionaryMainViewModel) {
         self.viewModel = viewModel
@@ -46,7 +61,8 @@ private extension DictionaryMainViewController {
     func setUp() {
         mainTableView.delegate = self
         mainTableView.dataSource = self
-        mainTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: ItemTableViewCell.identifier)
+        mainTableView.register(IconDescriptionTableViewCell.self, forCellReuseIdentifier: IconDescriptionTableViewCell.identifier)
+        mainTableView.register(DictionaryGraySeparatorOneLineCell.self, forCellReuseIdentifier: DictionaryGraySeparatorOneLineCell.identifier)
 
         itemSearchBar.delegate = self
         monsterSearchBar.delegate = self
@@ -59,7 +75,7 @@ private extension DictionaryMainViewController {
 
         mainTableView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }
@@ -74,44 +90,88 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
         case 1:
             return viewModel.getMonsterMenuCount()
         default:
-            return 1
+            return viewModel.getItemMenu().count
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemTableViewCell.identifier, for: indexPath) as? ItemTableViewCell else { return UITableViewCell() }
-            cell.bind(itemMenus: viewModel.getItemMenu())
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: IconDescriptionTableViewCell.identifier, for: indexPath) as? IconDescriptionTableViewCell else { return UITableViewCell() }
+            let item = viewModel.getItemMenu()[indexPath.row]
+            cell.bind(iconUrl: item.image, description: item.title)
             return cell
         default:
-            let cell = UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
             let item = viewModel.getMonsterMenu()[indexPath.row]
-            cell.textLabel?.text = "LV. \(item) 몬스터"
+            cell.bind(name: "LV. \(item)", description: "몬스터")
             return cell
         }
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
         if section == 0 {
-            headerView.addSubview(itemSearchBar)
-
-            itemSearchBar.snp.makeConstraints {
-                $0.edges.equalToSuperview()
-            }
-
-            itemSearchBar.placeholder = "아이템을 검색하세요."
+            return makeHearderView(searchBar: itemSearchBar, title: "아이템 검색", description: "직업별 아이템")
         } else {
-            headerView.addSubview(monsterSearchBar)
-
-            monsterSearchBar.snp.makeConstraints {
-                $0.edges.equalToSuperview()
-            }
-
-            monsterSearchBar.placeholder = "몬스터를 검색하세요."
+            return makeHearderView(searchBar: monsterSearchBar, title: "몬스터 검색", description: "레벨별 몬스터")
         }
-
+    }
+    
+    func makeHearderView(searchBar: UISearchBar, title: String, description: String) -> UIView {
+        let headerView = UIView()
+        let titleLabel: UILabel = {
+            let label = UILabel()
+            label.text = title
+            label.font = Typography.title2.font
+            return label
+        }()
+        let titleSeparator: UIView = {
+            let view = UIView()
+            view.backgroundColor = .systemOrange
+            return view
+        }()
+        let descriptionLabel: UILabel = {
+            let label = UILabel()
+            label.text = description
+            label.font = Typography.title2.font
+            return label
+        }()
+        let bottomSeparator: UIView = {
+            let view = UIView()
+            view.backgroundColor = .systemOrange
+            return view
+        }()
+        
+        headerView.addSubview(searchBar)
+        searchBar.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.right.equalToSuperview().inset(7)
+            make.height.equalTo(Constants.defaults.blockHeight)
+        }
+        headerView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(searchBar.snp.centerY)
+            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.right.equalTo(searchBar.snp.left)
+        }
+        headerView.addSubview(titleSeparator)
+        titleSeparator.snp.makeConstraints { make in
+            make.top.equalTo(searchBar.snp.bottom)
+            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.height.equalTo(1)
+        }
+        headerView.addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleSeparator.snp.bottom).offset(Constants.defaults.vertical)
+            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        headerView.addSubview(bottomSeparator)
+        bottomSeparator.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(Constants.defaults.vertical)
+            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.height.equalTo(1)
+            make.bottom.equalToSuperview()
+        }
         return headerView
     }
 }

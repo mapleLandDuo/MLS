@@ -71,6 +71,9 @@ extension MainPageViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = .systemOrange
         setUp()
+        FirebaseManager.firebaseManager.loadMyPosts(userEmail: "ghddns34@gmail.com") { posts in
+            print(posts)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -280,8 +283,13 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
         guard let title = viewModel.getSideMenuItems()[indexPath.section][indexPath.row].title else { return }
         if title == "프로필" {
             if viewModel.loginManager.isLogin() {
-                let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(id: "ghddns34@gmail.com"))
-                self.navigationController?.pushViewController(vc, animated: true)
+                guard let email = Utils.currentUser else { return }
+                IndicatorMaker.showLoading()
+                email.toNickName { nickName in
+                    IndicatorMaker.hideLoading()
+                    let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(id: email, nickName: nickName))
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
             } else {
                 let vc = SignInViewController(viewModel: SignInViewModel())
                 self.navigationController?.pushViewController(vc, animated: true)
@@ -290,7 +298,7 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))
             self.navigationController?.pushViewController(vc, animated: true)
         } else if title == "거래 게시판" {
-            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))
+            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .complete))
             self.navigationController?.pushViewController(vc, animated: true)
         } else if title == "로그아웃" {
             AlertMaker.showAlertAction2(vc: self, title: "로그아웃",message: "정말로 로그아웃 하시겠습니까?", cancelTitle: "취소", completeTitle: "확인", nil, {

@@ -43,6 +43,7 @@ private extension DictionaryItemViewController {
         tableView.register(DictionaryNameImageCell.self, forCellReuseIdentifier: DictionaryNameImageCell.identifier)
         tableView.register(DictionaryItemDefaultCell.self, forCellReuseIdentifier: DictionaryItemDefaultCell.identifier)
         tableView.register(DictionaryGraySeparatorOneLineCell.self, forCellReuseIdentifier: DictionaryGraySeparatorOneLineCell.identifier)
+        tableView.register(DictionaryGraySeparatorDescriptionCell.self, forCellReuseIdentifier: DictionaryGraySeparatorDescriptionCell.identifier)
     }
     func setUpConstraints() {
         view.addSubview(tableView)
@@ -94,11 +95,18 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
             } else {
 
                 let datas = viewModel.getDefaultInfoArray()
-                
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell()}
-                cell.bind(data: datas[indexPath.row - 1])
-                cell.selectionStyle = .none
-                return cell
+                if datas[indexPath.row - 1].name == "설명" {
+                    print("description cell")
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorDescriptionCell.identifier, for: indexPath) as? DictionaryGraySeparatorDescriptionCell else { return UITableViewCell() }
+                    cell.bind(data: datas[indexPath.row - 1])
+                    cell.selectionStyle = .none
+                    return cell
+                } else {
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
+                    cell.bind(data: datas[indexPath.row - 1])
+                    cell.selectionStyle = .none
+                    return cell
+                }
             }
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
@@ -178,5 +186,12 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
         }
         
         return view
+    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y > 0 {
+            navigationItem.title = viewModel.item.name
+        } else {
+            navigationItem.title = nil
+        }
     }
 }

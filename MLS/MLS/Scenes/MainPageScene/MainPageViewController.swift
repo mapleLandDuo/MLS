@@ -71,6 +71,9 @@ extension MainPageViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = .systemOrange
         setUp()
+        FirebaseManager.firebaseManager.loadMyPosts(userEmail: "ghddns34@gmail.com") { posts in
+            print(posts)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -281,7 +284,13 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
         guard let title = viewModel.getSideMenuItems()[indexPath.section][indexPath.row].title else { return }
         if title == "프로필" {
             if viewModel.loginManager.isLogin() {
-                print("profilePage")
+                guard let email = Utils.currentUser else { return }
+                IndicatorMaker.showLoading()
+                email.toNickName { nickName in
+                    IndicatorMaker.hideLoading()
+                    let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(id: email, nickName: nickName))
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
             } else {
                 let vc = SignInViewController(viewModel: SignInViewModel())
                 self.navigationController?.pushViewController(vc, animated: true)
@@ -309,6 +318,9 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             print("회원탈퇴")
         } else if title == "시뮬레이터" {
             print("시뮬레이터")
+        } else if title == "앱정보" {
+            let vc = AppInfoPageViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     

@@ -134,7 +134,12 @@ class DatabaseUpdateManager {
                                     count += 1
                                 } else if count == 8 {
                                     dropItem.description = data
-                                    count += 1
+                                    if data != "미확인" {
+                                        count += 1
+                                    } else {
+                                        count = 0
+                                        item.dropTable.append(dropItem)
+                                    }
                                 } else if count == 9 {
                                     count = 0
                                     if dropItem.name != "temp" {
@@ -146,6 +151,7 @@ class DatabaseUpdateManager {
                             }
                         }
                     }
+                    
                     FirebaseManager.firebaseManager.saveDictionaryItem(item: item) { error in
                         if error != nil {
                             print(item.name,"fail")

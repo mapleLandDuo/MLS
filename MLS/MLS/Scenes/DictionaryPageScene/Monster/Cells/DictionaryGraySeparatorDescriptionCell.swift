@@ -1,35 +1,27 @@
 //
-//  DictionaryMonsterDropTableCell.swift
+//  DictionaryGraySeparatorDescriptionCell.swift
 //  MLS
 //
-//  Created by SeoJunYoung on 1/29/24.
+//  Created by SeoJunYoung on 1/30/24.
 //
 
 import Foundation
 import UIKit
 
-class DictionaryGraySeparatorOneLineCell: UITableViewCell {
+class DictionaryGraySeparatorDescriptionCell: UITableViewCell {
     // MARK: - Componetns
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.title3.font
-        return label
-    }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.title3.font
+        label.textAlignment = .center
+        label.numberOfLines = 0
         return label
     }()
     
     private let bottomSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemGray4
-        return view
-    }()
-    
-    private let stackView: UIStackView = {
-        let view = UIStackView()
         return view
     }()
 
@@ -43,21 +35,20 @@ class DictionaryGraySeparatorOneLineCell: UITableViewCell {
     }
 }
 
-private extension DictionaryGraySeparatorOneLineCell {
+private extension DictionaryGraySeparatorDescriptionCell {
     func setUp() {
         setUpConstraints()
     }
+    
     func setUpConstraints() {
-        contentView.addSubview(stackView)
-        stackView.snp.makeConstraints { make in
+        contentView.addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(Constants.defaults.vertical)
             make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
         }
-        stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(descriptionLabel)
         contentView.addSubview(bottomSeparatorView)
         bottomSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(stackView.snp.bottom).offset(Constants.defaults.vertical)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(Constants.defaults.vertical)
             make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
             make.height.equalTo(1)
             make.bottom.equalToSuperview()
@@ -65,14 +56,9 @@ private extension DictionaryGraySeparatorOneLineCell {
     }
 }
 
-extension DictionaryGraySeparatorOneLineCell {
+extension DictionaryGraySeparatorDescriptionCell {
     // MARK: - bind
     func bind(data: DictionaryNameDescription) {
-        nameLabel.text = data.name
         descriptionLabel.text = data.description
-    }
-    func bind(name: String, description: String) {
-        nameLabel.text = name
-        descriptionLabel.text = description
     }
 }

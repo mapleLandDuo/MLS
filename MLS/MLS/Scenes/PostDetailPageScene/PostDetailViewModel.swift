@@ -23,9 +23,18 @@ class PostDetailViewModel {
     
     init(post: Post) {
         self.post.value = post
+        self.updateViewCount()
     }
     
     // MARK: Method
+    
+    func loadPost(completion: @escaping () -> Void) {
+        guard let postId = post.value?.id.uuidString else { return }
+        FirebaseManager.firebaseManager.loadPost(id: postId) { [weak self] post in
+            self?.post.value = post
+            completion()
+        }
+    }
 
     func deletPost(postId: String, completion: @escaping () -> Void) {
         FirebaseManager.firebaseManager.deletePost(postID: postId) {
@@ -73,8 +82,8 @@ class PostDetailViewModel {
     }
     
     func setLikeCount(postID: String, completion: @escaping () -> Void) {
-        FirebaseManager.firebaseManager.setUpCount(postID: postID) { isUp in
-            self.isUp.value = isUp
+        FirebaseManager.firebaseManager.setUpCount(postID: postID) {
+            completion()
         }
     }
     
@@ -89,5 +98,10 @@ class PostDetailViewModel {
     
     func isLogin() -> Bool {
         return loginManager.isLogin()
+    }
+    
+    func updateViewCount() {
+        guard let postId = post.value?.id.uuidString else { return }
+        FirebaseManager.firebaseManager.updateViewCount(postID: postId)
     }
 }

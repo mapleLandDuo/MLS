@@ -622,7 +622,7 @@ extension FirebaseManager {
 
 extension FirebaseManager {
     // UpCount
-    func setUpCount(postID: String, completion: @escaping (Bool) -> Void) {
+    func setUpCount(postID: String, completion: @escaping () -> Void) {
         guard let myEmail = Utils.currentUser else { return }
         db.collection("posts").document(postID).getDocument { document, error in
             if let document = document, document.exists {
@@ -634,7 +634,7 @@ extension FirebaseManager {
                         if let error = error {
                             print("상대방 데이터에서 기존 내 아이디 삭제 실패 \(error)")
                         } else {
-                            completion(false)
+                            completion()
                         }
                     }
                 } else {
@@ -644,12 +644,26 @@ extension FirebaseManager {
                         if let error = error {
                             print("상대방 데이터에 내 아이디 저장 실패 \(error)")
                         } else {
-                            completion(true)
+                            completion()
                         }
                     }
                 }
             } else {
                 print("문서가 존재하지 않습니다.")
+            }
+        }
+    }
+}
+
+extension FirebaseManager {
+    // MARK: ViewCount
+
+    func updateViewCount(postID: String) {
+        db.collection("posts").document(postID).updateData([
+            "viewCount": FieldValue.increment(Int64(1))
+        ]) { error in
+            if let error = error {
+                print("뷰카운트 증가 실패: \(error)")
             }
         }
     }

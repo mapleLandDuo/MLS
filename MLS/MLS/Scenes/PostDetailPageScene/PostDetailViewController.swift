@@ -66,6 +66,7 @@ extension PostDetailViewController {
         if let id = viewModel.post.value?.id {
             viewModel.loadComment(postId: id.uuidString)
         }
+        totalTableView.reloadData()
     }
 }
 
@@ -150,6 +151,7 @@ private extension PostDetailViewController {
                   let post = self?.viewModel.post else { return }
             let vm = AddPostViewModel(type: type)
             vm.postData = post
+            vm.isEditing = true
             let vc = AddPostViewController(viewModel: vm)
             self?.navigationController?.pushViewController(vc, animated: true)
         })

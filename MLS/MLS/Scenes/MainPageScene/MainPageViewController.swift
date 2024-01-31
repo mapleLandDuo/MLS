@@ -76,6 +76,7 @@ extension MainPageViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
         self.sideMenuTableView.reloadData()
+        self.featureCollectionView.reloadData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {

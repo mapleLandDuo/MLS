@@ -99,7 +99,8 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: IconDescriptionTableViewCell.identifier, for: indexPath) as? IconDescriptionTableViewCell else { return UITableViewCell() }
             let item = viewModel.getItemMenu()[indexPath.row]
-            cell.bind(iconUrl: item.image, description: item.title)
+//            cell.bind(iconUrl: item.image, description: item.title)
+            cell.bind(data: item, controller: self)
             cell.selectionStyle = .none
             return cell
         default:

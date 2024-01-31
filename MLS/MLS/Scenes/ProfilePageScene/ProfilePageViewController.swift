@@ -24,7 +24,7 @@ class ProfilePageViewController: BasicController {
     
     lazy var emailLabel: UILabel = {
         let label = UILabel()
-        label.text = self.viewModel.getEmail()
+        label.text = self.viewModel.getPrivateEmail()
         label.textColor = .systemGray4
         label.font = Typography.title3.font
         return label
@@ -85,6 +85,7 @@ private extension ProfilePageViewController {
 
     func setUp() {
         setUpConstraints()
+        setUpNavigation()
         postTableView.delegate = self
         postTableView.dataSource = self
         postTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
@@ -125,6 +126,29 @@ private extension ProfilePageViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
+    
+    func setUpNavigation() {
+
+        let deleteMenu = UIAction(title: "프로필 수정", handler: { [weak self] _ in
+            AlertMaker.showAlertAction1(title: "업데이트 예정 기능입니다.")
+        })
+
+        let reportMenu = UIAction(title: "신고하기", attributes: .destructive, handler: { [weak self] _ in
+            AlertMaker.showAlertAction2(vc: self, title: "정말 신고하시겠습니까?", message: "신고는 취소할 수 없습니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
+                guard let email = self?.viewModel.getProfileEmail() else { return }
+                FirebaseManager.firebaseManager.reportUser(userID: email) {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            })
+        })
+
+        let loginMenu = UIMenu(children: [deleteMenu])
+        let logoutMenu = UIMenu(children: [reportMenu])
+
+        let navigationMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: viewModel.isMyProfile() ? loginMenu : logoutMenu)
+
+        navigationItem.rightBarButtonItem = navigationMenu
+    }
 }
 private extension ProfilePageViewController {
     // MARK: - Bind
@@ -149,7 +173,14 @@ extension ProfilePageViewController: UITableViewDelegate, UITableViewDataSource 
                   title: datas[indexPath.row].title,
                   date: datas[indexPath.row].date.toString(),
                   upCount: String(datas[indexPath.row].likes.count))
-                  return cell
+        cell.selectionStyle = .none
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let posts = viewModel.posts.value else { return }
+        let vc = PostDetailViewController(viewModel: PostDetailViewModel(post: posts[indexPath.row]))
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     

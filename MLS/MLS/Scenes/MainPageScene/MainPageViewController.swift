@@ -294,7 +294,7 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
                 IndicatorMaker.showLoading()
                 email.toNickName { nickName in
                     IndicatorMaker.hideLoading()
-                    let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(id: email, nickName: nickName))
+                    let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(email: email, nickName: nickName))
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             } else {
@@ -311,6 +311,7 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             AlertMaker.showAlertAction2(vc: self, title: "로그아웃",message: "정말로 로그아웃 하시겠습니까?", cancelTitle: "취소", completeTitle: "확인", nil, {
                 let loginManger = LoginManager()
                 IndicatorMaker.showLoading()
+                Utils.currentUser = nil
                 loginManger.logOut { [weak self] isLogOut in
                     self?.sideMenuTableView.reloadData()
                     IndicatorMaker.hideLoading()

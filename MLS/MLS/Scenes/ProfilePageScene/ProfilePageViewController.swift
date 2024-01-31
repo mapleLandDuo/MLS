@@ -22,9 +22,9 @@ class ProfilePageViewController: BasicController {
         return label
     }()
     
-    private let emailLabel: UILabel = {
+    lazy var emailLabel: UILabel = {
         let label = UILabel()
-        label.text = "ghd**********"
+        label.text = self.viewModel.getEmail()
         label.textColor = .systemGray4
         label.font = Typography.title3.font
         return label
@@ -51,7 +51,6 @@ class ProfilePageViewController: BasicController {
     
     private let postTableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
-        view.backgroundColor = .red
         return view
     }()
 
@@ -71,6 +70,11 @@ extension ProfilePageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        bind()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.loadPosts()
+        viewModel.loadNickName()
     }
 }
 private extension ProfilePageViewController {
@@ -78,6 +82,9 @@ private extension ProfilePageViewController {
 
     func setUp() {
         setUpConstraints()
+        postTableView.delegate = self
+        postTableView.dataSource = self
+        postTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
     }
     
     func setUpConstraints() {
@@ -115,4 +122,35 @@ private extension ProfilePageViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
+}
+private extension ProfilePageViewController {
+    // MARK: - Bind
+    func bind() {
+        viewModel.posts.bind { [weak self] _ in
+            self?.postTableView.reloadData()
+        }
+        viewModel.nickName.bind { [weak self] nickName in
+            self?.nickNameLabel.text = nickName
+        }
+    }
+}
+
+
+extension ProfilePageViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let count = viewModel.posts.value?.count else { return 0 }
+        return count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let datas = viewModel.posts.value else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
+        cell.bind(tag: datas[indexPath.row].postType,
+                  title: datas[indexPath.row].title,
+                  date: datas[indexPath.row].date.toString(),
+                  upCount: String(datas[indexPath.row].likeCount.count))
+                  return cell
+    }
+    
+    
 }

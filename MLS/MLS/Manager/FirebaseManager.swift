@@ -115,9 +115,8 @@ extension FirebaseManager {
     }
     
     // 본인 게시글 가져오기
-    func loadMyPosts(completion: @escaping ([Post]?) -> Void) {
-        guard let email = Utils.currentUser else { return }
-        db.collection("posts").whereField("user", isEqualTo: email).order(by: "date", descending: true).getDocuments { querySnapshot, error in
+    func loadMyPosts(userEmail: String, completion: @escaping ([Post]?) -> Void) {
+        db.collection("posts").whereField("user", isEqualTo: userEmail).order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)

@@ -280,7 +280,7 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
         guard let title = viewModel.getSideMenuItems()[indexPath.section][indexPath.row].title else { return }
         if title == "프로필" {
             if viewModel.loginManager.isLogin() {
-                let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(id: "ghddns34@gmail.com"))
+                let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(id: "maplelands2024@gmail.com"))
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
                 let vc = SignInViewController(viewModel: SignInViewModel())

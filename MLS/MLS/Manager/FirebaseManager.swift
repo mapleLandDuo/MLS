@@ -278,8 +278,7 @@ extension FirebaseManager {
             let data = try Firestore.Encoder().encode(comment)
             db.collection("posts").document(postID).collection("comments").document(comment.id.uuidString).updateData(data)
             completion()
-        } catch {
-        }
+        } catch {}
     }
 
     func deleteComment(postID: String, commentID: String, completion: @escaping () -> Void) {
@@ -456,38 +455,113 @@ extension FirebaseManager {
 extension FirebaseManager {
     // MARK: Report
 
-    func reportUser(userID: String, newReport: [String], completion: @escaping () -> Void) {
-        db.collection("users").document(userID).updateData([
-            "report": newReport
-        ]) { error in
-            if error != nil {
-                print("업데이트 실패")
+    func reportUser(userID: String, completion: @escaping () -> Void) {
+        let group = DispatchGroup()
+        guard let myEmail = Utils.currentUser else { return }
+        
+        db.collection("users").document(userID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                guard let blockedUsers = document.get("blockedUsers") as? [String] else { return }
+                if blockedUsers.contains(myEmail) {
+                    group.enter()
+                    self.db.collection("users").document(userID).updateData([
+                        "blockedUsres" : FieldValue.arrayRemove([myEmail])
+                    ]) { error in
+                        if let error = error {
+                            print("상대방 데이터에서 기존 내 아이디 삭제 실패 \(error)")
+                        }
+                        group.leave()
+                    }
+                } else {
+                    group.enter()
+                    self.db.collection("users").document(userID).updateData([
+                        "blockedUsres" : FieldValue.arrayUnion([myEmail])
+                    ]) { error in
+                        if let error = error {
+                            print("상대방 데이터에 내 아이디 저장 실패 \(error)")
+                        }
+                        group.leave()
+                    }
+                }
+                group.notify(queue: .main) {
+                    completion()
+                }
             } else {
-                completion()
+                print("문서가 존재하지 않습니다.")
             }
         }
     }
-
-    func reportPost(postId: String, newReport: [String], completion: @escaping () -> Void) {
-        db.collection("posts").document(postId).updateData([
-            "report": newReport
-        ]) { error in
-            if error != nil {
-                print("업데이트 실패")
+    
+    func reportPost(postID: String, completion: @escaping () -> Void) {
+        let group = DispatchGroup()
+        guard let myEmail = Utils.currentUser else { return }
+        
+        db.collection("posts").document(postID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                guard let reports = document.get("reports") as? [String] else { return }
+                if reports.contains(myEmail) {
+                    group.enter()
+                    self.db.collection("posts").document(postID).updateData([
+                        "reports" : FieldValue.arrayRemove([myEmail])
+                    ]) { error in
+                        if let error = error {
+                            print("상대방 데이터에서 기존 내 아이디 삭제 실패 \(error)")
+                        }
+                        group.leave()
+                    }
+                } else {
+                    group.enter()
+                    self.db.collection("posts").document(postID).updateData([
+                        "reports" : FieldValue.arrayUnion([myEmail])
+                    ]) { error in
+                        if let error = error {
+                            print("상대방 데이터에 내 아이디 저장 실패 \(error)")
+                        }
+                        group.leave()
+                    }
+                }
+                group.notify(queue: .main) {
+                    completion()
+                }
             } else {
-                completion()
+                print("문서가 존재하지 않습니다.")
             }
         }
     }
-
-    func reportComment(postId: String, commentId: String, newReport: [String], completion: @escaping () -> Void) {
-        db.collection("posts").document(postId).collection("comments").document(commentId).updateData([
-            "report": newReport
-        ]) { error in
-            if error != nil {
-                print("업데이트 실패")
+    
+    func reportComment(postId: String, commentId: String, completion: @escaping () -> Void) {
+        let group = DispatchGroup()
+        guard let myEmail = Utils.currentUser else { return }
+        
+        db.collection("posts").document(postId).collection("comments").document(commentId).getDocument { (document, error) in
+            if let document = document, document.exists {
+                guard let reports = document.get("reports") as? [String] else { return }
+                if reports.contains(myEmail) {
+                    group.enter()
+                    self.db.collection("posts").document(postId).collection("comments").document(commentId).updateData([
+                        "reports" : FieldValue.arrayRemove([myEmail])
+                    ]) { error in
+                        if let error = error {
+                            print("상대방 데이터에서 기존 내 아이디 삭제 실패 \(error)")
+                        }
+                        group.leave()
+                    }
+                } else {
+                    group.enter()
+                    self.db.collection("posts").document(postId).collection("comments").document(commentId).updateData([
+                        "reports" : FieldValue.arrayUnion([myEmail])
+                    ]) { error in
+                        if let error = error {
+                            print("상대방 데이터에 내 아이디 저장 실패 \(error)")
+                        }
+                        group.leave()
+                    }
+                }
+                group.notify(queue: .main) {
+                    completion()
+                }
             } else {
-                completion()
+                print("문서가 존재하지 않습니다.")
             }
         }
     }

@@ -71,9 +71,6 @@ extension MainPageViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = .systemOrange
         setUp()
-        FirebaseManager.firebaseManager.loadMyPosts(userEmail: "ghddns34@gmail.com") { posts in
-            print(posts)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -244,12 +244,11 @@ private extension AddPostViewController {
                     postImages: [],
                     postContent: content,
                     user: postData.user,
-                    comment: postData.comment,
                     date: Date(),
-                    likeCount: postData.likeCount,
+                    likeCounts: postData.likeCounts,
                     viewCount: postData.viewCount,
                     postType: postData.postType,
-                    report: postData.report,
+                    reports: postData.reports,
                     state: postData.state
                 )
                 self?.viewModel.savePost(post: postData, images: imageData) {

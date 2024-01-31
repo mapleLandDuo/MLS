@@ -109,9 +109,9 @@ private extension PostDetailViewController {
                         id: comment.id,
                         user: comment.user,
                         date: Date(),
-                        likeCount: comment.likeCount,
+                        likeCounts: comment.likeCounts,
                         comment: "\(text) (수정됨)",
-                        report: comment.report,
+                        reports: comment.reports,
                         state: comment.state)
                     self?.viewModel.updateComment(postId: post.id.uuidString, comment: newComment) {
                         self?.commentTextField.textField.text = ""
@@ -127,10 +127,10 @@ private extension PostDetailViewController {
                         id: UUID(),
                         user: user,
                         date: Date(),
-                        likeCount: [],
+                        likeCounts: [],
                         comment: text,
-                        report: [],
-                        state: true)
+                        reports: [],
+                        state: .normal)
                     self?.viewModel.saveComment(postId: post.id.uuidString, comment: comment) {
                         self?.commentTextField.textField.text = ""
                         AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 완료 되었습니다.")

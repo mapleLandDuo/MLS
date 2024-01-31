@@ -64,10 +64,9 @@ extension PostDetailViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let id = viewModel.post.value?.id {
-            viewModel.loadComment(postId: id.uuidString) {
-                self.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
-            }
+            viewModel.loadComment(postId: id.uuidString)
         }
+        totalTableView.reloadData()
     }
 }
 
@@ -97,26 +96,46 @@ private extension PostDetailViewController {
 
     func setUpActions() {
         commentButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let post = self?.viewModel.post.value else { return }
+            guard let post = self?.viewModel.post.value,
+            let isEditing = self?.viewModel.isEditing else { return }
             if let text = self?.commentTextField.textField.text {
                 if text == "" {
                     AlertMaker.showAlertAction1(vc: self, message: "댓글을 입력하세요.")
                     return
                 }
-                let comment = Comment(
-                    id: UUID(),
-                    user: post.user,
-                    date: Date(),
-                    likeCounts: [],
-                    comment: text,
-                    reports: [],
-                    state: .normal)
-                self?.viewModel.saveComment(postId: post.id.uuidString, comment: comment) {
-                    self?.commentTextField.textField.text = ""
-                    AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 완료 되었습니다.")
-                    if let id = self?.viewModel.post.value?.id {
-                        self?.viewModel.loadComment(postId: id.uuidString) {
-                            self?.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
+                if isEditing {
+                    guard let comment = self?.viewModel.editingComment else { return }
+                    let newComment = Comment(
+                        id: comment.id,
+                        user: comment.user,
+                        date: Date(),
+                        likeCount: comment.likeCount,
+                        comment: "\(text) (수정됨)",
+                        report: comment.report,
+                        state: comment.state)
+                    self?.viewModel.updateComment(postId: post.id.uuidString, comment: newComment) {
+                        self?.commentTextField.textField.text = ""
+                        AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 수정 되었습니다.")
+                        if let id = self?.viewModel.post.value?.id {
+                            self?.viewModel.loadComment(postId: id.uuidString)
+                            self?.viewModel.isEditing = false
+                        }
+                    }
+                } else {
+                    guard let user = Utils.currentUser else { return }
+                    let comment = Comment(
+                        id: UUID(),
+                        user: user,
+                        date: Date(),
+                        likeCount: [],
+                        comment: text,
+                        report: [],
+                        state: true)
+                    self?.viewModel.saveComment(postId: post.id.uuidString, comment: comment) {
+                        self?.commentTextField.textField.text = ""
+                        AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 완료 되었습니다.")
+                        if let id = self?.viewModel.post.value?.id {
+                            self?.viewModel.loadComment(postId: id.uuidString)
                         }
                     }
                 }
@@ -129,10 +148,10 @@ private extension PostDetailViewController {
     func setUpNavigation() {
         let modifyMenu = UIAction(title: "수정", handler: { [weak self] _ in
             guard let type = self?.viewModel.post.value?.postType,
-                  let post = self?.viewModel.post,
-                  let images = post.value?.postImages else { return }
+                  let post = self?.viewModel.post else { return }
             let vm = AddPostViewModel(type: type)
             vm.postData = post
+            vm.isEditing = true
             let vc = AddPostViewController(viewModel: vm)
             self?.navigationController?.pushViewController(vc, animated: true)
         })
@@ -164,7 +183,6 @@ private extension PostDetailViewController {
 
     func bind() {
         viewModel.comments.bind { [weak self] _ in
-            print(self?.viewModel.comments)
             self?.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
         }
     }
@@ -242,12 +260,14 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             headerView.addSubview(commentButton)
 
             commentTextField.snp.makeConstraints {
-                $0.top.leading.bottom.equalToSuperview()
+                $0.top.bottom.equalToSuperview().inset(Constants.defaults.horizontal / 2)
+                $0.leading.equalToSuperview().inset(Constants.defaults.vertical)
             }
 
             commentButton.snp.makeConstraints {
                 $0.top.trailing.bottom.equalToSuperview()
                 $0.leading.equalTo(commentTextField.snp.trailing)
+                $0.size.equalTo(50)
             }
 
             headerView.backgroundColor = .white
@@ -260,7 +280,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 2 {
-            return 60
+            return 70
         }
         return 0
     }
@@ -269,20 +289,16 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
 extension PostDetailViewController: DetailCommentCellDelegate {
     func tapDeleteButton(cell: DetailCommentCell, comment: Comment) {
         guard let postId = viewModel.post.value?.id.uuidString else { return }
-        viewModel.deleteComment(postId: postId, commentId: comment.id.uuidString) {
-            self.viewModel.loadComment(postId: postId) {
-                AlertMaker.showAlertAction1(vc: self, message: "댓글 삭제 완료")
+        AlertMaker.showAlertAction2(vc: self, title: "정말 삭제하시겠습니까?", message: "영구적으로 삭제됩니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
+            self.viewModel.deleteComment(postId: postId, commentId: comment.id.uuidString) {
+                self.viewModel.loadComment(postId: postId)
             }
-        }
+        })
     }
 
     func tapModifyButton(cell: DetailCommentCell, comment: Comment) {
-        guard let postId = viewModel.post.value?.id.uuidString else { return }
-        viewModel.updateComment(postId: postId, comment: comment) {
-            // 수정
-//            AlertMaker.showAlertAction1(vc: self, title: "댓글 수정") {
-//                self.totalTableView.reloadSections(IndexSet(integer: 2), with: .automatic)
-//            }
-        }
+        self.commentTextField.textField.text = comment.comment
+        viewModel.isEditing = true
+        viewModel.editingComment = comment
     }
 }

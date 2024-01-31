@@ -15,6 +15,8 @@ class AddPostViewModel {
     var imageData: Observable<[UIImage?]> = Observable([])
     var postData: Observable<Post> = Observable(nil)
     let type: BoardSeparatorType
+    
+    var isEditing = false
 
     init(type: BoardSeparatorType) {
         self.type = type
@@ -24,12 +26,20 @@ class AddPostViewModel {
 extension AddPostViewModel {
     // MARK: Method
 
-    func savePost(post: Post, images: [UIImage?]) {
+    func savePost(post: Post, images: [UIImage?], completion: @escaping () -> Void) {
         var post = post
         FirebaseManager.firebaseManager.saveImages(images: images) { [weak self] urls in
             self?.postData.value?.postImages = urls
             post.postImages = urls
-            FirebaseManager.firebaseManager.savePost(post: post)
+            guard let isEditing = self?.isEditing else { return }
+            if isEditing {
+                FirebaseManager.firebaseManager.updatePost(post: post)
+                self?.isEditing = false
+                completion()
+            } else {
+                FirebaseManager.firebaseManager.savePost(post: post)
+                completion()
+            }
         }
     }
 

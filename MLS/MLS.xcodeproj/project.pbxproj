@@ -25,6 +25,7 @@
 		081E70032B69130000CF83F4 /* AppInfoPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E70022B69130000CF83F4 /* AppInfoPageViewController.swift */; };
 		081E700A2B69208100CF83F4 /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E70092B69208100CF83F4 /* ProfilePageViewController.swift */; };
 		081E700C2B69212800CF83F4 /* ProfilePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E700B2B69212800CF83F4 /* ProfilePageViewModel.swift */; };
+		081E70182B6A40CC00CF83F4 /* IconDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E70172B6A40CC00CF83F4 /* IconDescriptionTableViewCell.swift */; };
 		082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C282B53CF4600D84CE2 /* AppDelegate.swift */; };
 		082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */; };
 		082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C312B53CF4800D84CE2 /* Assets.xcassets */; };
@@ -140,6 +141,7 @@
 		081E70022B69130000CF83F4 /* AppInfoPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoPageViewController.swift; sourceTree = "<group>"; };
 		081E70092B69208100CF83F4 /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
 		081E700B2B69212800CF83F4 /* ProfilePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewModel.swift; sourceTree = "<group>"; };
+		081E70172B6A40CC00CF83F4 /* IconDescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconDescriptionTableViewCell.swift; sourceTree = "<group>"; };
 		082D0C252B53CF4600D84CE2 /* MLS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MLS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		082D0C282B53CF4600D84CE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -575,6 +577,7 @@
 			children = (
 				778E90612B668101008A6E74 /* ItemTableViewCell.swift */,
 				778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */,
+				081E70172B6A40CC00CF83F4 /* IconDescriptionTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -746,6 +749,7 @@
 				08D50A6D2B5936AF00E94442 /* SharedTextField.swift in Sources */,
 				081E6FF02B67900900CF83F4 /* DictionaryItemDefaultCell.swift in Sources */,
 				08EF651B2B555BB7004CC842 /* InsetTextField.swift in Sources */,
+				081E70182B6A40CC00CF83F4 /* IconDescriptionTableViewCell.swift in Sources */,
 				08D50A7C2B5EA39300E94442 /* MainPageSideMenuFeatureCell.swift in Sources */,
 				081E6FE52B668B7300CF83F4 /* DictionaryMonsterHauntAreaCell.swift in Sources */,
 				77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */,

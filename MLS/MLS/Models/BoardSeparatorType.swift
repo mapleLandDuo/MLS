@@ -8,7 +8,7 @@
 import Foundation
 
 enum BoardSeparatorType: String, Codable {
-    case normal
+    case normal = "일반"
     case sell = "팝니다"
     case buy = "삽니다"
     case complete = "거래완료"

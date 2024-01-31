@@ -71,4 +71,8 @@ extension DictionaryGraySeparatorOneLineCell {
         nameLabel.text = data.name
         descriptionLabel.text = data.description
     }
+    func bind(name: String, description: String) {
+        nameLabel.text = name
+        descriptionLabel.text = description
+    }
 }

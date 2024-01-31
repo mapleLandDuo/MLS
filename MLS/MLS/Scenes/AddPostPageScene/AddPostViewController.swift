@@ -136,8 +136,8 @@ private extension AddPostViewController {
         viewModel.imageData.bind { [weak self] _ in
             self?.imageChoiceCollectionView.reloadData()
         }
-        
-        viewModel.postData.bind { [weak self] post in
+
+        viewModel.postData.bind { [weak self] _ in
             self?.updatePostUI()
         }
     }
@@ -230,8 +230,34 @@ private extension AddPostViewController {
                 AlertMaker.showAlertAction1(vc: self, message: "제목은 필수입니다!")
                 return
             }
-            if let title = self?.titleTextField.text, let content = self?.postTextView.text, let user = self?.viewModel.getUser(), let type = self?.viewModel.type {
-                self?.viewModel.postData.value = Post(
+                 guard let imageData = self?.viewModel.imageData.value,
+                  let isEditing = self?.viewModel.isEditing,
+                  let title = self?.titleTextField.text,
+                  let content = self?.postTextView.text,
+                  let user = self?.viewModel.getUser(),
+                  let type = self?.viewModel.type else { return }
+            if isEditing {
+                guard var postData = self?.viewModel.postData.value else { return }
+                postData = Post(
+                    id: postData.id,
+                    title: title,
+                    postImages: [],
+                    postContent: content,
+                    user: postData.user,
+                    comment: postData.comment,
+                    date: Date(),
+                    likeCount: postData.likeCount,
+                    viewCount: postData.viewCount,
+                    postType: postData.postType,
+                    report: postData.report,
+                    state: postData.state
+                )
+                self?.viewModel.savePost(post: postData, images: imageData) {
+                    self?.viewModel.postData.value = postData
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            } else {
+                let postData = Post(
                     id: UUID(),
                     title: title,
                     postImages: [],
@@ -244,16 +270,17 @@ private extension AddPostViewController {
                     reports: [],
                     state: .normal
                 )
+                self?.viewModel.savePost(post: postData, images: imageData) {
+                    self?.navigationController?.popViewController(animated: true)
+                }
             }
-            guard let postData = self?.viewModel.postData.value, let imageData = self?.viewModel.imageData.value else { return }
-            self?.viewModel.savePost(post: postData, images: imageData)
-            self?.navigationController?.popViewController(animated: true)
         }), for: .touchUpInside)
     }
 }
 
 private extension AddPostViewController {
     // MARK: Method
+
     func updatePostUI() {
         guard let title = viewModel.postData.value?.title,
               let content = viewModel.postData.value?.postContent else { return }

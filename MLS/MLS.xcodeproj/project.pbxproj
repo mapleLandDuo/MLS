@@ -98,6 +98,7 @@
 		77082A512B63F90A00187906 /* DetailPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A502B63F90A00187906 /* DetailPostCell.swift */; };
 		77082A532B63F91700187906 /* DetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A522B63F91700187906 /* DetailCommentCell.swift */; };
 		77082A552B64069700187906 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A542B64069700187906 /* Utils.swift */; };
+		77222F9A2B6A64910060ECC2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77222F992B6A64910060ECC2 /* GoogleService-Info.plist */; };
 		7732E8802B67E6D30038C7A9 /* DictionarySearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E87F2B67E6D30038C7A9 /* DictionarySearchViewController.swift */; };
 		7732E8822B67E7630038C7A9 /* DictionarySearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E8812B67E7630038C7A9 /* DictionarySearchViewModel.swift */; };
 		7732E8842B67F3F90038C7A9 /* DictionarySearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E8832B67F3F90038C7A9 /* DictionarySearchCell.swift */; };
@@ -190,6 +191,7 @@
 		77082A502B63F90A00187906 /* DetailPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostCell.swift; sourceTree = "<group>"; };
 		77082A522B63F91700187906 /* DetailCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCommentCell.swift; sourceTree = "<group>"; };
 		77082A542B64069700187906 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		77222F992B6A64910060ECC2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7732E87F2B67E6D30038C7A9 /* DictionarySearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchViewController.swift; sourceTree = "<group>"; };
 		7732E8812B67E7630038C7A9 /* DictionarySearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchViewModel.swift; sourceTree = "<group>"; };
 		7732E8832B67F3F90038C7A9 /* DictionarySearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchCell.swift; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				77222F992B6A64910060ECC2 /* GoogleService-Info.plist */,
 				082D0C282B53CF4600D84CE2 /* AppDelegate.swift */,
 				082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */,
 				082D0C362B53CF4800D84CE2 /* Info.plist */,
@@ -710,6 +713,7 @@
 			files = (
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
+				77222F9A2B6A64910060ECC2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

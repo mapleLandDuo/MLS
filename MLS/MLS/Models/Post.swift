@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 struct Post: Codable {
     var id: UUID
@@ -14,11 +13,10 @@ struct Post: Codable {
     var postImages: [URL?]
     var postContent: String
     var user: String
-    var comment: [UUID]
     var date: Date
-    var likeCount: [String]
+    var likeCounts: [String]
     var viewCount: Int
     var postType: BoardSeparatorType
-    var report: [String]
-    var state: Bool
+    var reports: [String]
+    var state: State
 }

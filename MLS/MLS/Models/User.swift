@@ -10,17 +10,14 @@ import Foundation
 struct User: Codable {
     var id: String
     var nickName: String
-    var state: UserState
-    var blockedPost: [String]
-    var blockedCommtent: [String]
-    var blockedUser: [String]
+    var state: State
+    var blockingPosts: [String]
+    var blockingComments: [String]
+    var blockingUsers: [String]
+    var blockedUsers: [String]
 }
 
-enum UserState: Codable {
-    case blockUser
+enum State: Codable {
+    case block
     case normal
 }
-
-
-
-

@@ -263,13 +263,12 @@ private extension AddPostViewController {
                     postImages: [],
                     postContent: content,
                     user: user,
-                    comment: [],
                     date: Date(),
-                    likeCount: [],
+                    likeCounts: [],
                     viewCount: 0,
                     postType: type,
-                    report: [],
-                    state: true
+                    reports: [],
+                    state: .normal
                 )
                 self?.viewModel.savePost(post: postData, images: imageData) {
                     self?.navigationController?.popViewController(animated: true)

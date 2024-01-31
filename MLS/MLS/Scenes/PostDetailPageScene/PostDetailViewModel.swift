@@ -73,8 +73,10 @@ class PostDetailViewModel {
     }
     
     func setLikeCount(postID: String, completion: @escaping () -> Void) {
-        FirebaseManager.firebaseManager.setUpCount(postID: postID) { isUp in
-            self.isUp.value = isUp
+        FirebaseManager.firebaseManager.setUpCount(postID: postID) {
+            FirebaseManager.firebaseManager.loadPost(id: postID) { post in
+                self.post.value = post
+            }
         }
     }
     

@@ -195,6 +195,12 @@ private extension PostDetailViewController {
         viewModel.isUp.bind { [weak self] _ in
             self?.totalTableView.reloadSections(IndexSet(integer: 1), with: .automatic)
         }
+        
+        viewModel.post.bind { [weak self] _ in
+            guard let post = self?.viewModel.post.value else { return }
+            self?.viewModel.checkLikeCount(post: post)
+            self?.totalTableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        }
     }
 }
 
@@ -333,7 +339,7 @@ extension PostDetailViewController: DetailPostCellDelegate {
     func tapUpCountButton(cell: DetailPostCell) {
         guard let postID = viewModel.post.value?.id.uuidString else { return }
         viewModel.setLikeCount(postID: postID) {
-            print("UPUPUPUP")
+            
         }
     }
 }

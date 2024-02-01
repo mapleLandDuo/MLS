@@ -149,6 +149,7 @@ private extension AddPostViewController {
     func setUp() {
         setUpConstraints()
         setUpActions()
+        setUpPostType()
         titleTextField.delegate = self
         postTextView.delegate = self
         imageChoiceCollectionView.dataSource = self
@@ -247,7 +248,7 @@ private extension AddPostViewController {
                     date: Date(),
                     likes: postData.likes,
                     viewCount: postData.viewCount,
-                    postType: postData.postType,
+                    postType: type,
                     reports: postData.reports,
                     state: postData.state
                 )
@@ -274,6 +275,33 @@ private extension AddPostViewController {
                 }
             }
         }), for: .touchUpInside)
+        self.segmentedController.addAction(UIAction(handler: { [weak self] _ in
+            guard let index = self?.segmentedController.selectedSegmentIndex else { return }
+            if index == 0 {
+                self?.viewModel.type = .sell
+            } else {
+                self?.viewModel.type = .buy
+            }
+        }), for: .primaryActionTriggered)
+    }
+    
+    func setUpPostType() {
+        if isEditing {
+            if viewModel.type != .normal {
+                viewModel.type = .sell
+            }
+        } else {
+            if viewModel.type != .normal {
+                guard let type = viewModel.postData.value?.postType else { return }
+                print(isEditing)
+                viewModel.type = type
+                if type == .buy {
+                    segmentedController.selectedSegmentIndex = 1
+                } else if type == .sell {
+                    segmentedController.selectedSegmentIndex = 0
+                }
+            }
+        }
     }
 }
 

@@ -14,7 +14,7 @@ class AddPostViewModel {
 
     var imageData: Observable<[UIImage?]> = Observable([])
     var postData: Observable<Post> = Observable(nil)
-    let type: BoardSeparatorType
+    var type: BoardSeparatorType
     
     var isEditing = false
 

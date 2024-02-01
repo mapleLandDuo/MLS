@@ -16,11 +16,11 @@ class CommunityPageViewController: BasicController {
 
     private var sortItems: [UIAction] {
         let first = UIAction(title: "최신순", image: UIImage(systemName: ""), handler: { [weak self] _ in
-            // 정렬
+            self?.viewModel.sortType.value = .new
         })
 
         let second = UIAction(title: "조회순", image: UIImage(systemName: ""), handler: { [weak self] _ in
-            // 정렬
+            self?.viewModel.sortType.value = .popular
         })
 
         let Items = [first, second]
@@ -89,7 +89,7 @@ extension CommunityPageViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getPosts()
+        loadPosts()
     }
 }
 
@@ -156,7 +156,7 @@ private extension CommunityPageViewController {
                 self?.navigationController?.pushViewController(vc, animated: true)
             } else {
                 AlertMaker.showAlertAction1(vc: self, message: "로그인이 필요합니다.") {
-                    let vc = SignUpViewController(viewModel: SignUpViewModel())
+                    let vc = SignInViewController(viewModel: SignInViewModel())
                     self?.navigationController?.pushViewController(vc, animated: true)
                 }
             }
@@ -167,7 +167,7 @@ private extension CommunityPageViewController {
         switch type {
         case .normal:
             titleLabel.text = "자유게시판"
-        // 정렬 속성
+            // 정렬 속성
         case .sell, .buy, .complete:
             titleLabel.text = "거래게시판"
             // 정렬 속성
@@ -183,15 +183,20 @@ private extension CommunityPageViewController {
         viewModel.posts.bind { [weak self] _ in
             self?.communityTableView.reloadData()
         }
+        
+        viewModel.sortType.bind { [weak self] _ in
+            self?.loadPosts()
+        }
     }
 }
 
 private extension CommunityPageViewController {
     // MARK: - Method
 
-    func getPosts() {
+    func loadPosts() {
+        guard let sortType = viewModel.sortType.value else { return }
         IndicatorMaker.showLoading()
-        viewModel.getPost { posts in
+        viewModel.loadPosts(sort: sortType) { posts in
             IndicatorMaker.hideLoading()
             self.viewModel.posts.value = posts
         }
@@ -218,13 +223,13 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let postCell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
         guard let searchCell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
-        guard let posts = viewModel.posts.value?[indexPath.row] else { return UITableViewCell() }
         if viewModel.posts.value?.count != viewModel.postsCount && indexPath.row == 0 {
             searchCell.searchBar.delegate = self
             searchCell.isUserInteractionEnabled = true
             searchCell.contentView.isUserInteractionEnabled = false
             return searchCell
         }
+        guard let posts = viewModel.posts.value?[indexPath.row] else { return UITableViewCell() }
         postCell.bind(tag: posts.postType, title: posts.title, date: posts.date.toString(), upCount: String(posts.likes.count))
         return postCell
     }
@@ -237,9 +242,18 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
 }
 
 extension CommunityPageViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {}
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        guard let text = searchBar.text else { return }
+//        viewModel.searchPosts(text: text) {}
+//    }
 
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {}
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let text = searchBar.text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            viewModel.searchPosts(text: text) {}
+        } else {
+            loadPosts()
+        }
+    }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         return true

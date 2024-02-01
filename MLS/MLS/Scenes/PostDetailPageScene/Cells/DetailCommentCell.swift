@@ -19,10 +19,17 @@ class DetailCommentCell: UITableViewCell {
     // MAKR: Properties
     weak var delegate: DetailCommentCellDelegate?
     var comment: Comment?
+    private var parent: BasicController?
     
     // MARK: Components
 
-    private let commentProfileNameLabel = CustomLabel(text: "", font: .boldSystemFont(ofSize: 16))
+//    private let commentProfileNameLabel = CustomLabel(text: "", font: .boldSystemFont(ofSize: 16))
+    private let commentProfileNameLabel: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = Typography.button.font
+        return button
+    }()
 
     lazy var optionStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [modifyButton, deleteButton, reportButton])
@@ -91,7 +98,8 @@ private extension DetailCommentCell {
     // MARK: Bind
 
     func bind(name: String, comment: String) {
-        commentProfileNameLabel.text = name
+//        commentProfileNameLabel.text = name
+        commentProfileNameLabel.setTitle(name, for: .normal)
         commentTextLabel.text = comment
     }
 }
@@ -101,6 +109,11 @@ private extension DetailCommentCell {
 
     func setUp() {
         setUpConstraints()
+        commentProfileNameLabel.addAction(UIAction(handler: { [weak self]_ in
+            guard let email = self?.comment?.user, let nickName = self?.commentProfileNameLabel.titleLabel?.text else { return }
+            let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(email: email, nickName: nickName))
+            self?.parent?.navigationController?.pushViewController(vc, animated: true)
+        }), for: .primaryActionTriggered)
     }
 
     func setUpConstraints() {
@@ -111,11 +124,11 @@ private extension DetailCommentCell {
         commentProfileNameLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
-            $0.trailing.equalTo(optionStackView).inset(-Constants.defaults.horizontal)
+//            $0.trailing.equalTo(optionStackView).inset(-Constants.defaults.horizontal)
         }
 
         optionStackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.centerY.equalTo(commentProfileNameLabel.snp.centerY)
             $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
 
@@ -129,15 +142,18 @@ private extension DetailCommentCell {
 
 extension DetailCommentCell {
     // MARK: Method
-    func bind(comment: Comment) {
+    func bind(comment: Comment, vc: BasicController) {
+        self.parent = vc
         if comment.user != Utils.currentUser {
             deleteButton.isHidden = true
             modifyButton.isHidden = true
         } else {
             reportButton.isHidden = true
         }
+        IndicatorMaker.showLoading()
         comment.user.toNickName { [weak self] nickName in
-            self?.commentProfileNameLabel.text = nickName
+            IndicatorMaker.hideLoading()
+            self?.commentProfileNameLabel.setTitle(nickName, for: .normal)
         }
         commentTextLabel.text = comment.comment
     }

@@ -12,6 +12,8 @@ class MainPageFeatureListCell: UICollectionViewCell {
     // MARK: - Property
 
     var posts: Observable<[Post]> = Observable(nil)
+    
+    var parent: BasicController = BasicController()
 
     // MARK: - Components
 
@@ -34,6 +36,12 @@ class MainPageFeatureListCell: UICollectionViewCell {
     private let rightImageView: UIImageView = {
         let view = UIImageView()
         view.tintColor = .systemOrange
+        return view
+    }()
+    
+    private let titleSeparator: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemOrange
         return view
     }()
 
@@ -68,7 +76,9 @@ private extension MainPageFeatureListCell {
     func setUp() {
         setUpConstraints()
         postListTableView.dataSource = self
+        postListTableView.delegate = self
         postListTableView.register(MainPageFeatureListPostCell.self, forCellReuseIdentifier: MainPageFeatureListPostCell.identifier)
+        postListTableView.register(DictionaryGraySeparatorOneLineCell.self, forCellReuseIdentifier: DictionaryGraySeparatorOneLineCell.identifier)
     }
 
     func setUpConstraints() {
@@ -89,16 +99,22 @@ private extension MainPageFeatureListCell {
             make.right.equalToSuperview().inset(Constants.defaults.horizontal)
             make.centerY.equalTo(titleLabel)
         }
-        trailingView.addSubview(postListTableView)
-        postListTableView.snp.makeConstraints { make in
+        trailingView.addSubview(titleSeparator)
+        titleSeparator.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
             make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.height.equalTo(1)
+        }
+        trailingView.addSubview(postListTableView)
+        postListTableView.snp.makeConstraints { make in
+            make.top.equalTo(titleSeparator.snp.bottom)
+            make.left.right.equalToSuperview()
             make.bottom.equalToSuperview().inset(Constants.defaults.vertical)
         }
     }
 }
 
-extension MainPageFeatureListCell: UITableViewDataSource {
+extension MainPageFeatureListCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let count = posts.value?.count else { return 0 }
         return count
@@ -106,21 +122,31 @@ extension MainPageFeatureListCell: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = postListTableView.dequeueReusableCell(
-            withIdentifier: MainPageFeatureListPostCell.identifier, for: indexPath
-        ) as? MainPageFeatureListPostCell,
+            withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath
+        ) as? DictionaryGraySeparatorOneLineCell,
               let item = posts.value?[indexPath.row]
         else {
             return UITableViewCell()
         }
-        cell.bind(text: item.title)
+        cell.bind(name: item.title, description: "")
+        cell.selectionStyle = .none
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let item = posts.value?[indexPath.row] else { return }
+        let vc = PostDetailViewController(viewModel: PostDetailViewModel(post: item))
+        parent.navigationController?.pushViewController(vc, animated: true)
+        
+    }
+    
 }
 
 extension MainPageFeatureListCell {
-    func bind(data: FeatureCellData) {
+    func bind(data: FeatureCellData, vc: BasicController) {
         titleLabel.text = data.title
         rightImageView.image = data.image
+        self.parent = vc
     }
     
     func postsBind() {

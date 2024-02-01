@@ -10,20 +10,20 @@ import UIKit
 
 class DictionaryMainViewModel {
     // Properties
-    private let monsterMenus = ["1 ~ 10", "11 ~ 20", "21 ~ 30", "31 ~ 40", "41 ~ 50", "51 ~ 60", "61 ~ 70", "71 ~ 80", "81 ~ 90", "91 ~ 100", "101 ~ 120", "121 ~ 150", "151 ~ 180", "181 ~ 200", "etc"]
+    private let monsterMenus = ["1 ~ 10", "11 ~ 20", "21 ~ 30", "31 ~ 40", "41 ~ 50", "51 ~ 60", "61 ~ 70", "71 ~ 80", "81 ~ 90", "91 ~ 100", "101 ~ 110", "111 ~ 120", "121 ~ 130", "131 ~ 140", "141 ~ 150", "etc"]
     
     private let itemMenus = [
         [
-            ItemMenu(title: " 공통 ", image: UIImage(named: "item1")),
-            ItemMenu(title: " 전사 ", image: UIImage(named: "item2")),
+            ItemMenu(title: .common, image: UIImage(named: "commonIcon")),
+            ItemMenu(title: .warrior, image: UIImage(named: "warriorIcon")),
         ],
         [
-            ItemMenu(title: " 궁수 ", image: UIImage(named: "item3")),
-            ItemMenu(title: " 도적 ", image: UIImage(named: "item4")),
+            ItemMenu(title: .archer, image: UIImage(named: "archerIcon")),
+            ItemMenu(title: .thief, image: UIImage(named: "thiefIcon")),
         ],
         [        
-            ItemMenu(title: " 마법사 ", image: UIImage(named: "item5")),
-            ItemMenu(title: " 해적 ", image: UIImage(named: "item6")),
+            ItemMenu(title: .magician, image: UIImage(named: "magicianIcon")),
+            ItemMenu(title: .pirate, image: UIImage(named: "pirateIcon")),
         ]
 
 
@@ -48,7 +48,7 @@ extension DictionaryMainViewModel {
         return itemMenus.count
     }
     
-    func searchItem(name: String, completion: @escaping (DictionaryItem?) -> Void) {
+    func searchItem(name: String, completion: @escaping ([DictionaryItem]?) -> Void) {
         FirebaseManager.firebaseManager.searchData(name: name, type: DictionaryItem.self) { data in
             if let data = data {
                 completion(data)
@@ -58,7 +58,7 @@ extension DictionaryMainViewModel {
         }
     }
     
-    func searchMonster(name: String, completion: @escaping (DictionaryMonster?) -> Void) {
+    func searchMonster(name: String, completion: @escaping ([DictionaryMonster]?) -> Void) {
         FirebaseManager.firebaseManager.searchData(name: name, type: DictionaryMonster.self) { data in
             if let data = data {
                 completion(data)
@@ -67,9 +67,30 @@ extension DictionaryMainViewModel {
             }
         }
     }
+    
+    func loadItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
+        FirebaseManager.firebaseManager.loadItemByRoll(roll: roll) { items in
+            completion(items)
+        }
+    }
+    
+    func loadMonsterByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
+        FirebaseManager.firebaseManager.loadMonsterByLevel(minLevel: minLevel, maxLevel: maxLevel) { monsters in
+            completion(monsters)
+        }
+    }
 }
 
 struct ItemMenu {
-    var title: String
+    var title: ItemMenuName
     var image: UIImage?
+}
+
+enum ItemMenuName: String {
+    case common = "공용"
+    case warrior = "전사"
+    case archer = "궁수"
+    case thief = "도적"
+    case magician = "마법사"
+    case pirate = "해적"
 }

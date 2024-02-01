@@ -342,28 +342,70 @@ extension FirebaseManager {
 }
 
 extension FirebaseManager {
-    // MARK: Search
+    // MARK: ItemSearch/MonsterSearch
 
-    func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping (T?) -> Void) {
+    func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping ([T]?) -> Void) {
         let collectionName = getCollectionName(for: type)
-        db.collection(collectionName).document(name).getDocument { documentSnapshot, err in
+        db.collection(collectionName).order(by: "name").whereField("name", isGreaterThanOrEqualTo: name).whereField("name", isLessThanOrEqualTo: name + "\u{f8ff}").getDocuments { querySnapshot, err in
             if let err = err {
                 print("검색 데이터 없음: \(err)")
+                completion(nil)
             } else {
                 do {
-                    if let document = documentSnapshot, document.exists {
+                    var results: [T] = []
+                    for document in querySnapshot!.documents {
                         let data = try Firestore.Decoder().decode(T.self, from: document.data())
-                        completion(data)
-                    } else {
-                        print("검색 데이터 없음")
-                        completion(nil)
+                        results.append(data)
                     }
+                    completion(results)
                 } catch {
                     print("검색 데이터 디코딩 실패: \(error)")
                     completion(nil)
                 }
             }
         }
+    }
+    
+    func loadItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
+        db.collection("dictionaryItems")
+            .whereField("detailDescription.직업", isGreaterThanOrEqualTo: roll)
+            .whereField("detailDescription.직업", isLessThanOrEqualTo: roll + "\u{f8ff}").order(by: "detailDescription.직업").order(by: "level")
+            .getDocuments { (querySnapshot, err) in
+                if let err = err {
+                    print("검색 데이터 없음: \(err)")
+                } else {
+                    do {
+                        var results = [DictionaryItem]()
+                        for document in querySnapshot!.documents {
+                            let data = try Firestore.Decoder().decode(DictionaryItem.self, from: document.data())
+                            results.append(data)
+                        }
+                        completion(results)
+                    } catch {
+                        print("검색 데이터 디코딩 실패: \(error)")
+                    }
+                }
+            }
+    }
+    
+    func loadMonsterByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
+        db.collection("dictionaryMonsters").whereField("level", isGreaterThanOrEqualTo: minLevel).whereField("level", isLessThanOrEqualTo: maxLevel).order(by: "level")
+            .getDocuments { (querySnapshot, err) in
+                if let err = err {
+                    print("검색 데이터 없음: \(err)")
+                } else {
+                    do {
+                        var results = [DictionaryMonster]()
+                        for document in querySnapshot!.documents {
+                            let data = try Firestore.Decoder().decode(DictionaryMonster.self, from: document.data())
+                            results.append(data)
+                        }
+                        completion(results)
+                    } catch {
+                        print("검색 데이터 디코딩 실패: \(error)")
+                    }
+                }
+            }
     }
 
     func getCollectionName<T>(for type: T.Type) -> String {
@@ -374,6 +416,31 @@ extension FirebaseManager {
             return "dictionaryMonsters"
         default:
             return "defaultCollection"
+        }
+    }
+}
+
+extension FirebaseManager {
+    // MARK: PostSearch
+
+    func searchPosts(text: String, completion: @escaping ([Post]?) -> Void) {
+        db.collection("posts").whereField("postContent", isGreaterThanOrEqualTo: text).whereField("postContent", isLessThan: text + "\u{f8ff}").order(by: "postContent").order(by: "date", descending: true).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var posts: [Post] = []
+                for document in querySnapshot?.documents ?? [] {
+                    do {
+                        let post = try Firestore.Decoder().decode(Post.self, from: document.data())
+                        posts.append(post)
+                    } catch {
+                        completion(nil)
+                        return
+                    }
+                }
+                completion(posts)
+            }
         }
     }
 }

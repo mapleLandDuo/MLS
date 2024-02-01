@@ -668,3 +668,28 @@ extension FirebaseManager {
         }
     }
 }
+
+extension FirebaseManager {
+    // MARK: PostSearch
+    
+    func searchPosts(text: String, completion: @escaping ([Post]?) -> Void) {
+        db.collection("posts").whereField("postContent", isGreaterThanOrEqualTo: text).whereField("postContent", isLessThan: text + "\u{f8ff}").order(by: "postContent").order(by: "date", descending: true).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var posts: [Post] = []
+                for document in querySnapshot?.documents ?? [] {
+                    do {
+                        let post = try Firestore.Decoder().decode(Post.self, from: document.data())
+                        posts.append(post)
+                    } catch {
+                        completion(nil)
+                        return
+                    }
+                }
+                completion(posts)
+            }
+        }
+    }
+}

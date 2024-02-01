@@ -167,7 +167,7 @@ private extension CommunityPageViewController {
         switch type {
         case .normal:
             titleLabel.text = "자유게시판"
-        // 정렬 속성
+            // 정렬 속성
         case .sell, .buy, .complete:
             titleLabel.text = "거래게시판"
             // 정렬 속성
@@ -218,13 +218,13 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let postCell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
         guard let searchCell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
-        guard let posts = viewModel.posts.value?[indexPath.row] else { return UITableViewCell() }
         if viewModel.posts.value?.count != viewModel.postsCount && indexPath.row == 0 {
             searchCell.searchBar.delegate = self
             searchCell.isUserInteractionEnabled = true
             searchCell.contentView.isUserInteractionEnabled = false
             return searchCell
         }
+        guard let posts = viewModel.posts.value?[indexPath.row] else { return UITableViewCell() }
         postCell.bind(tag: posts.postType, title: posts.title, date: posts.date.toString(), upCount: String(posts.likes.count))
         return postCell
     }
@@ -237,9 +237,18 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
 }
 
 extension CommunityPageViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {}
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        guard let text = searchBar.text else { return }
+//        viewModel.searchPosts(text: text) {}
+//    }
 
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {}
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let text = searchBar.text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            viewModel.searchPosts(text: text) {}
+        } else {
+            getPosts()
+        }
+    }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         return true

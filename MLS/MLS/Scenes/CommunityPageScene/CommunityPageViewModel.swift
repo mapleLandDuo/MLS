@@ -24,7 +24,7 @@ class CommunityPageViewModel {
 
 extension CommunityPageViewModel {
     // Methods
-    func getPost(completion: @escaping ([Post]?) -> Void){
+    func getPost(completion: @escaping ([Post]?) -> Void) {
         switch type {
         case .normal:
             FirebaseManager.firebaseManager.loadPosts(type: [.normal]) { [weak self] post in
@@ -43,6 +43,22 @@ extension CommunityPageViewModel {
                 } else {
                     completion(nil)
                 }
+            }
+        }
+    }
+    
+    func searchPosts(text: String, completion: @escaping () -> Void) {
+        if text == "" {
+            getPost { [weak self] posts in
+                guard let posts = posts else { return }
+                self?.posts.value = posts
+            }
+        } else {
+            FirebaseManager.firebaseManager.searchPosts(text: text) { [weak self] posts in
+                guard let posts = posts else { return }
+                self?.postsCount = posts.count
+                self?.posts.value = posts
+                completion()
             }
         }
     }

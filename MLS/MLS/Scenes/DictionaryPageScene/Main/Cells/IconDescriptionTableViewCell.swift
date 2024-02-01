@@ -8,48 +8,74 @@
 import Foundation
 import UIKit
 
+protocol IconDescriptionTableViewCellDelegate: AnyObject {
+    func tapLeftButton(data: [ItemMenu])
+    func tapRightButton(data: [ItemMenu])
+}
+
 class IconDescriptionTableViewCell: UITableViewCell {
-    // MARK: - Componetns
+    // MARK: Properties
+
+    weak var delegate: IconDescriptionTableViewCellDelegate?
     
-    private let leftButton: UIButton = {
+    var data: [ItemMenu]?
+
+    // MARK: - Componetns
+
+    lazy var leftButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = Constants.defaults.radius
         button.backgroundColor = .systemOrange
+        button.addAction(UIAction(handler: { [weak self] _ in
+            if let self = self, let data = self.data {
+                self.delegate?.tapLeftButton(data: data)
+            }
+        }), for: .touchUpInside)
         return button
     }()
+
     private let leftImageView: UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = Constants.defaults.radius
         view.clipsToBounds = true
         return view
     }()
+
     private let leftTitleLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.button.font
+        label.textAlignment = .center
         label.textColor = .white
         return label
     }()
-    
-    private let rightButton: UIButton = {
+
+    lazy var rightButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = Constants.defaults.radius
         button.backgroundColor = .systemOrange
+        button.addAction(UIAction(handler: { [weak self] _ in
+            if let self = self, let data = self.data {
+                self.delegate?.tapRightButton(data: data)
+            }
+        }), for: .touchUpInside)
         return button
     }()
-    
+
     private let rightImageView: UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = Constants.defaults.radius
         view.clipsToBounds = true
         return view
     }()
+
     private let rightTitleLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.button.font
+        label.textAlignment = .center
         label.textColor = .white
         return label
     }()
-    
+
     private let stackView: UIStackView = {
         let view = UIStackView()
         view.spacing = Constants.defaults.horizontal
@@ -61,7 +87,8 @@ class IconDescriptionTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -73,6 +100,7 @@ private extension IconDescriptionTableViewCell {
     func setUp() {
         setUpConstraints()
     }
+
     func setUpConstraints() {
         contentView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
@@ -92,6 +120,7 @@ private extension IconDescriptionTableViewCell {
         }
         leftButton.addSubview(leftTitleLabel)
         leftTitleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(leftImageView.snp.trailing)
             make.right.equalToSuperview().inset(Constants.defaults.horizontal)
             make.centerY.equalToSuperview()
         }
@@ -106,6 +135,7 @@ private extension IconDescriptionTableViewCell {
         }
         rightButton.addSubview(rightTitleLabel)
         rightTitleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(rightImageView.snp.trailing)
             make.right.equalToSuperview().inset(Constants.defaults.horizontal)
             make.centerY.equalToSuperview()
         }
@@ -114,20 +144,14 @@ private extension IconDescriptionTableViewCell {
 
 extension IconDescriptionTableViewCell {
     // MARK: - bind
-    func bind(data:[ItemMenu], controller: UIViewController) {
+
+    func bind(data: [ItemMenu]) {
         if data.count == 2 {
+            self.data = data
             leftImageView.image = data[0].image
-            leftTitleLabel.text = data[0].title
+            leftTitleLabel.text = data[0].title.rawValue
             rightImageView.image = data[1].image
-            rightTitleLabel.text = data[1].title
+            rightTitleLabel.text = data[1].title.rawValue
         }
-        leftButton.addAction(UIAction(handler: { [weak self]_ in
-            let vc = BasicController()
-            controller.navigationController?.pushViewController(vc, animated: true)
-        }), for: .primaryActionTriggered)
-        rightButton.addAction(UIAction(handler: { [weak self]_ in
-            let vc = BasicController()
-            controller.navigationController?.pushViewController(vc, animated: true)
-        }), for: .primaryActionTriggered)
     }
 }

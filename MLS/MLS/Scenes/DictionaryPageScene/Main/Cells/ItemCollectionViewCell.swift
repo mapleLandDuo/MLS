@@ -69,7 +69,7 @@ extension ItemCollectionViewCell {
 
     func bind(item: ItemMenu) {
 //        itemImageView.kf.setImage(with: item.image)
-        itemTitleLabel.text = item.title
+        itemTitleLabel.text = item.title.rawValue
     }
 }
 

@@ -11,10 +11,8 @@ class DictionarySearchViewModel {
     // MARK: Properties
 
     let type: SearchType
-    let item: Observable<DictionaryItem> = Observable(nil)
-    let monster: Observable<DictionaryMonster> = Observable(nil)
-//    let itemList: Observable<[DictionaryItem]> = Observable(nil)
-//    let monsterList: Observable<[DictionaryMonster]> = Observable(nil)
+    let itemList: Observable<[DictionaryItem]> = Observable(nil)
+    let monsterList: Observable<[DictionaryMonster]> = Observable(nil)
 
     init(type: SearchType) {
         self.type = type
@@ -24,29 +22,29 @@ class DictionarySearchViewModel {
 extension DictionarySearchViewModel {
     // MARK: Method
 
-    func getURL() -> URL? {
+    func getURL() -> [URL?] {
         switch type {
         case .item:
-            guard let code = item.value?.code ,let url = URL(string: "https://maplestory.io/api/gms/62/item/\(code)/icon") else { return nil }
-            return url
+            guard let code = itemList.value else { return [] }
+            return code.map { URL(string: "https://maplestory.io/api/gms/62/item/\($0.code)/icon") }
         case .monster:
-            guard let code = monster.value?.code ,let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(code)/render/move?bgColor=") else { return nil }
-            return url
+            guard let code = monsterList.value else { return [] }
+            return code.map { URL(string: "https://maplestory.io/api/gms/62/mob/\($0.code)/render/move?bgColor=") }
         }
     }
-//    func getItemListCount() -> Int {
-//        if let count = itemList.value?.count {
-//            return count
-//        }
-//        return 0
-//    }
-//
-//    func getMonsterListCount() -> Int {
-//        if let count = monsterList.value?.count {
-//            return count
-//        }
-//        return 0
-//    }
+    func getItemListCount() -> Int {
+        if let count = itemList.value?.count {
+            return count
+        }
+        return 0
+    }
+
+    func getMonsterListCount() -> Int {
+        if let count = monsterList.value?.count {
+            return count
+        }
+        return 0
+    }
 }
 
 enum SearchType {

@@ -53,7 +53,7 @@ extension DictionaryMainViewController {
         super.viewDidLoad()
         setUp()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         itemSearchBar.text = ""
         monsterSearchBar.text = ""
@@ -95,7 +95,7 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
         case 1:
             return viewModel.getMonsterMenuCount()
         default:
-            return viewModel.getItemMenu().count
+            return viewModel.getItemMenuCount()
         }
     }
 
@@ -104,8 +104,8 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: IconDescriptionTableViewCell.identifier, for: indexPath) as? IconDescriptionTableViewCell else { return UITableViewCell() }
             let item = viewModel.getItemMenu()[indexPath.row]
-//            cell.bind(iconUrl: item.image, description: item.title)
-            cell.bind(data: item, controller: self)
+            cell.delegate = self
+            cell.bind(data: item)
             cell.selectionStyle = .none
             return cell
         default:
@@ -125,6 +125,33 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 1:
+            var minLevel = 151
+            var maxLevel = 1000
+            
+            if viewModel.getMonsterMenu()[indexPath.row] != "etc" {
+                minLevel = (indexPath.row * 10 + 1)
+                maxLevel = (indexPath.row + 1) * 10
+            }
+            
+            viewModel.loadMonsterByLevel(minLevel: minLevel, maxLevel: maxLevel) { [weak self] monsters in
+                if monsters.isEmpty {
+                    AlertMaker.showAlertAction1(vc: self, message: "해당 레벨에 맞는 몬스터가 없습니다!")
+                    return
+                }
+                
+                let vm = DictionarySearchViewModel(type: .monster)
+                vm.monsterList.value = monsters
+                let vc = DictionarySearchViewController(viewModel: vm)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+        default:
+            return
+        }
+    }
+
     func makeHearderView(searchBar: UISearchBar, title: String, description: String) -> UIView {
         let headerView = UIView()
         let titleLabel: UILabel = {
@@ -149,7 +176,7 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
             view.backgroundColor = .systemOrange
             return view
         }()
-        
+
         headerView.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -196,7 +223,7 @@ extension DictionaryMainViewController: UISearchBarDelegate {
                     return
                 }
                 let viewModel = DictionarySearchViewModel(type: .item)
-                viewModel.item.value = item
+                viewModel.itemList.value = item
                 let vc = DictionarySearchViewController(viewModel: viewModel)
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
@@ -208,11 +235,33 @@ extension DictionaryMainViewController: UISearchBarDelegate {
                     return
                 }
                 let viewModel = DictionarySearchViewModel(type: .monster)
-                viewModel.monster.value = item
+                viewModel.monsterList.value = item
                 let vc = DictionarySearchViewController(viewModel: viewModel)
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
         }
         searchBar.resignFirstResponder()
+    }
+}
+
+extension DictionaryMainViewController: IconDescriptionTableViewCellDelegate {
+    func tapLeftButton(data: [ItemMenu]) {
+        guard let roll = data.first?.title.rawValue else { return }
+        viewModel.loadItemByRoll(roll: roll) { [weak self] items in
+            let vm = DictionarySearchViewModel(type: .item)
+            vm.itemList.value = items
+            let vc = DictionarySearchViewController(viewModel: vm)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+
+    func tapRightButton(data: [ItemMenu]) {
+        guard let roll = data.last?.title.rawValue else { return }
+        viewModel.loadItemByRoll(roll: roll) { [weak self] items in
+            let vm = DictionarySearchViewModel(type: .item)
+            vm.itemList.value = items
+            let vc = DictionarySearchViewController(viewModel: vm)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

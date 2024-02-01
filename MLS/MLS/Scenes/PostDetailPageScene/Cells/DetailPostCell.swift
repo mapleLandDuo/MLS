@@ -13,6 +13,12 @@ import SnapKit
 
 class DetailPostCell: UITableViewCell {
 
+    // MARK: - Property
+    
+    private var parent: BasicController?
+    
+    private var email: String?
+
     // MARK: Components
 
     private let userNameButton: UIButton = {
@@ -64,6 +70,11 @@ private extension DetailPostCell {
 
     func setUp() {
         setUpConstraints()
+        self.userNameButton.addAction(UIAction(handler: { [weak self] _ in
+            guard let email = self?.email, let nickName = self?.userNameButton.titleLabel?.text else { return }
+            let nextVC = ProfilePageViewController(viewModel: ProfilePageViewModel(email: email, nickName: nickName))
+            self?.parent?.navigationController?.pushViewController(nextVC, animated: true)
+        }), for: .primaryActionTriggered)
     }
 
     func setUpConstraints() {
@@ -96,16 +107,13 @@ extension DetailPostCell {
     // MARK: Method
 
     func bind(post: Post, vc: BasicController) {
+        self.parent = vc
+        self.email = post.user
         postTitleLabel.text = post.title
         IndicatorMaker.showLoading()
         post.user.toNickName { [weak self] nickName in
             IndicatorMaker.hideLoading()
             self?.userNameButton.setTitle(nickName, for: .normal)
-            self?.userNameButton.addAction(UIAction(handler: { _ in
-                let nextVC = ProfilePageViewController(viewModel: ProfilePageViewModel(email: post.user, nickName: nickName))
-                vc.navigationController?.pushViewController(nextVC, animated: true)
-            }), for: .primaryActionTriggered)
-            
         }
         dateLabel.text = post.date.toString()
         postContentTextView.text = post.postContent

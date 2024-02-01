@@ -263,7 +263,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             cell.delegate = self
             cell.comment = comment
             cell.contentView.isUserInteractionEnabled = false
-            cell.bind(comment: comment)
+            cell.bind(comment: comment, vc: self)
             return cell
         default:
             return UITableViewCell()

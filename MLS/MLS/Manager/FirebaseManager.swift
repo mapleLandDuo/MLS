@@ -58,16 +58,31 @@ extension FirebaseManager {
                 completion(nil)
             } else {
                 var posts: [Post] = []
+                let group = DispatchGroup()
+
                 for document in querySnapshot?.documents ?? [] {
+                    group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        posts.append(post)
+                        guard let myEmail = Utils.currentUser else { return }
+                        self.getMyReportUsers { users in
+                            if let users = users {
+                                if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                    posts.append(post)
+                                }
+                            }
+                            group.leave()
+                        }
                     } catch {
                         completion(nil)
+                        group.leave()
                         return
                     }
                 }
-                completion(posts)
+
+                group.notify(queue: .main) {
+                    completion(posts)
+                }
             }
         }
     }
@@ -95,22 +110,37 @@ extension FirebaseManager {
 
     // 게시글 개수로 가져오기
     func loadPosts(type: [BoardSeparatorType], itemCount: Int, completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).limit(to: itemCount).getDocuments { querySnapshot, error in
+        db.collection("posts").whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).limit(to: itemCount + 3).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
             } else {
                 var posts: [Post] = []
+                let group = DispatchGroup()
+
                 for document in querySnapshot?.documents ?? [] {
+                    group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        posts.append(post)
+                        guard let myEmail = Utils.currentUser else { return }
+                        self.getMyReportUsers { users in
+                            if let users = users {
+                                if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                    posts.append(post)
+                                }
+                            }
+                            group.leave()
+                        }
                     } catch {
                         completion(nil)
+                        group.leave()
                         return
                     }
                 }
-                completion(posts)
+
+                group.notify(queue: .main) {
+                    completion(Array(posts.prefix(itemCount)))
+                }
             }
         }
     }
@@ -213,16 +243,31 @@ extension FirebaseManager {
                 completion(nil)
             } else {
                 var comments: [Comment] = []
+                let group = DispatchGroup()
+
                 for document in querySnapshot?.documents ?? [] {
+                    group.enter()
                     do {
                         let comment = try Firestore.Decoder().decode(Comment.self, from: document.data())
-                        comments.append(comment)
+                        guard let myEmail = Utils.currentUser else { return }
+                        self.getMyReportUsers { users in
+                            if let users = users {
+                                if !(comment.reports.contains(myEmail)), !users.contains(comment.user) {
+                                    comments.append(comment)
+                                }
+                            }
+                            group.leave()
+                        }
                     } catch {
                         completion(nil)
+                        group.leave()
                         return
                     }
                 }
-                completion(comments)
+
+                group.notify(queue: .main) {
+                    completion(comments)
+                }
             }
         }
     }
@@ -252,10 +297,13 @@ extension FirebaseManager {
                         return
                     }
 
-                    for commentDocument in commentsQuerySnapshot?.documents ?? [] {
+                    for document in commentsQuerySnapshot?.documents ?? [] {
                         do {
-                            let comment = try Firestore.Decoder().decode(Comment.self, from: commentDocument.data())
-                            comments.append(comment)
+                            let comment = try Firestore.Decoder().decode(Comment.self, from: document.data())
+                            guard let myEmail = Utils.currentUser else { return }
+                            if !(comment.reports.contains(myEmail)) {
+                                comments.append(comment)
+                            }
                         } catch {
                             print("댓글을 디코드하는데 실패했습니다.")
                             dispatchGroup.leave()
@@ -618,6 +666,29 @@ extension FirebaseManager {
             completion()
         }
     }
+
+    func getMyReportUsers(completion: @escaping ([String]?) -> Void) {
+        guard let myEmail = Utils.currentUser else { return }
+        db.collection("users").document(myEmail).getDocument { documentSnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                if let document = documentSnapshot, document.exists {
+                    do {
+                        let user = try Firestore.Decoder().decode(User.self, from: document.data())
+                        completion(user.blockingUsers)
+                    } catch {
+                        print("데이터를 디코딩하는데 실패했습니다: \(error)")
+                        completion(nil)
+                    }
+                } else {
+                    print("문서가 존재하지 않습니다.")
+                    completion(nil)
+                }
+            }
+        }
+    }
 }
 
 extension FirebaseManager {
@@ -679,16 +750,31 @@ extension FirebaseManager {
                 completion(nil)
             } else {
                 var posts: [Post] = []
+                let group = DispatchGroup()
+
                 for document in querySnapshot?.documents ?? [] {
+                    group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        posts.append(post)
+                        guard let myEmail = Utils.currentUser else { return }
+                        self.getMyReportUsers { users in
+                            if let users = users {
+                                if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                    posts.append(post)
+                                }
+                            }
+                            group.leave()
+                        }
                     } catch {
                         completion(nil)
+                        group.leave()
                         return
                     }
                 }
-                completion(posts)
+
+                group.notify(queue: .main) {
+                    completion(posts)
+                }
             }
         }
     }
@@ -704,20 +790,35 @@ extension FirebaseManager {
                 completion(nil)
             } else {
                 var posts: [Post] = []
+                let group = DispatchGroup()
+
                 for document in querySnapshot?.documents ?? [] {
+                    group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        posts.append(post)
+                        guard let myEmail = Utils.currentUser else { return }
+                        self.getMyReportUsers { users in
+                            if let users = users {
+                                if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                    posts.append(post)
+                                }
+                            }
+                            group.leave()
+                        }
                     } catch {
                         completion(nil)
+                        group.leave()
                         return
                     }
                 }
-                completion(posts)
+
+                group.notify(queue: .main) {
+                    completion(posts)
+                }
             }
         }
     }
-    
+
     func popularPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
         db.collection("posts").whereField("postType", in: type.map { $0.rawValue }).order(by: "viewCount", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
@@ -725,16 +826,31 @@ extension FirebaseManager {
                 completion(nil)
             } else {
                 var posts: [Post] = []
+                let group = DispatchGroup()
+
                 for document in querySnapshot?.documents ?? [] {
+                    group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        posts.append(post)
+                        guard let myEmail = Utils.currentUser else { return }
+                        self.getMyReportUsers { users in
+                            if let users = users {
+                                if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                    posts.append(post)
+                                }
+                            }
+                            group.leave()
+                        }
                     } catch {
                         completion(nil)
+                        group.leave()
                         return
                     }
                 }
-                completion(posts)
+
+                group.notify(queue: .main) {
+                    completion(posts)
+                }
             }
         }
     }

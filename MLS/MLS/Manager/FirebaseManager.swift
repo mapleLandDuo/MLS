@@ -465,7 +465,7 @@ extension FirebaseManager {
                 if blockedUsers.contains(myEmail) {
                     group.enter()
                     self.db.collection("users").document(userID).updateData([
-                        "blockedUsres": FieldValue.arrayRemove([myEmail])
+                        "blockedUsers": FieldValue.arrayRemove([myEmail])
                     ]) { error in
                         if let error = error {
                             print("상대방 데이터에서 기존 내 아이디 삭제 실패 \(error)")
@@ -475,7 +475,7 @@ extension FirebaseManager {
                 } else {
                     group.enter()
                     self.db.collection("users").document(userID).updateData([
-                        "blockedUsres": FieldValue.arrayUnion([myEmail])
+                        "blockedUsers": FieldValue.arrayUnion([myEmail])
                     ]) { error in
                         if let error = error {
                             print("상대방 데이터에 내 아이디 저장 실패 \(error)")

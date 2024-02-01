@@ -113,12 +113,13 @@ extension QnaViewController: UITableViewDelegate, UITableViewDataSource {
             case .email:
                 self.clickMailCell()
             case .kakaoTalk:
-                break
+                AlertMaker.showAlertAction1(title: "업데이트 예정", message: "업데이트 예정 기능입니다.")
             case .call:
                 self.clickCallCell(num: self.viewModel.getContactList()[indexPath.row].title)
             }
         case 1:
-            break
+            let vc = TextController(text: "업데이트 예정 기능입니다.")
+            self.navigationController?.pushViewController(vc, animated: true)
         default:
             break
         }

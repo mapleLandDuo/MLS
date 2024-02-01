@@ -59,15 +59,17 @@ extension PostDetailViewController {
         super.viewDidLoad()
         setUp()
         bind()
-        viewModel.loadPost {}
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let id = viewModel.post.value?.id {
-            viewModel.loadComment(postId: id.uuidString)
+        viewModel.loadPost { [weak self] in
+            self?.totalTableView.reloadData()
+            if let id = self?.viewModel.post.value?.id {
+                self?.viewModel.loadComment(postId: id.uuidString)
+            }
         }
-        totalTableView.reloadData()
     }
 }
 

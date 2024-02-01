@@ -26,6 +26,7 @@
 		081E700A2B69208100CF83F4 /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E70092B69208100CF83F4 /* ProfilePageViewController.swift */; };
 		081E700C2B69212800CF83F4 /* ProfilePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E700B2B69212800CF83F4 /* ProfilePageViewModel.swift */; };
 		081E70182B6A40CC00CF83F4 /* IconDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E70172B6A40CC00CF83F4 /* IconDescriptionTableViewCell.swift */; };
+		081E703F2B6BEBC300CF83F4 /* TextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E703E2B6BEBC300CF83F4 /* TextController.swift */; };
 		082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C282B53CF4600D84CE2 /* AppDelegate.swift */; };
 		082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */; };
 		082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C312B53CF4800D84CE2 /* Assets.xcassets */; };
@@ -142,6 +143,7 @@
 		081E700B2B69212800CF83F4 /* ProfilePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewModel.swift; sourceTree = "<group>"; };
 		081E70172B6A40CC00CF83F4 /* IconDescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconDescriptionTableViewCell.swift; sourceTree = "<group>"; };
 		081E70212B6AB24F00CF83F4 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		081E703E2B6BEBC300CF83F4 /* TextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextController.swift; sourceTree = "<group>"; };
 		082D0C252B53CF4600D84CE2 /* MLS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MLS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		082D0C282B53CF4600D84CE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				08D50A832B5FD2E600E94442 /* IndicatorMaker.swift */,
 				08D50A892B5FD46700E94442 /* AlertMaker.swift */,
 				77082A542B64069700187906 /* Utils.swift */,
+				081E703E2B6BEBC300CF83F4 /* TextController.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -796,6 +799,7 @@
 				77082A4A2B63A26200187906 /* PostDetailViewModel.swift in Sources */,
 				0886E7E82B6284B500B014F8 /* DictionaryMainViewController.swift in Sources */,
 				08EF650C2B54134F004CC842 /* MainPageFeatureListCell.swift in Sources */,
+				081E703F2B6BEBC300CF83F4 /* TextController.swift in Sources */,
 				08EF651E2B556C05004CC842 /* AddPostImageChoiceCell.swift in Sources */,
 				77C1ED0E2B61590E003179B4 /* QnAPageViewModel.swift in Sources */,
 				08EF65222B5572C5004CC842 /* AddPostViewModel.swift in Sources */,

@@ -96,6 +96,12 @@ class PostDetailViewModel {
         self.isUp.value = post.likes.contains(myEmail)
     }
     
+    func toCompletePost(postID: String, completion: @escaping () -> Void) {
+        FirebaseManager.firebaseManager.toCompletePost(postID: postID) {
+            completion()
+        }
+    }
+    
     func isLogin() -> Bool {
         return loginManager.isLogin()
     }

@@ -220,6 +220,13 @@ extension FirebaseManager {
             completion(tempList)
         }
     }
+
+    func toCompletePost(postID: String, completion: @escaping () -> Void) {
+        db.collection("posts").document(postID).updateData([
+            "postType": BoardSeparatorType.complete.rawValue
+        ])
+        completion()
+    }
 }
 
 extension FirebaseManager {

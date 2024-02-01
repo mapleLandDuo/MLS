@@ -151,7 +151,7 @@ private extension PostDetailViewController {
     }
 
     func setUpNavigation() {
-        let modifyMenu = UIAction(title: "수정", handler: { [weak self] _ in
+        let modifyMenu = UIAction(title: "수정하기", handler: { [weak self] _ in
             guard let type = self?.viewModel.post.value?.postType,
                   let post = self?.viewModel.post else { return }
             let vm = AddPostViewModel(type: type)
@@ -161,7 +161,7 @@ private extension PostDetailViewController {
             self?.navigationController?.pushViewController(vc, animated: true)
         })
 
-        let deleteMenu = UIAction(title: "삭제", attributes: .destructive, handler: { [weak self] _ in
+        let deleteMenu = UIAction(title: "삭제하기", attributes: .destructive, handler: { [weak self] _ in
             AlertMaker.showAlertAction2(vc: self, title: "정말 삭제하시겠습니까?", message: "영구적으로 삭제됩니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
                 guard let postId = self?.viewModel.post.value?.id else { return }
                 self?.viewModel.deletPost(postId: postId.uuidString) {
@@ -179,10 +179,37 @@ private extension PostDetailViewController {
             })
         })
 
-        let loginMenu = UIMenu(children: [modifyMenu, deleteMenu])
+        let completeMenu = UIAction(title: "거래완료", handler: { [weak self] _ in
+            guard let postID = self?.viewModel.post.value?.id.uuidString else { return }
+            AlertMaker.showAlertAction2(vc: self, title: "거래완료로 바꾸시겠습니까?", message: "거래완료는 되돌릴 수 없습니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
+                self?.viewModel.toCompletePost(postID: postID) {
+                    self?.viewModel.post.value?.postType = .complete
+                }
+            })
+        })
+
+        let loginNormalMenu = UIMenu(children: [modifyMenu, deleteMenu])
+        let loginTradeMenu = UIMenu(children: [modifyMenu, deleteMenu, completeMenu])
         let logoutMenu = UIMenu(children: [reportMenu])
 
-        let navigationMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: Utils.currentUser == nil ? nil : (viewModel.checkMyPost() ? loginMenu : logoutMenu))
+        let isMyPost = viewModel.checkMyPost()
+        let postType = viewModel.post.value?.postType
+
+        let menu: UIMenu?
+        if isMyPost {
+            switch postType {
+            case .buy, .sell:
+                menu = loginTradeMenu
+            case .normal, .complete:
+                menu = loginNormalMenu
+            default:
+                menu = nil
+            }
+        } else {
+            menu = nil
+        }
+
+        let navigationMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: menu)
 
         navigationItem.rightBarButtonItem = navigationMenu
     }

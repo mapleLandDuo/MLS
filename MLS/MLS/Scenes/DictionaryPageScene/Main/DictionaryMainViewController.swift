@@ -95,7 +95,7 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
         case 1:
             return viewModel.getMonsterMenuCount()
         default:
-            return viewModel.getItemMenu().count
+            return viewModel.getItemMenuCount()
         }
     }
 
@@ -196,7 +196,7 @@ extension DictionaryMainViewController: UISearchBarDelegate {
                     return
                 }
                 let viewModel = DictionarySearchViewModel(type: .item)
-                viewModel.item.value = item
+                viewModel.itemList.value = item
                 let vc = DictionarySearchViewController(viewModel: viewModel)
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
@@ -208,7 +208,7 @@ extension DictionaryMainViewController: UISearchBarDelegate {
                     return
                 }
                 let viewModel = DictionarySearchViewModel(type: .monster)
-                viewModel.monster.value = item
+                viewModel.monsterList.value = item
                 let vc = DictionarySearchViewController(viewModel: viewModel)
                 self?.navigationController?.pushViewController(vc, animated: true)
             }

@@ -32,8 +32,13 @@ class CommunityPageViewController: BasicController {
 
     // MARK: - Components
 
-    private let titleLabel = CustomLabel(text: "title", textColor: .systemOrange, font: .boldSystemFont(ofSize: 30))
-
+    private let titleButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.systemOrange, for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 30)
+        return button
+    }()
+    
     private let searchButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
@@ -107,31 +112,31 @@ private extension CommunityPageViewController {
     }
 
     func setUpConstraints() {
-        view.addSubview(titleLabel)
+        view.addSubview(titleButton)
         view.addSubview(searchButton)
         view.addSubview(sortButton)
         view.addSubview(communityTableView)
         view.addSubview(addPostButton)
 
-        titleLabel.snp.makeConstraints {
+        titleButton.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
             $0.leading.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
         }
 
         sortButton.snp.makeConstraints {
             $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
-            $0.centerY.equalTo(titleLabel)
+            $0.centerY.equalTo(titleButton)
             $0.width.equalTo(50)
             $0.height.equalTo(30)
         }
 
         searchButton.snp.makeConstraints {
             $0.trailing.equalTo(sortButton.snp.leading).inset(-Constants.defaults.horizontal)
-            $0.centerY.equalTo(titleLabel)
+            $0.centerY.equalTo(titleButton)
         }
 
         communityTableView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).inset(-Constants.defaults.vertical)
+            $0.top.equalTo(titleButton.snp.bottom).inset(-Constants.defaults.vertical)
             $0.leading.equalTo(view.safeAreaLayoutGuide)
             $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
@@ -161,15 +166,19 @@ private extension CommunityPageViewController {
                 }
             }
         }), for: .primaryActionTriggered)
+        
+        titleButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.loadPosts()
+        }), for: .touchUpInside)
     }
 
     func setUpPage(type: BoardSeparatorType) {
         switch type {
         case .normal:
-            titleLabel.text = "자유게시판"
+            titleButton.setTitle("자유게시판", for: .normal)
             // 정렬 속성
         case .sell, .buy, .complete:
-            titleLabel.text = "거래게시판"
+            titleButton.setTitle("거래게시판", for: .normal)
             // 정렬 속성
         }
         setUpActions()

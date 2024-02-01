@@ -180,7 +180,7 @@ private extension PostDetailViewController {
         let loginMenu = UIMenu(children: [modifyMenu, deleteMenu])
         let logoutMenu = UIMenu(children: [reportMenu])
 
-        let navigationMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: viewModel.checkMyPost() ? loginMenu : logoutMenu)
+        let navigationMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: Utils.currentUser == nil ? nil : (viewModel.checkMyPost() ? loginMenu : logoutMenu))
 
         navigationItem.rightBarButtonItem = navigationMenu
     }

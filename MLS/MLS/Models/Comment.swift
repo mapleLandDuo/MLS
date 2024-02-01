@@ -13,6 +13,6 @@ struct Comment: Codable {
     var date: Date
     var likeCounts: [String]
     var comment: String
-    var reports:[String]
+    var reports: [String]
     var state: State
 }

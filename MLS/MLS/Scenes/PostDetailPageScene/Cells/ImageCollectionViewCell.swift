@@ -7,8 +7,8 @@
 
 import UIKit
 
-import SnapKit
 import Kingfisher
+import SnapKit
 
 class ImageCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties

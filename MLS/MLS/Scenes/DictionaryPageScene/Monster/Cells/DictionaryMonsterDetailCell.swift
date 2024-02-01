@@ -5,61 +5,69 @@
 //  Created by SeoJunYoung on 1/28/24.
 //
 
-import Foundation
 import UIKit
 
 class DictionaryMonsterDetailCell: UITableViewCell {
     // MARK: - Components
-    
+
     private let physicalDefenseTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "물리 방어력"
         label.font = Typography.title3.font
         return label
     }()
+
     private let physicalDefenseLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let magicDefenseTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "마법 방어력"
         label.font = Typography.title3.font
         return label
     }()
+
     private let magicDefenseLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let requiredAccuracyTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "필요 명중률"
         label.font = Typography.title3.font
         return label
     }()
+
     private let requiredAccuracyLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let evasionRateTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "회피율"
         label.font = Typography.title3.font
         return label
     }()
+
     private let evasionRateLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let levelAccuracyLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let bottomSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemOrange
@@ -70,7 +78,8 @@ class DictionaryMonsterDetailCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -78,9 +87,11 @@ class DictionaryMonsterDetailCell: UITableViewCell {
 
 private extension DictionaryMonsterDetailCell {
     // MARK: - SetUp
+
     func setUp() {
         setUpConstraints()
     }
+
     func setUpConstraints() {
         contentView.addSubview(physicalDefenseTitleLabel)
         physicalDefenseTitleLabel.snp.makeConstraints { make in
@@ -139,6 +150,7 @@ private extension DictionaryMonsterDetailCell {
 
 extension DictionaryMonsterDetailCell {
     // MARK: - bind
+
     func bind(item: DictionaryMonster) {
         physicalDefenseLabel.text = "\(item.physicalDefense)"
         magicDefenseLabel.text = "\(item.magicDefense)"

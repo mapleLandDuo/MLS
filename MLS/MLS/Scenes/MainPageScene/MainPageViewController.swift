@@ -5,12 +5,13 @@
 //  Created by SeoJunYoung on 1/14/24.
 //
 
-import Foundation
 import UIKit
+
 import SnapKit
 
 class MainPageViewController: BasicController {
     // MARK: - Property
+
     private let viewModel: MainPageViewModel
 
     // MARK: - Components
@@ -24,7 +25,7 @@ class MainPageViewController: BasicController {
         return button
     }()
     
-    private let featureCollectionView : UICollectionView = {
+    private let featureCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = Constants.defaults.vertical
         layout.minimumInteritemSpacing = Constants.defaults.horizontal
@@ -59,28 +60,29 @@ class MainPageViewController: BasicController {
         super.init()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
+
 extension MainPageViewController {
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = .systemOrange
+        navigationController?.navigationBar.tintColor = .systemOrange
         setUp()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
-        self.sideMenuTableView.reloadData()
-        self.featureCollectionView.reloadData()
+        navigationController?.navigationBar.isHidden = true
+        sideMenuTableView.reloadData()
+        featureCollectionView.reloadData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isHidden = false
     }
 }
 
@@ -145,6 +147,7 @@ private extension MainPageViewController {
     func didTapMenuButton() {
         switchMenuView(isOpen: true)
     }
+
     @objc
     func didTapMenuEmptySpace() {
         switchMenuView(isOpen: false)
@@ -192,7 +195,7 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
             ) as? MainPageFeatureListCell else {
                 return UICollectionViewCell()
             }
-            switch indexPath.row {   
+            switch indexPath.row {
             case 0:
                 IndicatorMaker.showLoading()
                 viewModel.getMainPost(type: .normal) { posts in
@@ -214,12 +217,11 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-       
         switch indexPath.section {
         case 0:
             return CGSize(width: Constants.screenWidth, height: Constants.defaults.blockHeight * 2)
         case 1:
-            return CGSize(width: Constants.screenWidth, height: (Constants.defaults.blockHeight * 4) + (Constants.defaults.vertical) )
+            return CGSize(width: Constants.screenWidth, height: (Constants.defaults.blockHeight * 4) + (Constants.defaults.vertical))
         default:
             return CGSize()
         }
@@ -229,17 +231,16 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
         let title = viewModel.features[indexPath.section][indexPath.row].title
         if title == "도감" {
             let vc = DictionaryMainViewController(viewModel: DictionaryMainViewModel())
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         } else if title == "최신글" {
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         } else if title == "사고팔고" {
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .complete))
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
-
 
 extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -282,6 +283,7 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
         view.backgroundColor = .white
         return view
     }
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 1
     }
@@ -299,34 +301,34 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
                 }
             } else {
                 let vc = SignInViewController(viewModel: SignInViewModel())
-                self.navigationController?.pushViewController(vc, animated: true)
+                navigationController?.pushViewController(vc, animated: true)
             }
         } else if title == "자유 게시판" {
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         } else if title == "거래 게시판" {
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .buy))
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         } else if title == "로그아웃" {
-            AlertMaker.showAlertAction2(vc: self, title: "로그아웃",message: "정말로 로그아웃 하시겠습니까?", cancelTitle: "취소", completeTitle: "확인", nil, {
+            AlertMaker.showAlertAction2(vc: self, title: "로그아웃", message: "정말로 로그아웃 하시겠습니까?", cancelTitle: "취소", completeTitle: "확인", nil) {
                 let loginManger = LoginManager()
                 IndicatorMaker.showLoading()
                 Utils.currentUser = nil
-                loginManger.logOut { [weak self] isLogOut in
+                loginManger.logOut { [weak self] _ in
                     self?.sideMenuTableView.reloadData()
                     IndicatorMaker.hideLoading()
                 }
-            })
+            }
         } else if title == "문의하기" {
             let vc = QnaViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
             
         } else if title == "회원 탈퇴" {
             AlertMaker.showAlertAction2(title: "회원 탈퇴", message: "회원 탈퇴 시 모든 데이터가 삭제됩니다.", cancelTitle: "확인", completeTitle: "취소", {
                 let manager = LoginManager()
                 guard let email = manager.email else { return }
                 IndicatorMaker.showLoading()
-                manager.deleteUser() { [weak self] in
+                manager.deleteUser { [weak self] in
                     FirebaseManager.firebaseManager.deleteUserData(email: email) {
                         self?.sideMenuTableView.reloadData()
                         IndicatorMaker.hideLoading()
@@ -338,8 +340,7 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             print("시뮬레이터")
         } else if title == "앱정보" {
             let vc = AppInfoPageViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
 }

@@ -5,34 +5,37 @@
 //  Created by SeoJunYoung on 1/29/24.
 //
 
-import Foundation
 import UIKit
 
 class DictionaryItemDefaultCell: UITableViewCell {
     // MARK: - Components
-    
+
     private let levelTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "Level"
         label.font = Typography.title3.font
         return label
     }()
+
     private let levelLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let divisionTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "분류"
         label.font = Typography.title3.font
         return label
     }()
+
     private let divisionLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let bottomSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemGray4
@@ -43,7 +46,8 @@ class DictionaryItemDefaultCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -51,11 +55,12 @@ class DictionaryItemDefaultCell: UITableViewCell {
 
 private extension DictionaryItemDefaultCell {
     // MARK: - SetUp
+
     func setUp() {
         setUpConstraints()
     }
-    func setUpConstraints() {
 
+    func setUpConstraints() {
         contentView.addSubview(levelTitleLabel)
         levelTitleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(Constants.defaults.horizontal)
@@ -84,11 +89,11 @@ private extension DictionaryItemDefaultCell {
             make.bottom.equalToSuperview()
         }
     }
-
 }
 
 extension DictionaryItemDefaultCell {
     // MARK: - bind
+
     func bind(item: DictionaryItem) {
         levelLabel.text = "\(item.level)"
         divisionLabel.text = "\(item.division)/\(item.mainCategory)/\(item.subCategory)"

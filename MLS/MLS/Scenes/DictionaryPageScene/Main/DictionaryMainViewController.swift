@@ -124,24 +124,24 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
             return makeHearderView(searchBar: monsterSearchBar, title: "몬스터 검색", description: "레벨별 몬스터")
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 1:
             var minLevel = 151
             var maxLevel = 1000
-            
+
             if viewModel.getMonsterMenu()[indexPath.row] != "etc" {
                 minLevel = (indexPath.row * 10 + 1)
                 maxLevel = (indexPath.row + 1) * 10
             }
-            
+
             viewModel.loadMonsterByLevel(minLevel: minLevel, maxLevel: maxLevel) { [weak self] monsters in
                 if monsters.isEmpty {
                     AlertMaker.showAlertAction1(vc: self, message: "해당 레벨에 맞는 몬스터가 없습니다!")
                     return
                 }
-                
+
                 let vm = DictionarySearchViewModel(type: .monster)
                 vm.monsterList.value = monsters
                 let vc = DictionarySearchViewController(viewModel: vm)

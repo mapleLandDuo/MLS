@@ -5,7 +5,6 @@
 //  Created by SeoJunYoung on 1/31/24.
 //
 
-import Foundation
 import UIKit
 
 protocol IconDescriptionTableViewCellDelegate: AnyObject {
@@ -17,7 +16,7 @@ class IconDescriptionTableViewCell: UITableViewCell {
     // MARK: Properties
 
     weak var delegate: IconDescriptionTableViewCellDelegate?
-    
+
     var data: [ItemMenu]?
 
     // MARK: - Componetns

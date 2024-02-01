@@ -6,12 +6,12 @@
 //
 
 import Foundation
+
+import Firebase
 import FirebaseAuth
 import FirebaseFirestoreSwift
-import Firebase
 
 class LoginManager {
-    
     private let db = Firestore.firestore()
     private let users: String = "users"
     private let PostBooks: String = "PostBooks"
@@ -22,7 +22,7 @@ class LoginManager {
     }
     
     func deleteUser(completion: @escaping () -> Void) {
-        Auth.auth().currentUser?.delete(completion: { error in
+        Auth.auth().currentUser?.delete(completion: { _ in
             completion()
         })
     }
@@ -34,18 +34,16 @@ class LoginManager {
         } catch {
             completion(false)
         }
-        
     }
     
     func createUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
-        
         let userData = User(id: email, nickName: nickName, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
         do {
             let data = try Firestore.Encoder().encode(userData)
             db.collection(users).document(email).setData(data)
             completion(true, nil)
         } catch {
-            completion(false,"FirebaseManager_EncodeFail")
+            completion(false, "FirebaseManager_EncodeFail")
         }
     }
 }

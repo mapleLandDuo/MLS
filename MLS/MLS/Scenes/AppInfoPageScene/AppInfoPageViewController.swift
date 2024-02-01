@@ -5,12 +5,11 @@
 //  Created by SeoJunYoung on 1/30/24.
 //
 
-import Foundation
 import UIKit
+
 import SnapKit
 
 class AppInfoPageViewController: BasicController {
-
     // MARK: - Components
     
     private let titleLabel: UILabel = {
@@ -83,15 +82,16 @@ class AppInfoPageViewController: BasicController {
 
 extension AppInfoPageViewController {
     // MARK: - Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
     }
-
 }
 
 private extension AppInfoPageViewController {
     // MARK: - SetUp
+
     func setUp() {
         setUpConstraints()
     }
@@ -149,5 +149,4 @@ private extension AppInfoPageViewController {
             make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }
-
 }

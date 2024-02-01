@@ -7,18 +7,19 @@
 
 import UIKit
 
-import SnapKit
 import Kingfisher
+import SnapKit
 
 class ItemCollectionViewCell: UICollectionViewCell {
     // MARK: Components
+
     private let itemImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
         view.alpha = 0.7
         return view
     }()
-    
+
     private let itemTitleLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = .white
@@ -26,8 +27,9 @@ class ItemCollectionViewCell: UICollectionViewCell {
         label.layer.cornerRadius = Constants.defaults.radius
         return label
     }()
-    
+
     // MARK: LifeCycle
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUp()
@@ -43,21 +45,21 @@ private extension ItemCollectionViewCell {
     // MARK: - SetUp
 
     func setUp() {
-        self.layer.cornerRadius = Constants.defaults.radius
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.systemOrange.cgColor
-        
+        layer.cornerRadius = Constants.defaults.radius
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.systemOrange.cgColor
+
         setUpConstraints()
     }
-    
+
     func setUpConstraints() {
         addSubview(itemImageView)
         itemImageView.addSubview(itemTitleLabel)
-        
+
         itemImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        
+
         itemTitleLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
@@ -68,8 +70,6 @@ extension ItemCollectionViewCell {
     // MARK: - Bind
 
     func bind(item: ItemMenu) {
-//        itemImageView.kf.setImage(with: item.image)
         itemTitleLabel.text = item.title.rawValue
     }
 }
-

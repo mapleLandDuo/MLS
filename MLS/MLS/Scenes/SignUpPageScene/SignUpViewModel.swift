@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 import FirebaseAuth
 import FirebaseFirestore
 
@@ -23,6 +24,7 @@ enum ValidationResult {
 
 class SignUpViewModel {
     // MARK: - Property
+
     var emailState: Observable<ValidationResult> = Observable(.empty)
     var nickNameState: Observable<ValidationResult> = Observable(.empty)
     var passwordState: Observable<ValidationResult> = Observable(.empty)
@@ -35,8 +37,8 @@ class SignUpViewModel {
 extension SignUpViewModel {
     // MARK: - Method
 
-    func trySignUp(email: String, password: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void ) {
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+    func trySignUp(email: String, password: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
+        Auth.auth().createUser(withEmail: email, password: password) { _, error in
             if error == nil {
                 self.loginManager.createUser(email: email, nickName: nickName) { isSuccess, errorMessage in
                     if isSuccess {
@@ -50,23 +52,23 @@ extension SignUpViewModel {
             }
         }
     }
-    
+
     func isValidEmail(email: String) {
         if email.count == 0 {
             emailState.value = .empty
             return
         }
-        
+
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
         if emailTest.evaluate(with: email) {
             emailState.value = .checking
             Firestore.firestore().collection("users").getDocuments { data, error in
                 if error != nil {
-                    print((String(describing: error?.localizedDescription)))
+                    print(String(describing: error?.localizedDescription))
                 } else {
                     guard let safeData = data else { return }
-                    if safeData.documents.map({$0.documentID}).contains(email) {
+                    if safeData.documents.map({ $0.documentID }).contains(email) {
                         self.emailState.value = .alreadyInUse
                     } else {
                         self.emailState.value = .available
@@ -77,7 +79,7 @@ extension SignUpViewModel {
             emailState.value = .unavailableFormat
         }
     }
-    
+
     func isValidNickName(nickName: String) {
         if nickName.count == 0 {
             nickNameState.value = .empty
@@ -89,7 +91,7 @@ extension SignUpViewModel {
             nickNameState.value = .length
         }
     }
-    
+
     func isValidPassword(password: String) {
         if password.count == 0 {
             passwordState.value = .empty
@@ -115,7 +117,7 @@ extension SignUpViewModel {
         }
         passwordState.value = .available
     }
-    
+
     func isCheckPassword(password: String, checkPassword: String) {
         if password.count == 0 {
             checkPasswordState.value = .empty
@@ -127,13 +129,14 @@ extension SignUpViewModel {
             checkPasswordState.value = .unconformity
         }
     }
-    
+
     func isValidSignUp() -> Bool {
         if emailState.value == .available
             && nickNameState.value == .available
             && passwordState.value == .available
             && checkPasswordState.value == .available
-            && isPrivacyAgree.value == true {
+            && isPrivacyAgree.value == true
+        {
             return true
         } else {
             return false

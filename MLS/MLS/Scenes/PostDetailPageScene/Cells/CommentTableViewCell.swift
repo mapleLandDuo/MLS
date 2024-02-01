@@ -13,15 +13,6 @@ import SnapKit
 class CommentTableViewCell: UITableViewCell {
     // MARK: Components
 
-//    private let commentProfileImageView: UIImageView = {
-//        let view = UIImageView()
-//        view.image = UIImage(systemName: "photo")?.resized(to: CGSize(width: 30, height: 30))
-//        view.clipsToBounds = true
-//        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-//        view.layer.cornerRadius = view.frame.height / 2
-//        return view
-//    }()
-
     private let commentProfileNameLabel = CustomLabel(text: "userName", font: .boldSystemFont(ofSize: 16))
 
     lazy var optionStackView: UIStackView = {
@@ -65,7 +56,6 @@ extension CommentTableViewCell {
     // MARK: Bind
 
     func bind(name: String, comment: String) {
-//        commentProfileImageView.kf.setImage(with: image)
         commentProfileNameLabel.text = name
         commentTextLabel.text = comment
     }
@@ -79,16 +69,9 @@ private extension CommentTableViewCell {
     }
 
     func setUpConstraints() {
-//        addSubview(commentProfileImageView)
         addSubview(commentProfileNameLabel)
         addSubview(optionStackView)
         addSubview(commentTextLabel)
-
-//        commentProfileImageView.snp.makeConstraints {
-//            $0.top.equalToSuperview()
-//            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
-//            $0.size.equalTo(30)
-//        }
 
         commentProfileNameLabel.snp.makeConstraints {
             $0.top.equalToSuperview()

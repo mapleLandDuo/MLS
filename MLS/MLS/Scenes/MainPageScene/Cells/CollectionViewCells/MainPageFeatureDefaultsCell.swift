@@ -6,10 +6,10 @@
 //
 
 import UIKit
+
 import SnapKit
 
 class MainPageFeatureDefaultsCell: UICollectionViewCell {
-    
     // MARK: - Components
 
     private let trailingView: UIView = {
@@ -18,34 +18,34 @@ class MainPageFeatureDefaultsCell: UICollectionViewCell {
         view.layer.cornerRadius = Constants.defaults.radius
         return view
     }()
-    
+
     private let labelStackView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
         view.spacing = Constants.defaults.vertical / 2
         return view
     }()
-    
+
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.title1.font
         label.textColor = .white
         return label
     }()
-    
+
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.body1.font
         label.textColor = .white
         return label
     }()
-    
+
     private let rightImageView: UIImageView = {
         let view = UIImageView()
         view.tintColor = .white
         return view
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUp()
@@ -63,7 +63,7 @@ private extension MainPageFeatureDefaultsCell {
     func setUp() {
         setUpConstraints()
     }
-    
+
     func setUpConstraints() {
         contentView.addSubview(trailingView)
         trailingView.snp.makeConstraints { make in
@@ -84,7 +84,6 @@ private extension MainPageFeatureDefaultsCell {
         }
         labelStackView.addArrangedSubview(titleLabel)
         labelStackView.addArrangedSubview(descriptionLabel)
-
     }
 }
 

@@ -17,16 +17,16 @@ class AddPostImageCell: UICollectionViewCell {
         view.layer.cornerRadius = Constants.defaults.radius
         return view
     }()
-    
+
     private let deleteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "x.circle.fill"), for: .normal)
         button.tintColor = .systemGray4
         return button
     }()
-    
+
     var callBackMethod: (() -> Void)?
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUp()
@@ -48,7 +48,7 @@ private extension AddPostImageCell {
         contentView.layer.cornerRadius = Constants.defaults.radius
         deleteButton.addTarget(self, action: #selector(didTapButton), for: .primaryActionTriggered)
     }
-    
+
     func setUpConstraints() {
         contentView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
@@ -64,6 +64,7 @@ private extension AddPostImageCell {
 
 private extension AddPostImageCell {
     // MARK: - Method
+
     @objc
     func didTapButton() {
         callBackMethod?()

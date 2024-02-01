@@ -13,26 +13,26 @@ struct DictionaryNameLinkUpdateItem: Codable {
 }
 
 struct DictionaryItem: Codable {
-    //이름
+    // 이름
     var name: String
-    //id
+    // id
     var code: String
     var level: String
     var str: String?
     var dex: String?
     var int: String?
     var luk: String?
-    //아이템 설명
+    // 아이템 설명
     var description: String?
-    //분류
+    // 분류
     var division: String
-    //주 카테고리
+    // 주 카테고리
     var mainCategory: String
-    //부 카테고리
+    // 부 카테고리
     var subCategory: String
-    //세부 정보
+    // 세부 정보
     var detailDescription: [String: String]
-    //드랍 테이블
+    // 드랍 테이블
     var dropTable: [DictionaryNameDescription]
 }
 

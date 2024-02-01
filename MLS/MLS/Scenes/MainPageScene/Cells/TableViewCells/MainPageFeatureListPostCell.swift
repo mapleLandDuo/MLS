@@ -6,11 +6,12 @@
 //
 
 import UIKit
+
 import SnapKit
 
 class MainPageFeatureListPostCell: UITableViewCell {
     // MARK: - Componetns
-    
+
     private let trailingView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -19,7 +20,7 @@ class MainPageFeatureListPostCell: UITableViewCell {
         view.layer.cornerRadius = Constants.defaults.radius
         return view
     }()
-    
+
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.body2.font
@@ -32,7 +33,8 @@ class MainPageFeatureListPostCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -40,6 +42,7 @@ class MainPageFeatureListPostCell: UITableViewCell {
 
 extension MainPageFeatureListPostCell {
     // MARK: - Bind
+
     func bind(text: String) {
         titleLabel.text = text
     }
@@ -47,12 +50,11 @@ extension MainPageFeatureListPostCell {
 
 private extension MainPageFeatureListPostCell {
     // MARK: - SetUp
-    
+
     func setUp() {
         contentView.backgroundColor = .white
         setUpConstraints()
     }
-    
 
     func setUpConstraints() {
         contentView.addSubview(trailingView)

@@ -5,29 +5,29 @@
 //  Created by SeoJunYoung on 1/29/24.
 //
 
-import Foundation
 import UIKit
 
 class DictionaryGraySeparatorOneLineCell: UITableViewCell {
     // MARK: - Componetns
+
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
-    
+
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
-    
+
     private let bottomSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemGray4
         return view
     }()
-    
+
     private let stackView: UIStackView = {
         let view = UIStackView()
         return view
@@ -37,7 +37,8 @@ class DictionaryGraySeparatorOneLineCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -47,6 +48,7 @@ private extension DictionaryGraySeparatorOneLineCell {
     func setUp() {
         setUpConstraints()
     }
+
     func setUpConstraints() {
         contentView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
@@ -67,10 +69,12 @@ private extension DictionaryGraySeparatorOneLineCell {
 
 extension DictionaryGraySeparatorOneLineCell {
     // MARK: - bind
+
     func bind(data: DictionaryNameDescription) {
         nameLabel.text = data.name
         descriptionLabel.text = data.description
     }
+
     func bind(name: String, description: String) {
         nameLabel.text = name
         descriptionLabel.text = description

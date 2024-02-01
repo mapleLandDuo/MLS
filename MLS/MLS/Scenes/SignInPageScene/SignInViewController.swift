@@ -9,9 +9,11 @@ import UIKit
 
 class SignInViewController: BasicController {
     // MARK: - Property
+
     private let viewModel: SignInViewModel
     
     // MARK: - Components
+
     private let logoImageView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = .systemOrange
@@ -32,6 +34,7 @@ class SignInViewController: BasicController {
         label.alpha = 1
         return label
     }()
+
     private let autoLoginButton: UIButton = {
         let button = UIButton()
         button.setTitle("자동 로그인", for: .normal)
@@ -52,7 +55,6 @@ class SignInViewController: BasicController {
         button.layer.cornerRadius = Constants.defaults.radius
         return button
     }()
-    
     
     private let buttonsStackView: UIStackView = {
         let view = UIStackView()
@@ -84,20 +86,25 @@ class SignInViewController: BasicController {
         super.init()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
 extension SignInViewController {
     // MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
         bind()
     }
 }
+
 private extension SignInViewController {
     // MARK: - SetUp
+
     func setUp() {
         setUpConstraints()
         setUpAddAction()
@@ -153,6 +160,7 @@ private extension SignInViewController {
             make.height.equalTo(Constants.defaults.blockHeight)
         }
     }
+
     func setUpAddAction() {
         signInButton.addTarget(self, action: #selector(didTapSignInButton), for: .primaryActionTriggered)
         signUpButton.addTarget(self, action: #selector(didTapSignUpButton), for: .primaryActionTriggered)
@@ -163,8 +171,9 @@ private extension SignInViewController {
 
 private extension SignInViewController {
     // MARK: - Bind
+
     func bind() {
-        viewModel.isAutoLogin.bind({ [weak self] state in
+        viewModel.isAutoLogin.bind { [weak self] state in
             guard let state = state else { return }
             self?.viewModel.userDefaultManager.setAutoLogin(toggle: state)
             if state {
@@ -172,7 +181,7 @@ private extension SignInViewController {
             } else {
                 self?.autoLoginButton.setImage(UIImage(systemName: "square"), for: .normal)
             }
-        })
+        }
     }
 }
 
@@ -182,12 +191,12 @@ extension SignInViewController {
     @objc
     func didTapSignUpButton() {
         let vc = SignUpViewController(viewModel: SignUpViewModel())
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc
     func didTapAutoLoginButton() {
-        self.viewModel.isAutoLogin.value?.toggle()
+        viewModel.isAutoLogin.value?.toggle()
     }
     
     @objc
@@ -209,7 +218,6 @@ extension SignInViewController {
     
     @objc
     func didTapSignInButton() {
-        
         guard let email = emailTextField.textField.text else { return }
         guard let password = passwordTextField.textField.text else { return }
         IndicatorMaker.showLoading()

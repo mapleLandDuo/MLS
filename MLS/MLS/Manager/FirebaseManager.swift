@@ -372,12 +372,12 @@ extension FirebaseManager {
             }
         }
     }
-    
+
     func loadItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
         db.collection("dictionaryItems")
             .whereField("detailDescription.직업", isGreaterThanOrEqualTo: roll)
             .whereField("detailDescription.직업", isLessThanOrEqualTo: roll + "\u{f8ff}").order(by: "detailDescription.직업").order(by: "level")
-            .getDocuments { (querySnapshot, err) in
+            .getDocuments { querySnapshot, err in
                 if let err = err {
                     print("검색 데이터 없음: \(err)")
                 } else {
@@ -394,10 +394,10 @@ extension FirebaseManager {
                 }
             }
     }
-    
+
     func loadMonsterByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
         db.collection("dictionaryMonsters").whereField("level", isGreaterThanOrEqualTo: minLevel).whereField("level", isLessThanOrEqualTo: maxLevel).order(by: "level")
-            .getDocuments { (querySnapshot, err) in
+            .getDocuments { querySnapshot, err in
                 if let err = err {
                     print("검색 데이터 없음: \(err)")
                 } else {
@@ -906,19 +906,17 @@ extension FirebaseManager {
 }
 
 extension FirebaseManager {
-    
-    func getComment(email:String, completion: @escaping () -> Void) {
-//        db.document("posts").where
-    }
-    
+//    func getComment(email:String, completion: @escaping () -> Void) {
+//    }
+
     func deleteUserData(email: String, completion: @escaping () -> Void) {
-        self.loadMyPosts(userEmail: email) { posts in
+        loadMyPosts(userEmail: email) { posts in
             guard let posts = posts else { return }
-            let ids = posts.map({$0.id})
+            let ids = posts.map { $0.id }
             for id in ids {
                 self.deletePost(postID: id.uuidString) { print("delete") }
             }
-            self.db.collection("users").document(email).delete { error in
+            self.db.collection("users").document(email).delete { _ in
                 completion()
             }
         }

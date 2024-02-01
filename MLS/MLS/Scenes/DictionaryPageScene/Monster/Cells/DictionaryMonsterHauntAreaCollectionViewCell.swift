@@ -5,12 +5,13 @@
 //  Created by SeoJunYoung on 1/28/24.
 //
 
-import Foundation
 import UIKit
+
 import SnapKit
 
 class DictionaryMonsterHauntAreaCollectionViewCell: UICollectionViewCell {
     // MARK: - Components
+
     private let label: UILabel = {
         let label = UILabel()
         label.font = Typography.button.font
@@ -32,6 +33,7 @@ class DictionaryMonsterHauntAreaCollectionViewCell: UICollectionViewCell {
 
 private extension DictionaryMonsterHauntAreaCollectionViewCell {
     // MARK: - SetUp
+
     func setUp() {
         setUpConstraints()
         contentView.backgroundColor = .systemOrange
@@ -49,8 +51,8 @@ private extension DictionaryMonsterHauntAreaCollectionViewCell {
 
 extension DictionaryMonsterHauntAreaCollectionViewCell {
     // MARK: - bind
+
     func bind(area: String) {
         label.text = area
     }
-
 }

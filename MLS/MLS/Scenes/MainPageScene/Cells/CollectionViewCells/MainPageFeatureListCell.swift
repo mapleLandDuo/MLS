@@ -5,15 +5,16 @@
 //  Created by SeoJunYoung on 1/14/24.
 //
 
-import SnapKit
 import UIKit
+
+import SnapKit
 
 class MainPageFeatureListCell: UICollectionViewCell {
     // MARK: - Property
 
     var posts: Observable<[Post]> = Observable(nil)
-    
-    var parent: BasicController = BasicController()
+
+    var parent: BasicController = .init()
 
     // MARK: - Components
 
@@ -38,7 +39,7 @@ class MainPageFeatureListCell: UICollectionViewCell {
         view.tintColor = .systemOrange
         return view
     }()
-    
+
     private let titleSeparator: UIView = {
         let view = UIView()
         view.backgroundColor = .systemOrange
@@ -124,7 +125,7 @@ extension MainPageFeatureListCell: UITableViewDataSource, UITableViewDelegate {
         guard let cell = postListTableView.dequeueReusableCell(
             withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath
         ) as? DictionaryGraySeparatorOneLineCell,
-              let item = posts.value?[indexPath.row]
+            let item = posts.value?[indexPath.row]
         else {
             return UITableViewCell()
         }
@@ -132,23 +133,21 @@ extension MainPageFeatureListCell: UITableViewDataSource, UITableViewDelegate {
         cell.selectionStyle = .none
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let item = posts.value?[indexPath.row] else { return }
         let vc = PostDetailViewController(viewModel: PostDetailViewModel(post: item))
         parent.navigationController?.pushViewController(vc, animated: true)
-        
     }
-    
 }
 
 extension MainPageFeatureListCell {
     func bind(data: FeatureCellData, vc: BasicController) {
         titleLabel.text = data.title
         rightImageView.image = data.image
-        self.parent = vc
+        parent = vc
     }
-    
+
     func postsBind() {
         posts.bind { [weak self] _ in
             self?.postListTableView.reloadData()

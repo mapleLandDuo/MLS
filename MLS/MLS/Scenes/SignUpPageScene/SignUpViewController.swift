@@ -9,6 +9,7 @@ import UIKit
 
 class SignUpViewController: BasicController {
     // MARK: - Property
+
     private let viewModel: SignUpViewModel
     
     // MARK: - Components
@@ -19,6 +20,7 @@ class SignUpViewController: BasicController {
         label.text = "회원가입"
         return label
     }()
+
     private let emailTextField = SharedTextField(type: .title, placeHolder: "이메일을 입력해주세요.", title: "이메일")
     private let nickNameTextField = SharedTextField(type: .title, placeHolder: "닉네임을 입력해주세요.", title: "닉네임")
     private let passwordTextField = SharedTextField(type: .titlePassword, placeHolder: "비밀번호를 입력해주세요.", title: "비밀번호")
@@ -57,6 +59,7 @@ class SignUpViewController: BasicController {
         super.init()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -64,6 +67,7 @@ class SignUpViewController: BasicController {
 
 extension SignUpViewController {
     // MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -73,6 +77,7 @@ extension SignUpViewController {
 
 private extension SignUpViewController {
     // MARK: - SetUp
+
     func setUp() {
         setUpConstraints()
         setUpDelegate()
@@ -146,8 +151,9 @@ private extension SignUpViewController {
 
 private extension SignUpViewController {
     // MARK: - bind
+
     func bind() {
-        viewModel.emailState.bind({ [weak self] state in
+        viewModel.emailState.bind { [weak self] state in
             switch state {
             case .empty:
                 self?.emailTextField.changeStatelabel(color: .systemOrange, text: "")
@@ -159,12 +165,12 @@ private extension SignUpViewController {
                 self?.emailTextField.changeStatelabel(color: .systemYellow, text: "사용 가능여부 조회중")
             case .available:
                 self?.emailTextField.changeStatelabel(color: .systemBlue, text: "사용가능한 이메일 입니다.")
-            default :
+            default:
                 print("등록되지 않은 상태")
             }
-        })
+        }
         
-        viewModel.nickNameState.bind({ [weak self] state in
+        viewModel.nickNameState.bind { [weak self] state in
             switch state {
             case .empty:
                 self?.nickNameTextField.changeStatelabel(color: .systemOrange, text: "")
@@ -172,12 +178,12 @@ private extension SignUpViewController {
                 self?.nickNameTextField.changeStatelabel(color: .systemRed, text: "2글자에서 8글자 사이의 닉네임을 입력해주세요.")
             case .available:
                 self?.nickNameTextField.changeStatelabel(color: .systemBlue, text: "사용가능한 닉네임 입니다.")
-            default :
+            default:
                 print("등록되지 않은 상태")
             }
-        })
+        }
         
-        viewModel.passwordState.bind({ [weak self] state in
+        viewModel.passwordState.bind { [weak self] state in
             switch state {
             case .empty:
                 self?.passwordTextField.changeStatelabel(color: .systemOrange, text: "")
@@ -189,12 +195,12 @@ private extension SignUpViewController {
                 self?.passwordTextField.changeStatelabel(color: .systemRed, text: "비밀번호는 특수문자를 포함되어야 합니다.")
             case .available:
                 self?.passwordTextField.changeStatelabel(color: .systemBlue, text: "사용가능한 비밀번호 입니다.")
-            default :
+            default:
                 print("등록되지 않은 상태")
             }
-        })
+        }
         
-        viewModel.checkPasswordState.bind({ [weak self] state in
+        viewModel.checkPasswordState.bind { [weak self] state in
             switch state {
             case .empty:
                 self?.checkPasswordTextField.changeStatelabel(color: .systemOrange, text: "")
@@ -202,24 +208,25 @@ private extension SignUpViewController {
                 self?.checkPasswordTextField.changeStatelabel(color: .systemRed, text: "비밀번호가 일치하지 않습니다.")
             case .available:
                 self?.checkPasswordTextField.changeStatelabel(color: .systemBlue, text: "비밀번호가 일치합니다.")
-            default :
+            default:
                 print("등록되지 않은 상태")
             }
-        })
+        }
         
-        viewModel.isPrivacyAgree.bind({ [weak self] state in
+        viewModel.isPrivacyAgree.bind { [weak self] state in
             guard let state = state else { return }
             if state {
                 self?.privacyAgreeButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
             } else {
                 self?.privacyAgreeButton.setImage(UIImage(systemName: "square"), for: .normal)
             }
-        })
+        }
     }
 }
+
 // MARK: - Method
+
 private extension SignUpViewController {
-    
     @objc
     func didTapPrivacyAgreeButton() {
         viewModel.isPrivacyAgree.value?.toggle()
@@ -229,9 +236,9 @@ private extension SignUpViewController {
     func didTapBottomButton() {
         IndicatorMaker.showLoading()
         if viewModel.isValidSignUp() {
-            guard let email = self.emailTextField.textField.text else { return }
-            guard let password = self.passwordTextField.textField.text else { return }
-            guard let nickName = self.nickNameTextField.textField.text else { return }
+            guard let email = emailTextField.textField.text else { return }
+            guard let password = passwordTextField.textField.text else { return }
+            guard let nickName = nickNameTextField.textField.text else { return }
             
             viewModel.trySignUp(email: email, password: password, nickName: nickName) { isSuccess, errorMessage in
                 if isSuccess {

@@ -7,8 +7,7 @@
 
 import UIKit
 
-class AlertMaker {
-    
+enum AlertMaker {
     /**
      # showAlertAction1
      - Date:
@@ -22,8 +21,7 @@ class AlertMaker {
      - Returns:
      - Note: 버튼이 1개인 알럿을 띄우는 함수
      */
-    static func showAlertAction1(vc: UIViewController? = UIApplication.shared.keyWindow?.visibleViewController, preferredStyle: UIAlertController.Style = .alert, title: String? = "", message: String? = "", completeTitle: String = "확인", _ completeHandler:(() -> Void)? = nil){
-        
+    static func showAlertAction1(vc: UIViewController? = UIApplication.shared.keyWindow?.visibleViewController, preferredStyle: UIAlertController.Style = .alert, title: String? = "", message: String? = "", completeTitle: String = "확인", _ completeHandler: (() -> Void)? = nil) {
         guard let currentVc = vc else {
             completeHandler?()
             return
@@ -32,7 +30,7 @@ class AlertMaker {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
             
-            let completeAction = UIAlertAction(title: completeTitle, style: .default) { action in
+            let completeAction = UIAlertAction(title: completeTitle, style: .default) { _ in
                 completeHandler?()
             }
             
@@ -57,8 +55,7 @@ class AlertMaker {
      - Returns:
      - Note: 버튼이 2개인 알럿을 띄우는 함수
      */
-    static func showAlertAction2(vc: UIViewController? = UIApplication.shared.keyWindow?.visibleViewController, preferredStyle: UIAlertController.Style = .alert, title: String? = "", message: String? = "", cancelTitle: String = "취소", completeTitle: String = "확인",  _ cancelHandler: (() -> Void)? = nil, _ completeHandler: (() -> Void)? = nil){
-        
+    static func showAlertAction2(vc: UIViewController? = UIApplication.shared.keyWindow?.visibleViewController, preferredStyle: UIAlertController.Style = .alert, title: String? = "", message: String? = "", cancelTitle: String = "취소", completeTitle: String = "확인", _ cancelHandler: (() -> Void)? = nil, _ completeHandler: (() -> Void)? = nil) {
         guard let currentVc = vc else {
             completeHandler?()
             return
@@ -67,10 +64,10 @@ class AlertMaker {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
             
-            let cancelAction = UIAlertAction(title: cancelTitle, style: .destructive) { action in
+            let cancelAction = UIAlertAction(title: cancelTitle, style: .destructive) { _ in
                 cancelHandler?()
             }
-            let completeAction = UIAlertAction(title: completeTitle, style: .default) { action in
+            let completeAction = UIAlertAction(title: completeTitle, style: .default) { _ in
                 completeHandler?()
             }
             
@@ -98,8 +95,7 @@ class AlertMaker {
      - Returns:
      - Note: 버튼이 3개인 알럿을 띄우는 함수
      */
-    static func showAlertAction3(vc: UIViewController? = UIApplication.shared.keyWindow?.visibleViewController, preferredStyle: UIAlertController.Style = .alert, title: String? = "", message: String? = "", cancelTitle: String = "취소", completeTitle: String = "확인", destructiveTitle: String = "삭제", _ cancelHandler:(() -> Void)? = nil, _ completeHandler:(() -> Void)? = nil, _ destructiveHandler:(() -> Void)? = nil){
-        
+    static func showAlertAction3(vc: UIViewController? = UIApplication.shared.keyWindow?.visibleViewController, preferredStyle: UIAlertController.Style = .alert, title: String? = "", message: String? = "", cancelTitle: String = "취소", completeTitle: String = "확인", destructiveTitle: String = "삭제", _ cancelHandler: (() -> Void)? = nil, _ completeHandler: (() -> Void)? = nil, _ destructiveHandler: (() -> Void)? = nil) {
         guard let currentVc = vc else {
             completeHandler?()
             return
@@ -108,13 +104,13 @@ class AlertMaker {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
             
-            let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { action in
+            let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
                 cancelHandler?()
             }
-            let destructiveAction = UIAlertAction(title: destructiveTitle, style: .destructive) { action in
+            let destructiveAction = UIAlertAction(title: destructiveTitle, style: .destructive) { _ in
                 cancelHandler?()
             }
-            let completeAction = UIAlertAction(title: completeTitle, style: .default) { action in
+            let completeAction = UIAlertAction(title: completeTitle, style: .default) { _ in
                 completeHandler?()
             }
             
@@ -126,4 +122,3 @@ class AlertMaker {
         }
     }
 }
-

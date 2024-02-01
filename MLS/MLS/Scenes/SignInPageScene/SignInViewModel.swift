@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 import FirebaseAuth
 
 enum SignInResult {
@@ -17,11 +18,12 @@ enum SignInResult {
 
 class SignInViewModel {
     // MARK: - Property
+
     var userDefaultManager = UserDefaultsManager()
     var isAutoLogin: Observable<Bool> = Observable(false)
-    
+
     // MARK: - Method
-    
+
     func passwordFind(email: String) {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if error == nil {
@@ -31,7 +33,7 @@ class SignInViewModel {
             }
         }
     }
-    
+
     func trySignIn(email: String, password: String, completion: @escaping (SignInResult) -> Void) {
         if email == "" {
             completion(.emptyEmail)
@@ -41,9 +43,8 @@ class SignInViewModel {
             completion(.emptyPassword)
             return
         }
-        
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
-            guard let self = self else { return }
+
+        Auth.auth().signIn(withEmail: email, password: password) { _, error in
             if error == nil {
                 Utils.currentUser = Auth.auth().currentUser?.email
                 completion(.success)

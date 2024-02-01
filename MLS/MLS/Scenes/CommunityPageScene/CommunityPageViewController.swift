@@ -38,7 +38,7 @@ class CommunityPageViewController: BasicController {
         button.titleLabel?.font = .boldSystemFont(ofSize: 30)
         return button
     }()
-    
+
     private let searchButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
@@ -166,7 +166,7 @@ private extension CommunityPageViewController {
                 }
             }
         }), for: .primaryActionTriggered)
-        
+
         titleButton.addAction(UIAction(handler: { [weak self] _ in
             self?.loadPosts()
         }), for: .touchUpInside)
@@ -176,7 +176,7 @@ private extension CommunityPageViewController {
         switch type {
         case .normal:
             titleButton.setTitle("자유게시판", for: .normal)
-            // 정렬 속성
+        // 정렬 속성
         case .sell, .buy, .complete:
             titleButton.setTitle("거래게시판", for: .normal)
             // 정렬 속성
@@ -192,7 +192,7 @@ private extension CommunityPageViewController {
         viewModel.posts.bind { [weak self] _ in
             self?.communityTableView.reloadData()
         }
-        
+
         viewModel.sortType.bind { [weak self] _ in
             self?.loadPosts()
         }
@@ -251,11 +251,6 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
 }
 
 extension CommunityPageViewController: UISearchBarDelegate {
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        guard let text = searchBar.text else { return }
-//        viewModel.searchPosts(text: text) {}
-//    }
-
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             viewModel.searchPosts(text: text) { [weak self] isExist in
@@ -266,9 +261,5 @@ extension CommunityPageViewController: UISearchBarDelegate {
         } else {
             loadPosts()
         }
-    }
-
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        return true
     }
 }

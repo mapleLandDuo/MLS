@@ -5,56 +5,63 @@
 //  Created by SeoJunYoung on 1/28/24.
 //
 
-import Foundation
 import UIKit
 
 class DictionaryMonsterDefaultCell: UITableViewCell {
     // MARK: - Components
-    
+
     private let levelTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "Level"
         label.font = Typography.title3.font
         return label
     }()
+
     private let levelLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let expTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "Exp"
         label.font = Typography.title3.font
         return label
     }()
+
     private let expLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let hpTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "Hp"
         label.font = Typography.title3.font
         return label
     }()
+
     private let hpLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let mpTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "Mp"
         label.font = Typography.title3.font
         return label
     }()
+
     private let mpLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = Typography.title3.font
         return label
     }()
+
     private let bottomSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemOrange
@@ -65,7 +72,8 @@ class DictionaryMonsterDefaultCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -73,11 +81,12 @@ class DictionaryMonsterDefaultCell: UITableViewCell {
 
 private extension DictionaryMonsterDefaultCell {
     // MARK: - SetUp
+
     func setUp() {
         setUpConstraints()
     }
-    func setUpConstraints() {
 
+    func setUpConstraints() {
         contentView.addSubview(levelTitleLabel)
         levelTitleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(Constants.defaults.horizontal)
@@ -126,11 +135,11 @@ private extension DictionaryMonsterDefaultCell {
             make.bottom.equalToSuperview()
         }
     }
-
 }
 
 extension DictionaryMonsterDefaultCell {
     // MARK: - bind
+
     func bind(item: DictionaryMonster) {
         levelLabel.text = "\(item.level)"
         expLabel.text = "\(item.exp)"

@@ -20,10 +20,9 @@ class DetailCommentCell: UITableViewCell {
     weak var delegate: DetailCommentCellDelegate?
     var comment: Comment?
     private var parent: BasicController?
-    
+
     // MARK: Components
 
-//    private let commentProfileNameLabel = CustomLabel(text: "", font: .boldSystemFont(ofSize: 16))
     private let commentProfileNameLabel: UIButton = {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
@@ -62,7 +61,7 @@ class DetailCommentCell: UITableViewCell {
         }), for: .touchUpInside)
         return button
     }()
-    
+
     lazy var reportButton: UIButton = {
         let button = UIButton()
         button.setTitle("신고", for: .normal)
@@ -81,6 +80,7 @@ class DetailCommentCell: UITableViewCell {
         label.numberOfLines = 0
         return label
     }()
+
     // MARK: LifeCycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -109,7 +109,7 @@ private extension DetailCommentCell {
 
     func setUp() {
         setUpConstraints()
-        commentProfileNameLabel.addAction(UIAction(handler: { [weak self]_ in
+        commentProfileNameLabel.addAction(UIAction(handler: { [weak self] _ in
             guard let email = self?.comment?.user, let nickName = self?.commentProfileNameLabel.titleLabel?.text else { return }
             let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(email: email, nickName: nickName))
             self?.parent?.navigationController?.pushViewController(vc, animated: true)
@@ -142,8 +142,9 @@ private extension DetailCommentCell {
 
 extension DetailCommentCell {
     // MARK: Method
+
     func bind(comment: Comment, vc: BasicController) {
-        self.parent = vc
+        parent = vc
         if Utils.currentUser == nil {
             optionStackView.isHidden = true
         } else if comment.user != Utils.currentUser {

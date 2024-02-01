@@ -16,7 +16,7 @@ enum Typography {
     case body2
     case body3
     case button
-    
+
     var font: UIFont {
         switch self {
         case .bigTitle:

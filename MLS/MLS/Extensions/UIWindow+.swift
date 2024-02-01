@@ -7,13 +7,12 @@
 
 import UIKit
 
-extension UIWindow {
-    
-    public var visibleViewController: UIViewController? {
+public extension UIWindow {
+    var visibleViewController: UIViewController? {
         return self.visibleViewControllerFrom(vc: self.rootViewController)
     }
-    
-    public func visibleViewControllerFrom(vc: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+
+    func visibleViewControllerFrom(vc: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         if let nc = vc as? UINavigationController {
             return self.visibleViewControllerFrom(vc: nc.visibleViewController)
         } else if let tc = vc as? UITabBarController {

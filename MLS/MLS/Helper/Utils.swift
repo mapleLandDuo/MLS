@@ -12,9 +12,9 @@ import FirebaseAuth
 class Utils {
     static let utils = Utils()
     static var currentUser = Auth.auth().currentUser?.email
-    
+
     private init() {}
-    
+
     func getNavigationHeight(vc: UIViewController) -> CGFloat {
         guard let navigationController = vc.navigationController else {
             return 0

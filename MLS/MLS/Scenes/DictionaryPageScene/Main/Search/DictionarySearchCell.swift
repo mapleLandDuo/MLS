@@ -46,18 +46,18 @@ private extension DictionarySearchCell {
         addSubview(searchImageView)
         addSubview(searchTitleLabel)
         addSubview(searchLevelLabel)
-        
+
         searchImageView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
             $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
             $0.size.equalTo(40)
         }
-        
+
         searchTitleLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
             $0.leading.equalTo(searchImageView.snp.trailing).inset(-Constants.defaults.horizontal)
         }
-        
+
         searchLevelLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
             $0.leading.equalTo(searchTitleLabel.snp.trailing).inset(-Constants.defaults.horizontal)

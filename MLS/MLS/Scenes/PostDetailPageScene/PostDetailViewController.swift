@@ -59,7 +59,6 @@ extension PostDetailViewController {
         super.viewDidLoad()
         setUp()
         bind()
-        
     }
 
     override func viewWillAppear(_ animated: Bool) {

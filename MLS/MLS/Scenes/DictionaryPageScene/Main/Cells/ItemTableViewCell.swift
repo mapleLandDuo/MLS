@@ -78,8 +78,8 @@ extension ItemTableViewCell: UICollectionViewDelegateFlowLayout, UICollectionVie
         cell.bind(item: item)
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (Constants.screenWidth - Constants.defaults.horizontal * 5) / 2, height: (Constants.screenWidth - Constants.defaults.horizontal * 5) / 2)
-        }
+    }
 }

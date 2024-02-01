@@ -11,7 +11,7 @@ class DictionaryMonsterViewModel {
     // MARK: - Property
 
     let item: DictionaryMonster
-    
+
     init(item: DictionaryMonster) {
         self.item = item
     }
@@ -19,9 +19,8 @@ class DictionaryMonsterViewModel {
 
 extension DictionaryMonsterViewModel {
     // MARK: - Method
-    
+
     func getItem() -> DictionaryMonster {
         return item
     }
-
 }

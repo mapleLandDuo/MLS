@@ -6,26 +6,30 @@
 //
 
 import UIKit
-import SnapKit
+
 import Kingfisher
+import SnapKit
 
 class DictionaryMonsterViewController: BasicController {
     // MARK: - Property
+
     let viewModel: DictionaryMonsterViewModel
 
     // MARK: - Componetns
-    
+
     private let tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
         view.backgroundColor = .white
         view.separatorStyle = .none
         return view
     }()
+
     init(viewModel: DictionaryMonsterViewModel) {
         self.viewModel = viewModel
         super.init()
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -51,6 +55,7 @@ private extension DictionaryMonsterViewController {
         tableView.register(DictionaryMonsterHauntAreaCell.self, forCellReuseIdentifier: DictionaryMonsterHauntAreaCell.identifier)
         tableView.register(DictionaryGraySeparatorOneLineCell.self, forCellReuseIdentifier: DictionaryGraySeparatorOneLineCell.identifier)
     }
+
     func setUpConstraints() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -59,8 +64,7 @@ private extension DictionaryMonsterViewController {
     }
 }
 
-extension DictionaryMonsterViewController : UITableViewDelegate, UITableViewDataSource {
-    
+extension DictionaryMonsterViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 3:
@@ -71,44 +75,45 @@ extension DictionaryMonsterViewController : UITableViewDelegate, UITableViewData
             return 1
         }
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 5
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryNameImageCell.identifier, for: indexPath) as? DictionaryNameImageCell else { return UITableViewCell()}
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryNameImageCell.identifier, for: indexPath) as? DictionaryNameImageCell else { return UITableViewCell() }
             cell.bind(item: viewModel.getItem())
             cell.selectionStyle = .none
             return cell
         case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryMonsterDefaultCell.identifier, for: indexPath) as? DictionaryMonsterDefaultCell else { return UITableViewCell()}
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryMonsterDefaultCell.identifier, for: indexPath) as? DictionaryMonsterDefaultCell else { return UITableViewCell() }
             cell.bind(item: viewModel.getItem())
             cell.selectionStyle = .none
             return cell
         case 2:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryMonsterDetailCell.identifier, for: indexPath) as? DictionaryMonsterDetailCell else { return UITableViewCell()}
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryMonsterDetailCell.identifier, for: indexPath) as? DictionaryMonsterDetailCell else { return UITableViewCell() }
             cell.bind(item: viewModel.getItem())
             cell.selectionStyle = .none
             return cell
         case 3:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell()}
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
             let item = DictionaryNameDescription(name: viewModel.getItem().hauntArea[indexPath.row], description: "")
             cell.bind(data: item)
             cell.selectionStyle = .none
             return cell
         default:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell()}
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
             cell.bind(data: viewModel.getItem().dropTable[indexPath.row])
             cell.selectionStyle = .none
             return cell
         }
     }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
-            case 4:
+        case 4:
             let itemName = viewModel.getItem().dropTable[indexPath.row].name
             if itemName == "메소" { return }
             IndicatorMaker.showLoading()
@@ -118,11 +123,12 @@ extension DictionaryMonsterViewController : UITableViewDelegate, UITableViewData
                 let vc = DictionaryItemViewController(viewModel: DictionaryItemViewModel(item: item))
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-            
+
         default:
             return
         }
     }
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch section {
         case 0:
@@ -139,6 +145,7 @@ extension DictionaryMonsterViewController : UITableViewDelegate, UITableViewData
             return makeHeaderView(title: "temp")
         }
     }
+
     func makeHeaderView(title: String) -> UIView {
         let view: UIView = {
             let view = UIView()
@@ -167,9 +174,10 @@ extension DictionaryMonsterViewController : UITableViewDelegate, UITableViewData
             make.height.equalTo(1)
             make.bottom.equalToSuperview()
         }
-        
+
         return view
     }
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y > 0 {
             navigationItem.title = viewModel.item.name

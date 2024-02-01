@@ -11,18 +11,19 @@ class DictionaryItemViewModel {
     // MARK: - Property
 
     let item: DictionaryItem
-    
+
     init(item: DictionaryItem) {
         self.item = item
     }
 }
+
 extension DictionaryItemViewModel {
     // MARK: - Method
-    
+
     func getItem() -> DictionaryItem {
         return item
     }
-    
+
     func getDefaultInfoArray() -> [DictionaryNameDescription] {
         let datas = [
             "description": item.description,
@@ -30,7 +31,7 @@ extension DictionaryItemViewModel {
             "dex": item.dex,
             "luk": item.luk,
             "int": item.int
-        ].filter({$0.value != nil}).compactMapValues({$0!})
+        ].filter { $0.value != nil }.compactMapValues { $0! }
 
         var array: [DictionaryNameDescription] = []
         if datas["description"] != nil {
@@ -55,7 +56,7 @@ extension DictionaryItemViewModel {
         }
         return array
     }
-    
+
     func getDetailInfoArray() -> [DictionaryNameDescription] {
         var temp = item.detailDescription
         var array: [DictionaryNameDescription] = []

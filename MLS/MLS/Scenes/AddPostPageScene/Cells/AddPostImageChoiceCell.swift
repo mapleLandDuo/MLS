@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 import SnapKit
 
 class AddPostImageChoiceCell: UICollectionViewCell {
@@ -18,14 +19,14 @@ class AddPostImageChoiceCell: UICollectionViewCell {
         view.spacing = Constants.defaults.vertical / 2
         return view
     }()
-    
+
     private let imageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(systemName: "photo.on.rectangle.angled")
         view.tintColor = .systemGray4
         return view
     }()
-    
+
     private let countLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray4
@@ -33,7 +34,7 @@ class AddPostImageChoiceCell: UICollectionViewCell {
         label.text = "0/5"
         return label
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUp()
@@ -54,7 +55,7 @@ private extension AddPostImageChoiceCell {
         contentView.layer.borderColor = UIColor.systemGray4.cgColor
         contentView.layer.cornerRadius = Constants.defaults.radius
     }
-    
+
     func setUpConstraints() {
         contentView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
@@ -70,6 +71,7 @@ private extension AddPostImageChoiceCell {
 
 extension AddPostImageChoiceCell {
     // MARK: - Bind
+
     func bind(count: Int?) {
         guard let count = count else { return }
         countLabel.text = "\(count)/5"

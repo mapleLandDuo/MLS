@@ -5,12 +5,11 @@
 //  Created by SeoJunYoung on 1/30/24.
 //
 
-import Foundation
 import UIKit
 
 class DictionaryGraySeparatorDescriptionCell: UITableViewCell {
     // MARK: - Componetns
-    
+
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Typography.title3.font
@@ -18,7 +17,7 @@ class DictionaryGraySeparatorDescriptionCell: UITableViewCell {
         label.numberOfLines = 0
         return label
     }()
-    
+
     private let bottomSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemGray4
@@ -29,7 +28,8 @@ class DictionaryGraySeparatorDescriptionCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -39,7 +39,7 @@ private extension DictionaryGraySeparatorDescriptionCell {
     func setUp() {
         setUpConstraints()
     }
-    
+
     func setUpConstraints() {
         contentView.addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints { make in
@@ -58,6 +58,7 @@ private extension DictionaryGraySeparatorDescriptionCell {
 
 extension DictionaryGraySeparatorDescriptionCell {
     // MARK: - bind
+
     func bind(data: DictionaryNameDescription) {
         descriptionLabel.text = data.description
     }

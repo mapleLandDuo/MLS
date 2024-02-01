@@ -81,7 +81,6 @@ extension DictionarySearchViewController: UITableViewDelegate, UITableViewDataSo
             return viewModel.getItemListCount()
         case .monster:
             return viewModel.getMonsterListCount()
-
         }
     }
 
@@ -94,12 +93,12 @@ extension DictionarySearchViewController: UITableViewDelegate, UITableViewDataSo
             cell.bind(imageUrl: url, title: item.name, level: item.level)
         case .monster:
             guard let item = viewModel.monsterList.value?[indexPath.row],
-            let url = viewModel.getURL()[indexPath.row] else { return UITableViewCell() }
+                  let url = viewModel.getURL()[indexPath.row] else { return UITableViewCell() }
             cell.bind(imageUrl: url, title: item.name, level: String(item.level))
         }
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewModel.type {
         case .item:
@@ -110,7 +109,6 @@ extension DictionarySearchViewController: UITableViewDelegate, UITableViewDataSo
             guard let item = viewModel.monsterList.value?[indexPath.row] else { return }
             let vc = DictionaryMonsterViewController(viewModel: DictionaryMonsterViewModel(item: item))
             navigationController?.pushViewController(vc, animated: true)
-            
         }
     }
 }

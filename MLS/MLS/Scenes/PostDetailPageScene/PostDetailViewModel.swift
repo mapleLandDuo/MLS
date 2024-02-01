@@ -13,7 +13,6 @@ class PostDetailViewModel {
     var loginManager = LoginManager()
     
     var comments: Observable<[Comment]> = Observable(nil)
-//    var commentCount: Observable<Int> = Observable(0)
     lazy var commentCount = 0
     var post: Observable<Post> = Observable(nil)
     var isUp: Observable<Bool> = Observable(false)
@@ -23,7 +22,7 @@ class PostDetailViewModel {
     
     init(post: Post) {
         self.post.value = post
-        self.updateViewCount()
+        updateViewCount()
     }
     
     // MARK: Method
@@ -93,7 +92,7 @@ class PostDetailViewModel {
     
     func checkLikeCount(post: Post) {
         guard let myEmail = Utils.currentUser else { return }
-        self.isUp.value = post.likes.contains(myEmail)
+        isUp.value = post.likes.contains(myEmail)
     }
     
     func toCompletePost(postID: String, completion: @escaping () -> Void) {

@@ -32,6 +32,7 @@ extension DictionarySearchViewModel {
             return code.map { URL(string: "https://maplestory.io/api/gms/62/mob/\($0.code)/render/move?bgColor=") }
         }
     }
+
     func getItemListCount() -> Int {
         if let count = itemList.value?.count {
             return count

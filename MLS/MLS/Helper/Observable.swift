@@ -8,10 +8,9 @@
 import Foundation
 
 class Observable<T> {
-    
     var value: T? {
         didSet {
-            self.listener?(value)
+            listener?(value)
         }
     }
     

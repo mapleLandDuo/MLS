@@ -5,9 +5,10 @@
 //  Created by SeoJunYoung on 1/15/24.
 //
 
+import UIKit
+
 import PhotosUI
 import SnapKit
-import UIKit
 
 class AddPostViewController: BasicController {
     // MARK: - Property
@@ -232,7 +233,7 @@ private extension AddPostViewController {
                 AlertMaker.showAlertAction1(vc: self, message: "제목은 필수입니다!")
                 return
             }
-                 guard let imageData = self?.viewModel.imageData.value,
+            guard let imageData = self?.viewModel.imageData.value,
                   let isEditing = self?.viewModel.isEditing,
                   let title = self?.titleTextField.text,
                   let content = self?.postTextView.text,
@@ -281,7 +282,7 @@ private extension AddPostViewController {
                 }
             }
         }), for: .touchUpInside)
-        self.segmentedController.addAction(UIAction(handler: { [weak self] _ in
+        segmentedController.addAction(UIAction(handler: { [weak self] _ in
             guard let index = self?.segmentedController.selectedSegmentIndex else { return }
             if index == 0 {
                 self?.viewModel.type = .sell
@@ -290,7 +291,7 @@ private extension AddPostViewController {
             }
         }), for: .primaryActionTriggered)
     }
-    
+
     func setUpPostType() {
         if isEditing {
             if viewModel.type != .normal {
@@ -309,7 +310,7 @@ private extension AddPostViewController {
             }
         }
     }
-    
+
     func setUpImageArray() {
         guard let imageUrls = viewModel.postData.value?.postImages else { return }
         var imageArray: [UIImage?] = []

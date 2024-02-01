@@ -12,7 +12,7 @@ class QnAPageViewModel {
 
     private let contactList = [
         Contact(icon: UIImage(systemName: "envelope.fill"), title: "maplelands2024@gmail.com", type: .email),
-        Contact(icon: UIImage(systemName: "questionmark.bubble.fill"), title: "kakaoTalk", type: .kakaoTalk)
+        Contact(icon: UIImage(systemName: "questionmark.bubble.fill"), title: "kakaoTalk", type: .kakaoTalk),
     ]
     private let questionList = [
         Question(title: "사용방법이 궁금해요.", content: "사용방법이 어쩌구 저쩌구"),

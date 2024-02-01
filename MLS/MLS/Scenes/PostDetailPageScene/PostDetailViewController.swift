@@ -189,20 +189,25 @@ private extension PostDetailViewController {
 
         let loginNormalMenu = UIMenu(children: [modifyMenu, deleteMenu])
         let loginTradeMenu = UIMenu(children: [modifyMenu, deleteMenu, completeMenu])
-        let logoutMenu = UIMenu(children: [reportMenu])
+        let loginReportMenu = UIMenu(children: [reportMenu])
 
         let isMyPost = viewModel.checkMyPost()
         let postType = viewModel.post.value?.postType
 
         let menu: UIMenu?
-        if isMyPost {
-            switch postType {
-            case .buy, .sell:
-                menu = loginTradeMenu
-            case .normal, .complete:
-                menu = loginNormalMenu
-            default:
-                menu = nil
+        
+        if viewModel.isLogin() {
+            if isMyPost {
+                switch postType {
+                case .buy, .sell:
+                    menu = loginTradeMenu
+                case .normal, .complete:
+                    menu = loginNormalMenu
+                default:
+                    menu = nil
+                }
+            } else {
+                menu = loginReportMenu
             }
         } else {
             menu = nil

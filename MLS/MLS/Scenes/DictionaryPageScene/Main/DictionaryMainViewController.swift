@@ -53,6 +53,11 @@ extension DictionaryMainViewController {
         super.viewDidLoad()
         setUp()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        itemSearchBar.text = ""
+        monsterSearchBar.text = ""
+    }
 }
 
 private extension DictionaryMainViewController {

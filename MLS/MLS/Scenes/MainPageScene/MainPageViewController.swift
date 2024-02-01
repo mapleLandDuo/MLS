@@ -206,7 +206,7 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
                     IndicatorMaker.hideLoading()
                 }
             }
-            cell.bind(data: viewModel.features[indexPath.section][indexPath.row])
+            cell.bind(data: viewModel.features[indexPath.section][indexPath.row], vc: self)
             return cell
         default:
             return UICollectionViewCell()
@@ -219,7 +219,7 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
         case 0:
             return CGSize(width: Constants.screenWidth, height: Constants.defaults.blockHeight * 2)
         case 1:
-            return CGSize(width: Constants.screenWidth, height: (Constants.defaults.blockHeight * 4) + (Constants.defaults.vertical * 3) )
+            return CGSize(width: Constants.screenWidth, height: (Constants.defaults.blockHeight * 4) + (Constants.defaults.vertical) )
         default:
             return CGSize()
         }

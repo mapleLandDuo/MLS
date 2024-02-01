@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import SafariServices
 
 class MainPageViewController: BasicController {
     // MARK: - Property
@@ -341,6 +342,10 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
         } else if title == "앱정보" {
             let vc = AppInfoPageViewController()
             navigationController?.pushViewController(vc, animated: true)
+        } else if title == "개인정보처리 방침" {
+            let privacyPolicyURL = URL(string: "https://plip.kr/pcc/26c2c65d-d3ca-4903-91f2-50a049b20636/privacy/1.html")!
+            let safariViewController = SFSafariViewController(url: privacyPolicyURL)
+            self.navigationController?.pushViewController(safariViewController, animated: true)
         }
     }
 }

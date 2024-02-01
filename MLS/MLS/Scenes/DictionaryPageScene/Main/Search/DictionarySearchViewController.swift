@@ -71,14 +71,6 @@ private extension DictionarySearchViewController {
         viewModel.monsterList.bind { [weak self] _ in
             self?.searchTableView.reloadData()
         }
-
-//        viewModel.itemList.bind { [weak self] _ in
-//            self?.searchTableView.reloadData()
-//        }
-//
-//        viewModel.monsterList.bind { [weak self] _ in
-//            self?.searchTableView.reloadData()
-//        }
     }
 }
 
@@ -99,12 +91,10 @@ extension DictionarySearchViewController: UITableViewDelegate, UITableViewDataSo
         case .item:
             guard let item = viewModel.itemList.value?[indexPath.row],
                   let url = viewModel.getURL()[indexPath.row] else { return UITableViewCell() }
-//            guard let item = viewModel.item.value else { return UITableViewCell() }
             cell.bind(imageUrl: url, title: item.name, level: item.level)
         case .monster:
             guard let item = viewModel.monsterList.value?[indexPath.row],
             let url = viewModel.getURL()[indexPath.row] else { return UITableViewCell() }
-//            guard let item = viewModel.monster.value else { return UITableViewCell() }
             cell.bind(imageUrl: url, title: item.name, level: String(item.level))
         }
         return cell

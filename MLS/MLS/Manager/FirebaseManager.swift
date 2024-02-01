@@ -317,6 +317,28 @@ extension FirebaseManager {
             }
         }
     }
+    
+    func loadItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
+        db.collection("dictionaryItems")
+            .whereField("detailDescription.직업", isGreaterThanOrEqualTo: roll)
+            .whereField("detailDescription.직업", isLessThanOrEqualTo: roll + "\u{f8ff}").order(by: "detailDescription.직업").order(by: "level")
+            .getDocuments { (querySnapshot, err) in
+                if let err = err {
+                    print("검색 데이터 없음: \(err)")
+                } else {
+                    do {
+                        var results = [DictionaryItem]()
+                        for document in querySnapshot!.documents {
+                            let data = try Firestore.Decoder().decode(DictionaryItem.self, from: document.data())
+                            results.append(data)
+                        }
+                        completion(results)
+                    } catch {
+                        print("검색 데이터 디코딩 실패: \(error)")
+                    }
+                }
+            }
+    }
 
     func getCollectionName<T>(for type: T.Type) -> String {
         switch type {

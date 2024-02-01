@@ -14,16 +14,16 @@ class DictionaryMainViewModel {
     
     private let itemMenus = [
         [
-            ItemMenu(title: " 공통 ", image: UIImage(named: "item1")),
-            ItemMenu(title: " 전사 ", image: UIImage(named: "item2")),
+            ItemMenu(title: .common, image: UIImage(named: "commonIcon")),
+            ItemMenu(title: .warrior, image: UIImage(named: "warriorIcon")),
         ],
         [
-            ItemMenu(title: " 궁수 ", image: UIImage(named: "item3")),
-            ItemMenu(title: " 도적 ", image: UIImage(named: "item4")),
+            ItemMenu(title: .archer, image: UIImage(named: "archerIcon")),
+            ItemMenu(title: .thief, image: UIImage(named: "thiefIcon")),
         ],
         [        
-            ItemMenu(title: " 마법사 ", image: UIImage(named: "item5")),
-            ItemMenu(title: " 해적 ", image: UIImage(named: "item6")),
+            ItemMenu(title: .magician, image: UIImage(named: "magicianIcon")),
+            ItemMenu(title: .pirate, image: UIImage(named: "pirateIcon")),
         ]
 
 
@@ -67,9 +67,24 @@ extension DictionaryMainViewModel {
             }
         }
     }
+    
+    func loadItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
+        FirebaseManager.firebaseManager.loadItemByRoll(roll: roll) { items in
+            completion(items)
+        }
+    }
 }
 
 struct ItemMenu {
-    var title: String
+    var title: ItemMenuName
     var image: UIImage?
+}
+
+enum ItemMenuName: String {
+    case common = "공용"
+    case warrior = "전사"
+    case archer = "궁수"
+    case thief = "도적"
+    case magician = "마법사"
+    case pirate = "해적"
 }

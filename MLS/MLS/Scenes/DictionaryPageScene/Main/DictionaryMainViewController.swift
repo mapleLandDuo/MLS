@@ -53,7 +53,7 @@ extension DictionaryMainViewController {
         super.viewDidLoad()
         setUp()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         itemSearchBar.text = ""
         monsterSearchBar.text = ""
@@ -104,8 +104,8 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: IconDescriptionTableViewCell.identifier, for: indexPath) as? IconDescriptionTableViewCell else { return UITableViewCell() }
             let item = viewModel.getItemMenu()[indexPath.row]
-//            cell.bind(iconUrl: item.image, description: item.title)
-            cell.bind(data: item, controller: self)
+            cell.delegate = self
+            cell.bind(data: item)
             cell.selectionStyle = .none
             return cell
         default:
@@ -124,7 +124,7 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
             return makeHearderView(searchBar: monsterSearchBar, title: "몬스터 검색", description: "레벨별 몬스터")
         }
     }
-    
+
     func makeHearderView(searchBar: UISearchBar, title: String, description: String) -> UIView {
         let headerView = UIView()
         let titleLabel: UILabel = {
@@ -149,7 +149,7 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
             view.backgroundColor = .systemOrange
             return view
         }()
-        
+
         headerView.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -214,5 +214,27 @@ extension DictionaryMainViewController: UISearchBarDelegate {
             }
         }
         searchBar.resignFirstResponder()
+    }
+}
+
+extension DictionaryMainViewController: IconDescriptionTableViewCellDelegate {
+    func tapLeftButton(data: [ItemMenu]) {
+        guard let roll = data.first?.title.rawValue else { return }
+        viewModel.loadItemByRoll(roll: roll) { [weak self] items in
+            let vm = DictionarySearchViewModel(type: .item)
+            vm.itemList.value = items
+            let vc = DictionarySearchViewController(viewModel: vm)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+
+    func tapRightButton(data: [ItemMenu]) {
+        guard let roll = data.last?.title.rawValue else { return }
+        viewModel.loadItemByRoll(roll: roll) { [weak self] items in
+            let vm = DictionarySearchViewModel(type: .item)
+            vm.itemList.value = items
+            let vc = DictionarySearchViewController(viewModel: vm)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

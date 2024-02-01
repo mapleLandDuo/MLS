@@ -16,11 +16,11 @@ class CommunityPageViewController: BasicController {
 
     private var sortItems: [UIAction] {
         let first = UIAction(title: "최신순", image: UIImage(systemName: ""), handler: { [weak self] _ in
-            // 정렬
+            self?.viewModel.sortType.value = .new
         })
 
         let second = UIAction(title: "조회순", image: UIImage(systemName: ""), handler: { [weak self] _ in
-            // 정렬
+            self?.viewModel.sortType.value = .popular
         })
 
         let Items = [first, second]
@@ -89,7 +89,7 @@ extension CommunityPageViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getPosts()
+        loadPosts()
     }
 }
 
@@ -183,15 +183,20 @@ private extension CommunityPageViewController {
         viewModel.posts.bind { [weak self] _ in
             self?.communityTableView.reloadData()
         }
+        
+        viewModel.sortType.bind { [weak self] _ in
+            self?.loadPosts()
+        }
     }
 }
 
 private extension CommunityPageViewController {
     // MARK: - Method
 
-    func getPosts() {
+    func loadPosts() {
+        guard let sortType = viewModel.sortType.value else { return }
         IndicatorMaker.showLoading()
-        viewModel.getPost { posts in
+        viewModel.loadPosts(sort: sortType) { posts in
             IndicatorMaker.hideLoading()
             self.viewModel.posts.value = posts
         }
@@ -246,7 +251,7 @@ extension CommunityPageViewController: UISearchBarDelegate {
         if let text = searchBar.text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             viewModel.searchPosts(text: text) {}
         } else {
-            getPosts()
+            loadPosts()
         }
     }
 

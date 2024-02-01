@@ -16,6 +16,7 @@ class CommunityPageViewModel {
     var postsCount = 0
     
     let type: BoardSeparatorType
+    let sortType: Observable<SortType> = Observable(.new)
     
     init(type: BoardSeparatorType) {
         self.type = type
@@ -24,10 +25,10 @@ class CommunityPageViewModel {
 
 extension CommunityPageViewModel {
     // Methods
-    func getPost(completion: @escaping ([Post]?) -> Void) {
-        switch type {
-        case .normal:
-            FirebaseManager.firebaseManager.loadPosts(type: [.normal]) { [weak self] post in
+    func loadPosts(sort: SortType, completion: @escaping ([Post]?) -> Void) {
+        switch (type, sort) {
+        case (.normal, .new):
+            FirebaseManager.firebaseManager.newPosts(type: [.normal]) { [weak self] post in
                 if let post = post {
                     self?.postsCount = post.count
                     completion(post)
@@ -35,8 +36,28 @@ extension CommunityPageViewModel {
                     completion(nil)
                 }
             }
-        case .buy, .sell, .complete:
-            FirebaseManager.firebaseManager.loadPosts(type: [.buy, .sell, .complete]) { [weak self] post in
+            
+        case (.normal, .popular):
+            FirebaseManager.firebaseManager.popularPosts(type: [.normal]) { [weak self] post in
+                if let post = post {
+                    self?.postsCount = post.count
+                    completion(post)
+                } else {
+                    completion(nil)
+                }
+            }
+        case (.buy, .new), (.sell, .new), (.complete, .new):
+            FirebaseManager.firebaseManager.newPosts(type: [.buy, .sell, .complete]) { [weak self] post in
+                if let post = post {
+                    self?.postsCount = post.count
+                    completion(post)
+                } else {
+                    completion(nil)
+                }
+            }
+            
+        case (.buy, .popular), (.sell, .popular), (.complete, .popular):
+            FirebaseManager.firebaseManager.popularPosts(type: [.buy, .sell, .complete]) { [weak self] post in
                 if let post = post {
                     self?.postsCount = post.count
                     completion(post)
@@ -49,7 +70,8 @@ extension CommunityPageViewModel {
     
     func searchPosts(text: String, completion: @escaping () -> Void) {
         if text == "" {
-            getPost { [weak self] posts in
+            guard let sortType = sortType.value else { return }
+            loadPosts(sort: sortType) { [weak self] posts in
                 guard let posts = posts else { return }
                 self?.posts.value = posts
             }
@@ -66,4 +88,9 @@ extension CommunityPageViewModel {
     func isLogin() -> Bool {
         return loginManager.isLogin()
     }
+}
+
+enum SortType {
+    case new
+    case popular
 }

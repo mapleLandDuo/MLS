@@ -223,10 +223,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            if let count = viewModel.post.value?.postImages.count {
-                return count
-            }
-            return 0
+            return 1
         case 1:
             return 1
         case 2:

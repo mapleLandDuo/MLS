@@ -190,6 +190,13 @@ extension FirebaseManager {
             completion(tempList)
         }
     }
+
+    func toCompletePost(postID: String, completion: @escaping () -> Void) {
+        db.collection("posts").document(postID).updateData([
+            "postType": BoardSeparatorType.complete.rawValue
+        ])
+        completion()
+    }
 }
 
 extension FirebaseManager {
@@ -717,7 +724,7 @@ extension FirebaseManager {
             }
         }
     }
-    
+
     func popularPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
         db.collection("posts").whereField("postType", in: type.map { $0.rawValue }).order(by: "viewCount", descending: true).getDocuments { querySnapshot, error in
             if let error = error {

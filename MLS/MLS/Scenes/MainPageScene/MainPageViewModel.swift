@@ -48,7 +48,7 @@ extension MainPageViewModel {
         if loginManager.isLogin() {
             temp.append([
                 FeatureCellData(title: "로그아웃", image: UIImage(systemName: "lock.open")),
-                FeatureCellData(title: "회원탈퇴", image: UIImage(systemName: "person.fill.xmark"))
+                FeatureCellData(title: "회원 탈퇴", image: UIImage(systemName: "person.fill.xmark"))
             ])
             return temp
         } else {

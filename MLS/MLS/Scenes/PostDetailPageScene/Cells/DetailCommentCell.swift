@@ -155,6 +155,10 @@ extension DetailCommentCell {
         IndicatorMaker.showLoading()
         comment.user.toNickName { [weak self] nickName in
             IndicatorMaker.hideLoading()
+            if nickName == "탈퇴 회원" {
+                self?.commentProfileNameLabel.isUserInteractionEnabled = false
+                self?.commentProfileNameLabel.setTitleColor(.gray, for: .normal)
+            }
             self?.commentProfileNameLabel.setTitle(nickName, for: .normal)
         }
         commentTextLabel.text = comment.comment

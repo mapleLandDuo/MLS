@@ -68,19 +68,15 @@ extension CommunityPageViewModel {
         }
     }
     
-    func searchPosts(text: String, completion: @escaping () -> Void) {
-        if text == "" {
-            guard let sortType = sortType.value else { return }
-            loadPosts(sort: sortType) { [weak self] posts in
-                guard let posts = posts else { return }
-                self?.posts.value = posts
-            }
-        } else {
-            FirebaseManager.firebaseManager.searchPosts(text: text) { [weak self] posts in
-                guard let posts = posts else { return }
+    func searchPosts(text: String, completion: @escaping (Bool) -> Void) {
+        FirebaseManager.firebaseManager.searchPosts(text: text) { [weak self] posts in
+            guard let posts = posts else { return }
+            if posts.isEmpty {
+                completion(false)
+            } else {
                 self?.postsCount = posts.count
                 self?.posts.value = posts
-                completion()
+                completion(true)
             }
         }
     }

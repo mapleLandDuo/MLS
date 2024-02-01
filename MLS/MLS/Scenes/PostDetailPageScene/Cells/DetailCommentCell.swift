@@ -144,7 +144,9 @@ extension DetailCommentCell {
     // MARK: Method
     func bind(comment: Comment, vc: BasicController) {
         self.parent = vc
-        if comment.user != Utils.currentUser {
+        if Utils.currentUser == nil {
+            optionStackView.isHidden = true
+        } else if comment.user != Utils.currentUser {
             deleteButton.isHidden = true
             modifyButton.isHidden = true
         } else {

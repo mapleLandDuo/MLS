@@ -119,11 +119,11 @@ private extension CommunityTableViewCell {
         case .normal:
             tagLabel.isHidden = true
         case .buy:
-            tagLabel.textColor = .systemBlue
-            tagLabel.layer.borderColor = UIColor.systemBlue.cgColor
-        case .sell:
             tagLabel.textColor = .systemRed
             tagLabel.layer.borderColor = UIColor.systemRed.cgColor
+        case .sell:
+            tagLabel.textColor = .systemBlue
+            tagLabel.layer.borderColor = UIColor.systemBlue.cgColor
         case .complete:
             let attributeString = NSAttributedString(string: tag.rawValue, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue, NSAttributedString.Key.foregroundColor: UIColor.gray])
             tagLabel.attributedText = attributeString

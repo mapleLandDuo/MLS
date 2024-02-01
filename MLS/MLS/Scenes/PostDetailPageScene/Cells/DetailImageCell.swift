@@ -64,6 +64,7 @@ extension DetailImageCell {
     func bind(images: [URL?]?) {
         if let images = images {
             self.images = images
+            imageCollectionView.reloadData()
         }
     }
 }

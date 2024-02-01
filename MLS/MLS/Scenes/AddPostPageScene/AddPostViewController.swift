@@ -147,6 +147,7 @@ private extension AddPostViewController {
     // MARK: - SetUp
 
     func setUp() {
+        setUpImageArray()
         setUpConstraints()
         setUpActions()
         setUpPostType()
@@ -252,7 +253,10 @@ private extension AddPostViewController {
                     reports: postData.reports,
                     state: postData.state
                 )
+                IndicatorMaker.showLoading()
                 self?.viewModel.savePost(post: postData, images: imageData) {
+                    IndicatorMaker.hideLoading()
+                    AlertMaker.showAlertAction1(title: "수정 완료", message: "수정이 완료 되었습니다.")
                     self?.viewModel.postData.value = postData
                     self?.navigationController?.popViewController(animated: true)
                 }
@@ -270,7 +274,9 @@ private extension AddPostViewController {
                     reports: [],
                     state: .normal
                 )
+                IndicatorMaker.showLoading()
                 self?.viewModel.savePost(post: postData, images: imageData) {
+                    IndicatorMaker.hideLoading()
                     self?.navigationController?.popViewController(animated: true)
                 }
             }
@@ -300,6 +306,27 @@ private extension AddPostViewController {
                 } else if type == .sell {
                     segmentedController.selectedSegmentIndex = 0
                 }
+            }
+        }
+    }
+    
+    func setUpImageArray() {
+        guard let imageUrls = viewModel.postData.value?.postImages else { return }
+        var imageArray: [UIImage?] = []
+        IndicatorMaker.showLoading()
+        DispatchQueue.global().async { [weak self] in
+            for url in imageUrls {
+                guard let url = url else { return }
+                do {
+                    let data = try Data(contentsOf: url)
+                    imageArray.append(UIImage(data: data))
+                } catch {
+                    print("error")
+                }
+            }
+            DispatchQueue.main.async {
+                self?.viewModel.imageData.value = imageArray
+                IndicatorMaker.hideLoading()
             }
         }
     }

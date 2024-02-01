@@ -223,7 +223,8 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 1
+            guard let count = viewModel.post.value?.postImages.count else { return 0 }
+            return count > 0 ? 1 : 0
         case 1:
             return 1
         case 2:
@@ -246,7 +247,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailPostCell.identifier, for: indexPath) as? DetailPostCell,
                   let post = viewModel.post.value else { return UITableViewCell() }
             cell.contentView.isUserInteractionEnabled = false
-            cell.bind(post: post)
+            cell.bind(post: post, vc: self)
             return cell
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailLikeCell.identifier, for: indexPath) as? DetailLikeCell,

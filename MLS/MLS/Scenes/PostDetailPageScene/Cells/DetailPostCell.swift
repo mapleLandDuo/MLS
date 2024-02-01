@@ -12,9 +12,15 @@ import SnapKit
 
 
 class DetailPostCell: UITableViewCell {
+
     // MARK: Components
 
-    private let userNameLabel = CustomLabel(text: "", font: .boldSystemFont(ofSize: 16))
+    private let userNameButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = Typography.button.font
+        return button
+    }()
     
     private let dateLabel = CustomLabel(text: "", textColor: .gray, font: .systemFont(ofSize: 12))
     
@@ -30,7 +36,7 @@ class DetailPostCell: UITableViewCell {
     private let spacerView = UIView()
     
     lazy var infoStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [userNameLabel, dateLabel, postCountLabel, spacerView])
+        let view = UIStackView(arrangedSubviews: [userNameButton, dateLabel, postCountLabel, spacerView])
         view.axis = .horizontal
         view.spacing = Constants.defaults.horizontal / 2
         return view
@@ -89,13 +95,20 @@ private extension DetailPostCell {
 extension DetailPostCell {
     // MARK: Method
 
-    func bind(post: Post) {
+    func bind(post: Post, vc: BasicController) {
         postTitleLabel.text = post.title
+        IndicatorMaker.showLoading()
         post.user.toNickName { [weak self] nickName in
-            self?.userNameLabel.text = nickName
+            IndicatorMaker.hideLoading()
+            self?.userNameButton.setTitle(nickName, for: .normal)
+            self?.userNameButton.addAction(UIAction(handler: { _ in
+                let nextVC = ProfilePageViewController(viewModel: ProfilePageViewModel(email: post.user, nickName: nickName))
+                vc.navigationController?.pushViewController(nextVC, animated: true)
+            }), for: .primaryActionTriggered)
+            
         }
         dateLabel.text = post.date.toString()
         postContentTextView.text = post.postContent
-        postCountLabel.text = "\(String(post.viewCount))회"
+        postCountLabel.text = "조회수 \(String(post.viewCount))회"
     }
 }

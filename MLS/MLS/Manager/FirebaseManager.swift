@@ -739,3 +739,23 @@ extension FirebaseManager {
         }
     }
 }
+
+extension FirebaseManager {
+    
+    func getComment(email:String, completion: @escaping () -> Void) {
+//        db.document("posts").where
+    }
+    
+    func deleteUserData(email: String, completion: @escaping () -> Void) {
+        self.loadMyPosts(userEmail: email) { posts in
+            guard let posts = posts else { return }
+            let ids = posts.map({$0.id})
+            for id in ids {
+                self.deletePost(postID: id.uuidString) { print("delete") }
+            }
+            self.db.collection("users").document(email).delete { error in
+                completion()
+            }
+        }
+    }
+}

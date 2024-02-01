@@ -10,7 +10,7 @@ import UIKit
 
 class DictionaryMainViewModel {
     // Properties
-    private let monsterMenus = ["1 ~ 10", "11 ~ 20", "21 ~ 30", "31 ~ 40", "41 ~ 50", "51 ~ 60", "61 ~ 70", "71 ~ 80", "81 ~ 90", "91 ~ 100", "101 ~ 120", "121 ~ 150", "151 ~ 180", "181 ~ 200", "etc"]
+    private let monsterMenus = ["1 ~ 10", "11 ~ 20", "21 ~ 30", "31 ~ 40", "41 ~ 50", "51 ~ 60", "61 ~ 70", "71 ~ 80", "81 ~ 90", "91 ~ 100", "101 ~ 110", "111 ~ 120", "121 ~ 130", "131 ~ 140", "141 ~ 150", "etc"]
     
     private let itemMenus = [
         [
@@ -71,6 +71,12 @@ extension DictionaryMainViewModel {
     func loadItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
         FirebaseManager.firebaseManager.loadItemByRoll(roll: roll) { items in
             completion(items)
+        }
+    }
+    
+    func loadMonsterByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
+        FirebaseManager.firebaseManager.loadMonsterByLevel(minLevel: minLevel, maxLevel: maxLevel) { monsters in
+            completion(monsters)
         }
     }
 }

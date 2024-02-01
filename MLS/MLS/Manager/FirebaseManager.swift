@@ -339,6 +339,26 @@ extension FirebaseManager {
                 }
             }
     }
+    
+    func loadMonsterByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
+        db.collection("dictionaryMonsters").whereField("level", isGreaterThanOrEqualTo: minLevel).whereField("level", isLessThanOrEqualTo: maxLevel).order(by: "level")
+            .getDocuments { (querySnapshot, err) in
+                if let err = err {
+                    print("검색 데이터 없음: \(err)")
+                } else {
+                    do {
+                        var results = [DictionaryMonster]()
+                        for document in querySnapshot!.documents {
+                            let data = try Firestore.Decoder().decode(DictionaryMonster.self, from: document.data())
+                            results.append(data)
+                        }
+                        completion(results)
+                    } catch {
+                        print("검색 데이터 디코딩 실패: \(error)")
+                    }
+                }
+            }
+    }
 
     func getCollectionName<T>(for type: T.Type) -> String {
         switch type {

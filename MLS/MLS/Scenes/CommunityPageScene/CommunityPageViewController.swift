@@ -156,7 +156,7 @@ private extension CommunityPageViewController {
                 self?.navigationController?.pushViewController(vc, animated: true)
             } else {
                 AlertMaker.showAlertAction1(vc: self, message: "로그인이 필요합니다.") {
-                    let vc = SignUpViewController(viewModel: SignUpViewModel())
+                    let vc = SignInViewController(viewModel: SignInViewModel())
                     self?.navigationController?.pushViewController(vc, animated: true)
                 }
             }

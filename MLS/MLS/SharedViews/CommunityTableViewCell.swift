@@ -115,19 +115,20 @@ private extension CommunityTableViewCell {
     }
     
     func setUpType(tag: BoardSeparatorType) {
+        var attributeString = NSAttributedString()
         switch tag {
         case .normal:
             tagLabel.isHidden = true
         case .buy:
-            tagLabel.textColor = .systemRed
+            attributeString = NSAttributedString(string: tag.rawValue, attributes: [NSAttributedString.Key.strikethroughStyle: 0, NSAttributedString.Key.foregroundColor: UIColor.systemRed])
             tagLabel.layer.borderColor = UIColor.systemRed.cgColor
         case .sell:
-            tagLabel.textColor = .systemBlue
+            attributeString = NSAttributedString(string: tag.rawValue, attributes: [NSAttributedString.Key.strikethroughStyle: 0, NSAttributedString.Key.foregroundColor: UIColor.systemBlue])
             tagLabel.layer.borderColor = UIColor.systemBlue.cgColor
         case .complete:
-            let attributeString = NSAttributedString(string: tag.rawValue, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue, NSAttributedString.Key.foregroundColor: UIColor.gray])
-            tagLabel.attributedText = attributeString
+            attributeString = NSAttributedString(string: tag.rawValue, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue, NSAttributedString.Key.foregroundColor: UIColor.gray])
             tagLabel.layer.borderColor = UIColor.gray.cgColor
         }
+        tagLabel.attributedText = attributeString
     }
 }

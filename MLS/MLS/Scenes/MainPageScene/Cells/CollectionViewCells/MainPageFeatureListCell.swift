@@ -129,6 +129,7 @@ extension MainPageFeatureListCell: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         cell.bind(name: item.title, description: "")
+        cell.selectionStyle = .none
         return cell
     }
     

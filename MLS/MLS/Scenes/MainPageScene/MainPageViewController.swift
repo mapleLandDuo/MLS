@@ -324,12 +324,14 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
         } else if title == "회원 탈퇴" {
             AlertMaker.showAlertAction2(title: "회원 탈퇴", message: "회원 탈퇴 시 모든 데이터가 삭제됩니다.", cancelTitle: "확인", completeTitle: "취소", {
                 let manager = LoginManager()
+                guard let email = manager.email else { return }
                 IndicatorMaker.showLoading()
                 manager.deleteUser() { [weak self] in
-                    print("delete code input")
-                    self?.sideMenuTableView.reloadData()
-                    IndicatorMaker.hideLoading()
-                    AlertMaker.showAlertAction1(title: "회원 탈퇴", message: "회원 탈퇴가 완료되었습니다.")
+                    FirebaseManager.firebaseManager.deleteUserData(email: email) {
+                        self?.sideMenuTableView.reloadData()
+                        IndicatorMaker.hideLoading()
+                        AlertMaker.showAlertAction1(title: "회원 탈퇴", message: "회원 탈퇴가 완료되었습니다.")
+                    }
                 }
             }, {})
         } else if title == "시뮬레이터" {

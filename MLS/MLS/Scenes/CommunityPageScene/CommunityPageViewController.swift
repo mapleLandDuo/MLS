@@ -258,7 +258,11 @@ extension CommunityPageViewController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            viewModel.searchPosts(text: text) {}
+            viewModel.searchPosts(text: text) { [weak self] isExist in
+                if !isExist {
+                    AlertMaker.showAlertAction1(vc: self, message: "검색 결과가 없습니다.")
+                }
+            }
         } else {
             loadPosts()
         }

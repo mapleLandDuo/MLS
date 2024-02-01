@@ -236,7 +236,7 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))
             navigationController?.pushViewController(vc, animated: true)
         } else if title == "사고팔고" {
-            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .complete))
+            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .sell))
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -307,7 +307,7 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .normal))
             navigationController?.pushViewController(vc, animated: true)
         } else if title == "거래 게시판" {
-            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .buy))
+            let vc = CommunityPageViewController(viewModel: CommunityPageViewModel(type: .sell))
             navigationController?.pushViewController(vc, animated: true)
         } else if title == "로그아웃" {
             AlertMaker.showAlertAction2(vc: self, title: "로그아웃", message: "정말로 로그아웃 하시겠습니까?", cancelTitle: "취소", completeTitle: "확인", nil) {

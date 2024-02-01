@@ -49,7 +49,11 @@ extension DictionaryMainViewModel {
     func searchItem(name: String, completion: @escaping ([DictionaryItem]?) -> Void) {
         FirebaseManager.firebaseManager.searchData(name: name, type: DictionaryItem.self) { data in
             if let data = data {
-                completion(data)
+                if data.isEmpty {
+                    completion(nil)
+                } else {
+                    completion(data)
+                }
             } else {
                 completion(nil)
             }
@@ -59,7 +63,11 @@ extension DictionaryMainViewModel {
     func searchMonster(name: String, completion: @escaping ([DictionaryMonster]?) -> Void) {
         FirebaseManager.firebaseManager.searchData(name: name, type: DictionaryMonster.self) { data in
             if let data = data {
-                completion(data)
+                if data.isEmpty {
+                    completion(data)
+                } else {
+                    completion(nil)
+                }
             } else {
                 completion(nil)
             }

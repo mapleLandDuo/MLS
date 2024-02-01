@@ -52,6 +52,10 @@ class CommunityTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        titleLabel.attributedText = nil
+    }
+    
     // MARK: Bind
 
     func bind(tag: BoardSeparatorType, title: String, date: String, upCount: String) {

@@ -64,13 +64,17 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        guard let myEmail = Utils.currentUser else { return }
-                        self.getMyReportUsers { users in
-                            if let users = users {
-                                if !(post.reports.contains(myEmail)), !users.contains(post.user) {
-                                    posts.append(post)
+                        if let myEmail = Utils.currentUser {
+                            self.getMyReportUsers { users in
+                                if let users = users {
+                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                        posts.append(post)
+                                    }
+                                    group.leave()
                                 }
                             }
+                        } else {
+                            posts.append(post)
                             group.leave()
                         }
                     } catch {
@@ -122,13 +126,17 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        guard let myEmail = Utils.currentUser else { return }
-                        self.getMyReportUsers { users in
-                            if let users = users {
-                                if !(post.reports.contains(myEmail)), !users.contains(post.user) {
-                                    posts.append(post)
+                        if let myEmail = Utils.currentUser {
+                            self.getMyReportUsers { users in
+                                if let users = users {
+                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                        posts.append(post)
+                                    }
+                                    group.leave()
                                 }
                             }
+                        } else {
+                            posts.append(post)
                             group.leave()
                         }
                     } catch {
@@ -256,13 +264,17 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let comment = try Firestore.Decoder().decode(Comment.self, from: document.data())
-                        guard let myEmail = Utils.currentUser else { return }
-                        self.getMyReportUsers { users in
-                            if let users = users {
-                                if !(comment.reports.contains(myEmail)), !users.contains(comment.user) {
-                                    comments.append(comment)
+                        if let myEmail = Utils.currentUser {
+                            self.getMyReportUsers { users in
+                                if let users = users {
+                                    if !(comment.reports.contains(myEmail)), !users.contains(comment.user) {
+                                        comments.append(comment)
+                                    }
+                                    group.leave()
                                 }
                             }
+                        } else {
+                            comments.append(comment)
                             group.leave()
                         }
                     } catch {
@@ -359,10 +371,10 @@ extension FirebaseManager {
                 completion(nil)
             } else {
                 do {
-                    var results: [T]?
+                    var results: [T] = []
                     for document in querySnapshot!.documents {
                         let data = try Firestore.Decoder().decode(T.self, from: document.data())
-                        results?.append(data)
+                        results.append(data)
                     }
                     completion(results)
                 } catch {
@@ -793,7 +805,7 @@ extension FirebaseManager {
     // MARK: PostSearch
 
     func searchPosts(text: String, completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").whereField("postContent", isGreaterThanOrEqualTo: text).whereField("postContent", isLessThan: text + "\u{f8ff}").order(by: "postContent").order(by: "date", descending: true).getDocuments { querySnapshot, error in
+        db.collection("posts").whereField("title", isGreaterThanOrEqualTo: text).whereField("title", isLessThan: text + "\u{f8ff}").order(by: "title").order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -805,13 +817,17 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        guard let myEmail = Utils.currentUser else { return }
-                        self.getMyReportUsers { users in
-                            if let users = users {
-                                if !(post.reports.contains(myEmail)), !users.contains(post.user) {
-                                    posts.append(post)
+                        if let myEmail = Utils.currentUser {
+                            self.getMyReportUsers { users in
+                                if let users = users {
+                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                        posts.append(post)
+                                    }
+                                    group.leave()
                                 }
                             }
+                        } else {
+                            posts.append(post)
                             group.leave()
                         }
                     } catch {
@@ -845,13 +861,17 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        guard let myEmail = Utils.currentUser else { return }
-                        self.getMyReportUsers { users in
-                            if let users = users {
-                                if !(post.reports.contains(myEmail)), !users.contains(post.user) {
-                                    posts.append(post)
+                        if let myEmail = Utils.currentUser {
+                            self.getMyReportUsers { users in
+                                if let users = users {
+                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                        posts.append(post)
+                                    }
+                                    group.leave()
                                 }
                             }
+                        } else {
+                            posts.append(post)
                             group.leave()
                         }
                     } catch {
@@ -881,13 +901,17 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        guard let myEmail = Utils.currentUser else { return }
-                        self.getMyReportUsers { users in
-                            if let users = users {
-                                if !(post.reports.contains(myEmail)), !users.contains(post.user) {
-                                    posts.append(post)
+                        if let myEmail = Utils.currentUser {
+                            self.getMyReportUsers { users in
+                                if let users = users {
+                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                        posts.append(post)
+                                    }
+                                    group.leave()
                                 }
                             }
+                        } else {
+                            posts.append(post)
                             group.leave()
                         }
                     } catch {

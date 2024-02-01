@@ -147,8 +147,10 @@ private extension AddPostViewController {
     // MARK: - SetUp
 
     func setUp() {
+        setUpImageArray()
         setUpConstraints()
         setUpActions()
+        setUpPostType()
         titleTextField.delegate = self
         postTextView.delegate = self
         imageChoiceCollectionView.dataSource = self
@@ -247,11 +249,14 @@ private extension AddPostViewController {
                     date: Date(),
                     likes: postData.likes,
                     viewCount: postData.viewCount,
-                    postType: postData.postType,
+                    postType: type,
                     reports: postData.reports,
                     state: postData.state
                 )
+                IndicatorMaker.showLoading()
                 self?.viewModel.savePost(post: postData, images: imageData) {
+                    IndicatorMaker.hideLoading()
+                    AlertMaker.showAlertAction1(title: "수정 완료", message: "수정이 완료 되었습니다.")
                     self?.viewModel.postData.value = postData
                     self?.navigationController?.popViewController(animated: true)
                 }
@@ -269,11 +274,61 @@ private extension AddPostViewController {
                     reports: [],
                     state: .normal
                 )
+                IndicatorMaker.showLoading()
                 self?.viewModel.savePost(post: postData, images: imageData) {
+                    IndicatorMaker.hideLoading()
                     self?.navigationController?.popViewController(animated: true)
                 }
             }
         }), for: .touchUpInside)
+        self.segmentedController.addAction(UIAction(handler: { [weak self] _ in
+            guard let index = self?.segmentedController.selectedSegmentIndex else { return }
+            if index == 0 {
+                self?.viewModel.type = .sell
+            } else {
+                self?.viewModel.type = .buy
+            }
+        }), for: .primaryActionTriggered)
+    }
+    
+    func setUpPostType() {
+        if isEditing {
+            if viewModel.type != .normal {
+                viewModel.type = .sell
+            }
+        } else {
+            if viewModel.type != .normal {
+                guard let type = viewModel.postData.value?.postType else { return }
+                print(isEditing)
+                viewModel.type = type
+                if type == .buy {
+                    segmentedController.selectedSegmentIndex = 1
+                } else if type == .sell {
+                    segmentedController.selectedSegmentIndex = 0
+                }
+            }
+        }
+    }
+    
+    func setUpImageArray() {
+        guard let imageUrls = viewModel.postData.value?.postImages else { return }
+        var imageArray: [UIImage?] = []
+        IndicatorMaker.showLoading()
+        DispatchQueue.global().async { [weak self] in
+            for url in imageUrls {
+                guard let url = url else { return }
+                do {
+                    let data = try Data(contentsOf: url)
+                    imageArray.append(UIImage(data: data))
+                } catch {
+                    print("error")
+                }
+            }
+            DispatchQueue.main.async {
+                self?.viewModel.imageData.value = imageArray
+                IndicatorMaker.hideLoading()
+            }
+        }
     }
 }
 

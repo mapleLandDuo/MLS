@@ -59,15 +59,17 @@ extension PostDetailViewController {
         super.viewDidLoad()
         setUp()
         bind()
-        viewModel.loadPost {}
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let id = viewModel.post.value?.id {
-            viewModel.loadComment(postId: id.uuidString)
+        viewModel.loadPost { [weak self] in
+            self?.totalTableView.reloadData()
+            if let id = self?.viewModel.post.value?.id {
+                self?.viewModel.loadComment(postId: id.uuidString)
+            }
         }
-        totalTableView.reloadData()
     }
 }
 
@@ -242,12 +244,14 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailImageCell.identifier, for: indexPath) as? DetailImageCell else { return UITableViewCell() }
             cell.bind(images: viewModel.post.value?.postImages)
             cell.contentView.isUserInteractionEnabled = false
+            cell.selectionStyle = .none
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailPostCell.identifier, for: indexPath) as? DetailPostCell,
                   let post = viewModel.post.value else { return UITableViewCell() }
             cell.contentView.isUserInteractionEnabled = false
             cell.bind(post: post, vc: self)
+            cell.selectionStyle = .none
             return cell
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailLikeCell.identifier, for: indexPath) as? DetailLikeCell,
@@ -256,6 +260,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             cell.delegate = self
             cell.contentView.isUserInteractionEnabled = false
             cell.bind(post: post, isUp: isUp)
+            cell.selectionStyle = .none
             return cell
         case 3:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailCommentCell.identifier, for: indexPath) as? DetailCommentCell,
@@ -264,6 +269,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             cell.comment = comment
             cell.contentView.isUserInteractionEnabled = false
             cell.bind(comment: comment, vc: self)
+            cell.selectionStyle = .none
             return cell
         default:
             return UITableViewCell()

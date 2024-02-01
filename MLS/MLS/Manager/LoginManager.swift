@@ -21,8 +21,10 @@ class LoginManager {
         return Auth.auth().currentUser == nil ? false : true
     }
     
-    func deleteUser(email: String) {
-        Auth.auth().currentUser?.delete()
+    func deleteUser(completion: @escaping () -> Void) {
+        Auth.auth().currentUser?.delete(completion: { error in
+            completion()
+        })
     }
     
     func logOut(completion: @escaping (_ isLogOut: Bool) -> Void) {

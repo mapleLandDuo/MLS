@@ -12,6 +12,8 @@ extension String {
         FirebaseManager.firebaseManager.getNickname(userEmail: self) { nickName in
             if let nickName = nickName {
                 completion(nickName)
+            } else {
+                completion("탈퇴 회원")
             }
         }
     }

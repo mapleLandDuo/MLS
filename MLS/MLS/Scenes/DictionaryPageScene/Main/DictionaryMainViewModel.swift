@@ -64,9 +64,9 @@ extension DictionaryMainViewModel {
         FirebaseManager.firebaseManager.searchData(name: name, type: DictionaryMonster.self) { data in
             if let data = data {
                 if data.isEmpty {
-                    completion(data)
-                } else {
                     completion(nil)
+                } else {
+                    completion(data)
                 }
             } else {
                 completion(nil)

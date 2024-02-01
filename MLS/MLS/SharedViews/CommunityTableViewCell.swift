@@ -27,6 +27,7 @@ class CommunityTableViewCell: UITableViewCell {
         label.textAlignment = .center
         label.layer.borderWidth = 2
         label.layer.cornerRadius = Constants.defaults.radius
+        label.isHidden = false
         return label
     }()
     
@@ -59,11 +60,10 @@ class CommunityTableViewCell: UITableViewCell {
     // MARK: Bind
 
     func bind(tag: BoardSeparatorType, title: String, date: String, upCount: String) {
-        setUpType(tag: tag)
-        tagLabel.text = tag.rawValue
         titleLabel.text = title
         dateLabel.text = date
         upCountLabel.text = upCount
+        setUpType(tag: tag)
     }
 }
 
@@ -120,6 +120,8 @@ private extension CommunityTableViewCell {
     
     func setUpType(tag: BoardSeparatorType) {
         var attributeString = NSAttributedString()
+        tagLabel.isHidden = false
+        
         switch tag {
         case .normal:
             tagLabel.isHidden = true

@@ -90,6 +90,7 @@ extension CommunityPageViewController {
         super.viewDidLoad()
         setUp()
         bind()
+        loadPosts()
     }
 
     override func viewWillAppear(_ animated: Bool) {

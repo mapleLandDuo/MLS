@@ -6,7 +6,9 @@
 //
 
 import UIKit
-//setup 수정 준영
+
+import SnapKit
+
 class DictionaryItemViewController: BasicController {
     // MARK: - Properties
 
@@ -56,8 +58,8 @@ private extension DictionaryItemViewController {
 
     func setUpConstraints() {
         view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+        tableView.snp.makeConstraints { 
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
@@ -183,16 +185,18 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
             return view
         }()
         view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         view.addSubview(separatorView)
-        separatorView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-            make.bottom.equalToSuperview()
+        
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        separatorView.snp.makeConstraints { 
+            $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview()
         }
 
         return view

@@ -9,19 +9,12 @@ import UIKit
 
 import SnapKit
 
-//Typography 적용
-//leading trailing <- 사용
-//make <- 사용
-// addSubView 위로 정렬
-// $0으로 make 어쩌구 저ㄱ쩌구..
-// inset Offset 구분 사용
-
 class CommunityTableViewCell: UITableViewCell {
     // MARK: Components
     
     private let postView = UIView()
     
-    private let dateLabel = CustomLabel(text: "date", textColor: .gray, font: .systemFont(ofSize: 12))
+    private let dateLabel = CustomLabel(text: "date", textColor: .gray, font: Typography.body3.font)
     
     lazy var postStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [tagLabel, titleLabel])
@@ -30,7 +23,7 @@ class CommunityTableViewCell: UITableViewCell {
     }()
     
     private let tagLabel: UILabel = {
-        let label = CustomLabel(text: "tag", font: .boldSystemFont(ofSize: 20), padding: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5))
+        let label = CustomLabel(text: "tag", font: Typography.title2.font, padding: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5))
         label.textAlignment = .center
         label.layer.borderWidth = 2
         label.layer.cornerRadius = Constants.defaults.radius
@@ -38,7 +31,7 @@ class CommunityTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let titleLabel = CustomLabel(text: "title", font: .systemFont(ofSize: 20))
+    private let titleLabel = CustomLabel(text: "title", font: Typography.body1.font)
     
     private let upCountIcon: UIImageView = {
         let view = UIImageView()
@@ -46,7 +39,7 @@ class CommunityTableViewCell: UITableViewCell {
         return view
     }()
     
-    private let upCountLabel = CustomLabel(text: "upCount", textColor: .gray, font: .systemFont(ofSize: 16))
+    private let upCountLabel = CustomLabel(text: "upCount", textColor: .gray, font: Typography.body2.font)
     
     // MARK: Life Cycle
     
@@ -100,14 +93,15 @@ private extension CommunityTableViewCell {
         }
         
         dateLabel.snp.makeConstraints {
-            $0.top.equalTo(postStackView.snp.bottom).inset(-Constants.defaults.vertical / 2)
+            $0.top.equalTo(postStackView.snp.bottom).offset(Constants.defaults.vertical / 2)
             $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
             $0.bottom.equalToSuperview().inset(Constants.defaults.horizontal / 2)
         }
         
         upCountIcon.snp.makeConstraints {
-            $0.top.equalTo(postStackView.snp.bottom).inset(-Constants.defaults.vertical / 2)
-            $0.trailing.equalTo(upCountLabel.snp.leading).inset(-Constants.defaults.horizontal)
+            $0.top.equalTo(postStackView.snp.bottom).offset(Constants.defaults.vertical / 2)
+            // offset?
+            $0.trailing.equalTo(upCountLabel.snp.leading)
             $0.bottom.equalToSuperview().inset(Constants.defaults.horizontal / 2)
         }
         

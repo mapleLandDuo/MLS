@@ -7,7 +7,7 @@
 
 import UIKit
 
-// setup 수정
+import SnapKit
 
 class DictionaryMonsterDefaultCell: UITableViewCell {
     // MARK: - Components
@@ -89,52 +89,57 @@ private extension DictionaryMonsterDefaultCell {
     }
 
     func setUpConstraints() {
+        
         contentView.addSubview(levelTitleLabel)
-        levelTitleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.equalToSuperview().offset(Constants.defaults.vertical)
-        }
         contentView.addSubview(expTitleLabel)
-        expTitleLabel.snp.makeConstraints { make in
-            make.left.equalTo(contentView.snp.centerX).offset(Constants.defaults.horizontal)
-            make.top.equalTo(levelTitleLabel)
-        }
         contentView.addSubview(hpTitleLabel)
-        hpTitleLabel.snp.makeConstraints { make in
-            make.left.equalTo(levelTitleLabel)
-            make.top.equalTo(levelTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
-        }
         contentView.addSubview(mpTitleLabel)
-        mpTitleLabel.snp.makeConstraints { make in
-            make.left.equalTo(expTitleLabel)
-            make.top.equalTo(expTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
-        }
         contentView.addSubview(levelLabel)
-        levelLabel.snp.makeConstraints { make in
-            make.top.equalTo(levelTitleLabel)
-            make.right.equalTo(expTitleLabel.snp.left).inset(-Constants.defaults.horizontal * 2)
-        }
         contentView.addSubview(hpLabel)
-        hpLabel.snp.makeConstraints { make in
-            make.top.equalTo(hpTitleLabel)
-            make.right.equalTo(mpTitleLabel.snp.left).inset(-Constants.defaults.horizontal * 2)
-        }
         contentView.addSubview(expLabel)
-        expLabel.snp.makeConstraints { make in
-            make.top.equalTo(expTitleLabel)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         contentView.addSubview(mpLabel)
-        mpLabel.snp.makeConstraints { make in
-            make.top.equalTo(mpTitleLabel)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         contentView.addSubview(bottomSeparatorView)
-        bottomSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(mpLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-            make.bottom.equalToSuperview()
+        
+        levelTitleLabel.snp.makeConstraints { 
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.equalToSuperview().offset(Constants.defaults.vertical)
+        }
+        expTitleLabel.snp.makeConstraints { 
+            $0.leading.equalTo(contentView.snp.centerX).offset(Constants.defaults.horizontal)
+            $0.top.equalTo(levelTitleLabel)
+        }
+        hpTitleLabel.snp.makeConstraints { 
+            $0.leading.equalTo(levelTitleLabel)
+            $0.top.equalTo(levelTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
+        }
+        mpTitleLabel.snp.makeConstraints { 
+            $0.leading.equalTo(expTitleLabel)
+            $0.top.equalTo(expTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
+        }
+        levelLabel.snp.makeConstraints { 
+            $0.top.equalTo(levelTitleLabel)
+            $0.trailing.equalTo(expTitleLabel.snp.leading).inset(-Constants.defaults.horizontal * 2)
+        }
+        hpLabel.snp.makeConstraints { 
+            $0.top.equalTo(hpTitleLabel)
+            $0.trailing.equalTo(mpTitleLabel.snp.leading).inset(-Constants.defaults.horizontal * 2)
+        }
+
+        expLabel.snp.makeConstraints { 
+            $0.top.equalTo(expTitleLabel)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        mpLabel.snp.makeConstraints { 
+            $0.top.equalTo(mpTitleLabel)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        bottomSeparatorView.snp.makeConstraints { 
+            $0.top.equalTo(mpLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview()
         }
     }
 }

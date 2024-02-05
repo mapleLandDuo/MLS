@@ -20,7 +20,7 @@ class QnAViewController: UIViewController {
     private let qnaTableView = UITableView()
 }
 
-// MARK: LifeCycle
+// MARK: Life Cycle
 extension QnAViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,6 @@ extension QnAViewController {
 
 // MARK: SetUp
 private extension QnAViewController {
-
     func setUp() {
         self.qnaTableView.delegate = self
         self.qnaTableView.dataSource = self
@@ -49,7 +48,6 @@ private extension QnAViewController {
 
 // MARK: Method
 private extension QnAViewController {
-
     func clickCallCell(num: String) {
         if let url = NSURL(string: "tel://0" + "\(num)"),
            UIApplication.shared.canOpenURL(url as URL)

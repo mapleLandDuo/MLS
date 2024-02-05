@@ -28,15 +28,14 @@ class CommunityPageViewController: BasicController {
         return Items
     }
 
-
     // MARK: - Components
-    
+
     lazy var menu = UIMenu(title: "게시물 정렬", children: sortItems)
-    
+
     private let titleButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.systemOrange, for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 30)
+        button.titleLabel?.font = Typography.title1.font
         return button
     }()
 
@@ -86,7 +85,6 @@ class CommunityPageViewController: BasicController {
 
 // MARK: - Life Cycle
 extension CommunityPageViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -102,7 +100,6 @@ extension CommunityPageViewController {
 
 // MARK: - SetUp
 private extension CommunityPageViewController {
-
     func setUp() {
         communityTableView.dataSource = self
         communityTableView.delegate = self
@@ -133,12 +130,12 @@ private extension CommunityPageViewController {
         }
 
         searchButton.snp.makeConstraints {
-            $0.trailing.equalTo(sortButton.snp.leading).inset(-Constants.defaults.horizontal)
+            $0.trailing.equalTo(sortButton.snp.leading).offset(Constants.defaults.horizontal)
             $0.centerY.equalTo(titleButton)
         }
 
         communityTableView.snp.makeConstraints {
-            $0.top.equalTo(titleButton.snp.bottom).inset(-Constants.defaults.vertical)
+            $0.top.equalTo(titleButton.snp.bottom).offset(Constants.defaults.vertical)
             $0.leading.equalTo(view.safeAreaLayoutGuide)
             $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
@@ -178,10 +175,8 @@ private extension CommunityPageViewController {
         switch type {
         case .normal:
             titleButton.setTitle("자유게시판", for: .normal)
-        // 정렬 속성
         case .sell, .buy, .complete:
             titleButton.setTitle("거래게시판", for: .normal)
-            // 정렬 속성
         }
         setUpActions()
     }
@@ -189,7 +184,6 @@ private extension CommunityPageViewController {
 
 // MARK: - Bind
 private extension CommunityPageViewController {
-
     func bind() {
         viewModel.posts.bind { [weak self] _ in
             self?.communityTableView.reloadData()
@@ -203,7 +197,6 @@ private extension CommunityPageViewController {
 
 // MARK: - Methods
 private extension CommunityPageViewController {
-
     func loadPosts() {
         guard let sortType = viewModel.sortType.value else { return }
         IndicatorMaker.showLoading()

@@ -69,7 +69,7 @@ private extension MainPageProfileCell {
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(appIconImageView.snp.top)
             $0.bottom.equalTo(appIconImageView.snp.bottom)
-            $0.leading.equalTo(appIconImageView.snp.right).offset(Constants.defaults.horizontal)
+            $0.leading.equalTo(appIconImageView.snp.trailing).offset(Constants.defaults.horizontal)
             $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }

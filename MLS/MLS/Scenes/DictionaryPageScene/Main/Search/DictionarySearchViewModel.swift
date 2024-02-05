@@ -28,7 +28,7 @@ class DictionarySearchViewModel {
 
 // MARK: Method
 extension DictionarySearchViewModel {
-    func getURL() -> [URL?] {
+    func fetchURL() -> [URL?] {
         switch type {
         case .item:
             guard let code = itemList.value else { return [] }
@@ -39,12 +39,12 @@ extension DictionarySearchViewModel {
         }
     }
 
-    func getItemListCount() -> Int {
+    func fetchItemListCount() -> Int {
         if let count = itemList.value?.count { return count }
         return 0
     }
 
-    func getMonsterListCount() -> Int {
+    func fetchMonsterListCount() -> Int {
         if let count = monsterList.value?.count { return count }
         return 0
     }

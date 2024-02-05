@@ -33,13 +33,13 @@ class PostDetailViewController: BasicController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.circle.fill")?.resized(to: CGSize(width: 40, height: 40)), for: .normal)
         button.tintColor = .gray
-        button.isUserInteractionEnabled = self.viewModel.isLogin()
+        button.isUserInteractionEnabled = LoginManager.manager.isLogin()
         return button
     }()
 
     lazy var commentTextField: SharedTextField = {
         let textField = SharedTextField(type: .normal, placeHolder: "댓글입력")
-        textField.isUserInteractionEnabled = self.viewModel.isLogin()
+        textField.isUserInteractionEnabled = LoginManager.manager.isLogin()
         return textField
     }()
 
@@ -64,10 +64,10 @@ extension PostDetailViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.loadPost { [weak self] in
+        viewModel.fetchPost { [weak self] in
             self?.totalTableView.reloadData()
             if let id = self?.viewModel.post.value?.id {
-                self?.viewModel.loadComment(postId: id.uuidString)
+                self?.viewModel.fetchComments(postId: id.uuidString)
             }
         }
     }
@@ -121,7 +121,7 @@ private extension PostDetailViewController {
                         self?.commentTextField.textField.text = ""
                         AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 수정 되었습니다.")
                         if let id = self?.viewModel.post.value?.id {
-                            self?.viewModel.loadComment(postId: id.uuidString)
+                            self?.viewModel.fetchComments(postId: id.uuidString)
                             self?.viewModel.isEditing = false
                         }
                     }
@@ -139,7 +139,7 @@ private extension PostDetailViewController {
                         self?.commentTextField.textField.text = ""
                         AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 완료 되었습니다.")
                         if let id = self?.viewModel.post.value?.id {
-                            self?.viewModel.loadComment(postId: id.uuidString)
+                            self?.viewModel.fetchComments(postId: id.uuidString)
                         }
                     }
                 }
@@ -196,7 +196,7 @@ private extension PostDetailViewController {
 
         let menu: UIMenu?
 
-        if viewModel.isLogin() {
+        if LoginManager.manager.isLogin() {
             if isMyPost {
                 switch postType {
                 case .buy, .sell:
@@ -360,7 +360,7 @@ extension PostDetailViewController: DetailCommentCellDelegate {
         guard let postId = viewModel.post.value?.id.uuidString else { return }
         AlertMaker.showAlertAction2(vc: self, title: "정말 삭제하시겠습니까?", message: "영구적으로 삭제됩니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
             self.viewModel.deleteComment(postId: postId, commentId: comment.id.uuidString) {
-                self.viewModel.loadComment(postId: postId)
+                self.viewModel.fetchComments(postId: postId)
             }
         })
     }
@@ -375,7 +375,7 @@ extension PostDetailViewController: DetailCommentCellDelegate {
         guard let postId = viewModel.post.value?.id.uuidString else { return }
         AlertMaker.showAlertAction2(vc: self, title: "정말 신고하시겠습니까?", message: "신고는 취소할 수 없습니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
             self.viewModel.reportComment(postID: postId, commentID: comment.id.uuidString) {
-                self.viewModel.loadComment(postId: postId)
+                self.viewModel.fetchComments(postId: postId)
             }
         })
     }
@@ -389,8 +389,8 @@ extension PostDetailViewController: DetailCommentCellDelegate {
 extension PostDetailViewController: DetailLikeCellDelegate {
     func tapUpCountButton(cell: DetailLikeCell) {
         guard let postID = viewModel.post.value?.id.uuidString else { return }
-        viewModel.setLikeCount(postID: postID) {
-            self.viewModel.loadPost {}
+        viewModel.updateLikeCount(postID: postID) {
+            self.viewModel.fetchPost {}
         }
     }
 }

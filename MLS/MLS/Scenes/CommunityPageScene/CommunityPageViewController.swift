@@ -89,12 +89,12 @@ extension CommunityPageViewController {
         super.viewDidLoad()
         setUp()
         bind()
-        loadPosts()
+        fetchPosts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadPosts()
+        fetchPosts()
     }
 }
 
@@ -153,9 +153,8 @@ private extension CommunityPageViewController {
         }), for: .touchUpInside)
 
         addPostButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let type = self?.viewModel.type,
-                  let isLogin = self?.viewModel.isLogin() else { return }
-            if isLogin {
+            guard let type = self?.viewModel.type else { return }
+            if LoginManager.manager.isLogin() {
                 let vc = AddPostViewController(viewModel: AddPostViewModel(type: type))
                 self?.navigationController?.pushViewController(vc, animated: true)
             } else {
@@ -167,7 +166,7 @@ private extension CommunityPageViewController {
         }), for: .primaryActionTriggered)
 
         titleButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.loadPosts()
+            self?.fetchPosts()
         }), for: .touchUpInside)
     }
 
@@ -190,14 +189,14 @@ private extension CommunityPageViewController {
         }
 
         viewModel.sortType.bind { [weak self] _ in
-            self?.loadPosts()
+            self?.fetchPosts()
         }
     }
 }
 
 // MARK: - Methods
 private extension CommunityPageViewController {
-    func loadPosts() {
+    func fetchPosts() {
         guard let sortType = viewModel.sortType.value else { return }
         IndicatorMaker.showLoading()
         viewModel.fetchPosts(sort: sortType) { posts in
@@ -254,7 +253,7 @@ extension CommunityPageViewController: UISearchBarDelegate {
                 }
             }
         } else {
-            loadPosts()
+            fetchPosts()
         }
     }
 }

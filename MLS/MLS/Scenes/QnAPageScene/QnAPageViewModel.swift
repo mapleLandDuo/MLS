@@ -41,19 +41,19 @@ class QnAPageViewModel {
 
 // MARK: Methods
 extension QnAPageViewModel {
-    func getContactList() -> [Contact] {
+    func fetchContactList() -> [Contact] {
         return contactList
     }
 
-    func getQuestionList() -> [Question] {
+    func fetchQuestionList() -> [Question] {
         return questionList
     }
 
-    func getContactCount() -> Int {
+    func fetchContactCount() -> Int {
         return contactList.count
     }
 
-    func getQuestionCount() -> Int {
+    func fetchQuestionCount() -> Int {
         return questionList.count
     }
 }

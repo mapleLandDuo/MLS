@@ -76,8 +76,4 @@ extension CommunityPageViewModel {
             }
         }
     }
-
-    func isLogin() -> Bool {
-        return LoginManager.manager.isLogin()
-    }
 }

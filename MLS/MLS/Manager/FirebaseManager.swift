@@ -424,7 +424,7 @@ extension FirebaseManager {
         }
     }
 
-    func fetchItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
+    func fetchItemsByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
         db.collection(CollectionName.dictionaryItems.rawValue)
             .whereField("detailDescription.직업", isGreaterThanOrEqualTo: roll)
             .whereField("detailDescription.직업", isLessThanOrEqualTo: roll + "\u{f8ff}").order(by: "detailDescription.직업").order(by: "level")
@@ -446,7 +446,7 @@ extension FirebaseManager {
             }
     }
 
-    func fetchMonsterByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
+    func fetchMonstersByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
         db.collection(CollectionName.dictionaryMonsters.rawValue).whereField("level", isGreaterThanOrEqualTo: minLevel).whereField("level", isLessThanOrEqualTo: maxLevel).order(by: "level")
             .getDocuments { querySnapshot, err in
                 if let err = err {

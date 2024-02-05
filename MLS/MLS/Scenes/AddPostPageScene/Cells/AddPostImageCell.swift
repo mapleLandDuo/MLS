@@ -56,13 +56,15 @@ private extension AddPostImageCell {
 
     func setUpConstraints() {
         contentView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
         contentView.addSubview(deleteButton)
-        deleteButton.snp.makeConstraints { make in
-            make.top.right.equalToSuperview()
-            make.height.width.equalTo(20)
+        
+        imageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+
+        deleteButton.snp.makeConstraints {
+            $0.top.trailing.equalToSuperview()
+            $0.height.width.equalTo(20)
         }
     }
 }

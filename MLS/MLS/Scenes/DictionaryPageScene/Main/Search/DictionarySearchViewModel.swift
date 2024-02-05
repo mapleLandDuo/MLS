@@ -16,9 +16,9 @@ class DictionarySearchViewModel {
     // MARK: Properties
 
     let type: SearchType
-    
+
     let itemList: Observable<[DictionaryItem]> = Observable(nil)
-    
+
     let monsterList: Observable<[DictionaryMonster]> = Observable(nil)
 
     init(type: SearchType) {
@@ -28,7 +28,6 @@ class DictionarySearchViewModel {
 
 // MARK: Method
 extension DictionarySearchViewModel {
-
     func getURL() -> [URL?] {
         switch type {
         case .item:
@@ -41,17 +40,12 @@ extension DictionarySearchViewModel {
     }
 
     func getItemListCount() -> Int {
-        if let count = itemList.value?.count {
-            return count
-        }
+        if let count = itemList.value?.count { return count }
         return 0
     }
 
     func getMonsterListCount() -> Int {
-        if let count = monsterList.value?.count {
-            return count
-        }
+        if let count = monsterList.value?.count { return count }
         return 0
     }
 }
-

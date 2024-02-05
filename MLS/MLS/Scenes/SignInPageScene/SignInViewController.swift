@@ -171,10 +171,21 @@ private extension SignInViewController {
     }
 
     func setUpAddAction() {
-        signInButton.addTarget(self, action: #selector(didTapSignInButton), for: .primaryActionTriggered)
-        signUpButton.addTarget(self, action: #selector(didTapSignUpButton), for: .primaryActionTriggered)
-        autoLoginButton.addTarget(self, action: #selector(didTapAutoLoginButton), for: .primaryActionTriggered)
-        passwordFindButton.addTarget(self, action: #selector(didTapPasswordFindButton), for: .primaryActionTriggered)
+        signInButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapSignInButton()
+        }), for: .primaryActionTriggered)
+        
+        signUpButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapSignUpButton()
+        }), for: .primaryActionTriggered)
+        
+        autoLoginButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapAutoLoginButton()
+        }), for: .primaryActionTriggered)
+        
+        passwordFindButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapPasswordFindButton()
+        }), for: .primaryActionTriggered)
     }
 }
 
@@ -197,18 +208,15 @@ private extension SignInViewController {
 // MARK: - Method
 extension SignInViewController {
     
-    @objc
     func didTapSignUpButton() {
         let vc = SignUpViewController(viewModel: SignUpViewModel())
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc
     func didTapAutoLoginButton() {
         viewModel.isAutoLogin.value?.toggle()
     }
     
-    @objc
     func didTapPasswordFindButton() {
         let alert = UIAlertController(title: "비밀번호 재설정", message: "입력하신 이메일로 재설정 메일을 발송합니다.", preferredStyle: .alert)
 
@@ -225,7 +233,6 @@ extension SignInViewController {
         present(alert, animated: true)
     }
     
-    @objc
     func didTapSignInButton() {
         guard let email = emailTextField.textField.text else { return }
         guard let password = passwordTextField.textField.text else { return }

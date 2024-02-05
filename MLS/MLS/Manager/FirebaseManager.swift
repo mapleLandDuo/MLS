@@ -37,12 +37,13 @@ extension FirebaseManager {
     // MARK: User
 
     func fetchNickname(userEmail: String, completion: @escaping (String?) -> Void) {
+        print(userEmail)
         db.collection(CollectionName.users.rawValue).document(userEmail).getDocument { document, error in
             if let error = error {
                 print("닉네임 가져오지 못함: \(error)")
                 completion(nil)
             } else if let document = document, document.exists {
-                let name = document.get(CollectionName.users.rawValue) as? String
+                let name = document.get("nickName") as? String
                 completion(name)
             } else {
                 print("닉네임 가져오지 못함")

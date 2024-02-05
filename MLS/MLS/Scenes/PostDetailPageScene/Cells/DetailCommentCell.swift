@@ -13,24 +13,27 @@ protocol DetailCommentCellDelegate: AnyObject {
     func tapDeleteButton(cell: DetailCommentCell, comment: Comment)
     func tapModifyButton(cell: DetailCommentCell, comment: Comment)
     func tapReportButton(cell: DetailCommentCell, comment: Comment)
+    func tapCommentProfileNameLabel(email: String, nickName: String)
 }
 
 class DetailCommentCell: UITableViewCell {
-    
     // MARK: - Properties
 
     weak var delegate: DetailCommentCellDelegate?
-    
+
     var comment: Comment?
-    
-    private var parent: BasicController?
 
     // MARK: Components
 
-    private let commentProfileNameLabel: UIButton = {
+    lazy var commentProfileNameLabel: UIButton = {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = Typography.button.font
+        button.addAction(UIAction(handler: { [weak self] _ in
+            if let self = self, let email = self.comment?.user, let nickName = self.commentProfileNameLabel.titleLabel?.text {
+                self.delegate?.tapCommentProfileNameLabel(email: email, nickName: nickName)
+            }
+        }), for: .touchUpInside)
         return button
     }()
 
@@ -100,7 +103,6 @@ class DetailCommentCell: UITableViewCell {
 
 // MARK: Bind
 private extension DetailCommentCell {
-
     func bind(name: String, comment: String) {
         commentProfileNameLabel.setTitle(name, for: .normal)
         commentTextLabel.text = comment
@@ -109,14 +111,8 @@ private extension DetailCommentCell {
 
 // MARK: SetUp
 private extension DetailCommentCell {
-
     func setUp() {
         setUpConstraints()
-        commentProfileNameLabel.addAction(UIAction(handler: { [weak self] _ in
-            guard let email = self?.comment?.user, let nickName = self?.commentProfileNameLabel.titleLabel?.text else { return }
-            let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(email: email, nickName: nickName))
-            self?.parent?.navigationController?.pushViewController(vc, animated: true)
-        }), for: .primaryActionTriggered)
     }
 
     func setUpConstraints() {
@@ -135,7 +131,7 @@ private extension DetailCommentCell {
         }
 
         commentTextLabel.snp.makeConstraints {
-            $0.top.equalTo(commentProfileNameLabel.snp.bottom).inset(-Constants.defaults.vertical / 2)
+            $0.top.equalTo(commentProfileNameLabel.snp.bottom).offset(Constants.defaults.vertical / 2)
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             $0.bottom.equalToSuperview().inset(Constants.defaults.vertical / 2)
         }
@@ -144,9 +140,7 @@ private extension DetailCommentCell {
 
 // MARK: Bind
 extension DetailCommentCell {
-
-    func bind(comment: Comment, vc: BasicController) {
-        parent = vc
+    func bind(comment: Comment) {
         if LoginManager.manager.email == nil {
             optionStackView.isHidden = true
         } else if comment.user != LoginManager.manager.email {

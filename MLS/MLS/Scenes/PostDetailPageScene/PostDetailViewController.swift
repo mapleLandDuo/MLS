@@ -298,7 +298,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             cell.delegate = self
             cell.comment = comment
             cell.contentView.isUserInteractionEnabled = false
-            cell.bind(comment: comment, vc: self)
+            cell.bind(comment: comment)
             cell.selectionStyle = .none
             return cell
         default:
@@ -378,6 +378,11 @@ extension PostDetailViewController: DetailCommentCellDelegate {
                 self.viewModel.loadComment(postId: postId)
             }
         })
+    }
+    
+    func tapCommentProfileNameLabel(email: String, nickName: String) {
+        let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(email: email, nickName: nickName))
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

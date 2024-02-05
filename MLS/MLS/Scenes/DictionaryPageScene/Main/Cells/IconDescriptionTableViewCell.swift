@@ -7,8 +7,7 @@
 
 import UIKit
 
-
-// setup 수정 준영
+import SnapKit
 
 protocol IconDescriptionTableViewCellDelegate: AnyObject {
     func tapLeftButton(data: [ItemMenu])
@@ -105,41 +104,48 @@ private extension IconDescriptionTableViewCell {
 
     func setUpConstraints() {
         contentView.addSubview(stackView)
-        stackView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.equalToSuperview().offset(Constants.defaults.vertical)
-            make.height.equalTo(Constants.defaults.blockHeight)
-            make.bottom.equalToSuperview()
-        }
         stackView.addArrangedSubview(leftButton)
-        leftButton.snp.makeConstraints { make in
-            make.width.equalTo((Constants.screenWidth - (Constants.defaults.horizontal * 2)) / 2)
-        }
         leftButton.addSubview(leftImageView)
-        leftImageView.snp.makeConstraints { make in
-            make.left.top.equalToSuperview().inset(Constants.defaults.vertical / 2)
-            make.width.height.equalTo(Constants.defaults.blockHeight - Constants.defaults.vertical)
-        }
         leftButton.addSubview(leftTitleLabel)
-        leftTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(leftImageView.snp.trailing)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.centerY.equalToSuperview()
-        }
         stackView.addArrangedSubview(rightButton)
-        rightButton.snp.makeConstraints { make in
-            make.width.equalTo((Constants.screenWidth - (Constants.defaults.horizontal * 2)) / 2)
-        }
         rightButton.addSubview(rightImageView)
-        rightImageView.snp.makeConstraints { make in
-            make.left.top.equalToSuperview().inset(Constants.defaults.vertical / 2)
-            make.width.height.equalTo(Constants.defaults.blockHeight - Constants.defaults.vertical)
-        }
         rightButton.addSubview(rightTitleLabel)
-        rightTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(rightImageView.snp.trailing)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.centerY.equalToSuperview()
+        
+        stackView.snp.makeConstraints { 
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.equalToSuperview().offset(Constants.defaults.vertical)
+            $0.height.equalTo(Constants.defaults.blockHeight)
+            $0.bottom.equalToSuperview()
+        }
+
+        leftButton.snp.makeConstraints { 
+            $0.width.equalTo((Constants.screenWidth - (Constants.defaults.horizontal * 2)) / 2)
+        }
+
+        leftImageView.snp.makeConstraints { 
+            $0.leading.top.equalToSuperview().inset(Constants.defaults.vertical / 2)
+            $0.width.height.equalTo(Constants.defaults.blockHeight - Constants.defaults.vertical)
+        }
+
+        leftTitleLabel.snp.makeConstraints { 
+            $0.leading.equalTo(leftImageView.snp.trailing)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.centerY.equalToSuperview()
+        }
+
+        rightButton.snp.makeConstraints { 
+            $0.width.equalTo((Constants.screenWidth - (Constants.defaults.horizontal * 2)) / 2)
+        }
+
+        rightImageView.snp.makeConstraints { 
+            $0.leading.top.equalToSuperview().inset(Constants.defaults.vertical / 2)
+            $0.width.height.equalTo(Constants.defaults.blockHeight - Constants.defaults.vertical)
+        }
+
+        rightTitleLabel.snp.makeConstraints { 
+            $0.leading.equalTo(rightImageView.snp.trailing)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.centerY.equalToSuperview()
         }
     }
 }

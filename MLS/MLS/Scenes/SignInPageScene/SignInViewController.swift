@@ -113,53 +113,60 @@ private extension SignInViewController {
     }
     
     func setUpConstraints() {
+        
         view.addSubview(logoImageView)
-        logoImageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(Constants.screenHeight * 0.1)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(Constants.screenWidth * 0.7)
-            make.height.equalTo(Constants.screenHeight * 0.05)
-        }
-        
         view.addSubview(emailTextField)
-        emailTextField.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(Constants.defaults.vertical * 2)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(Constants.defaults.blockHeight)
-        }
-        
         view.addSubview(passwordTextField)
-        passwordTextField.snp.makeConstraints { make in
-            make.top.equalTo(emailTextField.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(Constants.defaults.blockHeight)
-        }
-        
         view.addSubview(missMatchLabel)
-        missMatchLabel.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
-        
         view.addSubview(autoLoginButton)
-        autoLoginButton.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(Constants.defaults.vertical * 3)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
-        
         view.addSubview(buttonsStackView)
-        buttonsStackView.snp.makeConstraints { make in
-            make.centerY.equalTo(autoLoginButton.snp.centerY)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         buttonsStackView.addArrangedSubview(passwordFindButton)
         buttonsStackView.addArrangedSubview(signUpButton)
-        
         view.addSubview(signInButton)
-        signInButton.snp.makeConstraints { make in
-            make.top.equalTo(autoLoginButton.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(Constants.defaults.blockHeight)
+        
+        logoImageView.snp.makeConstraints { 
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(Constants.screenHeight * 0.1)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(Constants.screenWidth * 0.7)
+            $0.height.equalTo(Constants.screenHeight * 0.05)
+        }
+        
+
+        emailTextField.snp.makeConstraints { 
+            $0.top.equalTo(logoImageView.snp.bottom).offset(Constants.defaults.vertical * 2)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(Constants.defaults.blockHeight)
+        }
+        
+
+        passwordTextField.snp.makeConstraints { 
+            $0.top.equalTo(emailTextField.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(Constants.defaults.blockHeight)
+        }
+        
+
+        missMatchLabel.snp.makeConstraints { 
+            $0.top.equalTo(passwordTextField.snp.bottom)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+
+        autoLoginButton.snp.makeConstraints { 
+            $0.top.equalTo(passwordTextField.snp.bottom).offset(Constants.defaults.vertical * 3)
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+
+        buttonsStackView.snp.makeConstraints { 
+            $0.centerY.equalTo(autoLoginButton.snp.centerY)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        signInButton.snp.makeConstraints { 
+            $0.top.equalTo(autoLoginButton.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(Constants.defaults.blockHeight)
         }
     }
 

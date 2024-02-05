@@ -9,7 +9,6 @@ import UIKit
 
 import SnapKit
 
-//setup 수정 준영
 class ProfilePageViewController: BasicController {
     // MARK: - Properties
 
@@ -96,37 +95,44 @@ private extension ProfilePageViewController {
     }
 
     func setUpConstraints() {
+        
         view.addSubview(nickNameLabel)
+        view.addSubview(emailLabel)
+        view.addSubview(nickNameSeparator)
+        view.addSubview(writtenPostLabel)
+        view.addSubview(writtenSeparator)
+        view.addSubview(postTableView)
+        
         nickNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.leading.equalToSuperview().inset(Constants.defaults.horizontal)
         }
-        view.addSubview(emailLabel)
+
         emailLabel.snp.makeConstraints { make in
             make.bottom.equalTo(nickNameLabel.snp.bottom)
-            make.left.equalTo(nickNameLabel.snp.right).offset(Constants.defaults.horizontal)
+            make.leading.equalTo(nickNameLabel.snp.trailing).offset(Constants.defaults.horizontal)
         }
-        view.addSubview(nickNameSeparator)
+
         nickNameSeparator.snp.makeConstraints { make in
             make.top.equalTo(nickNameLabel.snp.bottom).offset(Constants.defaults.horizontal)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             make.height.equalTo(1)
         }
-        view.addSubview(writtenPostLabel)
+
         writtenPostLabel.snp.makeConstraints { make in
             make.top.equalTo(nickNameSeparator.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.leading.equalToSuperview().inset(Constants.defaults.horizontal)
         }
-        view.addSubview(writtenSeparator)
+
         writtenSeparator.snp.makeConstraints { make in
             make.top.equalTo(writtenPostLabel.snp.bottom).offset(Constants.defaults.horizontal)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             make.height.equalTo(1)
         }
-        view.addSubview(postTableView)
+
         postTableView.snp.makeConstraints { make in
             make.top.equalTo(writtenSeparator.snp.bottom)
-            make.left.right.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }

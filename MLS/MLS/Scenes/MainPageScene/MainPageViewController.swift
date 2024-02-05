@@ -117,26 +117,28 @@ private extension MainPageViewController {
     }
     
     func setUpConstraints() {
+        
         view.addSubview(menuButton)
-        menuButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.left.equalTo(view.safeAreaLayoutGuide).offset(Constants.defaults.horizontal)
-            make.height.width.equalTo(Constants.defaults.blockHeight)
-        }
         view.addSubview(featureCollectionView)
-        featureCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(menuButton.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
         view.addSubview(sideMenuEmptyView)
-        sideMenuEmptyView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
         view.addSubview(sideMenuTableView)
-        sideMenuTableView.snp.makeConstraints { make in
-            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.right.equalTo(view.snp.left)
-            make.width.equalTo(Constants.screenWidth * 0.7)
+        
+        menuButton.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(Constants.defaults.horizontal)
+            $0.height.width.equalTo(Constants.defaults.blockHeight)
+        }
+        featureCollectionView.snp.makeConstraints {
+            $0.top.equalTo(menuButton.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        sideMenuEmptyView.snp.makeConstraints {
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        sideMenuTableView.snp.makeConstraints {
+            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.trailing.equalTo(view.snp.leading)
+            $0.width.equalTo(Constants.screenWidth * 0.7)
         }
     }
 }

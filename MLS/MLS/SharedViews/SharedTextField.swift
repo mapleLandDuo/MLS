@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-// $0 leading trailing 변경 addsubview 변경 준영
+// add target -> addaction
 
 class SharedTextField: UIView {
     
@@ -19,7 +19,10 @@ class SharedTextField: UIView {
         case title
         case titlePassword
     }
+    // MARK: - Properties
     
+    private let type: TextFieldType
+
     // MARK: - Components
 
     var textField: UITextField = {
@@ -56,8 +59,6 @@ class SharedTextField: UIView {
         label.font = Typography.body2.font
         return label
     }()
-    
-    private let type: TextFieldType
     
     init(type: TextFieldType, placeHolder: String) {
         self.type = type
@@ -102,88 +103,105 @@ private extension SharedTextField {
     }
     
     func setUpNormal() {
-        snp.makeConstraints { make in
-            make.height.equalTo(Constants.defaults.blockHeight)
-        }
         addSubview(textField)
-        textField.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(Constants.defaults.horizontal)
+        snp.makeConstraints {
+            $0.height.equalTo(Constants.defaults.blockHeight)
+        }
+        textField.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }
     
     func setUpPassword() {
-        snp.makeConstraints { make in
-            make.height.equalTo(Constants.defaults.blockHeight)
-        }
-        showButton.addTarget(self, action: #selector(changeShowButtonColor), for: .touchUpInside)
+        showButton.addAction(UIAction(handler: { [weak self] _  in
+            self?.changeShowButtonColor()
+        }), for: .primaryActionTriggered)
+        
         textField.isSecureTextEntry = true
+        
         addSubview(showButton)
-        showButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.centerY.equalToSuperview()
-            make.height.width.equalTo(Constants.screenHeight * 0.03)
-        }
         addSubview(textField)
-        textField.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(Constants.defaults.vertical)
-            make.left.bottom.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.right.equalTo(showButton.snp.left)
+        snp.makeConstraints {
+            $0.height.equalTo(Constants.defaults.blockHeight)
+        }
+        
+        showButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.centerY.equalToSuperview()
+            $0.height.width.equalTo(Constants.screenHeight * 0.03)
+        }
+
+        textField.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(Constants.defaults.vertical)
+            $0.leading.bottom.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.trailing.equalTo(showButton.snp.leading)
         }
     }
     
     func setUpTitle() {
         addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.left.equalToSuperview()
-        }
         addSubview(stateLabel)
-        stateLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.equalTo(titleLabel.snp.right).offset(Constants.defaults.horizontal)
-        }
         addSubview(trailingView)
-        trailingView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(Constants.defaults.blockHeight)
-        }
         trailingView.addSubview(textField)
-        textField.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(Constants.defaults.horizontal)
+        
+        titleLabel.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
+        }
+        
+        stateLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(Constants.defaults.horizontal)
+        }
+
+        trailingView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(Constants.defaults.blockHeight)
+        }
+
+        textField.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }
     
     func setUpTitlePassword() {
         textField.isSecureTextEntry = true
-        showButton.addTarget(self, action: #selector(changeShowButtonColor), for: .touchUpInside)
+        showButton.addAction(UIAction(handler: { [weak self] _  in
+            self?.changeShowButtonColor()
+        }), for: .primaryActionTriggered)
         
         addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.left.equalToSuperview()
-        }
         addSubview(stateLabel)
-        stateLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.equalTo(titleLabel.snp.right).offset(Constants.defaults.horizontal)
-        }
         addSubview(trailingView)
-        trailingView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.height.equalTo(Constants.defaults.blockHeight)
-            make.left.right.bottom.equalToSuperview()
+        trailingView.addSubview(showButton)
+        trailingView.addSubview(textField)
+        
+        titleLabel.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
         }
 
-        trailingView.addSubview(showButton)
-        showButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.centerY.equalToSuperview()
-            make.height.width.equalTo(Constants.screenHeight * 0.03)
+        stateLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(Constants.defaults.horizontal)
         }
-        trailingView.addSubview(textField)
-        textField.snp.makeConstraints { make in
-            make.top.left.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            make.top.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.right.equalTo(showButton.snp.left)
+
+        trailingView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.height.equalTo(Constants.defaults.blockHeight)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+
+
+        showButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.centerY.equalToSuperview()
+            $0.height.width.equalTo(Constants.screenHeight * 0.03)
+        }
+
+        textField.snp.makeConstraints {
+            $0.top.leading.bottom.equalToSuperview().inset(Constants.defaults.vertical)
+            $0.top.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.trailing.equalTo(showButton.snp.leading)
         }
     }
 }
@@ -191,7 +209,7 @@ private extension SharedTextField {
 // MARK: - Methods
 extension SharedTextField {
     
-    @objc private func changeShowButtonColor() {
+    private func changeShowButtonColor() {
         textField.isSecureTextEntry.toggle()
         if textField.isSecureTextEntry {
             UIView.animate(withDuration: 0.1) {

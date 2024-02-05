@@ -30,7 +30,6 @@ class PostDetailViewModel {
 
 // MARK: Method
 extension PostDetailViewModel {
-
     func loadPost(completion: @escaping () -> Void) {
         guard let postId = post.value?.id.uuidString else { return }
         FirebaseManager.firebaseManager.fetchPost(id: postId) { [weak self] post in

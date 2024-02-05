@@ -16,9 +16,11 @@ class CommunityPageViewModel {
     // MARK: - Properties
 
     var posts: Observable<[Post]> = Observable(nil)
+
     var postsCount = 0
 
     let type: BoardSeparatorType
+
     let sortType: Observable<SortType> = Observable(.new)
 
     init(type: BoardSeparatorType) {

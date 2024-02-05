@@ -86,7 +86,7 @@ extension QnAViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         let headerLabel = UILabel()
-        headerLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        headerLabel.font = Typography.title1.font
         headerLabel.textAlignment = .center
         headerLabel.textColor = .black
         headerLabel.text = section == 0 ? "문의하기" : "자주 찾는 질문"

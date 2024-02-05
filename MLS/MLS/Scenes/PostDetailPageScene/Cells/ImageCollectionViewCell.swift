@@ -11,7 +11,6 @@ import Kingfisher
 import SnapKit
 
 class ImageCollectionViewCell: UICollectionViewCell {
-
     // MARK: - Components
 
     private let imageView: UIImageView = {
@@ -21,8 +20,6 @@ class ImageCollectionViewCell: UICollectionViewCell {
         view.contentMode = .scaleAspectFit
         return view
     }()
-
-    // MARK: - LifeCycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,7 +34,6 @@ class ImageCollectionViewCell: UICollectionViewCell {
 
 // MARK: - SetUp
 private extension ImageCollectionViewCell {
-
     func setUp() {
         addSubview(imageView)
 
@@ -49,7 +45,6 @@ private extension ImageCollectionViewCell {
 
 // MARK: - bind
 extension ImageCollectionViewCell {
-
     func bind(imageUrl: URL?) {
         imageView.kf.setImage(with: imageUrl)
     }

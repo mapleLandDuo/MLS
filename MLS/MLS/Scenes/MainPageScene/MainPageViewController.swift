@@ -93,7 +93,7 @@ private extension MainPageViewController {
     func setUp() {
         setUpConstraints()
         setUpDelegate()
-        setUpAddTarget()
+        setUpAddAction()
         setUpRegistor()
     }
     
@@ -111,9 +111,13 @@ private extension MainPageViewController {
         sideMenuTableView.delegate = self
     }
     
-    func setUpAddTarget() {
-        menuButton.addTarget(self, action: #selector(didTapMenuButton), for: .primaryActionTriggered)
-        sideMenuEmptyView.addTarget(self, action: #selector(didTapMenuEmptySpace), for: .primaryActionTriggered)
+    func setUpAddAction() {
+        menuButton.addAction(UIAction(handler: { [weak self] _  in
+            self?.didTapMenuButton()
+        }), for: .primaryActionTriggered)
+        sideMenuEmptyView.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapMenuEmptySpace()
+        }), for: .primaryActionTriggered)
     }
     
     func setUpConstraints() {
@@ -146,12 +150,10 @@ private extension MainPageViewController {
 private extension MainPageViewController {
     // MARK: - Method
 
-    @objc
     func didTapMenuButton() {
         switchMenuView(isOpen: true)
     }
 
-    @objc
     func didTapMenuEmptySpace() {
         switchMenuView(isOpen: false)
     }

@@ -51,7 +51,9 @@ private extension AddPostImageCell {
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.systemGray4.cgColor
         contentView.layer.cornerRadius = Constants.defaults.radius
-        deleteButton.addTarget(self, action: #selector(didTapButton), for: .primaryActionTriggered)
+        deleteButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapButton()
+        }), for: .primaryActionTriggered)
     }
 
     func setUpConstraints() {
@@ -72,7 +74,6 @@ private extension AddPostImageCell {
 // MARK: - Method
 private extension AddPostImageCell {
 
-    @objc
     func didTapButton() {
         callBackMethod?()
     }

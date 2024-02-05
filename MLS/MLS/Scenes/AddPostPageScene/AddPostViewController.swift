@@ -249,7 +249,7 @@ private extension AddPostViewController {
                   let isEditing = self?.viewModel.isEditing,
                   let title = self?.titleTextField.text,
                   let content = self?.postTextView.text,
-                  let user = self?.viewModel.getUser(),
+                  let user = self?.viewModel.fetchUserEmail(),
                   let type = self?.viewModel.type else { return }
             if isEditing {
                 guard var postData = self?.viewModel.postData.value else { return }

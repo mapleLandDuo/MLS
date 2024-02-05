@@ -26,21 +26,21 @@ class ProfilePageViewModel {
 // MARK: - Methods
 extension ProfilePageViewModel {
     
-    func loadPosts(completion: @escaping () -> Void) {
+    func fetchPosts(completion: @escaping () -> Void) {
         FirebaseManager.firebaseManager.loadMyPosts(userEmail: email) { posts in
             self.posts.value = posts
             completion()
         }
     }
 
-    func getPrivateEmail() -> String {
+    func fetchPrivateEmail() -> String {
         guard var privateEmail = email.components(separatedBy: "@").first?.prefix(3) else { return "" }
         guard let id = email.components(separatedBy: "@").first else { return "" }
         while privateEmail.count != id.count { privateEmail += "*" }
         return String(privateEmail)
     }
 
-    func getProfileEmail() -> String {
+    func fetchProfileEmail() -> String {
         return email
     }
 

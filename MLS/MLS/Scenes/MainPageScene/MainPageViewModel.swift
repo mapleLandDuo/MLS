@@ -44,7 +44,7 @@ class MainPageViewModel {
 // MARK: - Methods
 extension MainPageViewModel {
 
-    func getSideMenuItems() -> [[FeatureCellData]] {
+    func fetchSideMenuItems() -> [[FeatureCellData]] {
         var temp = sideMenuItems
         if LoginManager.manager.isLogin() {
             temp.append([
@@ -57,7 +57,7 @@ extension MainPageViewModel {
         }
     }
 
-    func getMainPost(type: BoardSeparatorType, completion: @escaping ([Post]?) -> Void) {
+    func fetchMainPost(type: BoardSeparatorType, completion: @escaping ([Post]?) -> Void) {
         switch type {
         case .normal:
             FirebaseManager.firebaseManager.loadPosts(type: [.normal], itemCount: 3) { posts in

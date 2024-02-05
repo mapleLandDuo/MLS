@@ -20,7 +20,7 @@ class DictionaryMonsterViewModel {
 // MARK: - Method
 extension DictionaryMonsterViewModel {
 
-    func getItem() -> DictionaryMonster {
+    func fetchItem() -> DictionaryMonster {
         return item
     }
 }

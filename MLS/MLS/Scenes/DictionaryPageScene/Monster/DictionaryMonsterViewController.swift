@@ -70,9 +70,9 @@ extension DictionaryMonsterViewController: UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 3:
-            return viewModel.getItem().hauntArea.count
+            return viewModel.fetchItem().hauntArea.count
         case 4:
-            return viewModel.getItem().dropTable.count
+            return viewModel.fetchItem().dropTable.count
         default:
             return 1
         }
@@ -86,28 +86,28 @@ extension DictionaryMonsterViewController: UITableViewDelegate, UITableViewDataS
         switch indexPath.section {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryNameImageCell.identifier, for: indexPath) as? DictionaryNameImageCell else { return UITableViewCell() }
-            cell.bind(item: viewModel.getItem())
+            cell.bind(item: viewModel.fetchItem())
             cell.selectionStyle = .none
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryMonsterDefaultCell.identifier, for: indexPath) as? DictionaryMonsterDefaultCell else { return UITableViewCell() }
-            cell.bind(item: viewModel.getItem())
+            cell.bind(item: viewModel.fetchItem())
             cell.selectionStyle = .none
             return cell
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryMonsterDetailCell.identifier, for: indexPath) as? DictionaryMonsterDetailCell else { return UITableViewCell() }
-            cell.bind(item: viewModel.getItem())
+            cell.bind(item: viewModel.fetchItem())
             cell.selectionStyle = .none
             return cell
         case 3:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
-            let item = DictionaryNameDescription(name: viewModel.getItem().hauntArea[indexPath.row], description: "")
+            let item = DictionaryNameDescription(name: viewModel.fetchItem().hauntArea[indexPath.row], description: "")
             cell.bind(data: item)
             cell.selectionStyle = .none
             return cell
         default:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
-            cell.bind(data: viewModel.getItem().dropTable[indexPath.row])
+            cell.bind(data: viewModel.fetchItem().dropTable[indexPath.row])
             cell.selectionStyle = .none
             return cell
         }
@@ -116,7 +116,7 @@ extension DictionaryMonsterViewController: UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 4:
-            let itemName = viewModel.getItem().dropTable[indexPath.row].name
+            let itemName = viewModel.fetchItem().dropTable[indexPath.row].name
             if itemName == "메소" { return }
             IndicatorMaker.showLoading()
             FirebaseManager.firebaseManager.loadItem(itemName: itemName) { item in

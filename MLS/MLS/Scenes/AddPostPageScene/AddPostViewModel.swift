@@ -43,7 +43,7 @@ extension AddPostViewModel {
         }
     }
 
-    func getUser() -> String {
+    func fetchUserEmail() -> String {
         return LoginManager.manager.email ?? ""
     }
 }

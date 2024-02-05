@@ -25,7 +25,7 @@ class ProfilePageViewController: BasicController {
 
     lazy var emailLabel: UILabel = {
         let label = UILabel()
-        label.text = self.viewModel.getPrivateEmail()
+        label.text = self.viewModel.fetchPrivateEmail()
         label.textColor = .systemGray4
         label.font = Typography.title3.font
         return label
@@ -77,7 +77,7 @@ extension ProfilePageViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         IndicatorMaker.showLoading()
-        viewModel.loadPosts {
+        viewModel.fetchPosts {
             IndicatorMaker.hideLoading()
         }
     }
@@ -144,7 +144,7 @@ private extension ProfilePageViewController {
 
         let reportMenu = UIAction(title: "신고하기", attributes: .destructive, handler: { [weak self] _ in
             AlertMaker.showAlertAction2(vc: self, title: "정말 신고하시겠습니까?", message: "신고는 취소할 수 없습니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
-                guard let email = self?.viewModel.getProfileEmail() else { return }
+                guard let email = self?.viewModel.fetchProfileEmail() else { return }
                 FirebaseManager.firebaseManager.reportUser(userID: email) {
                     self?.navigationController?.popViewController(animated: true)
                 }

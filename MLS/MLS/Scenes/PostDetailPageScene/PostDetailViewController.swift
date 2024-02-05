@@ -280,6 +280,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
                   let post = viewModel.post.value else { return UITableViewCell() }
             cell.contentView.isUserInteractionEnabled = false
             cell.bind(post: post, vc: self)
+            cell.delegate = self
             cell.selectionStyle = .none
             return cell
         case 2:
@@ -386,5 +387,12 @@ extension PostDetailViewController: DetailLikeCellDelegate {
         viewModel.setLikeCount(postID: postID) {
             self.viewModel.loadPost {}
         }
+    }
+}
+
+extension PostDetailViewController: DetailPostCellDelegate {
+    func tapUserNameLabel(email: String, nickName: String) {
+        let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(email: email, nickName: nickName))
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

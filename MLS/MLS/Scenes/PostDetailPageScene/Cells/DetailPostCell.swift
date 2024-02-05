@@ -9,19 +9,30 @@ import UIKit
 
 import SnapKit
 
+protocol DetailPostCellDelegate: AnyObject {
+    func tapUserNameLabel(email: String, nickName: String)
+}
+
 class DetailPostCell: UITableViewCell {
     // MARK: - Properties
 
+    var delegate: DetailPostCellDelegate?
+    
     private var parent: BasicController?
 
     private var email: String?
 
     // MARK: Components
 
-    private let userNameButton: UIButton = {
+    lazy var userNameButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = Typography.button.font
+        button.addAction(UIAction(handler: { [weak self] _ in
+            if let self = self, let email = self.email, let nickName = self.userNameButton.titleLabel?.text {
+                self.delegate?.tapUserNameLabel(email: email, nickName: nickName)
+            }
+        }), for: .touchUpInside)
         return button
     }()
 
@@ -47,8 +58,6 @@ class DetailPostCell: UITableViewCell {
 
     private let postCountLabel = CustomLabel(text: "postCount", textColor: .gray, font: .systemFont(ofSize: 12))
 
-    // MARK: LifeCycle
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
@@ -65,11 +74,6 @@ private extension DetailPostCell {
 
     func setUp() {
         setUpConstraints()
-        userNameButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let email = self?.email, let nickName = self?.userNameButton.titleLabel?.text else { return }
-            let nextVC = ProfilePageViewController(viewModel: ProfilePageViewModel(email: email, nickName: nickName))
-            self?.parent?.navigationController?.pushViewController(nextVC, animated: true)
-        }), for: .primaryActionTriggered)
     }
 
     func setUpConstraints() {

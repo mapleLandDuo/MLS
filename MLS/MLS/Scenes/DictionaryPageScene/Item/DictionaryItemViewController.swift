@@ -6,13 +6,13 @@
 //
 
 import UIKit
-
+//setup 수정 준영
 class DictionaryItemViewController: BasicController {
-    // MARK: - Property
+    // MARK: - Properties
 
     let viewModel: DictionaryItemViewModel
 
-    // MARK: - Componets
+    // MARK: - Components
 
     private let tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
@@ -32,8 +32,8 @@ class DictionaryItemViewController: BasicController {
     }
 }
 
+// MARK: - Life Cycle
 extension DictionaryItemViewController {
-    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +41,8 @@ extension DictionaryItemViewController {
     }
 }
 
+// MARK: - SetUp
 private extension DictionaryItemViewController {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()

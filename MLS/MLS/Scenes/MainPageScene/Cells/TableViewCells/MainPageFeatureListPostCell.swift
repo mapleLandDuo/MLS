@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class MainPageFeatureListPostCell: UITableViewCell {
-    // MARK: - Componetns
+    // MARK: - Components
 
     private let trailingView: UIView = {
         let view = UIView()
@@ -40,16 +40,8 @@ class MainPageFeatureListPostCell: UITableViewCell {
     }
 }
 
-extension MainPageFeatureListPostCell {
-    // MARK: - Bind
-
-    func bind(text: String) {
-        titleLabel.text = text
-    }
-}
-
+// MARK: - SetUp
 private extension MainPageFeatureListPostCell {
-    // MARK: - SetUp
 
     func setUp() {
         contentView.backgroundColor = .white
@@ -67,5 +59,13 @@ private extension MainPageFeatureListPostCell {
             make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
             make.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
         }
+    }
+}
+
+// MARK: - Bind
+extension MainPageFeatureListPostCell {
+
+    func bind(text: String) {
+        titleLabel.text = text
     }
 }

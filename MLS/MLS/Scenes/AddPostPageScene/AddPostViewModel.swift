@@ -10,10 +10,10 @@ import UIKit
 class AddPostViewModel {
     // MARK: Properties
 
-    let loginManager = LoginManager()
-
     var imageData: Observable<[UIImage?]> = Observable([])
+    
     var postData: Observable<Post> = Observable(nil)
+    
     var type: BoardSeparatorType
 
     var isEditing = false
@@ -23,8 +23,8 @@ class AddPostViewModel {
     }
 }
 
+// MARK: Methods
 extension AddPostViewModel {
-    // MARK: Method
 
     func savePost(post: Post, images: [UIImage?], completion: @escaping () -> Void) {
         var post = post
@@ -44,6 +44,6 @@ extension AddPostViewModel {
     }
 
     func getUser() -> String {
-        return loginManager.email ?? ""
+        return LoginManager.manager.email ?? ""
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class CommunityPageViewController: BasicController {
-    // MARK: - Property
+    // MARK: - Properties
 
     private let viewModel: CommunityPageViewModel
 
@@ -28,10 +28,11 @@ class CommunityPageViewController: BasicController {
         return Items
     }
 
-    lazy var menu = UIMenu(title: "게시물 정렬", children: sortItems)
 
     // MARK: - Components
-
+    
+    lazy var menu = UIMenu(title: "게시물 정렬", children: sortItems)
+    
     private let titleButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.systemOrange, for: .normal)
@@ -83,8 +84,8 @@ class CommunityPageViewController: BasicController {
     }
 }
 
+// MARK: - Life Cycle
 extension CommunityPageViewController {
-    // MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,8 +100,8 @@ extension CommunityPageViewController {
     }
 }
 
+// MARK: - SetUp
 private extension CommunityPageViewController {
-    // MARK: - SetUp
 
     func setUp() {
         communityTableView.dataSource = self
@@ -186,8 +187,8 @@ private extension CommunityPageViewController {
     }
 }
 
+// MARK: - Bind
 private extension CommunityPageViewController {
-    // MARK: - Bind
 
     func bind() {
         viewModel.posts.bind { [weak self] _ in
@@ -200,8 +201,8 @@ private extension CommunityPageViewController {
     }
 }
 
+// MARK: - Methods
 private extension CommunityPageViewController {
-    // MARK: - Method
 
     func loadPosts() {
         guard let sortType = viewModel.sortType.value else { return }

@@ -7,6 +7,8 @@
 
 import UIKit
 
+//setup 수정
+
 class DictionaryItemDefaultCell: UITableViewCell {
     // MARK: - Components
 
@@ -53,8 +55,8 @@ class DictionaryItemDefaultCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictionaryItemDefaultCell {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -91,8 +93,8 @@ private extension DictionaryItemDefaultCell {
     }
 }
 
+// MARK: - bind
 extension DictionaryItemDefaultCell {
-    // MARK: - bind
 
     func bind(item: DictionaryItem) {
         levelLabel.text = "\(item.level)"

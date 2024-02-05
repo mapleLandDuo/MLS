@@ -8,7 +8,7 @@
 import Foundation
 
 class DictionaryItemViewModel {
-    // MARK: - Property
+    // MARK: - Properties
 
     let item: DictionaryItem
 
@@ -17,8 +17,8 @@ class DictionaryItemViewModel {
     }
 }
 
+// MARK: - Methods
 extension DictionaryItemViewModel {
-    // MARK: - Method
 
     func getItem() -> DictionaryItem {
         return item
@@ -58,7 +58,7 @@ extension DictionaryItemViewModel {
     }
 
     func getDetailInfoArray() -> [DictionaryNameDescription] {
-        var temp = item.detailDescription
+        let temp = item.detailDescription
         var array: [DictionaryNameDescription] = []
         if temp["물리공격력"] != nil {
             let item = DictionaryNameDescription(name: "물리공격력", description: temp["물리공격력"]!)

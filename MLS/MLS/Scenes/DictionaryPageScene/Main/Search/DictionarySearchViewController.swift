@@ -29,9 +29,9 @@ class DictionarySearchViewController: BasicController {
     }
 }
 
+// MARK: - Life Cycle
 extension DictionarySearchViewController {
-    // MARK: - Life Cycle
-
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -40,8 +40,8 @@ extension DictionarySearchViewController {
     }
 }
 
+// MARK: Setup
 private extension DictionarySearchViewController {
-    // MARK: Setup
 
     func setUp() {
         searchTableView.delegate = self
@@ -60,8 +60,8 @@ private extension DictionarySearchViewController {
     }
 }
 
+// MARK: Bind
 private extension DictionarySearchViewController {
-    // MARK: Bind
 
     func bind() {
         viewModel.itemList.bind { [weak self] _ in

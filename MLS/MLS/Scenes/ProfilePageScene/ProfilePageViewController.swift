@@ -9,8 +9,9 @@ import UIKit
 
 import SnapKit
 
+//setup 수정 준영
 class ProfilePageViewController: BasicController {
-    // MARK: - Property
+    // MARK: - Properties
 
     private let viewModel: ProfilePageViewModel
 
@@ -66,8 +67,8 @@ class ProfilePageViewController: BasicController {
     }
 }
 
+// MARK: - Life Cycle
 extension ProfilePageViewController {
-    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,7 +132,7 @@ private extension ProfilePageViewController {
     }
 
     func setUpNavigation() {
-        let deleteMenu = UIAction(title: "프로필 수정", handler: { [weak self] _ in
+        let deleteMenu = UIAction(title: "프로필 수정", handler: { _ in
             AlertMaker.showAlertAction1(title: "업데이트 예정 기능입니다.")
         })
 
@@ -153,8 +154,8 @@ private extension ProfilePageViewController {
     }
 }
 
+// MARK: - Bind
 private extension ProfilePageViewController {
-    // MARK: - Bind
 
     func bind() {
         viewModel.posts.bind { [weak self] _ in

@@ -7,9 +7,14 @@
 
 import Foundation
 
+enum SortType {
+    case new
+    case popular
+}
+
 class CommunityPageViewModel {
-    let loginManager = LoginManager()
-    
+    // MARK: - Properties
+
     var posts: Observable<[Post]> = Observable(nil)
     var postsCount = 0
     
@@ -21,8 +26,9 @@ class CommunityPageViewModel {
     }
 }
 
+// MARK: - Methods
 extension CommunityPageViewModel {
-    // Methods
+    
     func loadPosts(sort: SortType, completion: @escaping ([Post]?) -> Void) {
         switch (type, sort) {
         case (.normal, .new):
@@ -80,11 +86,7 @@ extension CommunityPageViewModel {
     }
     
     func isLogin() -> Bool {
-        return loginManager.isLogin()
+        return LoginManager.manager.isLogin()
     }
 }
 
-enum SortType {
-    case new
-    case popular
-}

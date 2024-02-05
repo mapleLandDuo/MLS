@@ -46,8 +46,8 @@ class AddPostImageChoiceCell: UICollectionViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension AddPostImageChoiceCell {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -69,8 +69,8 @@ private extension AddPostImageChoiceCell {
     }
 }
 
+// MARK: - Bind
 extension AddPostImageChoiceCell {
-    // MARK: - Bind
 
     func bind(count: Int?) {
         guard let count = count else { return }

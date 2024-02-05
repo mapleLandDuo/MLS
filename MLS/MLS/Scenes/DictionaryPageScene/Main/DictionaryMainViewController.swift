@@ -10,9 +10,11 @@ import UIKit
 import SnapKit
 
 class DictionaryMainViewController: BasicController {
-    // MARK: Components
+    // MARK: - Properties
 
     private let viewModel: DictionaryMainViewModel
+    
+    // MARK: Components
 
     private let mainTableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
@@ -46,8 +48,8 @@ class DictionaryMainViewController: BasicController {
     }
 }
 
+// MARK: - Life Cycle
 extension DictionaryMainViewController {
-    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,8 +62,8 @@ extension DictionaryMainViewController {
     }
 }
 
+// MARK: Setup
 private extension DictionaryMainViewController {
-    // MARK: Setup
 
     func setUp() {
         mainTableView.delegate = self

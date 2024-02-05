@@ -27,16 +27,16 @@ class MainPageSideMenuFeatureCell: UITableViewCell {
     }
 }
 
+// MARK: - Setup
 private extension MainPageSideMenuFeatureCell {
-    // MARK: - Setup
 
     func setUp() {
         contentView.backgroundColor = .systemOrange
     }
 }
 
+// MARK: - Method
 extension MainPageSideMenuFeatureCell {
-    // MARK: - Method
 
     func makeSeparator() {
         contentView.addSubview(separatorView)
@@ -50,7 +50,11 @@ extension MainPageSideMenuFeatureCell {
     func removeSeparator() {
         separatorView.removeFromSuperview()
     }
+}
 
+// MARK: - Bind
+extension MainPageSideMenuFeatureCell {
+    
     func bind(data: FeatureCellData) {
         textLabel?.text = data.title
         imageView?.image = data.image

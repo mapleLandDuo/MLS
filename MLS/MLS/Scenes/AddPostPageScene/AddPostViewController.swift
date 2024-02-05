@@ -11,7 +11,7 @@ import PhotosUI
 import SnapKit
 
 class AddPostViewController: BasicController {
-    // MARK: - Property
+    // MARK: - Properties
 
     private let viewModel: AddPostViewModel
 
@@ -120,8 +120,8 @@ class AddPostViewController: BasicController {
     }
 }
 
+// MARK: - LifeCycle
 extension AddPostViewController {
-    // MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,8 +130,8 @@ extension AddPostViewController {
     }
 }
 
+// MARK: - Bind
 private extension AddPostViewController {
-    // MARK: - Bind
 
     func bind() {
         viewModel.imageData.bind { [weak self] _ in
@@ -144,8 +144,8 @@ private extension AddPostViewController {
     }
 }
 
+// MARK: - SetUp
 private extension AddPostViewController {
-    // MARK: - SetUp
 
     func setUp() {
         setUpImageArray()
@@ -300,7 +300,6 @@ private extension AddPostViewController {
         } else {
             if viewModel.type != .normal {
                 guard let type = viewModel.postData.value?.postType else { return }
-                print(isEditing)
                 viewModel.type = type
                 if type == .buy {
                     segmentedController.selectedSegmentIndex = 1
@@ -332,9 +331,8 @@ private extension AddPostViewController {
         }
     }
 }
-
+// MARK: Methods
 private extension AddPostViewController {
-    // MARK: Method
 
     func updatePostUI() {
         guard let title = viewModel.postData.value?.title,

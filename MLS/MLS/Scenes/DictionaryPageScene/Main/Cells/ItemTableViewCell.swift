@@ -37,13 +37,12 @@ class ItemTableViewCell: UITableViewCell {
     }
 }
 
+// MARK: SetUp
 private extension ItemTableViewCell {
-    // MARK: SetUp
 
     func setUp() {
         itemCollectionView.delegate = self
         itemCollectionView.dataSource = self
-
         setupConstraints()
     }
 
@@ -58,8 +57,8 @@ private extension ItemTableViewCell {
     }
 }
 
+// MARK: Bind
 extension ItemTableViewCell {
-    // MARK: Bind
 
     func bind(itemMenus: [ItemMenu]) {
         self.itemMenus = itemMenus

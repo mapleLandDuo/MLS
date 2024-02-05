@@ -11,11 +11,25 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestoreSwift
 
+
+// 싱글톤 고려 -> 휴먼 에러 방지로 싱글톤으로 변경 준영
+
 class LoginManager {
-    private let db = Firestore.firestore()
+    // MARK: - Properties
+    
+    static let manager = LoginManager()
+    
+    private init() {}
+    
     private let users: String = "users"
+    
     private let PostBooks: String = "PostBooks"
-    let email = Auth.auth().currentUser?.email
+    
+    var email = Auth.auth().currentUser?.email
+}
+
+// MARK: - Method
+extension LoginManager {
     
     func isLogin() -> Bool {
         return Auth.auth().currentUser == nil ? false : true
@@ -30,20 +44,10 @@ class LoginManager {
     func logOut(completion: @escaping (_ isLogOut: Bool) -> Void) {
         do {
             try Auth.auth().signOut()
+            email = nil
             completion(true)
         } catch {
             completion(false)
-        }
-    }
-    
-    func createUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
-        let userData = User(id: email, nickName: nickName, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
-        do {
-            let data = try Firestore.Encoder().encode(userData)
-            db.collection(users).document(email).setData(data)
-            completion(true, nil)
-        } catch {
-            completion(false, "FirebaseManager_EncodeFail")
         }
     }
 }

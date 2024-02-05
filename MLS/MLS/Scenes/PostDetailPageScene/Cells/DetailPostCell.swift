@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class DetailPostCell: UITableViewCell {
-    // MARK: - Property
+    // MARK: - Properties
 
     private var parent: BasicController?
 
@@ -60,8 +60,8 @@ class DetailPostCell: UITableViewCell {
     }
 }
 
+// MARK: SetUp
 private extension DetailPostCell {
-    // MARK: SetUp
 
     func setUp() {
         setUpConstraints()
@@ -98,8 +98,8 @@ private extension DetailPostCell {
     }
 }
 
+// MARK: Bind
 extension DetailPostCell {
-    // MARK: Method
 
     func bind(post: Post, vc: BasicController) {
         parent = vc

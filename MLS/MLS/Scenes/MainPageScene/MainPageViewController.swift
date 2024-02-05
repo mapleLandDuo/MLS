@@ -11,7 +11,7 @@ import SnapKit
 import SafariServices
 
 class MainPageViewController: BasicController {
-    // MARK: - Property
+    // MARK: - Properties
 
     private let viewModel: MainPageViewModel
 
@@ -67,9 +67,9 @@ class MainPageViewController: BasicController {
     }
 }
 
+// MARK: - LifeCycle
 extension MainPageViewController {
-    // MARK: - LifeCycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = .systemOrange
@@ -87,8 +87,8 @@ extension MainPageViewController {
     }
 }
 
+// MARK: - SetUp
 private extension MainPageViewController {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -256,9 +256,9 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.section {
         case 0:
             guard let cell = sideMenuTableView.dequeueReusableCell(withIdentifier: MainPageProfileCell.identifier, for: indexPath) as? MainPageProfileCell else { return UITableViewCell() }
-            if viewModel.loginManager.isLogin() {
+            if LoginManager.manager.isLogin() {
                 IndicatorMaker.showLoading()
-                guard let email = Utils.currentUser else { return UITableViewCell() }
+                guard let email = LoginManager.manager.email else { return UITableViewCell() }
                 FirebaseManager.firebaseManager.getNickname(userEmail: email) { nickName in
                     IndicatorMaker.hideLoading()
                     cell.bind(description: nickName)
@@ -292,8 +292,8 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let title = viewModel.getSideMenuItems()[indexPath.section][indexPath.row].title else { return }
         if title == "프로필" {
-            if viewModel.loginManager.isLogin() {
-                guard let email = Utils.currentUser else { return }
+            if LoginManager.manager.isLogin() {
+                guard let email = LoginManager.manager.email else { return }
                 IndicatorMaker.showLoading()
                 email.toNickName { nickName in
                     IndicatorMaker.hideLoading()
@@ -312,24 +312,21 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
         } else if title == "로그아웃" {
             AlertMaker.showAlertAction2(vc: self, title: "로그아웃", message: "정말로 로그아웃 하시겠습니까?", cancelTitle: "취소", completeTitle: "확인", nil) {
-                let loginManger = LoginManager()
                 IndicatorMaker.showLoading()
-                Utils.currentUser = nil
-                loginManger.logOut { [weak self] _ in
+                LoginManager.manager.logOut { [weak self] _ in
                     self?.sideMenuTableView.reloadData()
                     IndicatorMaker.hideLoading()
                 }
             }
         } else if title == "문의하기" {
-            let vc = QnaViewController()
+            let vc = QnAViewController()
             navigationController?.pushViewController(vc, animated: true)
             
         } else if title == "회원 탈퇴" {
             AlertMaker.showAlertAction2(title: "회원 탈퇴", message: "회원 탈퇴 시 모든 데이터가 삭제됩니다.", cancelTitle: "확인", completeTitle: "취소", {
-                let manager = LoginManager()
-                guard let email = manager.email else { return }
+                guard let email = LoginManager.manager.email else { return }
                 IndicatorMaker.showLoading()
-                manager.deleteUser { [weak self] in
+                LoginManager.manager.deleteUser { [weak self] in
                     FirebaseManager.firebaseManager.deleteUserData(email: email) {
                         self?.sideMenuTableView.reloadData()
                         IndicatorMaker.hideLoading()

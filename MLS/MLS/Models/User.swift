@@ -16,8 +16,3 @@ struct User: Codable {
     var blockingUsers: [String]
     var blockedUsers: [String]
 }
-
-enum State: Codable {
-    case block
-    case normal
-}

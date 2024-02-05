@@ -39,7 +39,7 @@ class CommentTableViewCell: UITableViewCell {
 
     private let commentTextLabel = CustomLabel(text: "comment", font: .systemFont(ofSize: 16))
 
-    // MARK: LifeCycle
+    // MARK: Life Cycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -52,18 +52,9 @@ class CommentTableViewCell: UITableViewCell {
     }
 }
 
-extension CommentTableViewCell {
-    // MARK: Bind
-
-    func bind(name: String, comment: String) {
-        commentProfileNameLabel.text = name
-        commentTextLabel.text = comment
-    }
-}
-
+// MARK: SetUp
 private extension CommentTableViewCell {
-    // MARK: Methods
-
+    
     func setUp() {
         setUpConstraints()
     }
@@ -90,5 +81,14 @@ private extension CommentTableViewCell {
             $0.bottom.equalToSuperview().inset(Constants.defaults.vertical / 2)
             $0.height.equalTo(30)
         }
+    }
+}
+
+// MARK: Bind
+extension CommentTableViewCell {
+
+    func bind(name: String, comment: String) {
+        commentProfileNameLabel.text = name
+        commentTextLabel.text = comment
     }
 }

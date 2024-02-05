@@ -11,7 +11,6 @@ import Kingfisher
 import SnapKit
 
 class ImageCollectionViewCell: UICollectionViewCell {
-    // MARK: - Properties
 
     // MARK: - Components
 
@@ -36,8 +35,8 @@ class ImageCollectionViewCell: UICollectionViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension ImageCollectionViewCell {
-    // MARK: - SetUp
 
     func setUp() {
         addSubview(imageView)
@@ -48,8 +47,8 @@ private extension ImageCollectionViewCell {
     }
 }
 
+// MARK: - bind
 extension ImageCollectionViewCell {
-    // MARK: - Method
 
     func bind(imageUrl: URL?) {
         imageView.kf.setImage(with: imageUrl)

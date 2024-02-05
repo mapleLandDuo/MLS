@@ -10,12 +10,14 @@ import UIKit
 import Kingfisher
 import SnapKit
 
+// setup 수정
+
 class DictionaryMonsterViewController: BasicController {
-    // MARK: - Property
+    // MARK: - Properties
 
     let viewModel: DictionaryMonsterViewModel
 
-    // MARK: - Componetns
+    // MARK: - Components
 
     private let tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
@@ -35,8 +37,8 @@ class DictionaryMonsterViewController: BasicController {
     }
 }
 
+// MARK: - Life Cycle
 extension DictionaryMonsterViewController {
-    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +46,9 @@ extension DictionaryMonsterViewController {
     }
 }
 
+// MARK: - SetUp
 private extension DictionaryMonsterViewController {
+    
     func setUp() {
         setUpConstraints()
         tableView.dataSource = self

@@ -8,7 +8,7 @@
 import UIKit
 
 class DictionaryGraySeparatorOneLineCell: UITableViewCell {
-    // MARK: - Componetns
+    // MARK: - Components
 
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -44,6 +44,7 @@ class DictionaryGraySeparatorOneLineCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictionaryGraySeparatorOneLineCell {
     func setUp() {
         setUpConstraints()
@@ -67,8 +68,8 @@ private extension DictionaryGraySeparatorOneLineCell {
     }
 }
 
+// MARK: - bind
 extension DictionaryGraySeparatorOneLineCell {
-    // MARK: - bind
 
     func bind(data: DictionaryNameDescription) {
         nameLabel.text = data.name

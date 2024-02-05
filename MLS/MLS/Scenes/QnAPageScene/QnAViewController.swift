@@ -10,7 +10,7 @@ import UIKit
 import MessageUI
 import SnapKit
 
-class QnaViewController: UIViewController {
+class QnAViewController: UIViewController {
     // MARK: Properties
 
     private let viewModel = QnAPageViewModel()
@@ -18,17 +18,18 @@ class QnaViewController: UIViewController {
     // MARK: Components
 
     private let qnaTableView = UITableView()
+}
 
-    // MARK: LifeCycle
-
+// MARK: LifeCycle
+extension QnAViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
     }
 }
 
-private extension QnaViewController {
-    // MARK: SetUp
+// MARK: SetUp
+private extension QnAViewController {
 
     func setUp() {
         self.qnaTableView.delegate = self
@@ -46,12 +47,8 @@ private extension QnaViewController {
     }
 }
 
-private extension QnaViewController {
-    // MARK: Bind
-}
-
-private extension QnaViewController {
-    // MARK: Method
+// MARK: Method
+private extension QnAViewController {
 
     func clickCallCell(num: String) {
         if let url = NSURL(string: "tel://0" + "\(num)"),
@@ -62,7 +59,7 @@ private extension QnaViewController {
     }
 }
 
-extension QnaViewController: UITableViewDelegate, UITableViewDataSource {
+extension QnAViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -126,7 +123,7 @@ extension QnaViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension QnaViewController: MFMailComposeViewControllerDelegate {
+extension QnAViewController: MFMailComposeViewControllerDelegate {
     private func checkMail() {
         let sendMailErrorAlert = UIAlertController(title: "메일을 전송 실패", message: "아이폰 이메일 설정을 확인하고 다시 시도해주세요.", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "확인", style: .default)

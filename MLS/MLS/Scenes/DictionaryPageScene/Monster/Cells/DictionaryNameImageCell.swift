@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 
 class DictionaryNameImageCell: UITableViewCell {
-    // MARK: - Componetns
+    // MARK: - Components
 
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -36,8 +36,8 @@ class DictionaryNameImageCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictionaryNameImageCell {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -59,8 +59,8 @@ private extension DictionaryNameImageCell {
     }
 }
 
+// MARK: - bind
 extension DictionaryNameImageCell {
-    // MARK: - bind
 
     func bind(item: DictionaryMonster) {
         nameLabel.text = item.name

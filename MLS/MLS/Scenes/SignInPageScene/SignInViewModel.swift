@@ -17,13 +17,16 @@ enum SignInResult {
 }
 
 class SignInViewModel {
-    // MARK: - Property
+    // MARK: - Properties
 
     var userDefaultManager = UserDefaultsManager()
+    
     var isAutoLogin: Observable<Bool> = Observable(false)
+}
 
-    // MARK: - Method
-
+// MARK: - Methods
+extension SignInViewModel {
+    
     func passwordFind(email: String) {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if error == nil {
@@ -46,7 +49,7 @@ class SignInViewModel {
 
         Auth.auth().signIn(withEmail: email, password: password) { _, error in
             if error == nil {
-                Utils.currentUser = Auth.auth().currentUser?.email
+                LoginManager.manager.email = Auth.auth().currentUser?.email
                 completion(.success)
             } else {
                 completion(.fail)

@@ -13,11 +13,13 @@ import IQKeyboardManagerSwift
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        //IQKeyBoardManager 사용 값 설정
         IQKeyboardManager.shared.enable = true
+        //IQKeyBoardManager 오토 툴바 사용 설정
         IQKeyboardManager.shared.enableAutoToolbar = false
+        //IQKeyBoardManager 배경 영역 터치시 키보드 대응 설정
         IQKeyboardManager.shared.resignOnTouchOutside = true
-
+        
         FirebaseApp.configure()
         return true
     }

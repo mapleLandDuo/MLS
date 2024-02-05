@@ -56,15 +56,15 @@ class PostDetailView: UIView {
     }
 }
 
+// MARK: - SetUp
 private extension PostDetailView {
-    // MARK: - SetUp
+
 
     func setUp() {
         setUpConstraints()
     }
 
     func setUpConstraints() {
-//        addSubview(userIamgeView)
         addSubview(postTitleLabel)
         addSubview(infoStackView)
         addSubview(postContentLabel)

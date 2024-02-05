@@ -39,8 +39,8 @@ class DetailImageCell: UITableViewCell {
     }
 }
 
+// MARK: SetUp
 private extension DetailImageCell {
-    // MARK: SetUp
 
     func setUp() {
         imageCollectionView.delegate = self
@@ -58,8 +58,8 @@ private extension DetailImageCell {
     }
 }
 
+// MARK: Bind
 extension DetailImageCell {
-    // MARK: Bind
 
     func bind(images: [URL?]?) {
         if let images = images {

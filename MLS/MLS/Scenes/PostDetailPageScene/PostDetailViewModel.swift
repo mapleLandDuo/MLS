@@ -9,24 +9,28 @@ import Foundation
 
 class PostDetailViewModel {
     // MARK: Properties
-
-    var loginManager = LoginManager()
     
     var comments: Observable<[Comment]> = Observable(nil)
+    
     lazy var commentCount = 0
+    
     var post: Observable<Post> = Observable(nil)
+    
     var isUp: Observable<Bool> = Observable(false)
     
     var isEditing = false
+    
     var editingComment: Comment?
     
     init(post: Post) {
         self.post.value = post
         updateViewCount()
     }
-    
-    // MARK: Method
-    
+}
+
+// MARK: Method
+extension PostDetailViewModel {
+
     func loadPost(completion: @escaping () -> Void) {
         guard let postId = post.value?.id.uuidString else { return }
         FirebaseManager.firebaseManager.loadPost(id: postId) { [weak self] post in
@@ -87,11 +91,11 @@ class PostDetailViewModel {
     }
     
     func checkMyPost() -> Bool {
-        return post.value?.user == Utils.currentUser
+        return post.value?.user == LoginManager.manager.email
     }
     
     func checkLikeCount(post: Post) {
-        guard let myEmail = Utils.currentUser else { return }
+        guard let myEmail = LoginManager.manager.email else { return }
         isUp.value = post.likes.contains(myEmail)
     }
     
@@ -102,7 +106,7 @@ class PostDetailViewModel {
     }
     
     func isLogin() -> Bool {
-        return loginManager.isLogin()
+        return LoginManager.manager.isLogin()
     }
     
     func updateViewCount() {

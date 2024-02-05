@@ -7,7 +7,12 @@
 
 import UIKit
 
+import SnapKit
+
+// $0 leading trailing 변경 addsubview 변경 준영
+
 class SharedTextField: UIView {
+    
     enum TextFieldType {
         case normal
         case password
@@ -15,6 +20,8 @@ class SharedTextField: UIView {
         case titlePassword
     }
     
+    // MARK: - Components
+
     var textField: UITextField = {
         let view = UITextField()
         view.font = Typography.body1.font
@@ -70,6 +77,7 @@ class SharedTextField: UIView {
     }
 }
 
+// MARK: - SetUp
 private extension SharedTextField {
     func setUp(type: TextFieldType) {
         setUpLayer(type: type)
@@ -180,9 +188,9 @@ private extension SharedTextField {
     }
 }
 
+// MARK: - Methods
 extension SharedTextField {
-    // MARK: - Method
-
+    
     @objc private func changeShowButtonColor() {
         textField.isSecureTextEntry.toggle()
         if textField.isSecureTextEntry {

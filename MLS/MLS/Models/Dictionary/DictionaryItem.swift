@@ -7,11 +7,6 @@
 
 import Foundation
 
-struct DictionaryNameLinkUpdateItem: Codable {
-    var name: String
-    var link: String
-}
-
 struct DictionaryItem: Codable {
     // 이름
     var name: String
@@ -34,9 +29,4 @@ struct DictionaryItem: Codable {
     var detailDescription: [String: String]
     // 드랍 테이블
     var dropTable: [DictionaryNameDescription]
-}
-
-struct DictionaryNameDescription: Codable {
-    var name: String
-    var description: String
 }

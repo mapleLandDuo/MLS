@@ -6,10 +6,12 @@
 //
 
 import UIKit
+
 import SafariServices
+import SnapKit
 
 class SignUpViewController: BasicController {
-    // MARK: - Property
+    // MARK: - Properties
 
     private let viewModel: SignUpViewModel
     
@@ -66,8 +68,8 @@ class SignUpViewController: BasicController {
     }
 }
 
+// MARK: - LifeCycle
 extension SignUpViewController {
-    // MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,8 +78,8 @@ extension SignUpViewController {
     }
 }
 
+// MARK: - SetUp
 private extension SignUpViewController {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -149,9 +151,9 @@ private extension SignUpViewController {
         signUpButton.addTarget(self, action: #selector(didTapBottomButton), for: .primaryActionTriggered)
     }
 }
+// MARK: - bind
 
 private extension SignUpViewController {
-    // MARK: - bind
 
     func bind() {
         viewModel.emailState.bind { [weak self] state in
@@ -225,8 +227,7 @@ private extension SignUpViewController {
     }
 }
 
-// MARK: - Method
-
+// MARK: - Methods
 private extension SignUpViewController {
     
     @objc

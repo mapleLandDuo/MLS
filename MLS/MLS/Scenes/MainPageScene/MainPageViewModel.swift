@@ -14,7 +14,8 @@ struct FeatureCellData {
 }
 
 class MainPageViewModel {
-    let loginManager = LoginManager()
+    // MARK: - Properties
+    
     var features: [[FeatureCellData]] = [
         [
             FeatureCellData(title: "도감", description: "몬스터 도감, 아이템 도감", image: UIImage(systemName: "book.closed"))
@@ -24,6 +25,7 @@ class MainPageViewModel {
             FeatureCellData(title: "사고팔고", image: UIImage(systemName: "chevron.forward.2"))
         ]
     ]
+    
     private var sideMenuItems: [[FeatureCellData]] = [
         [
             FeatureCellData(title: "프로필")
@@ -39,12 +41,12 @@ class MainPageViewModel {
     ]
 }
 
+// MARK: - Methods
 extension MainPageViewModel {
-    // MARK: - Method
 
     func getSideMenuItems() -> [[FeatureCellData]] {
         var temp = sideMenuItems
-        if loginManager.isLogin() {
+        if LoginManager.manager.isLogin() {
             temp.append([
                 FeatureCellData(title: "로그아웃", image: UIImage(systemName: "lock.open")),
                 FeatureCellData(title: "회원 탈퇴", image: UIImage(systemName: "person.fill.xmark"))

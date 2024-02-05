@@ -67,8 +67,8 @@ class DetailLikeCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DetailLikeCell {
-    // MARK: - SetUp
 
     func setUp() {
         addSubview(upCountButton)
@@ -99,8 +99,8 @@ private extension DetailLikeCell {
     }
 }
 
+// MARK: - bind
 extension DetailLikeCell {
-    // MARK: - Method
 
     func bind(post: Post, isUp: Bool) {
         upCountLabel.text = String(post.likes.count)

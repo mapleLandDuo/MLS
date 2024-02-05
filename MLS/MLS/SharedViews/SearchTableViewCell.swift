@@ -9,6 +9,8 @@ import UIKit
 
 import SnapKit
 
+// 이름 변경
+
 class SearchTableViewCell: UITableViewCell {
     // MARK: Properties
 
@@ -18,7 +20,7 @@ class SearchTableViewCell: UITableViewCell {
         return searchBar
     }()
 
-    // MARK: LifeCycle
+    // MARK: Life Cycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -31,6 +33,7 @@ class SearchTableViewCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension SearchTableViewCell {
     func setUp() {
         setUpConstaraints()

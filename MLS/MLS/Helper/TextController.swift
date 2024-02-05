@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class TextController: BasicController {
-    // MARK: - Property
+    // MARK: - Properties
 
     private let text: String
 

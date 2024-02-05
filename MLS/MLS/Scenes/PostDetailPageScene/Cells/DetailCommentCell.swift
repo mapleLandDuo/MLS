@@ -16,9 +16,13 @@ protocol DetailCommentCellDelegate: AnyObject {
 }
 
 class DetailCommentCell: UITableViewCell {
-    // MAKR: Properties
+    
+    // MARK: - Properties
+
     weak var delegate: DetailCommentCellDelegate?
+    
     var comment: Comment?
+    
     private var parent: BasicController?
 
     // MARK: Components
@@ -94,18 +98,17 @@ class DetailCommentCell: UITableViewCell {
     }
 }
 
+// MARK: Bind
 private extension DetailCommentCell {
-    // MARK: Bind
 
     func bind(name: String, comment: String) {
-//        commentProfileNameLabel.text = name
         commentProfileNameLabel.setTitle(name, for: .normal)
         commentTextLabel.text = comment
     }
 }
 
+// MARK: SetUp
 private extension DetailCommentCell {
-    // MARK: SetUp
 
     func setUp() {
         setUpConstraints()
@@ -124,7 +127,6 @@ private extension DetailCommentCell {
         commentProfileNameLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
-//            $0.trailing.equalTo(optionStackView).inset(-Constants.defaults.horizontal)
         }
 
         optionStackView.snp.makeConstraints {
@@ -140,14 +142,14 @@ private extension DetailCommentCell {
     }
 }
 
+// MARK: Bind
 extension DetailCommentCell {
-    // MARK: Method
 
     func bind(comment: Comment, vc: BasicController) {
         parent = vc
-        if Utils.currentUser == nil {
+        if LoginManager.manager.email == nil {
             optionStackView.isHidden = true
-        } else if comment.user != Utils.currentUser {
+        } else if comment.user != LoginManager.manager.email {
             deleteButton.isHidden = true
             modifyButton.isHidden = true
         } else {

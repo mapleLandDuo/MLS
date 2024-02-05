@@ -8,7 +8,7 @@
 import UIKit
 
 class DictionaryGraySeparatorDescriptionCell: UITableViewCell {
-    // MARK: - Componetns
+    // MARK: - Components
 
     private let descriptionLabel: UILabel = {
         let label = UILabel()
@@ -35,6 +35,7 @@ class DictionaryGraySeparatorDescriptionCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictionaryGraySeparatorDescriptionCell {
     func setUp() {
         setUpConstraints()
@@ -56,8 +57,8 @@ private extension DictionaryGraySeparatorDescriptionCell {
     }
 }
 
+// MARK: - bind
 extension DictionaryGraySeparatorDescriptionCell {
-    // MARK: - bind
 
     func bind(data: DictionaryNameDescription) {
         descriptionLabel.text = data.description

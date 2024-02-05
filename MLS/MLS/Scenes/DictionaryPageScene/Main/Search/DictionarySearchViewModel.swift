@@ -7,11 +7,18 @@
 
 import Foundation
 
+enum SearchType {
+    case item
+    case monster
+}
+
 class DictionarySearchViewModel {
     // MARK: Properties
 
     let type: SearchType
+    
     let itemList: Observable<[DictionaryItem]> = Observable(nil)
+    
     let monsterList: Observable<[DictionaryMonster]> = Observable(nil)
 
     init(type: SearchType) {
@@ -19,8 +26,8 @@ class DictionarySearchViewModel {
     }
 }
 
+// MARK: Method
 extension DictionarySearchViewModel {
-    // MARK: Method
 
     func getURL() -> [URL?] {
         switch type {
@@ -48,7 +55,3 @@ extension DictionarySearchViewModel {
     }
 }
 
-enum SearchType {
-    case item
-    case monster
-}

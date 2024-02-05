@@ -7,6 +7,9 @@
 
 import UIKit
 
+
+// setup 수정 준영
+
 protocol IconDescriptionTableViewCellDelegate: AnyObject {
     func tapLeftButton(data: [ItemMenu])
     func tapRightButton(data: [ItemMenu])
@@ -19,7 +22,7 @@ class IconDescriptionTableViewCell: UITableViewCell {
 
     var data: [ItemMenu]?
 
-    // MARK: - Componetns
+    // MARK: - Components
 
     lazy var leftButton: UIButton = {
         let button = UIButton()
@@ -141,8 +144,8 @@ private extension IconDescriptionTableViewCell {
     }
 }
 
+// MARK: - bind
 extension IconDescriptionTableViewCell {
-    // MARK: - bind
 
     func bind(data: [ItemMenu]) {
         if data.count == 2 {

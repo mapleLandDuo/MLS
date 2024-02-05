@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class MainPageFeatureListCell: UICollectionViewCell {
-    // MARK: - Property
+    // MARK: - Properties
 
     var posts: Observable<[Post]> = Observable(nil)
 
@@ -71,8 +71,8 @@ class MainPageFeatureListCell: UICollectionViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension MainPageFeatureListCell {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -115,6 +115,21 @@ private extension MainPageFeatureListCell {
     }
 }
 
+// MARK: - Bind
+extension MainPageFeatureListCell {
+    func bind(data: FeatureCellData, vc: BasicController) {
+        titleLabel.text = data.title
+        rightImageView.image = data.image
+        parent = vc
+    }
+
+    func postsBind() {
+        posts.bind { [weak self] _ in
+            self?.postListTableView.reloadData()
+        }
+    }
+}
+
 extension MainPageFeatureListCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let count = posts.value?.count else { return 0 }
@@ -141,16 +156,4 @@ extension MainPageFeatureListCell: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension MainPageFeatureListCell {
-    func bind(data: FeatureCellData, vc: BasicController) {
-        titleLabel.text = data.title
-        rightImageView.image = data.image
-        parent = vc
-    }
 
-    func postsBind() {
-        posts.bind { [weak self] _ in
-            self?.postListTableView.reloadData()
-        }
-    }
-}

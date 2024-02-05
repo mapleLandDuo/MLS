@@ -35,8 +35,8 @@ class DictionarySearchCell: UITableViewCell {
     }
 }
 
+// MARK: SetUp
 private extension DictionarySearchCell {
-    // MARK: SetUp
 
     func setUp() {
         setupConstraints()
@@ -66,8 +66,8 @@ private extension DictionarySearchCell {
     }
 }
 
+// MARK: Bind
 extension DictionarySearchCell {
-    // MARK: Bind
 
     func bind(imageUrl: URL, title: String, level: String) {
         searchImageView.kf.setImage(with: imageUrl)

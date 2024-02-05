@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 class MainPageProfileCell: UITableViewCell {
     // MARK: - Components
 
@@ -40,8 +42,8 @@ class MainPageProfileCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension MainPageProfileCell {
-    // MARK: - SetUp
 
     func setUp() {
         contentView.backgroundColor = .systemOrange
@@ -69,7 +71,7 @@ private extension MainPageProfileCell {
         }
     }
 }
-
+// MARK: - Bind
 extension MainPageProfileCell {
     func bind(description: String?) {
         guard let description = description else { return }

@@ -8,7 +8,7 @@
 import Foundation
 
 class DictionaryMonsterViewModel {
-    // MARK: - Property
+    // MARK: - Properties
 
     let item: DictionaryMonster
 
@@ -17,8 +17,8 @@ class DictionaryMonsterViewModel {
     }
 }
 
+// MARK: - Method
 extension DictionaryMonsterViewModel {
-    // MARK: - Method
 
     func getItem() -> DictionaryMonster {
         return item

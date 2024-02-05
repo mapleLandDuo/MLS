@@ -57,8 +57,8 @@ class MainPageFeatureDefaultsCell: UICollectionViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension MainPageFeatureDefaultsCell {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -87,8 +87,8 @@ private extension MainPageFeatureDefaultsCell {
     }
 }
 
+// MARK: - Bind
 extension MainPageFeatureDefaultsCell {
-    // MARK: - Bind
 
     func bind(data: FeatureCellData) {
         titleLabel.text = data.title

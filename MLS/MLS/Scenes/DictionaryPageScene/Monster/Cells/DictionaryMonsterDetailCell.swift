@@ -85,8 +85,8 @@ class DictionaryMonsterDetailCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictionaryMonsterDetailCell {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -148,8 +148,8 @@ private extension DictionaryMonsterDetailCell {
     }
 }
 
+// MARK: - bind
 extension DictionaryMonsterDetailCell {
-    // MARK: - bind
 
     func bind(item: DictionaryMonster) {
         physicalDefenseLabel.text = "\(item.physicalDefense)"

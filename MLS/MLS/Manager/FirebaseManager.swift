@@ -11,11 +11,18 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 
+// load,get -> fetch로 통일, update, delete, save
+// collectionName -> enum써서 적용
+// 에러처리 봐야함
+// 통일가능한 메서드는 제네릭을 이용해서 통일 ex) fetchData -> 컬렉션 따라 가능하게
+// 진훈
+
+
 class FirebaseManager {
     static let firebaseManager = FirebaseManager()
 
     private init() {}
-
+    
     let db = Firestore.firestore()
 }
 
@@ -33,6 +40,30 @@ extension FirebaseManager {
             } else {
                 print("닉네임 가져오지 못함")
                 completion(nil)
+            }
+        }
+    }
+    
+    func createUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
+        let userData = User(id: email, nickName: nickName, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
+        do {
+            let data = try Firestore.Encoder().encode(userData)
+            db.collection("users").document(email).setData(data)
+            completion(true, nil)
+        } catch {
+            completion(false, "FirebaseManager_EncodeFail")
+        }
+    }
+    
+    func deleteUserData(email: String, completion: @escaping () -> Void) {
+        loadMyPosts(userEmail: email) { posts in
+            guard let posts = posts else { return }
+            let ids = posts.map { $0.id }
+            for id in ids {
+                self.deletePost(postID: id.uuidString) { print("delete") }
+            }
+            self.db.collection("users").document(email).delete { _ in
+                completion()
             }
         }
     }
@@ -64,7 +95,7 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        if let myEmail = Utils.currentUser {
+                        if let myEmail = LoginManager.manager.email {
                             self.getMyReportUsers { users in
                                 if let users = users {
                                     if !(post.reports.contains(myEmail)), !users.contains(post.user) {
@@ -126,7 +157,7 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        if let myEmail = Utils.currentUser {
+                        if let myEmail = LoginManager.manager.email {
                             self.getMyReportUsers { users in
                                 if let users = users {
                                     if !(post.reports.contains(myEmail)), !users.contains(post.user) {
@@ -264,7 +295,7 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let comment = try Firestore.Decoder().decode(Comment.self, from: document.data())
-                        if let myEmail = Utils.currentUser {
+                        if let myEmail = LoginManager.manager.email {
                             self.getMyReportUsers { users in
                                 if let users = users {
                                     if !(comment.reports.contains(myEmail)), !users.contains(comment.user) {
@@ -319,7 +350,7 @@ extension FirebaseManager {
                     for document in commentsQuerySnapshot?.documents ?? [] {
                         do {
                             let comment = try Firestore.Decoder().decode(Comment.self, from: document.data())
-                            guard let myEmail = Utils.currentUser else { return }
+                            guard let myEmail = LoginManager.manager.email else { return }
                             if !(comment.reports.contains(myEmail)) {
                                 comments.append(comment)
                             }
@@ -566,7 +597,7 @@ extension FirebaseManager {
 
     func reportUser(userID: String, completion: @escaping () -> Void) {
         let group = DispatchGroup()
-        guard let myEmail = Utils.currentUser else { return }
+        guard let myEmail = LoginManager.manager.email else { return }
 
         db.collection("users").document(userID).getDocument { document, error in
             if let document = document, document.exists {
@@ -614,7 +645,7 @@ extension FirebaseManager {
 
     func reportPost(postID: String, completion: @escaping () -> Void) {
         let group = DispatchGroup()
-        guard let myEmail = Utils.currentUser else { return }
+        guard let myEmail = LoginManager.manager.email else { return }
 
         db.collection("posts").document(postID).getDocument { document, error in
             if let document = document, document.exists {
@@ -662,7 +693,7 @@ extension FirebaseManager {
 
     func reportComment(postId: String, commentId: String, completion: @escaping () -> Void) {
         let group = DispatchGroup()
-        guard let myEmail = Utils.currentUser else { return }
+        guard let myEmail = LoginManager.manager.email else { return }
 
         db.collection("posts").document(postId).collection("comments").document(commentId).getDocument { document, error in
             if let document = document, document.exists {
@@ -729,7 +760,7 @@ extension FirebaseManager {
     }
 
     func getMyReportUsers(completion: @escaping ([String]?) -> Void) {
-        guard let myEmail = Utils.currentUser else { return }
+        guard let myEmail = LoginManager.manager.email else { return }
         db.collection("users").document(myEmail).getDocument { documentSnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
@@ -755,7 +786,7 @@ extension FirebaseManager {
 extension FirebaseManager {
     // UpCount
     func setUpCount(postID: String, completion: @escaping () -> Void) {
-        guard let myEmail = Utils.currentUser else { return }
+        guard let myEmail = LoginManager.manager.email else { return }
         db.collection("posts").document(postID).getDocument { document, error in
             if let document = document, document.exists {
                 guard let reports = document.get("likes") as? [String] else { return }
@@ -817,7 +848,7 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        if let myEmail = Utils.currentUser {
+                        if let myEmail = LoginManager.manager.email {
                             self.getMyReportUsers { users in
                                 if let users = users {
                                     if !(post.reports.contains(myEmail)), !users.contains(post.user) {
@@ -861,7 +892,7 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        if let myEmail = Utils.currentUser {
+                        if let myEmail = LoginManager.manager.email {
                             self.getMyReportUsers { users in
                                 if let users = users {
                                     if !(post.reports.contains(myEmail)), !users.contains(post.user) {
@@ -901,7 +932,7 @@ extension FirebaseManager {
                     group.enter()
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        if let myEmail = Utils.currentUser {
+                        if let myEmail = LoginManager.manager.email {
                             self.getMyReportUsers { users in
                                 if let users = users {
                                     if !(post.reports.contains(myEmail)), !users.contains(post.user) {
@@ -929,20 +960,3 @@ extension FirebaseManager {
     }
 }
 
-extension FirebaseManager {
-//    func getComment(email:String, completion: @escaping () -> Void) {
-//    }
-
-    func deleteUserData(email: String, completion: @escaping () -> Void) {
-        loadMyPosts(userEmail: email) { posts in
-            guard let posts = posts else { return }
-            let ids = posts.map { $0.id }
-            for id in ids {
-                self.deletePost(postID: id.uuidString) { print("delete") }
-            }
-            self.db.collection("users").document(email).delete { _ in
-                completion()
-            }
-        }
-    }
-}

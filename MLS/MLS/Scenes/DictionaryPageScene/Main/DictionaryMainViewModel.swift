@@ -7,9 +7,41 @@
 
 import UIKit
 
+struct ItemMenu {
+    var title: ItemMenuName
+    var image: UIImage?
+}
+
+enum ItemMenuName: String {
+    case common = "공용"
+    case warrior = "전사"
+    case archer = "궁수"
+    case thief = "도적"
+    case magician = "마법사"
+    case pirate = "해적"
+}
+
 class DictionaryMainViewModel {
-    // Properties
-    private let monsterMenus = ["1 ~ 10", "11 ~ 20", "21 ~ 30", "31 ~ 40", "41 ~ 50", "51 ~ 60", "61 ~ 70", "71 ~ 80", "81 ~ 90", "91 ~ 100", "101 ~ 110", "111 ~ 120", "121 ~ 130", "131 ~ 140", "141 ~ 150", "etc"]
+    // MARK: - Properties
+
+    private let monsterMenus = [
+        "1 ~ 10",
+        "11 ~ 20",
+        "21 ~ 30",
+        "31 ~ 40",
+        "41 ~ 50",
+        "51 ~ 60",
+        "61 ~ 70",
+        "71 ~ 80",
+        "81 ~ 90",
+        "91 ~ 100",
+        "101 ~ 110", 
+        "111 ~ 120",
+        "121 ~ 130",
+        "131 ~ 140",
+        "141 ~ 150",
+        "etc"
+    ]
 
     private let itemMenus = [
         [
@@ -27,8 +59,9 @@ class DictionaryMainViewModel {
     ]
 }
 
+// MARK: Methods
 extension DictionaryMainViewModel {
-    // MARK: Method
+
 
     func getMonsterMenu() -> [String] {
         return monsterMenus
@@ -87,16 +120,3 @@ extension DictionaryMainViewModel {
     }
 }
 
-struct ItemMenu {
-    var title: ItemMenuName
-    var image: UIImage?
-}
-
-enum ItemMenuName: String {
-    case common = "공용"
-    case warrior = "전사"
-    case archer = "궁수"
-    case thief = "도적"
-    case magician = "마법사"
-    case pirate = "해적"
-}

@@ -31,8 +31,8 @@ class DictionaryMonsterHauntAreaCollectionViewCell: UICollectionViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictionaryMonsterHauntAreaCollectionViewCell {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -49,8 +49,8 @@ private extension DictionaryMonsterHauntAreaCollectionViewCell {
     }
 }
 
+// MARK: - bind
 extension DictionaryMonsterHauntAreaCollectionViewCell {
-    // MARK: - bind
 
     func bind(area: String) {
         label.text = area

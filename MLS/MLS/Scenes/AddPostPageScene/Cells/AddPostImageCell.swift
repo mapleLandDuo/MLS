@@ -7,7 +7,14 @@
 
 import UIKit
 
+import SnapKit
+
 class AddPostImageCell: UICollectionViewCell {
+    
+    // MARK: - Properties
+    
+    var callBackMethod: (() -> Void)?
+
     // MARK: - Components
 
     private let imageView: UIImageView = {
@@ -25,8 +32,6 @@ class AddPostImageCell: UICollectionViewCell {
         return button
     }()
 
-    var callBackMethod: (() -> Void)?
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUp()
@@ -38,8 +43,8 @@ class AddPostImageCell: UICollectionViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension AddPostImageCell {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -62,8 +67,8 @@ private extension AddPostImageCell {
     }
 }
 
+// MARK: - Method
 private extension AddPostImageCell {
-    // MARK: - Method
 
     @objc
     func didTapButton() {
@@ -71,8 +76,8 @@ private extension AddPostImageCell {
     }
 }
 
+// MARK: - Bind
 extension AddPostImageCell {
-    // MARK: - Bind
 
     func bind(image: UIImage?) {
         imageView.image = image

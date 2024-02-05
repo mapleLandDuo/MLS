@@ -7,8 +7,10 @@
 
 import UIKit
 
+import SnapKit
+
 class SignInViewController: BasicController {
-    // MARK: - Property
+    // MARK: - Properties
 
     private let viewModel: SignInViewModel
     
@@ -92,8 +94,8 @@ class SignInViewController: BasicController {
     }
 }
 
+// MARK: - Life Cycle
 extension SignInViewController {
-    // MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,8 +104,8 @@ extension SignInViewController {
     }
 }
 
+// MARK: - SetUp
 private extension SignInViewController {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -169,8 +171,8 @@ private extension SignInViewController {
     }
 }
 
+// MARK: - Bind
 private extension SignInViewController {
-    // MARK: - Bind
 
     func bind() {
         viewModel.isAutoLogin.bind { [weak self] state in
@@ -185,8 +187,8 @@ private extension SignInViewController {
     }
 }
 
+// MARK: - Method
 extension SignInViewController {
-    // MARK: - Method
     
     @objc
     func didTapSignUpButton() {

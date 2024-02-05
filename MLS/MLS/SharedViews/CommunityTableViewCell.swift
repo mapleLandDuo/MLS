@@ -9,9 +9,16 @@ import UIKit
 
 import SnapKit
 
+//Typography 적용
+//leading trailing <- 사용
+//make <- 사용
+// addSubView 위로 정렬
+// $0으로 make 어쩌구 저ㄱ쩌구..
+// inset Offset 구분 사용
+
 class CommunityTableViewCell: UITableViewCell {
     // MARK: Components
-
+    
     private let postView = UIView()
     
     private let dateLabel = CustomLabel(text: "date", textColor: .gray, font: .systemFont(ofSize: 12))
@@ -41,13 +48,13 @@ class CommunityTableViewCell: UITableViewCell {
     
     private let upCountLabel = CustomLabel(text: "upCount", textColor: .gray, font: .systemFont(ofSize: 16))
     
-    // MARK: LifeCycle
-
+    // MARK: Life Cycle
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
     }
-
+    
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -56,9 +63,11 @@ class CommunityTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         titleLabel.attributedText = nil
     }
-    
-    // MARK: Bind
+}
 
+// MARK: Bind
+extension CommunityTableViewCell {
+    
     func bind(tag: BoardSeparatorType, title: String, date: String, upCount: String) {
         titleLabel.text = title
         dateLabel.text = date
@@ -67,19 +76,13 @@ class CommunityTableViewCell: UITableViewCell {
     }
 }
 
+// MARK: SetUp
 private extension CommunityTableViewCell {
-    // MARK: Methods
-
+    
     func setUp() {
         setUpConstraints()
     }
     
-    func setUpcell() {
-        postView.layer.borderWidth = 1
-        postView.layer.borderColor = UIColor.systemGray4.cgColor
-        postView.layer.cornerRadius = Constants.defaults.radius
-    }
-
     func setUpConstraints() {
         addSubview(postView)
         postView.addSubview(postStackView)

@@ -15,7 +15,9 @@ class PostDetailViewController: BasicController {
     private let viewModel: PostDetailViewModel
 
     let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+    //자리 생각해보기
     lazy var safeAreaInsets = self.windowScene?.windows.first?.safeAreaInsets
+    
     lazy var safeAreaHeight = UIScreen.main.bounds.height - self.safeAreaInsets!.top - self.safeAreaInsets!.bottom
 
     // MARK: - Components
@@ -52,8 +54,8 @@ class PostDetailViewController: BasicController {
     }
 }
 
+// MARK: - LifeCycle
 extension PostDetailViewController {
-    // MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,8 +74,8 @@ extension PostDetailViewController {
     }
 }
 
+// MARK: - SetUp
 private extension PostDetailViewController {
-    // MARK: - SetUp
 
     func setUp() {
         totalTableView.delegate = self
@@ -126,7 +128,7 @@ private extension PostDetailViewController {
                         }
                     }
                 } else {
-                    guard let user = Utils.currentUser else { return }
+                    guard let user = LoginManager.manager.email else { return }
                     let comment = Comment(
                         id: UUID(),
                         user: user,
@@ -219,8 +221,8 @@ private extension PostDetailViewController {
     }
 }
 
+// MARK: Bind
 private extension PostDetailViewController {
-    // MARK: Bind
 
     func bind() {
         viewModel.comments.bind { [weak self] _ in
@@ -239,8 +241,8 @@ private extension PostDetailViewController {
     }
 }
 
+// MARK: Methods
 private extension PostDetailViewController {
-    // MARK: Method
 
     func checkLike() {
         guard let post = viewModel.post.value else { return }

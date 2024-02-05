@@ -8,12 +8,7 @@
 import UIKit
 
 class BasicController: UIViewController {
-    
-    // MARK: - LifeCycle
-    override func viewDidLoad() {
-        setUpColor()
-    }
-    
+   
     init() {
         super.init(nibName: nil, bundle: nil)
         print(self, "init")
@@ -27,9 +22,18 @@ class BasicController: UIViewController {
     }
 }
 
+// MARK: - LifeCycle
+extension BasicController {
+    
+    override func viewDidLoad() {
+        setUpColor()
+    }
+}
+
+// MARK: - SetUp
 private extension BasicController {
-    // MARK: - SetUp
-    private func setUpColor() {
+
+    func setUpColor() {
         view.backgroundColor = .systemBackground
     }
 }

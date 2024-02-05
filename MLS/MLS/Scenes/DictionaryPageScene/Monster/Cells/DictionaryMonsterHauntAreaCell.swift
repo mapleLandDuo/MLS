@@ -8,7 +8,7 @@
 import UIKit
 
 class DictionaryMonsterHauntAreaCell: UITableViewCell {
-    // MARK: - Property
+    // MARK: - Properties
 
     private var hauntAreaArray: Observable<[String]> = Observable([])
 
@@ -40,8 +40,8 @@ class DictionaryMonsterHauntAreaCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictionaryMonsterHauntAreaCell {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()
@@ -67,16 +67,6 @@ private extension DictionaryMonsterHauntAreaCell {
     }
 }
 
-private extension DictionaryMonsterHauntAreaCell {
-    // MARK: - bind
-
-    func bind() {
-        hauntAreaArray.bind { [weak self] _ in
-            self?.collectionView.reloadData()
-        }
-    }
-}
-
 extension DictionaryMonsterHauntAreaCell: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let count = hauntAreaArray.value?.count else { return 0 }
@@ -98,9 +88,14 @@ extension DictionaryMonsterHauntAreaCell: UICollectionViewDataSource, UICollecti
     }
 }
 
+// MARK: - bind
 extension DictionaryMonsterHauntAreaCell {
-    // MARK: - bind
-
+    
+    private func bind() {
+        hauntAreaArray.bind { [weak self] _ in
+            self?.collectionView.reloadData()
+        }
+    }
     func bind(item: DictionaryMonster) {
         hauntAreaArray.value = item.hauntArea
         collectionView.collectionViewLayout.invalidateLayout()

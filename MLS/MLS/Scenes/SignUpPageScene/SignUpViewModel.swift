@@ -23,24 +23,28 @@ enum ValidationResult {
 }
 
 class SignUpViewModel {
-    // MARK: - Property
+    // MARK: - Properties
 
     var emailState: Observable<ValidationResult> = Observable(.empty)
+    
     var nickNameState: Observable<ValidationResult> = Observable(.empty)
+    
     var passwordState: Observable<ValidationResult> = Observable(.empty)
+    
     var checkPasswordState: Observable<ValidationResult> = Observable(.empty)
+    
     var isPrivacyAgree: Observable<Bool> = Observable(false)
+    
     var isSignUpAble: Observable<Bool> = Observable(false)
-    var loginManager = LoginManager()
 }
 
+// MARK: - Methods
 extension SignUpViewModel {
-    // MARK: - Method
 
     func trySignUp(email: String, password: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { _, error in
             if error == nil {
-                self.loginManager.createUser(email: email, nickName: nickName) { isSuccess, errorMessage in
+                FirebaseManager.firebaseManager.createUser(email: email, nickName: nickName) { isSuccess, errorMessage in
                     if isSuccess {
                         completion(true, nil)
                     } else {

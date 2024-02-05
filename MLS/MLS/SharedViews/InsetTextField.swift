@@ -8,9 +8,14 @@
 import UIKit
 
 class InsetTextField: UITextField {
+    // MARK: - Properties
     private let commonInsets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
+    
     private let clearButtonOffset: CGFloat = 5
+    
     private let clearButtonLeftPadding: CGFloat = 5
+
+    // MARK: - Override Methods
 
     override open func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: commonInsets)

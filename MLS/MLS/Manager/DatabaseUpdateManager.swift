@@ -9,6 +9,11 @@ import Foundation
 
 import Kanna
 
+struct DictionaryNameLinkUpdateItem: Codable {
+    var name: String
+    var link: String
+}
+
 class DatabaseUpdateManager {
     func updateItemLink() {}
 
@@ -57,7 +62,6 @@ class DatabaseUpdateManager {
                     )
                     item.name = dataLinks.name
                     item.code = dataLinks.link
-                    guard let temp = doc.innerHTML else { return }
                     for product in doc.xpath("//div[@class='main-content']") {
                         for (i, value) in product.xpath("//div[@class='search-page-info-content-box']").enumerated() {
                             guard var datas = value.text?.components(separatedBy: "\r\n").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) }).filter({ $0 != "" }) else { return }
@@ -125,7 +129,7 @@ class DatabaseUpdateManager {
                             }
                         }
                         for value in product.xpath("//div[@class='search-page-add-content']") {
-                            guard var datas = value.text?.components(separatedBy: "\r\n").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) }).filter({ $0 != "" }) else { return }
+                            guard let datas = value.text?.components(separatedBy: "\r\n").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) }).filter({ $0 != "" }) else { return }
                             var count = 0
                             var dropItem = DictionaryNameDescription(name: "temp", description: "temp")
                             for data in datas {

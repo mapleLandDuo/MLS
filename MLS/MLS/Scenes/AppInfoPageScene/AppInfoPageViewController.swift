@@ -80,8 +80,8 @@ class AppInfoPageViewController: BasicController {
     }()
 }
 
+// MARK: - Life Cycle
 extension AppInfoPageViewController {
-    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,8 +89,8 @@ extension AppInfoPageViewController {
     }
 }
 
+// MARK: - SetUp
 private extension AppInfoPageViewController {
-    // MARK: - SetUp
 
     func setUp() {
         setUpConstraints()

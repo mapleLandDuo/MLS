@@ -108,7 +108,7 @@ private extension CommunityPageViewController {
         communityTableView.delegate = self
 
         communityTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
-        communityTableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
+        communityTableView.register(SearchbarTableViewCell.self, forCellReuseIdentifier: SearchbarTableViewCell.identifier)
 
         setUpConstraints()
     }
@@ -233,7 +233,7 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let postCell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
-        guard let searchCell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
+        guard let searchCell = tableView.dequeueReusableCell(withIdentifier: SearchbarTableViewCell.identifier, for: indexPath) as? SearchbarTableViewCell else { return UITableViewCell() }
         if viewModel.posts.value?.count != viewModel.postsCount && indexPath.row == 0 {
             searchCell.searchBar.delegate = self
             searchCell.isUserInteractionEnabled = true

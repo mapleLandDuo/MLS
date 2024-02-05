@@ -92,7 +92,7 @@
 		08EF65202B556C19004CC842 /* AddPostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF651F2B556C19004CC842 /* AddPostImageCell.swift */; };
 		08EF65222B5572C5004CC842 /* AddPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65212B5572C5004CC842 /* AddPostViewModel.swift */; };
 		08EF65242B5572E3004CC842 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65232B5572E3004CC842 /* Observable.swift */; };
-		7707440E2B55511E00FCEDED /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440D2B55511E00FCEDED /* SearchTableViewCell.swift */; };
+		7707440E2B55511E00FCEDED /* SearchbarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */; };
 		770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */; };
 		77082A4A2B63A26200187906 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A492B63A26200187906 /* PostDetailViewModel.swift */; };
 		77082A4C2B63A2C300187906 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A4B2B63A2C300187906 /* Comment.swift */; };
@@ -187,7 +187,7 @@
 		08EF651F2B556C19004CC842 /* AddPostImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostImageCell.swift; sourceTree = "<group>"; };
 		08EF65212B5572C5004CC842 /* AddPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewModel.swift; sourceTree = "<group>"; };
 		08EF65232B5572E3004CC842 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
-		7707440D2B55511E00FCEDED /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchbarTableViewCell.swift; sourceTree = "<group>"; };
 		7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSeparatorType.swift; sourceTree = "<group>"; };
 		77082A492B63A26200187906 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		77082A4B2B63A2C300187906 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
@@ -432,7 +432,7 @@
 				082D0C332B53CF4800D84CE2 /* LaunchScreen.storyboard */,
 				7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */,
 				7751CEFC2B54129C000E5E74 /* CustomLabel.swift */,
-				7707440D2B55511E00FCEDED /* SearchTableViewCell.swift */,
+				7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */,
 				08EF651A2B555BB7004CC842 /* InsetTextField.swift */,
 				08D50A6C2B5936AF00E94442 /* SharedTextField.swift */,
 				08D50A852B5FD30D00E94442 /* ActivityIndicator.swift */,
@@ -792,7 +792,7 @@
 				08D50A782B5E96DA00E94442 /* MainPageProfileCell.swift in Sources */,
 				08D50A6B2B59137B00E94442 /* SignUpViewController.swift in Sources */,
 				081E6FD52B663B7600CF83F4 /* DictionaryMonsterViewController.swift in Sources */,
-				7707440E2B55511E00FCEDED /* SearchTableViewCell.swift in Sources */,
+				7707440E2B55511E00FCEDED /* SearchbarTableViewCell.swift in Sources */,
 				7732E8842B67F3F90038C7A9 /* DictionarySearchCell.swift in Sources */,
 				779B72BD2B56DA0F007CB6C1 /* Date+.swift in Sources */,
 				081E6FDE2B66704F00CF83F4 /* DictionaryMonsterViewModel.swift in Sources */,

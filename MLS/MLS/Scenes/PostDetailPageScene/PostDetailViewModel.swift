@@ -33,7 +33,7 @@ extension PostDetailViewModel {
 
     func loadPost(completion: @escaping () -> Void) {
         guard let postId = post.value?.id.uuidString else { return }
-        FirebaseManager.firebaseManager.loadPost(id: postId) { [weak self] post in
+        FirebaseManager.firebaseManager.fetchPost(id: postId) { [weak self] post in
             self?.post.value = post
             completion()
         }
@@ -46,7 +46,7 @@ extension PostDetailViewModel {
     }
     
     func loadComment(postId: String) {
-        FirebaseManager.firebaseManager.loadComments(postID: postId) { comments in
+        FirebaseManager.firebaseManager.fetchComments(postID: postId) { comments in
             if let count = comments?.count {
                 self.commentCount = count
             }
@@ -85,7 +85,7 @@ extension PostDetailViewModel {
     }
     
     func setLikeCount(postID: String, completion: @escaping () -> Void) {
-        FirebaseManager.firebaseManager.setUpCount(postID: postID) {
+        FirebaseManager.firebaseManager.updateLikeCount(postID: postID) {
             completion()
         }
     }

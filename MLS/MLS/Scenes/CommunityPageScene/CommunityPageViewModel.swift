@@ -32,7 +32,7 @@ extension CommunityPageViewModel {
     func loadPosts(sort: SortType, completion: @escaping ([Post]?) -> Void) {
         switch (type, sort) {
         case (.normal, .new):
-            FirebaseManager.firebaseManager.newPosts(type: [.normal]) { [weak self] post in
+            FirebaseManager.firebaseManager.fetchNewPosts(type: [.normal]) { [weak self] post in
                 if let post = post {
                     self?.postsCount = post.count
                     completion(post)
@@ -42,7 +42,7 @@ extension CommunityPageViewModel {
             }
             
         case (.normal, .popular):
-            FirebaseManager.firebaseManager.popularPosts(type: [.normal]) { [weak self] post in
+            FirebaseManager.firebaseManager.fetchPopularPosts(type: [.normal]) { [weak self] post in
                 if let post = post {
                     self?.postsCount = post.count
                     completion(post)
@@ -51,7 +51,7 @@ extension CommunityPageViewModel {
                 }
             }
         case (.buy, .new), (.sell, .new), (.complete, .new):
-            FirebaseManager.firebaseManager.newPosts(type: [.buy, .sell, .complete]) { [weak self] post in
+            FirebaseManager.firebaseManager.fetchNewPosts(type: [.buy, .sell, .complete]) { [weak self] post in
                 if let post = post {
                     self?.postsCount = post.count
                     completion(post)
@@ -61,7 +61,7 @@ extension CommunityPageViewModel {
             }
             
         case (.buy, .popular), (.sell, .popular), (.complete, .popular):
-            FirebaseManager.firebaseManager.popularPosts(type: [.buy, .sell, .complete]) { [weak self] post in
+            FirebaseManager.firebaseManager.fetchPopularPosts(type: [.buy, .sell, .complete]) { [weak self] post in
                 if let post = post {
                     self?.postsCount = post.count
                     completion(post)

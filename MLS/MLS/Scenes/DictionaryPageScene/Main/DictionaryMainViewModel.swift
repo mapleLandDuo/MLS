@@ -108,13 +108,13 @@ extension DictionaryMainViewModel {
     }
 
     func loadItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
-        FirebaseManager.firebaseManager.loadItemByRoll(roll: roll) { items in
+        FirebaseManager.firebaseManager.fetchItemByRoll(roll: roll) { items in
             completion(items)
         }
     }
 
     func loadMonsterByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
-        FirebaseManager.firebaseManager.loadMonsterByLevel(minLevel: minLevel, maxLevel: maxLevel) { monsters in
+        FirebaseManager.firebaseManager.fetchMonsterByLevel(minLevel: minLevel, maxLevel: maxLevel) { monsters in
             completion(monsters)
         }
     }

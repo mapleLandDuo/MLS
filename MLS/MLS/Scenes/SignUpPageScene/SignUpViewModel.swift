@@ -44,7 +44,7 @@ extension SignUpViewModel {
     func trySignUp(email: String, password: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { _, error in
             if error == nil {
-                FirebaseManager.firebaseManager.createUser(email: email, nickName: nickName) { isSuccess, errorMessage in
+                FirebaseManager.firebaseManager.saveUser(email: email, nickName: nickName) { isSuccess, errorMessage in
                     if isSuccess {
                         completion(true, nil)
                     } else {

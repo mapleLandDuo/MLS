@@ -121,7 +121,7 @@ extension DictionaryMonsterViewController: UITableViewDelegate, UITableViewDataS
             let itemName = viewModel.getItem().dropTable[indexPath.row].name
             if itemName == "메소" { return }
             IndicatorMaker.showLoading()
-            FirebaseManager.firebaseManager.loadItem(itemName: itemName) { item in
+            FirebaseManager.firebaseManager.fetchItems(itemName: itemName) { item in
                 guard let item = item else { return }
                 IndicatorMaker.hideLoading()
                 let vc = DictionaryItemViewController(viewModel: DictionaryItemViewModel(item: item))

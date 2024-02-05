@@ -9,7 +9,7 @@ import Foundation
 
 extension String {
     func toNickName(completion: @escaping (String) -> Void) {
-        FirebaseManager.firebaseManager.getNickname(userEmail: self) { nickName in
+        FirebaseManager.firebaseManager.fetchNickname(userEmail: self) { nickName in
             if let nickName = nickName {
                 completion(nickName)
             } else {

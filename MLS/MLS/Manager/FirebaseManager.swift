@@ -11,12 +11,19 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 
-// load,get -> fetch로 통일, update, delete, save
-// collectionName -> enum써서 적용
 // 에러처리 봐야함
 // 통일가능한 메서드는 제네릭을 이용해서 통일 ex) fetchData -> 컬렉션 따라 가능하게
 // 진훈
 
+enum CollectionName: String {
+    case users = "users"
+    case posts = "posts"
+    case comments = "comments"
+    case dictionaryMonsters = "dictionaryMonsters"
+    case dictionaryItems = "dictionaryItems"
+    case dictionaryItemLink = "dictionaryItemLink"
+    case dictionaryMonstersLink = "dictionaryMonstersLink"
+}
 
 class FirebaseManager {
     static let firebaseManager = FirebaseManager()
@@ -29,13 +36,13 @@ class FirebaseManager {
 extension FirebaseManager {
     // MARK: User
 
-    func getNickname(userEmail: String, completion: @escaping (String?) -> Void) {
-        db.collection("users").document(userEmail).getDocument { document, error in
+    func fetchNickname(userEmail: String, completion: @escaping (String?) -> Void) {
+        db.collection(CollectionName.users.rawValue).document(userEmail).getDocument { document, error in
             if let error = error {
                 print("닉네임 가져오지 못함: \(error)")
                 completion(nil)
             } else if let document = document, document.exists {
-                let name = document.get("nickName") as? String
+                let name = document.get(CollectionName.users.rawValue) as? String
                 completion(name)
             } else {
                 print("닉네임 가져오지 못함")
@@ -44,11 +51,11 @@ extension FirebaseManager {
         }
     }
     
-    func createUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
+    func saveUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
         let userData = User(id: email, nickName: nickName, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
         do {
             let data = try Firestore.Encoder().encode(userData)
-            db.collection("users").document(email).setData(data)
+            db.collection(CollectionName.users.rawValue).document(email).setData(data)
             completion(true, nil)
         } catch {
             completion(false, "FirebaseManager_EncodeFail")
@@ -56,13 +63,13 @@ extension FirebaseManager {
     }
     
     func deleteUserData(email: String, completion: @escaping () -> Void) {
-        loadMyPosts(userEmail: email) { posts in
+        fetchUserPosts(userEmail: email) { posts in
             guard let posts = posts else { return }
             let ids = posts.map { $0.id }
             for id in ids {
                 self.deletePost(postID: id.uuidString) { print("delete") }
             }
-            self.db.collection("users").document(email).delete { _ in
+            self.db.collection(CollectionName.users.rawValue).document(email).delete { _ in
                 completion()
             }
         }
@@ -75,15 +82,15 @@ extension FirebaseManager {
     func savePost(post: Post) {
         do {
             let data = try Firestore.Encoder().encode(post)
-            db.collection("posts").document(post.id.uuidString).setData(data)
+            db.collection(CollectionName.posts.rawValue).document(post.id.uuidString).setData(data)
         } catch {
             print(error)
         }
     }
 
     // 게시글 전부 가져오기
-    func loadPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).getDocuments { querySnapshot, error in
+    func fetchPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -96,7 +103,7 @@ extension FirebaseManager {
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
                         if let myEmail = LoginManager.manager.email {
-                            self.getMyReportUsers { users in
+                            self.fetchMyReportUsers { users in
                                 if let users = users {
                                     if !(post.reports.contains(myEmail)), !users.contains(post.user) {
                                         posts.append(post)
@@ -123,8 +130,8 @@ extension FirebaseManager {
     }
 
     // 게시글 id로 가져오기
-    func loadPost(id: String, completion: @escaping (Post?) -> Void) {
-        db.collection("posts").document(id).getDocument { documentSnapshot, error in
+    func fetchPost(id: String, completion: @escaping (Post?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).document(id).getDocument { documentSnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -144,8 +151,8 @@ extension FirebaseManager {
     }
 
     // 게시글 개수로 가져오기
-    func loadPosts(type: [BoardSeparatorType], itemCount: Int, completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).limit(to: itemCount + 3).getDocuments { querySnapshot, error in
+    func fetchPosts(type: [BoardSeparatorType], itemCount: Int, completion: @escaping ([Post]?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).limit(to: itemCount + 3).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -158,7 +165,7 @@ extension FirebaseManager {
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
                         if let myEmail = LoginManager.manager.email {
-                            self.getMyReportUsers { users in
+                            self.fetchMyReportUsers { users in
                                 if let users = users {
                                     if !(post.reports.contains(myEmail)), !users.contains(post.user) {
                                         posts.append(post)
@@ -185,8 +192,8 @@ extension FirebaseManager {
     }
 
     // 본인 게시글 가져오기
-    func loadMyPosts(userEmail: String, completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").whereField("user", isEqualTo: userEmail).order(by: "date", descending: true).getDocuments { querySnapshot, error in
+    func fetchUserPosts(userEmail: String, completion: @escaping ([Post]?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).whereField("user", isEqualTo: userEmail).order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -210,14 +217,14 @@ extension FirebaseManager {
     func updatePost(post: Post) {
         do {
             let data = try Firestore.Encoder().encode(post)
-            db.collection("posts").document(post.id.uuidString).updateData(data)
+            db.collection(CollectionName.posts.rawValue).document(post.id.uuidString).updateData(data)
         } catch {
             print(error)
         }
     }
 
     func deletePost(postID: String, completion: @escaping () -> Void) {
-        db.collection("posts").document(postID).delete { error in
+        db.collection(CollectionName.posts.rawValue).document(postID).delete { error in
             if let error = error {
                 print("게시글 삭제 실패: \(error)")
             } else {
@@ -261,7 +268,7 @@ extension FirebaseManager {
     }
 
     func toCompletePost(postID: String, completion: @escaping () -> Void) {
-        db.collection("posts").document(postID).updateData([
+        db.collection(CollectionName.posts.rawValue).document(postID).updateData([
             "postType": BoardSeparatorType.complete.rawValue
         ])
         completion()
@@ -274,7 +281,7 @@ extension FirebaseManager {
     func saveComment(postID: String, comment: Comment, completion: @escaping () -> Void) {
         do {
             let data = try Firestore.Encoder().encode(comment)
-            db.collection("posts").document(postID).collection("comments").document(comment.id.uuidString).setData(data)
+            db.collection(CollectionName.posts.rawValue).document(postID).collection("comments").document(comment.id.uuidString).setData(data)
             completion()
         } catch {
             print(error)
@@ -282,8 +289,8 @@ extension FirebaseManager {
     }
 
     // 게시글 댓글 가져오기
-    func loadComments(postID: String, completion: @escaping ([Comment]?) -> Void) {
-        db.collection("posts").document(postID).collection("comments").order(by: "date", descending: true).getDocuments { querySnapshot, error in
+    func fetchComments(postID: String, completion: @escaping ([Comment]?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).document(postID).collection(CollectionName.comments.rawValue).order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 print(error)
                 completion(nil)
@@ -296,7 +303,7 @@ extension FirebaseManager {
                     do {
                         let comment = try Firestore.Decoder().decode(Comment.self, from: document.data())
                         if let myEmail = LoginManager.manager.email {
-                            self.getMyReportUsers { users in
+                            self.fetchMyReportUsers { users in
                                 if let users = users {
                                     if !(comment.reports.contains(myEmail)), !users.contains(comment.user) {
                                         comments.append(comment)
@@ -323,8 +330,8 @@ extension FirebaseManager {
     }
 
     // 유저 댓글 가져오기
-    func loadComments(userID: String, completion: @escaping ([Comment]?) -> Void) {
-        db.collection("posts").getDocuments { postQuerySnapshot, postError in
+    func fetchUserComments(userID: String, completion: @escaping ([Comment]?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).getDocuments { postQuerySnapshot, postError in
             if let postError = postError {
                 print("게시물을 가져오지 못했습니다: \(postError)")
                 completion(nil)
@@ -338,7 +345,7 @@ extension FirebaseManager {
                 let postID = postDocument.documentID
                 dispatchGroup.enter()
 
-                let commentsQuery = self.db.collection("posts").document(postID).collection("comments").whereField("user", isEqualTo: userID).order(by: "date", descending: true)
+                let commentsQuery = self.db.collection(CollectionName.posts.rawValue ).document(postID).collection(CollectionName.comments.rawValue).whereField("user", isEqualTo: userID).order(by: "date", descending: true)
 
                 commentsQuery.getDocuments { commentsQuerySnapshot, commentsError in
                     if let commentsError = commentsError {
@@ -374,13 +381,13 @@ extension FirebaseManager {
     func updateComment(postID: String, comment: Comment, completion: @escaping () -> Void) {
         do {
             let data = try Firestore.Encoder().encode(comment)
-            db.collection("posts").document(postID).collection("comments").document(comment.id.uuidString).updateData(data)
+            db.collection(CollectionName.posts.rawValue).document(postID).collection(CollectionName.comments.rawValue).document(comment.id.uuidString).updateData(data)
             completion()
         } catch {}
     }
 
     func deleteComment(postID: String, commentID: String, completion: @escaping () -> Void) {
-        db.collection("posts").document(postID).collection("comments").document(commentID).delete { error in
+        db.collection(CollectionName.posts.rawValue).document(postID).collection(CollectionName.comments.rawValue).document(commentID).delete { error in
             if let error = error {
                 print("댓글 삭제 실패: \(error)")
             } else {
@@ -416,8 +423,8 @@ extension FirebaseManager {
         }
     }
 
-    func loadItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
-        db.collection("dictionaryItems")
+    func fetchItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
+        db.collection(CollectionName.dictionaryItems.rawValue)
             .whereField("detailDescription.직업", isGreaterThanOrEqualTo: roll)
             .whereField("detailDescription.직업", isLessThanOrEqualTo: roll + "\u{f8ff}").order(by: "detailDescription.직업").order(by: "level")
             .getDocuments { querySnapshot, err in
@@ -438,8 +445,8 @@ extension FirebaseManager {
             }
     }
 
-    func loadMonsterByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
-        db.collection("dictionaryMonsters").whereField("level", isGreaterThanOrEqualTo: minLevel).whereField("level", isLessThanOrEqualTo: maxLevel).order(by: "level")
+    func fetchMonsterByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
+        db.collection(CollectionName.dictionaryMonsters.rawValue).whereField("level", isGreaterThanOrEqualTo: minLevel).whereField("level", isLessThanOrEqualTo: maxLevel).order(by: "level")
             .getDocuments { querySnapshot, err in
                 if let err = err {
                     print("검색 데이터 없음: \(err)")
@@ -461,9 +468,9 @@ extension FirebaseManager {
     func getCollectionName<T>(for type: T.Type) -> String {
         switch type {
         case is DictionaryItem.Type:
-            return "dictionaryItems"
+            return CollectionName.dictionaryItems.rawValue
         case is DictionaryMonster.Type:
-            return "dictionaryMonsters"
+            return CollectionName.dictionaryMonsters.rawValue
         default:
             return "defaultCollection"
         }
@@ -474,7 +481,7 @@ extension FirebaseManager {
     func updateDictionaryItemLink(item: DictionaryNameLinkUpdateItem, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
-            db.collection("dictionaryItemLink").document(item.name).setData(data) { error in
+            db.collection(CollectionName.dictionaryItemLink.rawValue).document(item.name).setData(data) { error in
                 completion(error)
             }
         } catch {
@@ -485,7 +492,7 @@ extension FirebaseManager {
     func updateDictionaryMonsterLink(item: DictionaryNameLinkUpdateItem, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
-            db.collection("dictionaryMonsterLink").document(item.name).setData(data) { error in
+            db.collection(CollectionName.dictionaryMonstersLink.rawValue).document(item.name).setData(data) { error in
                 completion(error)
             }
         } catch {
@@ -496,7 +503,7 @@ extension FirebaseManager {
     func saveDictionaryMonster(item: DictionaryMonster, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
-            db.collection("dictionaryMonsters").document(item.name).setData(data) { error in
+            db.collection(CollectionName.dictionaryMonsters.rawValue).document(item.name).setData(data) { error in
                 completion(error)
             }
         } catch {
@@ -507,7 +514,7 @@ extension FirebaseManager {
     func saveDictionaryItem(item: DictionaryItem, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
-            db.collection("dictionaryItems").document(item.name).setData(data) { error in
+            db.collection(CollectionName.dictionaryItems.rawValue).document(item.name).setData(data) { error in
                 completion(error)
             }
         } catch {
@@ -515,8 +522,8 @@ extension FirebaseManager {
         }
     }
 
-    func loadItemLinks(completion: @escaping ([DictionaryNameLinkUpdateItem]?) -> Void) {
-        db.collection("dictionaryItemLink").getDocuments { querySnapshot, error in
+    func fetchItemLinks(completion: @escaping ([DictionaryNameLinkUpdateItem]?) -> Void) {
+        db.collection(CollectionName.dictionaryItemLink.rawValue).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -536,8 +543,8 @@ extension FirebaseManager {
         }
     }
 
-    func loadMonsterLinks(completion: @escaping ([DictionaryNameLinkUpdateItem]?) -> Void) {
-        db.collection("dictionaryMonsterLink").getDocuments { querySnapshot, error in
+    func fetchMonsterLinks(completion: @escaping ([DictionaryNameLinkUpdateItem]?) -> Void) {
+        db.collection(CollectionName.dictionaryMonstersLink.rawValue).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -557,8 +564,8 @@ extension FirebaseManager {
         }
     }
 
-    func loadItem(itemName: String, completion: @escaping (DictionaryItem?) -> Void) {
-        db.collection("dictionaryItems").document(itemName).getDocument { querySnapshot, error in
+    func fetchItems(itemName: String, completion: @escaping (DictionaryItem?) -> Void) {
+        db.collection(CollectionName.dictionaryItems.rawValue).document(itemName).getDocument { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -574,8 +581,8 @@ extension FirebaseManager {
         }
     }
 
-    func loadMonster(monsterName: String, completion: @escaping (DictionaryMonster?) -> Void) {
-        db.collection("dictionaryMonsters").document(monsterName).getDocument { querySnapshot, error in
+    func fetchMonsters(monsterName: String, completion: @escaping (DictionaryMonster?) -> Void) {
+        db.collection(CollectionName.dictionaryMonsters.rawValue).document(monsterName).getDocument { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -599,12 +606,12 @@ extension FirebaseManager {
         let group = DispatchGroup()
         guard let myEmail = LoginManager.manager.email else { return }
 
-        db.collection("users").document(userID).getDocument { document, error in
+        db.collection(CollectionName.users.rawValue).document(userID).getDocument { document, error in
             if let document = document, document.exists {
                 guard let blockedUsers = document.get("blockedUsers") as? [String] else { return }
                 if blockedUsers.contains(myEmail) {
                     group.enter()
-                    self.db.collection("users").document(userID).updateData([
+                    self.db.collection(CollectionName.users.rawValue).document(userID).updateData([
                         "blockedUsers": FieldValue.arrayRemove([myEmail])
                     ]) { error in
                         if let error = error {
@@ -614,7 +621,7 @@ extension FirebaseManager {
                     }
                 } else {
                     group.enter()
-                    self.db.collection("users").document(userID).updateData([
+                    self.db.collection(CollectionName.users.rawValue).document(userID).updateData([
                         "blockedUsers": FieldValue.arrayUnion([myEmail])
                     ]) { error in
                         if let error = error {
@@ -629,7 +636,7 @@ extension FirebaseManager {
         }
 
         group.enter()
-        db.collection("users").document(myEmail).updateData([
+        db.collection(CollectionName.users.rawValue).document(myEmail).updateData([
             "blockingUsers": FieldValue.arrayUnion([userID])
         ]) { error in
             if error != nil {
@@ -647,12 +654,12 @@ extension FirebaseManager {
         let group = DispatchGroup()
         guard let myEmail = LoginManager.manager.email else { return }
 
-        db.collection("posts").document(postID).getDocument { document, error in
+        db.collection(CollectionName.posts.rawValue).document(postID).getDocument { document, error in
             if let document = document, document.exists {
                 guard let reports = document.get("reports") as? [String] else { return }
                 if reports.contains(myEmail) {
                     group.enter()
-                    self.db.collection("posts").document(postID).updateData([
+                    self.db.collection(CollectionName.posts.rawValue).document(postID).updateData([
                         "reports": FieldValue.arrayRemove([myEmail])
                     ]) { error in
                         if let error = error {
@@ -662,7 +669,7 @@ extension FirebaseManager {
                     }
                 } else {
                     group.enter()
-                    self.db.collection("posts").document(postID).updateData([
+                    self.db.collection(CollectionName.posts.rawValue).document(postID).updateData([
                         "reports": FieldValue.arrayUnion([myEmail])
                     ]) { error in
                         if let error = error {
@@ -677,7 +684,7 @@ extension FirebaseManager {
         }
 
         group.enter()
-        db.collection("users").document(myEmail).updateData([
+        db.collection(CollectionName.users.rawValue).document(myEmail).updateData([
             "blockingPosts": FieldValue.arrayUnion([postID])
         ]) { error in
             if error != nil {
@@ -695,12 +702,12 @@ extension FirebaseManager {
         let group = DispatchGroup()
         guard let myEmail = LoginManager.manager.email else { return }
 
-        db.collection("posts").document(postId).collection("comments").document(commentId).getDocument { document, error in
+        db.collection(CollectionName.posts.rawValue).document(postId).collection(CollectionName.comments.rawValue).document(commentId).getDocument { document, error in
             if let document = document, document.exists {
                 guard let reports = document.get("reports") as? [String] else { return }
                 if reports.contains(myEmail) {
                     group.enter()
-                    self.db.collection("posts").document(postId).collection("comments").document(commentId).updateData([
+                    self.db.collection(CollectionName.posts.rawValue).document(postId).collection(CollectionName.comments.rawValue).document(commentId).updateData([
                         "reports": FieldValue.arrayRemove([myEmail])
                     ]) { error in
                         if let error = error {
@@ -710,7 +717,7 @@ extension FirebaseManager {
                     }
                 } else {
                     group.enter()
-                    self.db.collection("posts").document(postId).collection("comments").document(commentId).updateData([
+                    self.db.collection(CollectionName.posts.rawValue).document(postId).collection(CollectionName.comments.rawValue).document(commentId).updateData([
                         "reports": FieldValue.arrayUnion([myEmail])
                     ]) { error in
                         if let error = error {
@@ -725,7 +732,7 @@ extension FirebaseManager {
         }
 
         group.enter()
-        db.collection("users").document(myEmail).updateData([
+        db.collection(CollectionName.users.rawValue).document(myEmail).updateData([
             "blockingComments": FieldValue.arrayUnion([commentId])
         ]) { error in
             if error != nil {
@@ -743,7 +750,7 @@ extension FirebaseManager {
         let group = DispatchGroup()
 
         group.enter()
-        db.collection("posts").document(postId).collection("comments").document(commentId).updateData([
+        db.collection(CollectionName.posts.rawValue).document(postId).collection(CollectionName.comments.rawValue).document(commentId).updateData([
             "reports": newReport
         ]) { error in
             if error != nil {
@@ -759,9 +766,9 @@ extension FirebaseManager {
         }
     }
 
-    func getMyReportUsers(completion: @escaping ([String]?) -> Void) {
+    func fetchMyReportUsers(completion: @escaping ([String]?) -> Void) {
         guard let myEmail = LoginManager.manager.email else { return }
-        db.collection("users").document(myEmail).getDocument { documentSnapshot, error in
+        db.collection(CollectionName.users.rawValue).document(myEmail).getDocument { documentSnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -785,13 +792,13 @@ extension FirebaseManager {
 
 extension FirebaseManager {
     // UpCount
-    func setUpCount(postID: String, completion: @escaping () -> Void) {
+    func updateLikeCount(postID: String, completion: @escaping () -> Void) {
         guard let myEmail = LoginManager.manager.email else { return }
-        db.collection("posts").document(postID).getDocument { document, error in
+        db.collection(CollectionName.posts.rawValue).document(postID).getDocument { document, error in
             if let document = document, document.exists {
                 guard let reports = document.get("likes") as? [String] else { return }
                 if reports.contains(myEmail) {
-                    self.db.collection("posts").document(postID).updateData([
+                    self.db.collection(CollectionName.posts.rawValue).document(postID).updateData([
                         "likes": FieldValue.arrayRemove([myEmail])
                     ]) { error in
                         if let error = error {
@@ -801,7 +808,7 @@ extension FirebaseManager {
                         }
                     }
                 } else {
-                    self.db.collection("posts").document(postID).updateData([
+                    self.db.collection(CollectionName.posts.rawValue).document(postID).updateData([
                         "likes": FieldValue.arrayUnion([myEmail])
                     ]) { error in
                         if let error = error {
@@ -822,7 +829,7 @@ extension FirebaseManager {
     // MARK: ViewCount
 
     func updateViewCount(postID: String) {
-        db.collection("posts").document(postID).updateData([
+        db.collection(CollectionName.posts.rawValue).document(postID).updateData([
             "viewCount": FieldValue.increment(Int64(1))
         ]) { error in
             if let error = error {
@@ -836,7 +843,7 @@ extension FirebaseManager {
     // MARK: PostSearch
 
     func searchPosts(text: String, completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").whereField("title", isGreaterThanOrEqualTo: text).whereField("title", isLessThan: text + "\u{f8ff}").order(by: "title").order(by: "date", descending: true).getDocuments { querySnapshot, error in
+        db.collection(CollectionName.posts.rawValue).whereField("title", isGreaterThanOrEqualTo: text).whereField("title", isLessThan: text + "\u{f8ff}").order(by: "title").order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -849,7 +856,7 @@ extension FirebaseManager {
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
                         if let myEmail = LoginManager.manager.email {
-                            self.getMyReportUsers { users in
+                            self.fetchMyReportUsers { users in
                                 if let users = users {
                                     if !(post.reports.contains(myEmail)), !users.contains(post.user) {
                                         posts.append(post)
@@ -879,8 +886,8 @@ extension FirebaseManager {
 extension FirebaseManager {
     // MARK: SortedPost
 
-    func newPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).getDocuments { querySnapshot, error in
+    func fetchNewPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -893,7 +900,7 @@ extension FirebaseManager {
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
                         if let myEmail = LoginManager.manager.email {
-                            self.getMyReportUsers { users in
+                            self.fetchMyReportUsers { users in
                                 if let users = users {
                                     if !(post.reports.contains(myEmail)), !users.contains(post.user) {
                                         posts.append(post)
@@ -919,8 +926,8 @@ extension FirebaseManager {
         }
     }
 
-    func popularPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
-        db.collection("posts").whereField("postType", in: type.map { $0.rawValue }).order(by: "viewCount", descending: true).getDocuments { querySnapshot, error in
+    func fetchPopularPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).whereField("postType", in: type.map { $0.rawValue }).order(by: "viewCount", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 print("데이터를 가져오지 못했습니다: \(error)")
                 completion(nil)
@@ -933,7 +940,7 @@ extension FirebaseManager {
                     do {
                         let post = try Firestore.Decoder().decode(Post.self, from: document.data())
                         if let myEmail = LoginManager.manager.email {
-                            self.getMyReportUsers { users in
+                            self.fetchMyReportUsers { users in
                                 if let users = users {
                                     if !(post.reports.contains(myEmail)), !users.contains(post.user) {
                                         posts.append(post)

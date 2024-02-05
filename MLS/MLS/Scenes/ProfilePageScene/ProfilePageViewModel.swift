@@ -27,7 +27,7 @@ class ProfilePageViewModel {
 extension ProfilePageViewModel {
     
     func loadPosts(completion: @escaping () -> Void) {
-        FirebaseManager.firebaseManager.loadMyPosts(userEmail: email) { posts in
+        FirebaseManager.firebaseManager.fetchUserPosts(userEmail: email) { posts in
             self.posts.value = posts
             completion()
         }

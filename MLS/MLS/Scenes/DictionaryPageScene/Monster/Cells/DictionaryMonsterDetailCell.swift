@@ -93,57 +93,68 @@ private extension DictionaryMonsterDetailCell {
     }
 
     func setUpConstraints() {
+        
         contentView.addSubview(physicalDefenseTitleLabel)
-        physicalDefenseTitleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.equalToSuperview().offset(Constants.defaults.vertical)
-        }
         contentView.addSubview(magicDefenseTitleLabel)
-        magicDefenseTitleLabel.snp.makeConstraints { make in
-            make.left.equalTo(contentView.snp.centerX).offset(Constants.defaults.horizontal)
-            make.top.equalTo(physicalDefenseTitleLabel)
-        }
         contentView.addSubview(requiredAccuracyTitleLabel)
-        requiredAccuracyTitleLabel.snp.makeConstraints { make in
-            make.left.equalTo(physicalDefenseTitleLabel)
-            make.top.equalTo(physicalDefenseTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
-        }
         contentView.addSubview(evasionRateTitleLabel)
-        evasionRateTitleLabel.snp.makeConstraints { make in
-            make.left.equalTo(magicDefenseTitleLabel)
-            make.top.equalTo(magicDefenseTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
-        }
         contentView.addSubview(physicalDefenseLabel)
-        physicalDefenseLabel.snp.makeConstraints { make in
-            make.top.equalTo(physicalDefenseTitleLabel)
-            make.right.equalTo(magicDefenseTitleLabel.snp.left).inset(-Constants.defaults.horizontal * 2)
-        }
         contentView.addSubview(requiredAccuracyLabel)
-        requiredAccuracyLabel.snp.makeConstraints { make in
-            make.top.equalTo(requiredAccuracyTitleLabel)
-            make.right.equalTo(evasionRateTitleLabel.snp.left).inset(-Constants.defaults.horizontal * 2)
-        }
         contentView.addSubview(magicDefenseLabel)
-        magicDefenseLabel.snp.makeConstraints { make in
-            make.top.equalTo(magicDefenseTitleLabel)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         contentView.addSubview(evasionRateLabel)
-        evasionRateLabel.snp.makeConstraints { make in
-            make.top.equalTo(evasionRateTitleLabel)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         contentView.addSubview(levelAccuracyLabel)
-        levelAccuracyLabel.snp.makeConstraints { make in
-            make.top.equalTo(evasionRateLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         contentView.addSubview(bottomSeparatorView)
-        bottomSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(levelAccuracyLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-            make.bottom.equalToSuperview()
+        
+        physicalDefenseTitleLabel.snp.makeConstraints { 
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.equalToSuperview().offset(Constants.defaults.vertical)
+        }
+        
+        magicDefenseTitleLabel.snp.makeConstraints { 
+            $0.leading.equalTo(contentView.snp.centerX).offset(Constants.defaults.horizontal)
+            $0.top.equalTo(physicalDefenseTitleLabel)
+        }
+        
+        requiredAccuracyTitleLabel.snp.makeConstraints { 
+            $0.leading.equalTo(physicalDefenseTitleLabel)
+            $0.top.equalTo(physicalDefenseTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
+        }
+        
+        evasionRateTitleLabel.snp.makeConstraints { 
+            $0.leading.equalTo(magicDefenseTitleLabel)
+            $0.top.equalTo(magicDefenseTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
+        }
+        
+        physicalDefenseLabel.snp.makeConstraints { 
+            $0.top.equalTo(physicalDefenseTitleLabel)
+            $0.trailing.equalTo(magicDefenseTitleLabel.snp.leading).inset(-Constants.defaults.horizontal * 2)
+        }
+        
+        requiredAccuracyLabel.snp.makeConstraints { 
+            $0.top.equalTo(requiredAccuracyTitleLabel)
+            $0.trailing.equalTo(evasionRateTitleLabel.snp.leading).inset(-Constants.defaults.horizontal * 2)
+        }
+        
+        magicDefenseLabel.snp.makeConstraints { 
+            $0.top.equalTo(magicDefenseTitleLabel)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+        evasionRateLabel.snp.makeConstraints { 
+            $0.top.equalTo(evasionRateTitleLabel)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+        levelAccuracyLabel.snp.makeConstraints { 
+            $0.top.equalTo(evasionRateLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+        bottomSeparatorView.snp.makeConstraints { 
+            $0.top.equalTo(levelAccuracyLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview()
         }
     }
 }

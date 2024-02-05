@@ -50,14 +50,16 @@ private extension MainPageFeatureListPostCell {
 
     func setUpConstraints() {
         contentView.addSubview(trailingView)
-        trailingView.snp.makeConstraints { make in
-            make.top.left.right.equalToSuperview()
-            make.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-        }
         trailingView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
+        
+        trailingView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(Constants.defaults.vertical)
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
         }
     }
 }

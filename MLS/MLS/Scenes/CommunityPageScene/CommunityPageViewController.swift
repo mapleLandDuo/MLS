@@ -130,7 +130,7 @@ private extension CommunityPageViewController {
         }
 
         searchButton.snp.makeConstraints {
-            $0.trailing.equalTo(sortButton.snp.leading).offset(Constants.defaults.horizontal)
+            $0.trailing.equalTo(sortButton.snp.leading).offset(-Constants.defaults.horizontal)
             $0.centerY.equalTo(titleButton)
         }
 
@@ -200,7 +200,7 @@ private extension CommunityPageViewController {
     func loadPosts() {
         guard let sortType = viewModel.sortType.value else { return }
         IndicatorMaker.showLoading()
-        viewModel.loadPosts(sort: sortType) { posts in
+        viewModel.fetchPosts(sort: sortType) { posts in
             IndicatorMaker.hideLoading()
             self.viewModel.posts.value = posts
         }

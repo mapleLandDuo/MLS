@@ -17,10 +17,10 @@ class CommunityPageViewModel {
 
     var posts: Observable<[Post]> = Observable(nil)
     var postsCount = 0
-    
+
     let type: BoardSeparatorType
     let sortType: Observable<SortType> = Observable(.new)
-    
+
     init(type: BoardSeparatorType) {
         self.type = type
     }
@@ -28,50 +28,40 @@ class CommunityPageViewModel {
 
 // MARK: - Methods
 extension CommunityPageViewModel {
-    
-    func loadPosts(sort: SortType, completion: @escaping ([Post]?) -> Void) {
+    func fetchPosts(sort: SortType, completion: @escaping ([Post]?) -> Void) {
         switch (type, sort) {
         case (.normal, .new):
-            FirebaseManager.firebaseManager.fetchNewPosts(type: [.normal]) { [weak self] post in
-                if let post = post {
-                    self?.postsCount = post.count
-                    completion(post)
-                } else {
-                    completion(nil)
-                }
+            fetchPopularPosts(type: [.normal]) { post in
+                completion(post)
             }
-            
+
         case (.normal, .popular):
-            FirebaseManager.firebaseManager.fetchPopularPosts(type: [.normal]) { [weak self] post in
-                if let post = post {
-                    self?.postsCount = post.count
-                    completion(post)
-                } else {
-                    completion(nil)
-                }
+            fetchPopularPosts(type: [.normal]) { post in
+                completion(post)
             }
         case (.buy, .new), (.sell, .new), (.complete, .new):
-            FirebaseManager.firebaseManager.fetchNewPosts(type: [.buy, .sell, .complete]) { [weak self] post in
-                if let post = post {
-                    self?.postsCount = post.count
-                    completion(post)
-                } else {
-                    completion(nil)
-                }
+            fetchPopularPosts(type: [.buy, .sell, .complete]) { post in
+                completion(post)
             }
-            
+
         case (.buy, .popular), (.sell, .popular), (.complete, .popular):
-            FirebaseManager.firebaseManager.fetchPopularPosts(type: [.buy, .sell, .complete]) { [weak self] post in
-                if let post = post {
-                    self?.postsCount = post.count
-                    completion(post)
-                } else {
-                    completion(nil)
-                }
+            fetchPopularPosts(type: [.buy, .sell, .complete]) { post in
+                completion(post)
             }
         }
     }
-    
+
+    func fetchPopularPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
+        FirebaseManager.firebaseManager.fetchPopularPosts(type: type) { [weak self] post in
+            if let post = post {
+                self?.postsCount = post.count
+                completion(post)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+
     func searchPosts(text: String, completion: @escaping (Bool) -> Void) {
         FirebaseManager.firebaseManager.searchPosts(text: text) { [weak self] posts in
             guard let posts = posts else { return }
@@ -84,9 +74,8 @@ extension CommunityPageViewModel {
             }
         }
     }
-    
+
     func isLogin() -> Bool {
         return LoginManager.manager.isLogin()
     }
 }
-

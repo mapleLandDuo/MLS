@@ -23,7 +23,7 @@ extension UserDefaultsManager {
         defaults.set(toggle, forKey: isAutoLogin)
     }
 
-    func getIsAutoLogin() -> Bool {
+    func fetchIsAutoLogin() -> Bool {
         return defaults.bool(forKey: isAutoLogin)
     }
 }

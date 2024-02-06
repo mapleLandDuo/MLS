@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidDisconnect(_ scene: UIScene) {
         let userDefaultManager = UserDefaultsManager()
-        if !userDefaultManager.getIsAutoLogin() {
+        if !userDefaultManager.fetchIsAutoLogin() {
             LoginManager.manager.logOut { _ in }
             print("logOut")
         }

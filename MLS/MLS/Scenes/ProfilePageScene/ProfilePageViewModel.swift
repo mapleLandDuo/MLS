@@ -26,7 +26,7 @@ class ProfilePageViewModel {
 // MARK: - Methods
 extension ProfilePageViewModel {
     func fetchPosts(completion: @escaping () -> Void) {
-        FirebaseManager.firebaseManager.loadMyPosts(userEmail: email) { posts in
+        FirebaseManager.firebaseManager.fetchUserPosts(userEmail: email) { posts in
             self.posts.value = posts
             completion()
         }

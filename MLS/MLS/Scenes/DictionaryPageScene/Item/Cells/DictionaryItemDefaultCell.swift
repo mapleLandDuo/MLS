@@ -7,7 +7,7 @@
 
 import UIKit
 
-//setup 수정
+import SnapKit
 
 class DictionaryItemDefaultCell: UITableViewCell {
     // MARK: - Components
@@ -64,31 +64,33 @@ private extension DictionaryItemDefaultCell {
 
     func setUpConstraints() {
         contentView.addSubview(levelTitleLabel)
-        levelTitleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.equalToSuperview().offset(Constants.defaults.vertical)
-        }
         contentView.addSubview(divisionTitleLabel)
-        divisionTitleLabel.snp.makeConstraints { make in
-            make.left.equalTo(contentView.snp.centerX).offset(Constants.defaults.horizontal)
-            make.top.equalTo(levelTitleLabel)
-        }
         contentView.addSubview(levelLabel)
-        levelLabel.snp.makeConstraints { make in
-            make.top.equalTo(levelTitleLabel)
-            make.right.equalTo(divisionTitleLabel.snp.left).inset(-Constants.defaults.horizontal * 2)
-        }
         contentView.addSubview(divisionLabel)
-        divisionLabel.snp.makeConstraints { make in
-            make.top.equalTo(levelLabel)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         contentView.addSubview(bottomSeparatorView)
-        bottomSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(divisionTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-            make.bottom.equalToSuperview()
+        
+        levelTitleLabel.snp.makeConstraints { 
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.equalToSuperview().offset(Constants.defaults.vertical)
+        }
+
+        divisionTitleLabel.snp.makeConstraints { 
+            $0.leading.equalTo(contentView.snp.centerX).offset(Constants.defaults.horizontal)
+            $0.top.equalTo(levelTitleLabel)
+        }
+        levelLabel.snp.makeConstraints { 
+            $0.top.equalTo(levelTitleLabel)
+            $0.trailing.equalTo(divisionTitleLabel.snp.leading).inset(-Constants.defaults.horizontal * 2)
+        }
+        divisionLabel.snp.makeConstraints { 
+            $0.top.equalTo(levelLabel)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        bottomSeparatorView.snp.makeConstraints { 
+            $0.top.equalTo(divisionTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview()
         }
     }
 }

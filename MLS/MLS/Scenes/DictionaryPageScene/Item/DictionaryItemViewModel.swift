@@ -20,11 +20,11 @@ class DictionaryItemViewModel {
 // MARK: - Methods
 extension DictionaryItemViewModel {
 
-    func getItem() -> DictionaryItem {
+    func fetchItem() -> DictionaryItem {
         return item
     }
 
-    func getDefaultInfoArray() -> [DictionaryNameDescription] {
+    func fetchDefaultInfoArray() -> [DictionaryNameDescription] {
         let datas = [
             "description": item.description,
             "str": item.str,
@@ -57,7 +57,7 @@ extension DictionaryItemViewModel {
         return array
     }
 
-    func getDetailInfoArray() -> [DictionaryNameDescription] {
+    func fetchDetailInfoArray() -> [DictionaryNameDescription] {
         let temp = item.detailDescription
         var array: [DictionaryNameDescription] = []
         if temp["물리공격력"] != nil {

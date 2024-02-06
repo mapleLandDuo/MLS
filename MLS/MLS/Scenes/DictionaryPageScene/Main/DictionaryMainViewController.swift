@@ -180,34 +180,39 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
         }()
 
         headerView.addSubview(searchBar)
-        searchBar.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.right.equalToSuperview().inset(7)
-            make.height.equalTo(Constants.defaults.blockHeight)
-        }
         headerView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(searchBar.snp.centerY)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.right.equalTo(searchBar.snp.left)
-        }
         headerView.addSubview(titleSeparator)
-        titleSeparator.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-        }
         headerView.addSubview(descriptionLabel)
-        descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleSeparator.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         headerView.addSubview(bottomSeparator)
-        bottomSeparator.snp.makeConstraints { make in
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-            make.bottom.equalToSuperview()
+        
+        searchBar.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(7)
+            $0.height.equalTo(Constants.defaults.blockHeight)
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.centerY.equalTo(searchBar.snp.centerY)
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.trailing.equalTo(searchBar.snp.leading)
+        }
+
+        titleSeparator.snp.makeConstraints {
+            $0.top.equalTo(searchBar.snp.bottom)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+        }
+
+        descriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(titleSeparator.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        bottomSeparator.snp.makeConstraints {
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview()
         }
         return headerView
     }

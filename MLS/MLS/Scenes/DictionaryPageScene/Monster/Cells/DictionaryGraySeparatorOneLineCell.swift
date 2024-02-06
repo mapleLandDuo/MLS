@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 class DictionaryGraySeparatorOneLineCell: UITableViewCell {
     // MARK: - Components
 
@@ -52,18 +54,20 @@ private extension DictionaryGraySeparatorOneLineCell {
 
     func setUpConstraints() {
         contentView.addSubview(stackView)
-        stackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         stackView.addArrangedSubview(nameLabel)
         stackView.addArrangedSubview(descriptionLabel)
         contentView.addSubview(bottomSeparatorView)
-        bottomSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(stackView.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-            make.bottom.equalToSuperview()
+        
+        stackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        bottomSeparatorView.snp.makeConstraints { 
+            $0.top.equalTo(stackView.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview()
         }
     }
 }

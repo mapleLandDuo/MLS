@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 class DictionaryGraySeparatorDescriptionCell: UITableViewCell {
     // MARK: - Components
 
@@ -43,16 +45,18 @@ private extension DictionaryGraySeparatorDescriptionCell {
 
     func setUpConstraints() {
         contentView.addSubview(descriptionLabel)
-        descriptionLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         contentView.addSubview(bottomSeparatorView)
-        bottomSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-            make.bottom.equalToSuperview()
+        
+        descriptionLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        bottomSeparatorView.snp.makeConstraints {
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview()
         }
     }
 }

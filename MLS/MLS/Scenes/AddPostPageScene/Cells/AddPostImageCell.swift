@@ -51,18 +51,22 @@ private extension AddPostImageCell {
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.systemGray4.cgColor
         contentView.layer.cornerRadius = Constants.defaults.radius
-        deleteButton.addTarget(self, action: #selector(didTapButton), for: .primaryActionTriggered)
+        deleteButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapButton()
+        }), for: .primaryActionTriggered)
     }
 
     func setUpConstraints() {
         contentView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
         contentView.addSubview(deleteButton)
-        deleteButton.snp.makeConstraints { make in
-            make.top.right.equalToSuperview()
-            make.height.width.equalTo(20)
+        
+        imageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+
+        deleteButton.snp.makeConstraints {
+            $0.top.trailing.equalToSuperview()
+            $0.height.width.equalTo(20)
         }
     }
 }
@@ -70,7 +74,6 @@ private extension AddPostImageCell {
 // MARK: - Method
 private extension AddPostImageCell {
 
-    @objc
     func didTapButton() {
         callBackMethod?()
     }

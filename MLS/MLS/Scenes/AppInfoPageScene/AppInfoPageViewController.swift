@@ -97,56 +97,66 @@ private extension AppInfoPageViewController {
     }
     
     func setUpConstraints() {
+        
         view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         view.addSubview(titleSeparatorView)
-        titleSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-        }
         view.addSubview(appIconImageView)
-        appIconImageView.snp.makeConstraints { make in
-            make.top.equalTo(titleSeparatorView.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.width.equalTo(Constants.screenWidth / 6)
-        }
         view.addSubview(appNameLabel)
-        appNameLabel.snp.makeConstraints { make in
-            make.left.equalTo(appIconImageView.snp.right).offset(Constants.defaults.horizontal)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.bottom.equalTo(appIconImageView.snp.centerY).inset(Constants.defaults.vertical)
-        }
         view.addSubview(appVersionLabel)
-        appVersionLabel.snp.makeConstraints { make in
-            make.left.equalTo(appIconImageView.snp.right).offset(Constants.defaults.horizontal)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.equalTo(appIconImageView.snp.centerY).offset(Constants.defaults.vertical / 2)
-        }
         view.addSubview(titleBottomSeparatorView)
-        titleBottomSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(appIconImageView.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-        }
         view.addSubview(makerLabel)
-        makerLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleBottomSeparatorView.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         view.addSubview(makerSeparatorView)
-        makerSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(makerLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-        }
         view.addSubview(makerDescriptionLabel)
-        makerDescriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(makerSeparatorView.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+        
+        titleLabel.snp.makeConstraints { 
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        titleSeparatorView.snp.makeConstraints { 
+            $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+        }
+
+        appIconImageView.snp.makeConstraints { 
+            $0.top.equalTo(titleSeparatorView.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.width.equalTo(Constants.screenWidth / 6)
+        }
+
+        appNameLabel.snp.makeConstraints { 
+            $0.leading.equalTo(appIconImageView.snp.trailing).offset(Constants.defaults.horizontal)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.bottom.equalTo(appIconImageView.snp.centerY).inset(Constants.defaults.vertical)
+        }
+
+        appVersionLabel.snp.makeConstraints { 
+            $0.leading.equalTo(appIconImageView.snp.trailing).offset(Constants.defaults.horizontal)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.equalTo(appIconImageView.snp.centerY).offset(Constants.defaults.vertical / 2)
+        }
+
+        titleBottomSeparatorView.snp.makeConstraints { 
+            $0.top.equalTo(appIconImageView.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+        }
+
+        makerLabel.snp.makeConstraints { 
+            $0.top.equalTo(titleBottomSeparatorView.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        makerSeparatorView.snp.makeConstraints { 
+            $0.top.equalTo(makerLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+        }
+
+        makerDescriptionLabel.snp.makeConstraints { 
+            $0.top.equalTo(makerSeparatorView.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }
 }

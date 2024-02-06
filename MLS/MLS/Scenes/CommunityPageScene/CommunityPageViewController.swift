@@ -140,10 +140,11 @@ private extension CommunityPageViewController {
             $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
         }
-        addPostButton.snp.makeConstraints { make in
-            make.width.height.equalTo(Constants.defaults.blockHeight)
-            make.right.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical * 2)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
+        
+        addPostButton.snp.makeConstraints {
+            $0.width.height.equalTo(Constants.defaults.blockHeight)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical * 2)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
         }
     }
 

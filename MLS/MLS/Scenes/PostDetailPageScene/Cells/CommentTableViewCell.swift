@@ -67,7 +67,7 @@ private extension CommentTableViewCell {
         commentProfileNameLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
-            $0.trailing.equalTo(optionStackView).inset(-Constants.defaults.horizontal)
+            $0.trailing.equalTo(optionStackView).offset(Constants.defaults.horizontal)
         }
 
         optionStackView.snp.makeConstraints {
@@ -76,7 +76,7 @@ private extension CommentTableViewCell {
         }
 
         commentTextLabel.snp.makeConstraints {
-            $0.top.equalTo(commentProfileNameLabel.snp.bottom).inset(-Constants.defaults.vertical / 2)
+            $0.top.equalTo(commentProfileNameLabel.snp.bottom).offset(Constants.defaults.vertical / 2)
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             $0.bottom.equalToSuperview().inset(Constants.defaults.vertical / 2)
             $0.height.equalTo(30)

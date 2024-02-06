@@ -20,7 +20,7 @@ class QnAViewController: UIViewController {
     private let qnaTableView = UITableView()
 }
 
-// MARK: LifeCycle
+// MARK: Life Cycle
 extension QnAViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,6 @@ extension QnAViewController {
 
 // MARK: SetUp
 private extension QnAViewController {
-
     func setUp() {
         self.qnaTableView.delegate = self
         self.qnaTableView.dataSource = self
@@ -49,8 +48,7 @@ private extension QnAViewController {
 
 // MARK: Method
 private extension QnAViewController {
-
-    func clickCallCell(num: String) {
+    func tapCallCell(num: String) {
         if let url = NSURL(string: "tel://0" + "\(num)"),
            UIApplication.shared.canOpenURL(url as URL)
         {
@@ -65,20 +63,20 @@ extension QnAViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? self.viewModel.getContactCount() : self.viewModel.getQuestionCount()
+        return section == 0 ? self.viewModel.fetchContactCount() : self.viewModel.fetchQuestionCount()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
 
         if indexPath.section == 0 {
-            let item = self.viewModel.getContactList()[indexPath.row]
+            let item = self.viewModel.fetchContactList()[indexPath.row]
             cell.imageView?.tintColor = .systemOrange
             cell.imageView?.image = item.icon
             cell.textLabel?.text = item.title
             cell.selectionStyle = .none
         } else {
-            let item = self.viewModel.getQuestionList()[indexPath.row]
+            let item = self.viewModel.fetchQuestionList()[indexPath.row]
             cell.textLabel?.text = "\(indexPath.row + 1) . \(item.title)"
             cell.selectionStyle = .none
         }
@@ -88,7 +86,7 @@ extension QnAViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         let headerLabel = UILabel()
-        headerLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        headerLabel.font = Typography.title1.font
         headerLabel.textAlignment = .center
         headerLabel.textColor = .black
         headerLabel.text = section == 0 ? "문의하기" : "자주 찾는 질문"
@@ -106,13 +104,13 @@ extension QnAViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            switch self.viewModel.getContactList()[indexPath.row].type {
+            switch self.viewModel.fetchContactList()[indexPath.row].type {
             case .email:
-                self.clickMailCell()
+                self.tapMailCell()
             case .kakaoTalk:
                 AlertMaker.showAlertAction1(title: "업데이트 예정", message: "업데이트 예정 기능입니다.")
             case .call:
-                self.clickCallCell(num: self.viewModel.getContactList()[indexPath.row].title)
+                self.tapCallCell(num: self.viewModel.fetchContactList()[indexPath.row].title)
             }
         case 1:
             let vc = TextController(text: "업데이트 예정 기능입니다.")
@@ -131,7 +129,7 @@ extension QnAViewController: MFMailComposeViewControllerDelegate {
         self.present(sendMailErrorAlert, animated: true, completion: nil)
     }
 
-    private func clickMailCell() {
+    private func tapMailCell() {
         if MFMailComposeViewController.canSendMail() {
             let compseViewController = MFMailComposeViewController()
             compseViewController.mailComposeDelegate = self

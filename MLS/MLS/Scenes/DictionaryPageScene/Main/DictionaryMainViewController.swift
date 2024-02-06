@@ -95,9 +95,9 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 1:
-            return viewModel.getMonsterMenuCount()
+            return viewModel.fetchMonsterMenuCount()
         default:
-            return viewModel.getItemMenuCount()
+            return viewModel.fetchItemMenuCount()
         }
     }
 
@@ -105,14 +105,14 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
         switch indexPath.section {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: IconDescriptionTableViewCell.identifier, for: indexPath) as? IconDescriptionTableViewCell else { return UITableViewCell() }
-            let item = viewModel.getItemMenu()[indexPath.row]
+            let item = viewModel.fetchItemMenus()[indexPath.row]
             cell.delegate = self
             cell.bind(data: item)
             cell.selectionStyle = .none
             return cell
         default:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
-            let item = viewModel.getMonsterMenu()[indexPath.row]
+            let item = viewModel.fetchMonsterMenus()[indexPath.row]
             cell.bind(name: "LV. \(item)", description: "몬스터")
             cell.selectionStyle = .none
             return cell
@@ -133,12 +133,12 @@ extension DictionaryMainViewController: UITableViewDelegate, UITableViewDataSour
             var minLevel = 151
             var maxLevel = 1000
 
-            if viewModel.getMonsterMenu()[indexPath.row] != "etc" {
+            if viewModel.fetchMonsterMenus()[indexPath.row] != "etc" {
                 minLevel = (indexPath.row * 10 + 1)
                 maxLevel = (indexPath.row + 1) * 10
             }
 
-            viewModel.loadMonsterByLevel(minLevel: minLevel, maxLevel: maxLevel) { [weak self] monsters in
+            viewModel.fetchMonstersByLevel(minLevel: minLevel, maxLevel: maxLevel) { [weak self] monsters in
                 if monsters.isEmpty {
                     AlertMaker.showAlertAction1(vc: self, message: "해당 레벨에 맞는 몬스터가 없습니다!")
                     return
@@ -254,7 +254,7 @@ extension DictionaryMainViewController: UISearchBarDelegate {
 extension DictionaryMainViewController: IconDescriptionTableViewCellDelegate {
     func tapLeftButton(data: [ItemMenu]) {
         guard let roll = data.first?.title.rawValue else { return }
-        viewModel.loadItemByRoll(roll: roll) { [weak self] items in
+        viewModel.fetchItemsByRoll(roll: roll) { [weak self] items in
             let vm = DictionarySearchViewModel(type: .item)
             vm.itemList.value = items
             let vc = DictionarySearchViewController(viewModel: vm)
@@ -264,7 +264,7 @@ extension DictionaryMainViewController: IconDescriptionTableViewCellDelegate {
 
     func tapRightButton(data: [ItemMenu]) {
         guard let roll = data.last?.title.rawValue else { return }
-        viewModel.loadItemByRoll(roll: roll) { [weak self] items in
+        viewModel.fetchItemsByRoll(roll: roll) { [weak self] items in
             let vm = DictionarySearchViewModel(type: .item)
             vm.itemList.value = items
             let vc = DictionarySearchViewController(viewModel: vm)

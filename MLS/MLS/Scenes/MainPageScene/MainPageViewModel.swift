@@ -60,11 +60,11 @@ extension MainPageViewModel {
     func fetchMainPost(type: BoardSeparatorType, completion: @escaping ([Post]?) -> Void) {
         switch type {
         case .normal:
-            FirebaseManager.firebaseManager.loadPosts(type: [.normal], itemCount: 3) { posts in
+            FirebaseManager.firebaseManager.fetchPosts(type: [.normal], itemCount: 3) { posts in
                 completion(posts)
             }
         case .buy, .sell, .complete:
-            FirebaseManager.firebaseManager.loadPosts(type: [.buy, .sell, .complete], itemCount: 3) { posts in
+            FirebaseManager.firebaseManager.fetchPosts(type: [.buy, .sell, .complete], itemCount: 3) { posts in
                 completion(posts)
             }
         }

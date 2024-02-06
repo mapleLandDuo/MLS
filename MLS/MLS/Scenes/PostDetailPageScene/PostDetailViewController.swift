@@ -15,9 +15,9 @@ class PostDetailViewController: BasicController {
     private let viewModel: PostDetailViewModel
 
     let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-    //자리 생각해보기
+
     lazy var safeAreaInsets = self.windowScene?.windows.first?.safeAreaInsets
-    
+
     lazy var safeAreaHeight = UIScreen.main.bounds.height - self.safeAreaInsets!.top - self.safeAreaInsets!.bottom
 
     // MARK: - Components
@@ -33,13 +33,13 @@ class PostDetailViewController: BasicController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.circle.fill")?.resized(to: CGSize(width: 40, height: 40)), for: .normal)
         button.tintColor = .gray
-        button.isUserInteractionEnabled = self.viewModel.isLogin()
+        button.isUserInteractionEnabled = LoginManager.manager.isLogin()
         return button
     }()
 
     lazy var commentTextField: SharedTextField = {
         let textField = SharedTextField(type: .normal, placeHolder: "댓글입력")
-        textField.isUserInteractionEnabled = self.viewModel.isLogin()
+        textField.isUserInteractionEnabled = LoginManager.manager.isLogin()
         return textField
     }()
 
@@ -56,7 +56,6 @@ class PostDetailViewController: BasicController {
 
 // MARK: - LifeCycle
 extension PostDetailViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -65,10 +64,10 @@ extension PostDetailViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.loadPost { [weak self] in
+        viewModel.fetchPost { [weak self] in
             self?.totalTableView.reloadData()
             if let id = self?.viewModel.post.value?.id {
-                self?.viewModel.loadComment(postId: id.uuidString)
+                self?.viewModel.fetchComments(postId: id.uuidString)
             }
         }
     }
@@ -76,7 +75,6 @@ extension PostDetailViewController {
 
 // MARK: - SetUp
 private extension PostDetailViewController {
-
     func setUp() {
         totalTableView.delegate = self
         totalTableView.dataSource = self
@@ -123,7 +121,7 @@ private extension PostDetailViewController {
                         self?.commentTextField.textField.text = ""
                         AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 수정 되었습니다.")
                         if let id = self?.viewModel.post.value?.id {
-                            self?.viewModel.loadComment(postId: id.uuidString)
+                            self?.viewModel.fetchComments(postId: id.uuidString)
                             self?.viewModel.isEditing = false
                         }
                     }
@@ -141,7 +139,7 @@ private extension PostDetailViewController {
                         self?.commentTextField.textField.text = ""
                         AlertMaker.showAlertAction1(vc: self, message: "댓글입력이 완료 되었습니다.")
                         if let id = self?.viewModel.post.value?.id {
-                            self?.viewModel.loadComment(postId: id.uuidString)
+                            self?.viewModel.fetchComments(postId: id.uuidString)
                         }
                     }
                 }
@@ -197,8 +195,8 @@ private extension PostDetailViewController {
         let postType = viewModel.post.value?.postType
 
         let menu: UIMenu?
-        
-        if viewModel.isLogin() {
+
+        if LoginManager.manager.isLogin() {
             if isMyPost {
                 switch postType {
                 case .buy, .sell:
@@ -223,7 +221,6 @@ private extension PostDetailViewController {
 
 // MARK: Bind
 private extension PostDetailViewController {
-
     func bind() {
         viewModel.comments.bind { [weak self] _ in
             self?.totalTableView.reloadSections(IndexSet(integer: 3), with: .automatic)
@@ -243,7 +240,6 @@ private extension PostDetailViewController {
 
 // MARK: Methods
 private extension PostDetailViewController {
-
     func checkLike() {
         guard let post = viewModel.post.value else { return }
         viewModel.checkLikeCount(post: post)
@@ -284,6 +280,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
                   let post = viewModel.post.value else { return UITableViewCell() }
             cell.contentView.isUserInteractionEnabled = false
             cell.bind(post: post, vc: self)
+            cell.delegate = self
             cell.selectionStyle = .none
             return cell
         case 2:
@@ -301,7 +298,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             cell.delegate = self
             cell.comment = comment
             cell.contentView.isUserInteractionEnabled = false
-            cell.bind(comment: comment, vc: self)
+            cell.bind(comment: comment)
             cell.selectionStyle = .none
             return cell
         default:
@@ -363,7 +360,7 @@ extension PostDetailViewController: DetailCommentCellDelegate {
         guard let postId = viewModel.post.value?.id.uuidString else { return }
         AlertMaker.showAlertAction2(vc: self, title: "정말 삭제하시겠습니까?", message: "영구적으로 삭제됩니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
             self.viewModel.deleteComment(postId: postId, commentId: comment.id.uuidString) {
-                self.viewModel.loadComment(postId: postId)
+                self.viewModel.fetchComments(postId: postId)
             }
         })
     }
@@ -378,17 +375,29 @@ extension PostDetailViewController: DetailCommentCellDelegate {
         guard let postId = viewModel.post.value?.id.uuidString else { return }
         AlertMaker.showAlertAction2(vc: self, title: "정말 신고하시겠습니까?", message: "신고는 취소할 수 없습니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
             self.viewModel.reportComment(postID: postId, commentID: comment.id.uuidString) {
-                self.viewModel.loadComment(postId: postId)
+                self.viewModel.fetchComments(postId: postId)
             }
         })
+    }
+    
+    func tapCommentProfileNameLabel(email: String, nickName: String) {
+        let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(email: email, nickName: nickName))
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 extension PostDetailViewController: DetailLikeCellDelegate {
     func tapUpCountButton(cell: DetailLikeCell) {
         guard let postID = viewModel.post.value?.id.uuidString else { return }
-        viewModel.setLikeCount(postID: postID) {
-            self.viewModel.loadPost {}
+        viewModel.updateLikeCount(postID: postID) {
+            self.viewModel.fetchPost {}
         }
+    }
+}
+
+extension PostDetailViewController: DetailPostCellDelegate {
+    func tapUserNameLabel(email: String, nickName: String) {
+        let vc = ProfilePageViewController(viewModel: ProfilePageViewModel(email: email, nickName: nickName))
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

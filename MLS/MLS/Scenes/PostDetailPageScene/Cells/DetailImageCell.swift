@@ -26,8 +26,6 @@ class DetailImageCell: UITableViewCell {
         return view
     }()
 
-    // MARK: LifeCycle
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
@@ -41,7 +39,6 @@ class DetailImageCell: UITableViewCell {
 
 // MARK: SetUp
 private extension DetailImageCell {
-
     func setUp() {
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
@@ -60,7 +57,6 @@ private extension DetailImageCell {
 
 // MARK: Bind
 extension DetailImageCell {
-
     func bind(images: [URL?]?) {
         if let images = images {
             self.images = images

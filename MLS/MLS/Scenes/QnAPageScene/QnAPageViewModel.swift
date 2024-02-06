@@ -31,7 +31,7 @@ class QnAPageViewModel {
         Contact(icon: UIImage(systemName: "envelope.fill"), title: "maplelands2024@gmail.com", type: .email),
         Contact(icon: UIImage(systemName: "questionmark.bubble.fill"), title: "kakaoTalk", type: .kakaoTalk),
     ]
-    
+
     private let questionList = [
         Question(title: "사용방법이 궁금해요.", content: "사용방법이 어쩌구 저쩌구"),
         Question(title: "로그인은 언제 필요한가요?.", content: "로그인이 어쩌구 저쩌구"),
@@ -41,20 +41,19 @@ class QnAPageViewModel {
 
 // MARK: Methods
 extension QnAPageViewModel {
-
-    func getContactList() -> [Contact] {
+    func fetchContactList() -> [Contact] {
         return contactList
     }
 
-    func getQuestionList() -> [Question] {
+    func fetchQuestionList() -> [Question] {
         return questionList
     }
 
-    func getContactCount() -> Int {
+    func fetchContactCount() -> Int {
         return contactList.count
     }
 
-    func getQuestionCount() -> Int {
+    func fetchQuestionCount() -> Int {
         return questionList.count
     }
 }

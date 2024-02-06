@@ -39,7 +39,7 @@ class DatabaseUpdateManager {
     }
 
     func updateItem() {
-        FirebaseManager.firebaseManager.loadItemLinks { datas in
+        FirebaseManager.firebaseManager.fetchItemLinks { datas in
             guard let datas = datas else { return }
             for dataLinks in datas {
                 print("trying", dataLinks.name)
@@ -169,7 +169,7 @@ class DatabaseUpdateManager {
     }
 
     func updateMonsters() {
-        FirebaseManager.firebaseManager.loadMonsterLinks { datas in
+        FirebaseManager.firebaseManager.fetchMonsterLinks { datas in
             guard let datas = datas else { return }
             for data in datas {
                 guard let url = URL(string: "https://mapledb.kr/search.php?q=\(data.link)&t=mob") else { return }

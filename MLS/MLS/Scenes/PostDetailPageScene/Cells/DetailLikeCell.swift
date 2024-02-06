@@ -49,12 +49,10 @@ class DetailLikeCell: UITableViewCell {
     }()
 
     private let upCountLabel: CustomLabel = {
-        let label = CustomLabel(text: "0", textColor: .gray, font: .systemFont(ofSize: 12))
+        let label = CustomLabel(text: "0", textColor: .gray, font: Typography.body3.font)
         label.textAlignment = .center
         return label
     }()
-
-    // MARK: - LifeCycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -69,7 +67,6 @@ class DetailLikeCell: UITableViewCell {
 
 // MARK: - SetUp
 private extension DetailLikeCell {
-
     func setUp() {
         addSubview(upCountButton)
         addSubview(upCountView)
@@ -101,7 +98,6 @@ private extension DetailLikeCell {
 
 // MARK: - bind
 extension DetailLikeCell {
-
     func bind(post: Post, isUp: Bool) {
         upCountLabel.text = String(post.likes.count)
         upCountButton.setImage(isUp ? UIImage(systemName: "hand.thumbsup.fill") : UIImage(systemName: "hand.thumbsup"), for: .normal)

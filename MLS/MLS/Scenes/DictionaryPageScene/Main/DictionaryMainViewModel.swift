@@ -63,19 +63,19 @@ class DictionaryMainViewModel {
 extension DictionaryMainViewModel {
 
 
-    func getMonsterMenu() -> [String] {
+    func fetchMonsterMenus() -> [String] {
         return monsterMenus
     }
 
-    func getMonsterMenuCount() -> Int {
+    func fetchMonsterMenuCount() -> Int {
         return monsterMenus.count
     }
 
-    func getItemMenu() -> [[ItemMenu]] {
+    func fetchItemMenus() -> [[ItemMenu]] {
         return itemMenus
     }
 
-    func getItemMenuCount() -> Int {
+    func fetchItemMenuCount() -> Int {
         return itemMenus.count
     }
 
@@ -107,14 +107,14 @@ extension DictionaryMainViewModel {
         }
     }
 
-    func loadItemByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
-        FirebaseManager.firebaseManager.loadItemByRoll(roll: roll) { items in
+    func fetchItemsByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
+        FirebaseManager.firebaseManager.fetchItemsByRoll(roll: roll) { items in
             completion(items)
         }
     }
 
-    func loadMonsterByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
-        FirebaseManager.firebaseManager.loadMonsterByLevel(minLevel: minLevel, maxLevel: maxLevel) { monsters in
+    func fetchMonstersByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
+        FirebaseManager.firebaseManager.fetchMonstersByLevel(minLevel: minLevel, maxLevel: maxLevel) { monsters in
             completion(monsters)
         }
     }

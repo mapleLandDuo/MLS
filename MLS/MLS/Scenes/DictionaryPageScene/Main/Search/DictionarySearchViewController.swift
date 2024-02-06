@@ -31,7 +31,6 @@ class DictionarySearchViewController: BasicController {
 
 // MARK: - Life Cycle
 extension DictionarySearchViewController {
- 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -42,7 +41,6 @@ extension DictionarySearchViewController {
 
 // MARK: Setup
 private extension DictionarySearchViewController {
-
     func setUp() {
         searchTableView.delegate = self
         searchTableView.dataSource = self
@@ -62,7 +60,6 @@ private extension DictionarySearchViewController {
 
 // MARK: Bind
 private extension DictionarySearchViewController {
-
     func bind() {
         viewModel.itemList.bind { [weak self] _ in
             self?.searchTableView.reloadData()
@@ -78,9 +75,9 @@ extension DictionarySearchViewController: UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch viewModel.type {
         case .item:
-            return viewModel.getItemListCount()
+            return viewModel.fetchItemListCount()
         case .monster:
-            return viewModel.getMonsterListCount()
+            return viewModel.fetchMonsterListCount()
         }
     }
 
@@ -89,11 +86,11 @@ extension DictionarySearchViewController: UITableViewDelegate, UITableViewDataSo
         switch viewModel.type {
         case .item:
             guard let item = viewModel.itemList.value?[indexPath.row],
-                  let url = viewModel.getURL()[indexPath.row] else { return UITableViewCell() }
+                  let url = viewModel.fetchURL()[indexPath.row] else { return UITableViewCell() }
             cell.bind(imageUrl: url, title: item.name, level: item.level)
         case .monster:
             guard let item = viewModel.monsterList.value?[indexPath.row],
-                  let url = viewModel.getURL()[indexPath.row] else { return UITableViewCell() }
+                  let url = viewModel.fetchURL()[indexPath.row] else { return UITableViewCell() }
             cell.bind(imageUrl: url, title: item.name, level: String(item.level))
         }
         return cell

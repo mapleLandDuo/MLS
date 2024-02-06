@@ -20,9 +20,9 @@ class DictionarySearchCell: UITableViewCell {
         return view
     }()
 
-    private let searchTitleLabel = CustomLabel(text: "title", font: .boldSystemFont(ofSize: 20))
+    private let searchTitleLabel = CustomLabel(text: "title", font: Typography.title2.font)
 
-    private let searchLevelLabel = CustomLabel(text: "level", font: .systemFont(ofSize: 16))
+    private let searchLevelLabel = CustomLabel(text: "level", font: Typography.body2.font)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,7 +37,6 @@ class DictionarySearchCell: UITableViewCell {
 
 // MARK: SetUp
 private extension DictionarySearchCell {
-
     func setUp() {
         setupConstraints()
     }
@@ -55,12 +54,12 @@ private extension DictionarySearchCell {
 
         searchTitleLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.leading.equalTo(searchImageView.snp.trailing).inset(-Constants.defaults.horizontal)
+            $0.leading.equalTo(searchImageView.snp.trailing).offset(Constants.defaults.horizontal)
         }
 
         searchLevelLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.leading.equalTo(searchTitleLabel.snp.trailing).inset(-Constants.defaults.horizontal)
+            $0.leading.equalTo(searchTitleLabel.snp.trailing).offset(Constants.defaults.horizontal)
             $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }
@@ -68,7 +67,6 @@ private extension DictionarySearchCell {
 
 // MARK: Bind
 extension DictionarySearchCell {
-
     func bind(imageUrl: URL, title: String, level: String) {
         searchImageView.kf.setImage(with: imageUrl)
         searchTitleLabel.text = title

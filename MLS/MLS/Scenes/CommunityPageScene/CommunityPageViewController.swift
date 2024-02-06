@@ -28,15 +28,14 @@ class CommunityPageViewController: BasicController {
         return Items
     }
 
-
     // MARK: - Components
-    
+
     lazy var menu = UIMenu(title: "게시물 정렬", children: sortItems)
-    
+
     private let titleButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.systemOrange, for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 30)
+        button.titleLabel?.font = Typography.title1.font
         return button
     }()
 
@@ -86,29 +85,27 @@ class CommunityPageViewController: BasicController {
 
 // MARK: - Life Cycle
 extension CommunityPageViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
         bind()
-        loadPosts()
+        fetchPosts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadPosts()
+        fetchPosts()
     }
 }
 
 // MARK: - SetUp
 private extension CommunityPageViewController {
-
     func setUp() {
         communityTableView.dataSource = self
         communityTableView.delegate = self
 
         communityTableView.register(CommunityTableViewCell.self, forCellReuseIdentifier: CommunityTableViewCell.identifier)
-        communityTableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
+        communityTableView.register(SearchbarTableViewCell.self, forCellReuseIdentifier: SearchbarTableViewCell.identifier)
 
         setUpConstraints()
     }
@@ -133,12 +130,12 @@ private extension CommunityPageViewController {
         }
 
         searchButton.snp.makeConstraints {
-            $0.trailing.equalTo(sortButton.snp.leading).inset(-Constants.defaults.horizontal)
+            $0.trailing.equalTo(sortButton.snp.leading).offset(-Constants.defaults.horizontal)
             $0.centerY.equalTo(titleButton)
         }
 
         communityTableView.snp.makeConstraints {
-            $0.top.equalTo(titleButton.snp.bottom).inset(-Constants.defaults.vertical)
+            $0.top.equalTo(titleButton.snp.bottom).offset(Constants.defaults.vertical)
             $0.leading.equalTo(view.safeAreaLayoutGuide)
             $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
@@ -156,9 +153,8 @@ private extension CommunityPageViewController {
         }), for: .touchUpInside)
 
         addPostButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let type = self?.viewModel.type,
-                  let isLogin = self?.viewModel.isLogin() else { return }
-            if isLogin {
+            guard let type = self?.viewModel.type else { return }
+            if LoginManager.manager.isLogin() {
                 let vc = AddPostViewController(viewModel: AddPostViewModel(type: type))
                 self?.navigationController?.pushViewController(vc, animated: true)
             } else {
@@ -170,7 +166,7 @@ private extension CommunityPageViewController {
         }), for: .primaryActionTriggered)
 
         titleButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.loadPosts()
+            self?.fetchPosts()
         }), for: .touchUpInside)
     }
 
@@ -178,10 +174,8 @@ private extension CommunityPageViewController {
         switch type {
         case .normal:
             titleButton.setTitle("자유게시판", for: .normal)
-        // 정렬 속성
         case .sell, .buy, .complete:
             titleButton.setTitle("거래게시판", for: .normal)
-            // 정렬 속성
         }
         setUpActions()
     }
@@ -189,25 +183,23 @@ private extension CommunityPageViewController {
 
 // MARK: - Bind
 private extension CommunityPageViewController {
-
     func bind() {
         viewModel.posts.bind { [weak self] _ in
             self?.communityTableView.reloadData()
         }
 
         viewModel.sortType.bind { [weak self] _ in
-            self?.loadPosts()
+            self?.fetchPosts()
         }
     }
 }
 
 // MARK: - Methods
 private extension CommunityPageViewController {
-
-    func loadPosts() {
+    func fetchPosts() {
         guard let sortType = viewModel.sortType.value else { return }
         IndicatorMaker.showLoading()
-        viewModel.loadPosts(sort: sortType) { posts in
+        viewModel.fetchPosts(sort: sortType) { posts in
             IndicatorMaker.hideLoading()
             self.viewModel.posts.value = posts
         }
@@ -233,7 +225,7 @@ extension CommunityPageViewController: UITableViewDelegate, UITableViewDataSourc
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let postCell = tableView.dequeueReusableCell(withIdentifier: CommunityTableViewCell.identifier, for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
-        guard let searchCell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
+        guard let searchCell = tableView.dequeueReusableCell(withIdentifier: SearchbarTableViewCell.identifier, for: indexPath) as? SearchbarTableViewCell else { return UITableViewCell() }
         if viewModel.posts.value?.count != viewModel.postsCount && indexPath.row == 0 {
             searchCell.searchBar.delegate = self
             searchCell.isUserInteractionEnabled = true
@@ -261,7 +253,7 @@ extension CommunityPageViewController: UISearchBarDelegate {
                 }
             }
         } else {
-            loadPosts()
+            fetchPosts()
         }
     }
 }

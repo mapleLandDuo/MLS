@@ -39,7 +39,6 @@ class ItemTableViewCell: UITableViewCell {
 
 // MARK: SetUp
 private extension ItemTableViewCell {
-
     func setUp() {
         itemCollectionView.delegate = self
         itemCollectionView.dataSource = self
@@ -59,7 +58,6 @@ private extension ItemTableViewCell {
 
 // MARK: Bind
 extension ItemTableViewCell {
-
     func bind(itemMenus: [ItemMenu]) {
         self.itemMenus = itemMenus
     }

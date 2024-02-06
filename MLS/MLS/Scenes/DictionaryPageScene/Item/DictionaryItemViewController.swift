@@ -142,7 +142,7 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
         case 3:
             let monsterName = viewModel.fetchItem().dropTable[indexPath.row].name
             IndicatorMaker.showLoading()
-            FirebaseManager.firebaseManager.loadMonster(monsterName: monsterName) { item in
+            FirebaseManager.firebaseManager.fetchMonsters(monsterName: monsterName) { item in
                 guard let item = item else { return }
                 IndicatorMaker.hideLoading()
                 let vc = DictionaryMonsterViewController(viewModel: DictionaryMonsterViewModel(item: item))

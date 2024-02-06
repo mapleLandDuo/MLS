@@ -43,7 +43,6 @@ class ItemCollectionViewCell: UICollectionViewCell {
 
 // MARK: - SetUp
 private extension ItemCollectionViewCell {
-
     func setUp() {
         layer.cornerRadius = Constants.defaults.radius
         layer.borderWidth = 1
@@ -68,7 +67,6 @@ private extension ItemCollectionViewCell {
 
 // MARK: - Bind
 extension ItemCollectionViewCell {
-
     func bind(item: ItemMenu) {
         itemTitleLabel.text = item.title.rawValue
     }

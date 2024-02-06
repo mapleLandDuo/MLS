@@ -263,7 +263,7 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             if LoginManager.manager.isLogin() {
                 IndicatorMaker.showLoading()
                 guard let email = LoginManager.manager.email else { return UITableViewCell() }
-                FirebaseManager.firebaseManager.getNickname(userEmail: email) { nickName in
+                FirebaseManager.firebaseManager.fetchNickname(userEmail: email) { nickName in
                     IndicatorMaker.hideLoading()
                     cell.bind(description: nickName)
                 }

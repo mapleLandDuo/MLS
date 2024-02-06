@@ -161,69 +161,81 @@ private extension AddPostViewController {
     }
 
     func setUpConstraints() {
+        
         view.addSubview(scrollView)
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
         scrollView.addSubview(contentView)
-        contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.width.equalToSuperview()
-        }
         contentView.addSubview(imageChoiceCollectionView)
-        imageChoiceCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(Constants.defaults.blockHeight * 2)
-        }
         contentView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageChoiceCollectionView.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         contentView.addSubview(titleTextField)
-        titleTextField.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical / 2)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+        contentView.addSubview(postTextView)
+        contentView.addSubview(postButton)
+        
+        scrollView.snp.makeConstraints {
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+
+        contentView.snp.makeConstraints { 
+            $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
+
+        imageChoiceCollectionView.snp.makeConstraints { 
+            $0.top.equalToSuperview().inset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(Constants.defaults.blockHeight * 2)
+        }
+
+        titleLabel.snp.makeConstraints { 
+            $0.top.equalTo(imageChoiceCollectionView.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        titleTextField.snp.makeConstraints { 
+            $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical / 2)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
 
         switch viewModel.type {
         case .normal:
             contentView.addSubview(postLabel)
-            postLabel.snp.makeConstraints { make in
-                make.top.equalTo(titleTextField.snp.bottom).offset(Constants.defaults.vertical)
-                make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+            
+            postLabel.snp.makeConstraints {
+                $0.top.equalTo(titleTextField.snp.bottom).offset(Constants.defaults.vertical)
+                $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             }
         default:
             contentView.addSubview(tradeTitleLabel)
-            tradeTitleLabel.snp.makeConstraints { make in
-                make.top.equalTo(titleTextField.snp.bottom).offset(Constants.defaults.vertical)
-                make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            }
             contentView.addSubview(segmentedController)
-            segmentedController.snp.makeConstraints { make in
-                make.top.equalTo(tradeTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
-                make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-                make.height.equalTo(Constants.defaults.blockHeight)
-            }
             contentView.addSubview(postLabel)
-            postLabel.snp.makeConstraints { make in
-                make.top.equalTo(segmentedController.snp.bottom).offset(Constants.defaults.vertical)
-                make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+            
+            tradeTitleLabel.snp.makeConstraints {
+                $0.top.equalTo(titleTextField.snp.bottom).offset(Constants.defaults.vertical)
+                $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            }
+
+            segmentedController.snp.makeConstraints { 
+                $0.top.equalTo(tradeTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
+                $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+                $0.height.equalTo(Constants.defaults.blockHeight)
+            }
+
+            postLabel.snp.makeConstraints { 
+                $0.top.equalTo(segmentedController.snp.bottom).offset(Constants.defaults.vertical)
+                $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             }
         }
-        contentView.addSubview(postTextView)
-        postTextView.snp.makeConstraints { make in
-            make.top.equalTo(postLabel.snp.bottom).offset(Constants.defaults.vertical / 2)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(Constants.screenHeight * 0.5)
+
+        postTextView.snp.makeConstraints { 
+            $0.top.equalTo(postLabel.snp.bottom).offset(Constants.defaults.vertical / 2)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(Constants.screenHeight * 0.5)
         }
-        contentView.addSubview(postButton)
-        postButton.snp.makeConstraints { make in
-            make.top.equalTo(postTextView.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(Constants.defaults.blockHeight)
-            make.bottom.equalToSuperview()
+
+        postButton.snp.makeConstraints { 
+            $0.top.equalTo(postTextView.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(Constants.defaults.blockHeight)
+            $0.bottom.equalToSuperview()
         }
     }
 
@@ -237,7 +249,7 @@ private extension AddPostViewController {
                   let isEditing = self?.viewModel.isEditing,
                   let title = self?.titleTextField.text,
                   let content = self?.postTextView.text,
-                  let user = self?.viewModel.getUser(),
+                  let user = self?.viewModel.fetchUserEmail(),
                   let type = self?.viewModel.type else { return }
             if isEditing {
                 guard var postData = self?.viewModel.postData.value else { return }

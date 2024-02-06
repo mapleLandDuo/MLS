@@ -8,6 +8,7 @@
 import UIKit
 
 import Kingfisher
+import SnapKit
 
 class DictionaryNameImageCell: UITableViewCell {
     // MARK: - Components
@@ -16,7 +17,6 @@ class DictionaryNameImageCell: UITableViewCell {
         let label = UILabel()
         label.font = Typography.title1.font
         label.textAlignment = .center
-        label.text = "temp"
         return label
     }()
 
@@ -45,16 +45,17 @@ private extension DictionaryNameImageCell {
 
     func setUpConstraints() {
         contentView.addSubview(nameLabel)
-        nameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.right.equalToSuperview()
-        }
         contentView.addSubview(dictionaryImageView)
-        dictionaryImageView.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.width.height.equalTo(Constants.screenWidth / 3)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview()
+        
+        nameLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+        }
+        dictionaryImageView.snp.makeConstraints {
+            $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.width.height.equalTo(Constants.screenWidth / 3)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
 }

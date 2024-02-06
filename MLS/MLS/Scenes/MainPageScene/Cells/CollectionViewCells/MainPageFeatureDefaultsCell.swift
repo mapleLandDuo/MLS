@@ -66,24 +66,26 @@ private extension MainPageFeatureDefaultsCell {
 
     func setUpConstraints() {
         contentView.addSubview(trailingView)
-        trailingView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.bottom.equalToSuperview()
-        }
         trailingView.addSubview(rightImageView)
-        rightImageView.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.width.height.equalTo(Constants.defaults.blockHeight)
-            make.centerY.equalToSuperview()
-        }
         trailingView.addSubview(labelStackView)
-        labelStackView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-            make.left.equalToSuperview().offset(Constants.defaults.horizontal)
-            make.right.equalTo(rightImageView.snp.left)
-        }
         labelStackView.addArrangedSubview(titleLabel)
         labelStackView.addArrangedSubview(descriptionLabel)
+        
+        trailingView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.bottom.equalToSuperview()
+        }
+        rightImageView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.width.height.equalTo(Constants.defaults.blockHeight)
+            $0.centerY.equalToSuperview()
+        }
+        labelStackView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
+            $0.leading.equalToSuperview().offset(Constants.defaults.horizontal)
+            $0.trailing.equalTo(rightImageView.snp.leading)
+        }
+
     }
 }
 

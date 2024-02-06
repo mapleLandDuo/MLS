@@ -6,7 +6,9 @@
 //
 
 import UIKit
-//setup 수정 준영
+
+import SnapKit
+
 class DictionaryItemViewController: BasicController {
     // MARK: - Properties
 
@@ -56,8 +58,8 @@ private extension DictionaryItemViewController {
 
     func setUpConstraints() {
         view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+        tableView.snp.makeConstraints { 
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
@@ -66,7 +68,7 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 1:
-            let item = viewModel.getItem()
+            let item = viewModel.fetchItem()
             let tempArray = [
                 "description": item.description,
                 "str": item.str,
@@ -77,9 +79,9 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
             let datas = tempArray.filter { $0.value != nil }
             return datas.count + 1
         case 2:
-            return viewModel.getItem().detailDescription.count
+            return viewModel.fetchItem().detailDescription.count
         case 3:
-            return viewModel.getItem().dropTable.count
+            return viewModel.fetchItem().dropTable.count
         default:
             return 1
         }
@@ -93,17 +95,17 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
         switch indexPath.section {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryNameImageCell.identifier, for: indexPath) as? DictionaryNameImageCell else { return UITableViewCell() }
-            cell.bind(item: viewModel.getItem())
+            cell.bind(item: viewModel.fetchItem())
             cell.selectionStyle = .none
             return cell
         case 1:
             if indexPath.row == 0 {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryItemDefaultCell.identifier, for: indexPath) as? DictionaryItemDefaultCell else { return UITableViewCell() }
-                cell.bind(item: viewModel.getItem())
+                cell.bind(item: viewModel.fetchItem())
                 cell.selectionStyle = .none
                 return cell
             } else {
-                let datas = viewModel.getDefaultInfoArray()
+                let datas = viewModel.fetchDefaultInfoArray()
                 if datas[indexPath.row - 1].name == "설명" {
                     print("description cell")
                     guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorDescriptionCell.identifier, for: indexPath) as? DictionaryGraySeparatorDescriptionCell else { return UITableViewCell() }
@@ -119,13 +121,13 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
             }
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
-            let datas = viewModel.getDetailInfoArray()
+            let datas = viewModel.fetchDetailInfoArray()
             cell.bind(data: datas[indexPath.row])
             cell.selectionStyle = .none
             return cell
         case 3:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorOneLineCell.identifier, for: indexPath) as? DictionaryGraySeparatorOneLineCell else { return UITableViewCell() }
-            cell.bind(data: viewModel.getItem().dropTable[indexPath.row])
+            cell.bind(data: viewModel.fetchItem().dropTable[indexPath.row])
             cell.selectionStyle = .none
             return cell
         default:
@@ -138,7 +140,7 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 3:
-            let monsterName = viewModel.getItem().dropTable[indexPath.row].name
+            let monsterName = viewModel.fetchItem().dropTable[indexPath.row].name
             IndicatorMaker.showLoading()
             FirebaseManager.firebaseManager.loadMonster(monsterName: monsterName) { item in
                 guard let item = item else { return }
@@ -183,16 +185,18 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
             return view
         }()
         view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         view.addSubview(separatorView)
-        separatorView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-            make.bottom.equalToSuperview()
+        
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        separatorView.snp.makeConstraints { 
+            $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview()
         }
 
         return view

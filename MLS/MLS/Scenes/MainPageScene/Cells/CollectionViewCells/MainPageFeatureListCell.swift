@@ -84,33 +84,38 @@ private extension MainPageFeatureListCell {
 
     func setUpConstraints() {
         contentView.addSubview(trailingView)
-        trailingView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.bottom.equalToSuperview()
-        }
         trailingView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.right.left.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.equalToSuperview().inset(Constants.defaults.vertical)
-            make.height.equalTo(Constants.defaults.blockHeight)
-        }
         trailingView.addSubview(rightImageView)
-        rightImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(Constants.defaults.blockHeight / 2)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.centerY.equalTo(titleLabel)
-        }
         trailingView.addSubview(titleSeparator)
-        titleSeparator.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-        }
         trailingView.addSubview(postListTableView)
-        postListTableView.snp.makeConstraints { make in
-            make.top.equalTo(titleSeparator.snp.bottom)
-            make.left.right.equalToSuperview()
-            make.bottom.equalToSuperview().inset(Constants.defaults.vertical)
+        
+        trailingView.snp.makeConstraints { 
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.bottom.equalToSuperview()
+        }
+
+        titleLabel.snp.makeConstraints { 
+            $0.trailing.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.equalToSuperview().inset(Constants.defaults.vertical)
+            $0.height.equalTo(Constants.defaults.blockHeight)
+        }
+
+        rightImageView.snp.makeConstraints { 
+            $0.width.height.equalTo(Constants.defaults.blockHeight / 2)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.centerY.equalTo(titleLabel)
+        }
+
+        titleSeparator.snp.makeConstraints { 
+            $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+        }
+
+        postListTableView.snp.makeConstraints { 
+            $0.top.equalTo(titleSeparator.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(Constants.defaults.vertical)
         }
     }
 }

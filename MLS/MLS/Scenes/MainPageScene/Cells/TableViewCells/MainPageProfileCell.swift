@@ -52,22 +52,25 @@ private extension MainPageProfileCell {
 
     func setUpConstraints() {
         contentView.addSubview(trailingView)
-        trailingView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-        }
         trailingView.addSubview(appIconImageView)
-        appIconImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(Constants.defaults.blockHeight)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
-        }
         trailingView.addSubview(descriptionLabel)
-        descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(appIconImageView.snp.top)
-            make.bottom.equalTo(appIconImageView.snp.bottom)
-            make.left.equalTo(appIconImageView.snp.right).offset(Constants.defaults.horizontal)
-            make.right.equalToSuperview().inset(Constants.defaults.horizontal)
+        
+        trailingView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
+        }
+
+        appIconImageView.snp.makeConstraints {
+            $0.width.height.equalTo(Constants.defaults.blockHeight)
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.top.bottom.equalToSuperview().inset(Constants.defaults.vertical)
+        }
+
+        descriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(appIconImageView.snp.top)
+            $0.bottom.equalTo(appIconImageView.snp.bottom)
+            $0.leading.equalTo(appIconImageView.snp.trailing).offset(Constants.defaults.horizontal)
+            $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
     }
 }

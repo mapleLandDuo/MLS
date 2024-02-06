@@ -43,8 +43,8 @@ private extension DictionaryMonsterHauntAreaCollectionViewCell {
 
     func setUpConstraints() {
         contentView.addSubview(label)
-        label.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        label.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }

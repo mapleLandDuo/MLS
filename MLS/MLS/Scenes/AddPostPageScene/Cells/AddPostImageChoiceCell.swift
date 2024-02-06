@@ -57,15 +57,18 @@ private extension AddPostImageChoiceCell {
     }
 
     func setUpConstraints() {
+        
         contentView.addSubview(stackView)
-        stackView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-        imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(Constants.defaults.blockHeight)
-        }
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(countLabel)
+        
+        stackView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        imageView.snp.makeConstraints {
+            $0.width.height.equalTo(Constants.defaults.blockHeight)
+        }
+
     }
 }
 

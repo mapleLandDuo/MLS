@@ -11,9 +11,6 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestoreSwift
 
-
-// 싱글톤 고려 -> 휴먼 에러 방지로 싱글톤으로 변경 준영
-
 class LoginManager {
     // MARK: - Properties
     

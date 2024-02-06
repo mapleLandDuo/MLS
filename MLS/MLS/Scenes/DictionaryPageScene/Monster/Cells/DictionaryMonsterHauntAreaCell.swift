@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 class DictionaryMonsterHauntAreaCell: UITableViewCell {
     // MARK: - Properties
 
@@ -52,17 +54,19 @@ private extension DictionaryMonsterHauntAreaCell {
 
     func setUpConstraints() {
         contentView.addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(Constants.defaults.vertical)
-            make.height.equalTo(Constants.defaults.blockHeight)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
         contentView.addSubview(bottomSeparatorView)
-        bottomSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-            make.height.equalTo(1)
-            make.bottom.equalToSuperview()
+        
+        collectionView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(Constants.defaults.vertical)
+            $0.height.equalTo(Constants.defaults.blockHeight)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+        bottomSeparatorView.snp.makeConstraints {
+            $0.top.equalTo(collectionView.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.height.equalTo(1)
+            $0.bottom.equalToSuperview()
         }
     }
 }

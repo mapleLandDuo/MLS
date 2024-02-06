@@ -93,7 +93,7 @@ private extension MainPageViewController {
     func setUp() {
         setUpConstraints()
         setUpDelegate()
-        setUpAddTarget()
+        setUpAddAction()
         setUpRegistor()
     }
     
@@ -111,32 +111,38 @@ private extension MainPageViewController {
         sideMenuTableView.delegate = self
     }
     
-    func setUpAddTarget() {
-        menuButton.addTarget(self, action: #selector(didTapMenuButton), for: .primaryActionTriggered)
-        sideMenuEmptyView.addTarget(self, action: #selector(didTapMenuEmptySpace), for: .primaryActionTriggered)
+    func setUpAddAction() {
+        menuButton.addAction(UIAction(handler: { [weak self] _  in
+            self?.didTapMenuButton()
+        }), for: .primaryActionTriggered)
+        sideMenuEmptyView.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapMenuEmptySpace()
+        }), for: .primaryActionTriggered)
     }
     
     func setUpConstraints() {
+        
         view.addSubview(menuButton)
-        menuButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.left.equalTo(view.safeAreaLayoutGuide).offset(Constants.defaults.horizontal)
-            make.height.width.equalTo(Constants.defaults.blockHeight)
-        }
         view.addSubview(featureCollectionView)
-        featureCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(menuButton.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
         view.addSubview(sideMenuEmptyView)
-        sideMenuEmptyView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
         view.addSubview(sideMenuTableView)
-        sideMenuTableView.snp.makeConstraints { make in
-            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.right.equalTo(view.snp.left)
-            make.width.equalTo(Constants.screenWidth * 0.7)
+        
+        menuButton.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(Constants.defaults.horizontal)
+            $0.height.width.equalTo(Constants.defaults.blockHeight)
+        }
+        featureCollectionView.snp.makeConstraints {
+            $0.top.equalTo(menuButton.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        sideMenuEmptyView.snp.makeConstraints {
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        sideMenuTableView.snp.makeConstraints {
+            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.trailing.equalTo(view.snp.leading)
+            $0.width.equalTo(Constants.screenWidth * 0.7)
         }
     }
 }
@@ -144,12 +150,10 @@ private extension MainPageViewController {
 private extension MainPageViewController {
     // MARK: - Method
 
-    @objc
     func didTapMenuButton() {
         switchMenuView(isOpen: true)
     }
 
-    @objc
     func didTapMenuEmptySpace() {
         switchMenuView(isOpen: false)
     }
@@ -199,13 +203,13 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
             switch indexPath.row {
             case 0:
                 IndicatorMaker.showLoading()
-                viewModel.getMainPost(type: .normal) { posts in
+                viewModel.fetchMainPost(type: .normal) { posts in
                     cell.posts.value = posts
                     IndicatorMaker.hideLoading()
                 }
             default:
                 IndicatorMaker.showLoading()
-                viewModel.getMainPost(type: .complete) { posts in
+                viewModel.fetchMainPost(type: .complete) { posts in
                     cell.posts.value = posts
                     IndicatorMaker.hideLoading()
                 }
@@ -245,11 +249,11 @@ extension MainPageViewController: UICollectionViewDelegate, UICollectionViewData
 
 extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.getSideMenuItems()[section].count
+        return viewModel.fetchSideMenuItems()[section].count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.getSideMenuItems().count
+        return viewModel.fetchSideMenuItems().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -269,8 +273,8 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         default:
             guard let cell = sideMenuTableView.dequeueReusableCell(withIdentifier: MainPageSideMenuFeatureCell.identifier, for: indexPath) as? MainPageSideMenuFeatureCell else { return UITableViewCell() }
-            cell.bind(data: viewModel.getSideMenuItems()[indexPath.section][indexPath.row])
-            if indexPath.row != viewModel.getSideMenuItems()[indexPath.section].count - 1 {
+            cell.bind(data: viewModel.fetchSideMenuItems()[indexPath.section][indexPath.row])
+            if indexPath.row != viewModel.fetchSideMenuItems()[indexPath.section].count - 1 {
                 cell.makeSeparator()
             } else {
                 cell.removeSeparator()
@@ -290,7 +294,7 @@ extension MainPageViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let title = viewModel.getSideMenuItems()[indexPath.section][indexPath.row].title else { return }
+        guard let title = viewModel.fetchSideMenuItems()[indexPath.section][indexPath.row].title else { return }
         if title == "프로필" {
             if LoginManager.manager.isLogin() {
                 guard let email = LoginManager.manager.email else { return }

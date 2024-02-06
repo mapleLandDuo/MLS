@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 class MainPageSideMenuFeatureCell: UITableViewCell {
     // MARK: - Components
 
@@ -40,10 +42,10 @@ extension MainPageSideMenuFeatureCell {
 
     func makeSeparator() {
         contentView.addSubview(separatorView)
-        separatorView.snp.makeConstraints { make in
-            make.left.equalTo(textLabel!.snp.left)
-            make.right.bottom.equalToSuperview()
-            make.height.equalTo(1)
+        separatorView.snp.makeConstraints {
+            $0.leading.equalTo(textLabel!.snp.leading)
+            $0.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(1)
         }
     }
 

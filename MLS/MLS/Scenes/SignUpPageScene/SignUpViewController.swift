@@ -88,53 +88,55 @@ private extension SignUpViewController {
     }
     
     func setUpConstraints() {
+        
         view.addSubview(signUpTitleLabel)
-        signUpTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
-            make.left.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
-        }
-        
         view.addSubview(emailTextField)
-        emailTextField.snp.makeConstraints { make in
-            make.top.equalTo(signUpTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
-        
         view.addSubview(nickNameTextField)
-        nickNameTextField.snp.makeConstraints { make in
-            make.top.equalTo(emailTextField.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
-        
         view.addSubview(passwordTextField)
-        passwordTextField.snp.makeConstraints { make in
-            make.top.equalTo(nickNameTextField.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
-        
         view.addSubview(checkPasswordTextField)
-        checkPasswordTextField.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
-        
         view.addSubview(privacyAgreeButton)
-        privacyAgreeButton.snp.makeConstraints { make in
-            make.top.equalTo(checkPasswordTextField.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
-        }
-        
         view.addSubview(privacyShowButton)
-        privacyShowButton.snp.makeConstraints { make in
-            make.centerY.equalTo(privacyAgreeButton.snp.centerY)
-            make.left.equalTo(privacyAgreeButton.snp.right).offset(Constants.defaults.horizontal)
+        view.addSubview(signUpButton)
+        
+        signUpTitleLabel.snp.makeConstraints { 
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
+            $0.leading.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
         }
         
-        view.addSubview(signUpButton)
-        signUpButton.snp.makeConstraints { make in
-            make.left.right.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
-            make.height.equalTo(Constants.defaults.blockHeight)
+        emailTextField.snp.makeConstraints { 
+            $0.top.equalTo(signUpTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+        nickNameTextField.snp.makeConstraints { 
+            $0.top.equalTo(emailTextField.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+        passwordTextField.snp.makeConstraints { 
+            $0.top.equalTo(nickNameTextField.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+        
+        checkPasswordTextField.snp.makeConstraints { 
+            $0.top.equalTo(passwordTextField.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        privacyAgreeButton.snp.makeConstraints { 
+            $0.top.equalTo(checkPasswordTextField.snp.bottom).offset(Constants.defaults.vertical)
+            $0.leading.equalToSuperview().inset(Constants.defaults.horizontal)
+        }
+
+        privacyShowButton.snp.makeConstraints { 
+            $0.centerY.equalTo(privacyAgreeButton.snp.centerY)
+            $0.leading.equalTo(privacyAgreeButton.snp.trailing).offset(Constants.defaults.horizontal)
+        }
+        
+        signUpButton.snp.makeConstraints { 
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.horizontal)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.defaults.vertical)
+            $0.height.equalTo(Constants.defaults.blockHeight)
         }
     }
     
@@ -146,9 +148,17 @@ private extension SignUpViewController {
     }
     
     func setUpAddAction() {
-        privacyAgreeButton.addTarget(self, action: #selector(didTapPrivacyAgreeButton), for: .primaryActionTriggered)
-        privacyShowButton.addTarget(self, action: #selector(didTapPrivacyShowButton), for: .primaryActionTriggered)
-        signUpButton.addTarget(self, action: #selector(didTapBottomButton), for: .primaryActionTriggered)
+        privacyAgreeButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapPrivacyAgreeButton()
+        }), for: .primaryActionTriggered)
+
+        privacyShowButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapPrivacyShowButton()
+        }), for: .primaryActionTriggered)
+        
+        signUpButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapBottomButton()
+        }), for: .primaryActionTriggered)
     }
 }
 // MARK: - bind
@@ -230,19 +240,16 @@ private extension SignUpViewController {
 // MARK: - Methods
 private extension SignUpViewController {
     
-    @objc
     func didTapPrivacyShowButton() {
         let privacyPolicyURL = URL(string: "https://plip.kr/pcc/26c2c65d-d3ca-4903-91f2-50a049b20636/privacy/1.html")!
         let safariViewController = SFSafariViewController(url: privacyPolicyURL)
         self.navigationController?.pushViewController(safariViewController, animated: true)
     }
     
-    @objc
     func didTapPrivacyAgreeButton() {
         viewModel.isPrivacyAgree.value?.toggle()
     }
     
-    @objc
     func didTapBottomButton() {
         IndicatorMaker.showLoading()
         if viewModel.isValidSignUp() {

@@ -9,7 +9,6 @@ import UIKit
 
 import SnapKit
 
-//setup 수정 준영
 class ProfilePageViewController: BasicController {
     // MARK: - Properties
 
@@ -26,7 +25,7 @@ class ProfilePageViewController: BasicController {
 
     lazy var emailLabel: UILabel = {
         let label = UILabel()
-        label.text = self.viewModel.getPrivateEmail()
+        label.text = self.viewModel.fetchPrivateEmail()
         label.textColor = .systemGray4
         label.font = Typography.title3.font
         return label
@@ -78,7 +77,7 @@ extension ProfilePageViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         IndicatorMaker.showLoading()
-        viewModel.loadPosts {
+        viewModel.fetchPosts {
             IndicatorMaker.hideLoading()
         }
     }
@@ -96,37 +95,44 @@ private extension ProfilePageViewController {
     }
 
     func setUpConstraints() {
+        
         view.addSubview(nickNameLabel)
+        view.addSubview(emailLabel)
+        view.addSubview(nickNameSeparator)
+        view.addSubview(writtenPostLabel)
+        view.addSubview(writtenSeparator)
+        view.addSubview(postTableView)
+        
         nickNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.leading.equalToSuperview().inset(Constants.defaults.horizontal)
         }
-        view.addSubview(emailLabel)
+
         emailLabel.snp.makeConstraints { make in
             make.bottom.equalTo(nickNameLabel.snp.bottom)
-            make.left.equalTo(nickNameLabel.snp.right).offset(Constants.defaults.horizontal)
+            make.leading.equalTo(nickNameLabel.snp.trailing).offset(Constants.defaults.horizontal)
         }
-        view.addSubview(nickNameSeparator)
+
         nickNameSeparator.snp.makeConstraints { make in
             make.top.equalTo(nickNameLabel.snp.bottom).offset(Constants.defaults.horizontal)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             make.height.equalTo(1)
         }
-        view.addSubview(writtenPostLabel)
+
         writtenPostLabel.snp.makeConstraints { make in
             make.top.equalTo(nickNameSeparator.snp.bottom).offset(Constants.defaults.vertical)
-            make.left.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.leading.equalToSuperview().inset(Constants.defaults.horizontal)
         }
-        view.addSubview(writtenSeparator)
+
         writtenSeparator.snp.makeConstraints { make in
             make.top.equalTo(writtenPostLabel.snp.bottom).offset(Constants.defaults.horizontal)
-            make.left.right.equalToSuperview().inset(Constants.defaults.horizontal)
+            make.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             make.height.equalTo(1)
         }
-        view.addSubview(postTableView)
+
         postTableView.snp.makeConstraints { make in
             make.top.equalTo(writtenSeparator.snp.bottom)
-            make.left.right.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
@@ -138,7 +144,7 @@ private extension ProfilePageViewController {
 
         let reportMenu = UIAction(title: "신고하기", attributes: .destructive, handler: { [weak self] _ in
             AlertMaker.showAlertAction2(vc: self, title: "정말 신고하시겠습니까?", message: "신고는 취소할 수 없습니다.", cancelTitle: "취소", completeTitle: "확인", {}, {
-                guard let email = self?.viewModel.getProfileEmail() else { return }
+                guard let email = self?.viewModel.fetchProfileEmail() else { return }
                 FirebaseManager.firebaseManager.reportUser(userID: email) {
                     self?.navigationController?.popViewController(animated: true)
                 }

@@ -17,8 +17,6 @@ class DetailPostCell: UITableViewCell {
     // MARK: - Properties
 
     var delegate: DetailPostCellDelegate?
-    
-    private var parent: BasicController?
 
     private var email: String?
 
@@ -105,8 +103,7 @@ private extension DetailPostCell {
 // MARK: Bind
 extension DetailPostCell {
 
-    func bind(post: Post, vc: BasicController) {
-        parent = vc
+    func bind(post: Post) {
         email = post.user
         postTitleLabel.text = post.title
         IndicatorMaker.showLoading()

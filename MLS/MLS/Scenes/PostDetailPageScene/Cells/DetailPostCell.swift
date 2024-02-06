@@ -85,12 +85,12 @@ private extension DetailPostCell {
         }
 
         infoStackView.snp.makeConstraints {
-            $0.top.equalTo(postTitleLabel.snp.bottom).inset(-Constants.defaults.vertical)
+            $0.top.equalTo(postTitleLabel.snp.bottom).offset(Constants.defaults.vertical)
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
 
         postContentTextView.snp.makeConstraints {
-            $0.top.equalTo(infoStackView.snp.bottom).inset(-Constants.defaults.vertical)
+            $0.top.equalTo(infoStackView.snp.bottom).offset(Constants.defaults.vertical)
             $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
 

@@ -105,7 +105,7 @@ private extension CommunityTableViewCell {
         }
         
         upCountLabel.snp.makeConstraints {
-            $0.top.equalTo(postStackView.snp.bottom).inset(-Constants.defaults.vertical / 2)
+            $0.top.equalTo(postStackView.snp.bottom).offset(Constants.defaults.vertical / 2)
             $0.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
             $0.bottom.equalToSuperview().inset(Constants.defaults.horizontal / 2)
         }

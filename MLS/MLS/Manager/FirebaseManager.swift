@@ -37,7 +37,6 @@ extension FirebaseManager {
     // MARK: User
 
     func fetchNickname(userEmail: String, completion: @escaping (String?) -> Void) {
-        print(userEmail)
         db.collection(CollectionName.users.rawValue).document(userEmail).getDocument { document, error in
             if let error = error {
                 print("닉네임 가져오지 못함: \(error)")

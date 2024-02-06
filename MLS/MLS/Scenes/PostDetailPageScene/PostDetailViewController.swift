@@ -279,7 +279,7 @@ extension PostDetailViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailPostCell.identifier, for: indexPath) as? DetailPostCell,
                   let post = viewModel.post.value else { return UITableViewCell() }
             cell.contentView.isUserInteractionEnabled = false
-            cell.bind(post: post, vc: self)
+            cell.bind(post: post)
             cell.delegate = self
             cell.selectionStyle = .none
             return cell

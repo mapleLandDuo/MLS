@@ -519,7 +519,7 @@ extension FirebaseManager {
         }
     }
     
-    func updateDictionaryNPCLink(item: DictionaryLinkUpdateMap, completion: @escaping (Error?) -> Void) {
+    func updateDictionaryNPCLink(item: DictionaryLinkUpdateNPC, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
             db.collection(CollectionName.dictionaryNPCLink.rawValue).document(item.name).setData(data) { error in

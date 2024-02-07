@@ -19,6 +19,11 @@ struct DictionaryLinkUpdateMap: Codable {
     var code: String
 }
 
+struct DictionaryLinkUpdateNPC: Codable {
+    var name: String
+    var code: String
+}
+
 class DatabaseUpdateManager {
     func updateItemLink() {}
 
@@ -248,14 +253,39 @@ class DatabaseUpdateManager {
             for (i, item) in temp.enumerated() {
                 if i != 0 {
                     guard let name = item.components(separatedBy: "alt=").last?.components(separatedBy: "name=").first else { return }
-                    let mapName = name.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "&lt;", with: " <").replacingOccurrences(of: "&gt;", with: ">").replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: " 이미지", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let mapName = name.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "&lt;", with: " <").replacingOccurrences(of: "&gt;", with: ">").replacingOccurrences(of: " 이미지", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
                     
                     guard let code = item.components(separatedBy: "name=").last?.components(separatedBy: "src=").first else { return }
-                    let mapCode = code.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let mapCode = code.replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
                     
                     let mapItem = DictionaryLinkUpdateMap(name: mapName, code: mapCode)
                     
                     FirebaseManager.firebaseManager.updateDictionaryMapLink(item: mapItem) { _ in
+                        print(i, "성공")
+                    }
+                }
+            }
+        }
+    }
+    
+    func updateNPCLink() {
+        guard let url = URL(string: "https://mapledb.kr/npc.php") else { return }
+        var temp1 = [DictionaryLinkUpdateNPC]()
+        if let doc = try? HTML(url: url, encoding: .utf8) {
+            guard let temp = doc.innerHTML?.components(separatedBy: "<div class=\"search-page-add-content-box-main\">") else { return }
+            for (i, item) in temp.enumerated() {
+                if i != 0 {
+                    guard let name = item.components(separatedBy: "alt=").last?.components(separatedBy: "name=").first else { return }
+                    let npcName = name.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "&lt;", with: " <").replacingOccurrences(of: "&gt;", with: ">").replacingOccurrences(of: " 이미지", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    if npcName == "스트링 없음" { continue }
+                    
+                    guard let code = item.components(separatedBy: "name=").last?.components(separatedBy: "src=").first else { return }
+                    let npcCode = code.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    let npcItem = DictionaryLinkUpdateNPC(name: npcName, code: npcCode)
+
+                    FirebaseManager.firebaseManager.updateDictionaryNPCLink(item: npcItem) { _ in
                         print(i, "성공")
                     }
                 }

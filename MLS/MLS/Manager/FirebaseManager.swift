@@ -19,10 +19,18 @@ enum CollectionName: String {
     case users = "users"
     case posts = "posts"
     case comments = "comments"
-    case dictionaryMonsters = "dictionaryMonsters"
+    
     case dictionaryItems = "dictionaryItems"
+    case dictionaryMonsters = "dictionaryMonsters"
+    case dictionaryMaps = "dictionaryMaps"
+    case dictionaryNPCs = "dictionaryNPCs"
+    case dictionaryQuests = "dictionaryQuests"
+    
     case dictionaryItemLink = "dictionaryItemLink"
     case dictionaryMonstersLink = "dictionaryMonstersLink"
+    case dictionaryMapLink = "dictionaryMapLink"
+    case dictionaryNPCLink = "dictionaryNPCLink"
+    case dictionaryQuestLink = "dictionaryQuestLink"
 }
 
 class FirebaseManager {
@@ -493,6 +501,39 @@ extension FirebaseManager {
         do {
             let data = try Firestore.Encoder().encode(item)
             db.collection(CollectionName.dictionaryMonstersLink.rawValue).document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    
+    func updateDictionaryMapLink(item: DictionaryLinkUpdateMap, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection(CollectionName.dictionaryMapLink.rawValue).document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    
+    func updateDictionaryNPCLink(item: DictionaryLinkUpdateMap, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection(CollectionName.dictionaryNPCLink.rawValue).document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    
+    func updateDictionaryQuestLink(item: DictionaryLinkUpdateMap, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection(CollectionName.dictionaryQuestLink.rawValue).document(item.name).setData(data) { error in
                 completion(error)
             }
         } catch {

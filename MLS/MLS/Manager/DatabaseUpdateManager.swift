@@ -14,6 +14,11 @@ struct DictionaryNameLinkUpdateItem: Codable {
     var link: String
 }
 
+struct DictionaryLinkUpdateMap: Codable {
+    var name: String
+    var code: String
+}
+
 class DatabaseUpdateManager {
     func updateItemLink() {}
 
@@ -229,6 +234,29 @@ class DatabaseUpdateManager {
                     )
                     FirebaseManager.firebaseManager.saveDictionaryMonster(item: data) { _ in
                         print("upDate:", data.name)
+                    }
+                }
+            }
+        }
+    }
+    
+    func updateMapLink() {
+        guard let url = URL(string: "https://mapledb.kr/map.php") else { return }
+
+        if let doc = try? HTML(url: url, encoding: .utf8) {
+            guard let temp = doc.innerHTML?.components(separatedBy: "<div class=\"search-page-add-content-box-main\">") else { return }
+            for (i, item) in temp.enumerated() {
+                if i != 0 {
+                    guard let name = item.components(separatedBy: "alt=").last?.components(separatedBy: "name=").first else { return }
+                    let mapName = name.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "&lt;", with: " <").replacingOccurrences(of: "&gt;", with: ">").replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: " 이미지", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    guard let code = item.components(separatedBy: "name=").last?.components(separatedBy: "src=").first else { return }
+                    let mapCode = code.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    let mapItem = DictionaryLinkUpdateMap(name: mapName, code: mapCode)
+                    
+                    FirebaseManager.firebaseManager.updateDictionaryMapLink(item: mapItem) { _ in
+                        print(i, "성공")
                     }
                 }
             }

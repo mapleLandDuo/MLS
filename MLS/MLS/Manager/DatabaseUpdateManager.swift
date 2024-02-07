@@ -285,6 +285,8 @@ class DatabaseUpdateManager {
                         if i != 0 {
                             let name = item.components(separatedBy: "alt=").last?.components(separatedBy: "name=").first
                             guard let npcName = name?.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: " 이미지", with: "").trimmingCharacters(in: .whitespacesAndNewlines) else { return }
+                            if npcName == "스트링 없음" { continue }
+                            
                             if (item.components(separatedBy: "img_type").last?.components(separatedBy: "alt=").first) ==  ("=\"mob\" ") {
                                 guard let count = item.components(separatedBy: "<span class=\"text-bold-underline\">").last?.components(separatedBy: "</span>").first else { return }
                                 mapItem.monsters.append(DictionaryNameDescription(name: npcName, description: count))
@@ -294,6 +296,7 @@ class DatabaseUpdateManager {
                         }
                     }
                 }
+                //
             }
         }
     }
@@ -318,6 +321,29 @@ class DatabaseUpdateManager {
                         print(i, "성공")
                     }
                 }
+            }
+        }
+    }
+    
+    func updateNPC() {
+        FirebaseManager.firebaseManager.fetchNPCLinks { npcs in
+            guard let npcs = npcs else { return }
+            for npc in npcs {
+                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(npc.code)&t=npc") else { return }
+                var npcItem = DictionaryNPC(code: npc.code, name: npc.name, quests: [])
+                if let doc = try? HTML(url: url, encoding: .utf8) {
+                    guard let temp = doc.innerHTML?.components(separatedBy: "<div class=\"search-page-add-content-box-main\">") else { return }
+                    for (i, item) in temp.enumerated() {
+                        if i != 0 {
+                            guard let name = item.components(separatedBy: "<h4 class=\"text-bold fs-3 search-page-add-content-box-main-title mt-2\">").last?.components(separatedBy: "</h4>").first else { return }
+                            guard let code = item.components(separatedBy: "name=").last?.components(separatedBy: "src=").first else { return }
+                            let questCode = code.replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                            
+                            npcItem.quests.append(DictionaryNameDescription(name: name, description: questCode))
+                        }
+                    }
+                }
+                //
             }
         }
     }

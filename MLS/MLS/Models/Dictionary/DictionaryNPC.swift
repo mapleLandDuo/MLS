@@ -8,5 +8,7 @@
 import Foundation
 
 struct DictionaryNPC {
-    
+    var code: String
+    var name: String
+    var quests: [DictionaryNameDescription?]
 }

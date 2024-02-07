@@ -604,6 +604,27 @@ extension FirebaseManager {
             }
         }
     }
+    
+    func fetchMapLinks(completion: @escaping ([DictionaryLinkUpdateMap]?) -> Void) {
+        db.collection(CollectionName.dictionaryMapLink.rawValue).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var maps: [DictionaryLinkUpdateMap] = []
+                for document in querySnapshot?.documents ?? [] {
+                    do {
+                        let map = try Firestore.Decoder().decode(DictionaryLinkUpdateMap.self, from: document.data())
+                        maps.append(map)
+                    } catch {
+                        completion(nil)
+                        return
+                    }
+                }
+                completion(maps)
+            }
+        }
+    }
 
     func fetchItems(itemName: String, completion: @escaping (DictionaryItem?) -> Void) {
         db.collection(CollectionName.dictionaryItems.rawValue).document(itemName).getDocument { querySnapshot, error in

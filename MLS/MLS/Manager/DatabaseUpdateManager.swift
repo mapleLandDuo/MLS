@@ -272,6 +272,31 @@ class DatabaseUpdateManager {
             }
         }
     }
+    
+    func updateMap() {
+        FirebaseManager.firebaseManager.fetchMapLinks { maps in
+            guard let maps = maps else { return }
+            for map in maps {
+                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(map.code)&t=map") else { return }
+                var mapItem = DictionaryMap(code: map.code, name: map.name, monsters: [], npcs: [])
+                if let doc = try? HTML(url: url, encoding: .utf8) {
+                    guard let temp = doc.innerHTML?.components(separatedBy: "<div class=\"search-page-add-content-box-main\">") else { return }
+                    for (i, item) in temp.enumerated() {
+                        if i != 0 {
+                            let name = item.components(separatedBy: "alt=").last?.components(separatedBy: "name=").first
+                            guard let npcName = name?.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: " 이미지", with: "").trimmingCharacters(in: .whitespacesAndNewlines) else { return }
+                            if (item.components(separatedBy: "img_type").last?.components(separatedBy: "alt=").first) ==  ("=\"mob\" ") {
+                                guard let count = item.components(separatedBy: "<span class=\"text-bold-underline\">").last?.components(separatedBy: "</span>").first else { return }
+                                mapItem.monsters.append(DictionaryNameDescription(name: npcName, description: count))
+                            } else {
+                                mapItem.npcs.append(DictionaryName(name: npcName))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     func updateNPCLink() {
         guard let url = URL(string: "https://mapledb.kr/npc.php") else { return }

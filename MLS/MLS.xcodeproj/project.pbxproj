@@ -115,6 +115,9 @@
 		779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72BE2B56DA16007CB6C1 /* UIImage+.swift */; };
 		779B72C82B56DBC3007CB6C1 /* CommunityPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72C62B56DBC3007CB6C1 /* CommunityPageViewModel.swift */; };
 		779B72C92B56DBC3007CB6C1 /* CommunityPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72C72B56DBC3007CB6C1 /* CommunityPageViewController.swift */; };
+		77A2808D2B73B8AB0079D0EB /* DictionaryMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A2808C2B73B8AB0079D0EB /* DictionaryMap.swift */; };
+		77A2808F2B73B8B40079D0EB /* DictionaryNPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A2808E2B73B8B40079D0EB /* DictionaryNPC.swift */; };
+		77A280912B73B8BD0079D0EB /* DictionaryQuest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A280902B73B8BD0079D0EB /* DictionaryQuest.swift */; };
 		77B6DB732B692A3E00302173 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B6DB722B692A3E00302173 /* String+.swift */; };
 		77BA52412B6AAE4600492991 /* DetailLikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BA52402B6AAE4600492991 /* DetailLikeCell.swift */; };
 		77C1ED092B614E74003179B4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 77C1ED082B614E74003179B4 /* FirebaseStorage */; };
@@ -210,6 +213,9 @@
 		779B72BE2B56DA16007CB6C1 /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		779B72C62B56DBC3007CB6C1 /* CommunityPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityPageViewModel.swift; sourceTree = "<group>"; };
 		779B72C72B56DBC3007CB6C1 /* CommunityPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityPageViewController.swift; sourceTree = "<group>"; };
+		77A2808C2B73B8AB0079D0EB /* DictionaryMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMap.swift; sourceTree = "<group>"; };
+		77A2808E2B73B8B40079D0EB /* DictionaryNPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryNPC.swift; sourceTree = "<group>"; };
+		77A280902B73B8BD0079D0EB /* DictionaryQuest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryQuest.swift; sourceTree = "<group>"; };
 		77B6DB722B692A3E00302173 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		77BA52402B6AAE4600492991 /* DetailLikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailLikeCell.swift; sourceTree = "<group>"; };
 		77C1ED0B2B615471003179B4 /* QnAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnAViewController.swift; sourceTree = "<group>"; };
@@ -260,6 +266,9 @@
 				081E6FC72B640A8A00CF83F4 /* DictionaryMonster.swift */,
 				081E6FCD2B663A9800CF83F4 /* DictionaryItem.swift */,
 				08971A762B70C1AA00FE46BE /* DictionaryNameDescription.swift */,
+				77A2808C2B73B8AB0079D0EB /* DictionaryMap.swift */,
+				77A2808E2B73B8B40079D0EB /* DictionaryNPC.swift */,
+				77A280902B73B8BD0079D0EB /* DictionaryQuest.swift */,
 			);
 			path = Dictionary;
 			sourceTree = "<group>";
@@ -759,6 +768,7 @@
 				081E6FE52B668B7300CF83F4 /* DictionaryMonsterHauntAreaCell.swift in Sources */,
 				77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */,
 				08EF65172B554DA0004CC842 /* AddPostViewController.swift in Sources */,
+				77A2808D2B73B8AB0079D0EB /* DictionaryMap.swift in Sources */,
 				08D50A8A2B5FD46700E94442 /* AlertMaker.swift in Sources */,
 				779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */,
 				081E6FE92B66A41B00CF83F4 /* DictionaryGraySeparatorOneLineCell.swift in Sources */,
@@ -773,6 +783,7 @@
 				77082A4C2B63A2C300187906 /* Comment.swift in Sources */,
 				08EF65242B5572E3004CC842 /* Observable.swift in Sources */,
 				08D50A802B5EB56E00E94442 /* User.swift in Sources */,
+				77A2808F2B73B8B40079D0EB /* DictionaryNPC.swift in Sources */,
 				08D50A842B5FD2E600E94442 /* IndicatorMaker.swift in Sources */,
 				08EF64FE2B53FA89004CC842 /* MainPageViewModel.swift in Sources */,
 				77B6DB732B692A3E00302173 /* String+.swift in Sources */,
@@ -811,6 +822,7 @@
 				082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */,
 				778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */,
 				081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */,
+				77A280912B73B8BD0079D0EB /* DictionaryQuest.swift in Sources */,
 				081E700C2B69212800CF83F4 /* ProfilePageViewModel.swift in Sources */,
 				081E6FD32B663B6300CF83F4 /* DictionaryItemViewController.swift in Sources */,
 				08EF650E2B551EB8004CC842 /* MainPageFeatureListPostCell.swift in Sources */,

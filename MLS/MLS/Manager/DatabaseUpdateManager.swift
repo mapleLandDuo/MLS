@@ -272,7 +272,7 @@ class DatabaseUpdateManager {
             }
         }
     }
-    
+
     func updateMap() {
         FirebaseManager.firebaseManager.fetchMapLinks { maps in
             guard let maps = maps else { return }
@@ -286,8 +286,8 @@ class DatabaseUpdateManager {
                             let name = item.components(separatedBy: "alt=").last?.components(separatedBy: "name=").first
                             guard let npcName = name?.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: " 이미지", with: "").trimmingCharacters(in: .whitespacesAndNewlines) else { return }
                             if npcName == "스트링 없음" { continue }
-                            
-                            if (item.components(separatedBy: "img_type").last?.components(separatedBy: "alt=").first) ==  ("=\"mob\" ") {
+
+                            if (item.components(separatedBy: "img_type").last?.components(separatedBy: "alt=").first) == "=\"mob\" " {
                                 guard let count = item.components(separatedBy: "<span class=\"text-bold-underline\">").last?.components(separatedBy: "</span>").first else { return }
                                 mapItem.monsters.append(DictionaryNameDescription(name: npcName, description: count))
                             } else {
@@ -324,7 +324,7 @@ class DatabaseUpdateManager {
             }
         }
     }
-    
+
     func updateNPC() {
         FirebaseManager.firebaseManager.fetchNPCLinks { npcs in
             guard let npcs = npcs else { return }
@@ -338,7 +338,7 @@ class DatabaseUpdateManager {
                             guard let name = item.components(separatedBy: "<h4 class=\"text-bold fs-3 search-page-add-content-box-main-title mt-2\">").last?.components(separatedBy: "</h4>").first else { return }
                             guard let code = item.components(separatedBy: "name=").last?.components(separatedBy: "src=").first else { return }
                             let questCode = code.replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                            
+
                             npcItem.quests.append(DictionaryNameDescription(name: name, description: questCode))
                         }
                     }
@@ -367,10 +367,94 @@ class DatabaseUpdateManager {
                     }
 
                     let questItem = DictionaryLinkUpdateQuest(name: questName, code: questCode)
-
                     FirebaseManager.firebaseManager.updateDictionaryQuestLink(item: questItem) { _ in
                         print(i, "성공")
                     }
+                }
+            }
+        }
+    }
+
+    func updateQuest() {
+        FirebaseManager.firebaseManager.fetchQuestLinks { quests in
+            guard let quests = quests else { return }
+            for quest in quests {
+                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(quest)&t=quest") else { return }
+                var questItem = DictionaryQuest(preQuest: "", currentQuest: "", laterQuest: "", times: "", startMinLevel: "", startMaxLevel: "", moneyToStart: "", startNPC: "", endNPC: "", rollToStart: [], toCompletion: [], reward: [])
+                if let doc = try? HTML(url: url, encoding: .utf8) {
+                    let titles = doc.css("h3.search-page-add-content-title.text-bold.fs-7.mt-3.mb-1")
+                    let contents = doc.css("div.search-page-add-content.mb-3")
+                    let items = zip(titles, contents)
+
+                    for (title, content) in items {
+                        switch title.text {
+                        case "퀘스트 순서":
+                            var quests = content.css("div.search-page-add-content-box, a.search-page-add-content-box").map { $0.css("span.text-bold.fs-2.search-page-add-content-box-main-title.mt-2, h4.text-bold.fs-2.search-page-add-content-box-main-title.mt-2").first?.text }
+                            guard let currentQuest = quests[1] else { return }
+                            questItem.preQuest = quests[0]
+                            questItem.currentQuest = currentQuest
+                            questItem.laterQuest = quests[2]
+
+                        case "정보":
+                            let contents = content.css("div.search-page-info-content-box-detail.text-bold").map { $0.css("span").first?.text }
+                            guard let times = contents[0],
+                                  let minLevel = contents[1],
+                                  let maxLevel = contents[2],
+                                  let money = contents[3] else { return }
+                            questItem.times = times
+                            questItem.startMinLevel = minLevel
+                            questItem.startMaxLevel = maxLevel
+                            questItem.moneyToStart = money
+
+                            let npcs = content.css("a.search-page-info-content-box-default.text-bold").map { $0.css("span").first?.text }
+                            guard let startNPC = npcs[0],
+                                  let endNPC = npcs[1] else { return }
+                            questItem.startNPC = startNPC
+                            questItem.endNPC = endNPC
+
+                            content.css("div.search-page-info-content-box-detail.text-bold").forEach { item in
+                                item.css("h4").forEach { job in
+                                    if job.text == "시작 가능 직업" {
+                                        questItem.rollToStart = item.css("span").map { $0.text ?? "" }
+                                    }
+                                }
+                            }
+                        case "완료 조건":
+                            let titles = content.css("h4.text-bold.fs-2.search-page-add-content-box-main-title.mt-2").map { $0.text }
+                            let descriptions = content.css("span.favorite-item-info-text.fs-4.text-bold.text-bold-underline").map { $0.css("div").first?.text }
+
+                            for i in 0 ..< titles.count {
+                                guard let title = titles[i],
+                                      let description = descriptions[i] else { return }
+                                questItem.toCompletion.append(DictionaryNameDescription(name: title, description: description))
+                            }
+                        case "보상":
+                            content.css("div.search-page-add-content-box").forEach { item in
+                                let titles = item.css("h4").map { $0.text }
+                                let descriptions = item.css("span").map { $0.text }
+
+                                for i in 0 ..< titles.count {
+                                    guard let title = titles[i],
+                                          let description = descriptions[i] else { return }
+                                    questItem.reward.append(DictionaryNameDescription(name: title, description: description))
+                                }
+                            }
+                            content.css("a.search-page-add-content-box").forEach { item in
+                                if item.text == nil { return }
+                                let titles = item.css("h4.text-bold.fs-2.search-page-add-content-box-main-title.mt-2").map { $0.text }
+                                let descriptions = item.css("span.favorite-item-info-text.fs-4.text-bold.text-bold-underline").map { $0.css("div").first?.text }
+
+                                for i in 0 ..< titles.count {
+                                    guard let title = titles[i],
+                                          let description = descriptions[i] else { return }
+                                    questItem.reward.append(DictionaryNameDescription(name: title, description: description))
+                                }
+                            }
+                        default:
+                            break
+                        }
+                    }
+                    print(questItem)
                 }
             }
         }

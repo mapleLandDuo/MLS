@@ -647,6 +647,27 @@ extension FirebaseManager {
         }
     }
 
+    func fetchQuestLinks(completion: @escaping ([DictionaryLinkUpdateQuest]?) -> Void) {
+        db.collection(CollectionName.dictionaryQuestLink.rawValue).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var maps: [DictionaryLinkUpdateQuest] = []
+                for document in querySnapshot?.documents ?? [] {
+                    do {
+                        let map = try Firestore.Decoder().decode(DictionaryLinkUpdateQuest.self, from: document.data())
+                        maps.append(map)
+                    } catch {
+                        completion(nil)
+                        return
+                    }
+                }
+                completion(maps)
+            }
+        }
+    }
+    
     func fetchItems(itemName: String, completion: @escaping (DictionaryItem?) -> Void) {
         db.collection(CollectionName.dictionaryItems.rawValue).document(itemName).getDocument { querySnapshot, error in
             if let error = error {

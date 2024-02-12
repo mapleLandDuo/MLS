@@ -7,13 +7,9 @@
 
 import Foundation
 
-struct DictionaryMap {
+struct DictionaryMap: Codable {
     var code: String
     var name: String
     var monsters: [DictionaryNameDescription?]
-    var npcs: [DictionaryName?]
-}
-
-struct DictionaryName {
-    var name: String
+    var npcs: [String?]
 }

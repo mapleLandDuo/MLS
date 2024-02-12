@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DictionaryQuest {
+struct DictionaryQuest: Codable {
     var preQuest: String?
     var currentQuest: String
     var laterQuest: String?

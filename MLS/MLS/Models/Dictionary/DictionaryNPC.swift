@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DictionaryNPC {
+struct DictionaryNPC: Codable {
     var code: String
     var name: String
     var quests: [DictionaryNameDescription?]

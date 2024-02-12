@@ -562,6 +562,39 @@ extension FirebaseManager {
             completion(error)
         }
     }
+    
+    func saveDictionaryMap(item: DictionaryMap, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection(CollectionName.dictionaryMaps.rawValue).document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    
+    func saveDictionaryNPCs(item: DictionaryNPC, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection(CollectionName.dictionaryNPCs.rawValue).document(item.name).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    
+    func saveDictionaryQuest(item: DictionaryQuest, completion: @escaping (Error?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(item)
+            db.collection(CollectionName.dictionaryQuests.rawValue).document(item.currentQuest).setData(data) { error in
+                completion(error)
+            }
+        } catch {
+            completion(error)
+        }
+    }
 
     func fetchItemLinks(completion: @escaping ([DictionaryNameLinkUpdateItem]?) -> Void) {
         db.collection(CollectionName.dictionaryItemLink.rawValue).getDocuments { querySnapshot, error in

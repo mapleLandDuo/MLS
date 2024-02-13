@@ -387,13 +387,12 @@ class DatabaseUpdateManager {
         FirebaseManager.firebaseManager.fetchQuestLinks { quests in
             guard let quests = quests else { return }
             for (index, quest) in quests.enumerated() {
-                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(quest)&t=quest") else { return }
+                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(quest.code)&t=quest") else { return }
                 var questItem = DictionaryQuest(preQuest: "", currentQuest: "", laterQuest: "", times: "", startMinLevel: "", startMaxLevel: "", moneyToStart: "", startNPC: "", endNPC: "", rollToStart: [], toCompletion: [], reward: [])
                 if let doc = try? HTML(url: url, encoding: .utf8) {
                     let titles = doc.css("h3.search-page-add-content-title.text-bold.fs-7.mt-3.mb-1")
                     let contents = doc.css("div.search-page-add-content.mb-3")
                     let items = zip(titles, contents)
-
                     for (title, content) in items {
                         switch title.text {
                         case "퀘스트 순서":

@@ -17,7 +17,7 @@ enum ItemMenuName: String {
     case warrior = "전사"
     case archer = "궁수"
     case thief = "도적"
-    case magician = "마법사"
+    case magician = "법사"
     case pirate = "해적"
 }
 

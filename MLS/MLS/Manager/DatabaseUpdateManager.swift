@@ -14,6 +14,21 @@ struct DictionaryNameLinkUpdateItem: Codable {
     var link: String
 }
 
+struct DictionaryLinkUpdateMap: Codable {
+    var name: String
+    var code: String
+}
+
+struct DictionaryLinkUpdateNPC: Codable {
+    var name: String
+    var code: String
+}
+
+struct DictionaryLinkUpdateQuest: Codable {
+    var name: String
+    var code: String
+}
+
 class DatabaseUpdateManager {
     func updateItemLink() {}
 
@@ -229,6 +244,225 @@ class DatabaseUpdateManager {
                     )
                     FirebaseManager.firebaseManager.saveDictionaryMonster(item: data) { _ in
                         print("upDate:", data.name)
+                    }
+                }
+            }
+        }
+    }
+
+    func updateMapLink() {
+        guard let url = URL(string: "https://mapledb.kr/map.php") else { return }
+
+        if let doc = try? HTML(url: url, encoding: .utf8) {
+            guard let temp = doc.innerHTML?.components(separatedBy: "<div class=\"search-page-add-content-box-main\">") else { return }
+            for (i, item) in temp.enumerated() {
+                if i != 0 {
+                    guard let name = item.components(separatedBy: "alt=").last?.components(separatedBy: "name=").first else { return }
+                    let mapName = name.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "&lt;", with: " <").replacingOccurrences(of: "&gt;", with: ">").replacingOccurrences(of: " 이미지", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+
+                    guard let code = item.components(separatedBy: "name=").last?.components(separatedBy: "src=").first else { return }
+                    let mapCode = code.replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+
+                    let mapItem = DictionaryLinkUpdateMap(name: mapName, code: mapCode)
+
+                    FirebaseManager.firebaseManager.updateDictionaryMapLink(item: mapItem) { _ in
+                        print(i, "성공")
+                    }
+                }
+            }
+        }
+    }
+
+    func updateMap() {
+        FirebaseManager.firebaseManager.fetchMapLinks { maps in
+            guard let maps = maps else { return }
+            for (i, map) in maps.enumerated() {
+                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(map.code)&t=map") else { return }
+                var mapItem = DictionaryMap(code: map.code, name: map.name, monsters: [], npcs: [])
+                if let doc = try? HTML(url: url, encoding: .utf8) {
+                    doc.css("div.search-page-add-content").forEach { item in
+
+                        let types = item.css("img.search-page-add-content-box-main-img").map { $0["img_type"] }
+                        let titles = item.css("h4.text-bold.fs-3.search-page-add-content-box-main-title.mt-2").map { $0.text }
+                        let descriptions = item.css("span.text-bold-underline").map { $0.text }
+
+                        for i in 0 ... types.count - 1 {
+                            switch types[i] {
+                            case "mob":
+                                guard let title = titles[i],
+                                      let description = descriptions[i] else { return }
+                                mapItem.monsters.append(DictionaryNameDescription(name: title, description: description))
+                            case "npc":
+                                mapItem.npcs.append(titles[i])
+                            default:
+                                continue
+                            }
+                        }
+                    }
+                    FirebaseManager.firebaseManager.saveDictionaryMap(item: mapItem) { _ in
+                        print(i, "성공")
+                    }
+                }
+            }
+        }
+    }
+
+    func updateNPCLink() {
+        guard let url = URL(string: "https://mapledb.kr/npc.php") else { return }
+        if let doc = try? HTML(url: url, encoding: .utf8) {
+            guard let temp = doc.innerHTML?.components(separatedBy: "<div class=\"search-page-add-content-box-main\">") else { return }
+            for (i, item) in temp.enumerated() {
+                if i != 0 {
+                    guard let name = item.components(separatedBy: "alt=").last?.components(separatedBy: "name=").first else { return }
+                    let npcName = name.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "&lt;", with: " <").replacingOccurrences(of: "&gt;", with: ">").replacingOccurrences(of: " 이미지", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+
+                    if npcName == "스트링 없음" { continue }
+
+                    guard let code = item.components(separatedBy: "name=").last?.components(separatedBy: "src=").first else { return }
+                    let npcCode = code.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+
+                    let npcItem = DictionaryLinkUpdateNPC(name: npcName, code: npcCode)
+
+                    FirebaseManager.firebaseManager.updateDictionaryNPCLink(item: npcItem) { _ in
+                        print(i, "성공")
+                    }
+                }
+            }
+        }
+    }
+
+    func updateNPC() {
+        FirebaseManager.firebaseManager.fetchNPCLinks { npcs in
+            guard let npcs = npcs else { return }
+            for (index, npc) in npcs.enumerated() {
+                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(npc.code)&t=npc") else { return }
+                var npcItem = DictionaryNPC(code: npc.code, name: npc.name, quests: [])
+                if let doc = try? HTML(url: url, encoding: .utf8) {
+                    guard let temp = doc.innerHTML?.components(separatedBy: "<div class=\"search-page-add-content-box-main\">") else { return }
+                    for (i, item) in temp.enumerated() {
+                        if i != 0 {
+                            guard let name = item.components(separatedBy: "<h4 class=\"text-bold fs-3 search-page-add-content-box-main-title mt-2\">").last?.components(separatedBy: "</h4>").first else { return }
+                            guard let code = item.components(separatedBy: "name=").last?.components(separatedBy: "src=").first else { return }
+                            let questCode = code.replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+
+                            npcItem.quests.append(DictionaryNameDescription(name: name, description: questCode))
+                        }
+                    }
+                }
+                FirebaseManager.firebaseManager.saveDictionaryNPCs(item: npcItem) { _ in
+                    print(index, "성공")
+                }
+            }
+        }
+    }
+
+    func updateQuestLink() {
+        guard let url = URL(string: "https://mapledb.kr/quest.php") else { return }
+        var count = 1
+        if let doc = try? HTML(url: url, encoding: .utf8) {
+            guard let temp = doc.innerHTML?.components(separatedBy: "<div class=\"search-page-add-content-box-main\">") else { return }
+            for (i, item) in temp.enumerated() {
+                if i != 0 {
+                    guard let name = item.components(separatedBy: "alt=").last?.components(separatedBy: "name=").first else { return }
+                    var questName = name.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "&lt;", with: " <").replacingOccurrences(of: "&gt;", with: ">").replacingOccurrences(of: " 이미지", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+
+                    guard let code = item.components(separatedBy: "name=").last?.components(separatedBy: "src=").first else { return }
+                    let questCode = code.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "\"", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+
+                    if questName == "드래곤 라이더" {
+                        questName = "드래곤 라이더 <\(count)>"
+                        count = count + 1
+                    }
+
+                    let questItem = DictionaryLinkUpdateQuest(name: questName, code: questCode)
+                    FirebaseManager.firebaseManager.updateDictionaryQuestLink(item: questItem) { _ in
+                        print(i, "성공")
+                    }
+                }
+            }
+        }
+    }
+
+    func updateQuest() {
+        FirebaseManager.firebaseManager.fetchQuestLinks { quests in
+            guard let quests = quests else { return }
+            for (index, quest) in quests.enumerated() {
+                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(quest.code)&t=quest") else { return }
+                var questItem = DictionaryQuest(preQuest: "", currentQuest: "", laterQuest: "", times: "", startMinLevel: "", startMaxLevel: "", moneyToStart: "", startNPC: "", endNPC: "", rollToStart: [], toCompletion: [], reward: [])
+                if let doc = try? HTML(url: url, encoding: .utf8) {
+                    let titles = doc.css("h3.search-page-add-content-title.text-bold.fs-7.mt-3.mb-1")
+                    let contents = doc.css("div.search-page-add-content.mb-3")
+                    let items = zip(titles, contents)
+                    for (title, content) in items {
+                        switch title.text {
+                        case "퀘스트 순서":
+                            let quests = content.css("div.search-page-add-content-box, a.search-page-add-content-box").map { $0.css("span.text-bold.fs-2.search-page-add-content-box-main-title.mt-2, h4.text-bold.fs-2.search-page-add-content-box-main-title.mt-2").first?.text }
+                            guard let currentQuest = quests[1] else { return }
+                            questItem.preQuest = quests[0]
+                            questItem.currentQuest = currentQuest
+                            questItem.laterQuest = quests[2]
+
+                        case "정보":
+                            let contents = content.css("div.search-page-info-content-box-detail.text-bold").map { $0.css("span").first?.text }
+                            guard let times = contents[0],
+                                  let minLevel = contents[1],
+                                  let maxLevel = contents[2],
+                                  let money = contents[3] else { return }
+                            questItem.times = times
+                            questItem.startMinLevel = minLevel
+                            questItem.startMaxLevel = maxLevel
+                            questItem.moneyToStart = money
+
+                            let npcs = content.css("a.search-page-info-content-box-default.text-bold").map { $0.css("span").first?.text }
+                            guard let startNPC = npcs[0],
+                                  let endNPC = npcs[1] else { return }
+                            questItem.startNPC = startNPC
+                            questItem.endNPC = endNPC
+
+                            content.css("div.search-page-info-content-box-detail.text-bold").forEach { item in
+                                item.css("h4").forEach { job in
+                                    if job.text == "시작 가능 직업" {
+                                        questItem.rollToStart = item.css("span").map { $0.text ?? "" }
+                                    }
+                                }
+                            }
+                        case "완료 조건":
+                            let titles = content.css("h4.text-bold.fs-2.search-page-add-content-box-main-title.mt-2").map { $0.text }
+                            let descriptions = content.css("span.favorite-item-info-text.fs-4.text-bold.text-bold-underline").map { $0.css("div").first?.text }
+
+                            for i in 0 ..< titles.count {
+                                guard let title = titles[i],
+                                      let description = descriptions[i] else { return }
+                                questItem.toCompletion.append(DictionaryNameDescription(name: title, description: description))
+                            }
+                        case "보상":
+                            content.css("div.search-page-add-content-box").forEach { item in
+                                let titles = item.css("h4").map { $0.text }
+                                let descriptions = item.css("span").map { $0.text }
+
+                                for i in 0 ..< titles.count {
+                                    guard let title = titles[i],
+                                          let description = descriptions[i] else { return }
+                                    questItem.reward.append(DictionaryNameDescription(name: title, description: description))
+                                }
+                            }
+                            content.css("a.search-page-add-content-box").forEach { item in
+                                if item.text == nil { return }
+                                let titles = item.css("h4.text-bold.fs-2.search-page-add-content-box-main-title.mt-2").map { $0.text }
+                                let descriptions = item.css("span.favorite-item-info-text.fs-4.text-bold.text-bold-underline").map { $0.css("div").first?.text }
+
+                                for i in 0 ..< titles.count {
+                                    guard let title = titles[i],
+                                          let description = descriptions[i] else { return }
+                                    questItem.reward.append(DictionaryNameDescription(name: title, description: description))
+                                }
+                            }
+                        default:
+                            break
+                        }
+                    }
+                    FirebaseManager.firebaseManager.saveDictionaryQuest(item: questItem) { _ in
+                        print(index, "성공")
                     }
                 }
             }

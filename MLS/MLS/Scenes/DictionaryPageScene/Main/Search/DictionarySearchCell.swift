@@ -68,7 +68,7 @@ private extension DictionarySearchCell {
 // MARK: Bind
 extension DictionarySearchCell {
     func bind(imageUrl: URL, title: String, level: String) {
-        searchImageView.kf.setImage(with: imageUrl)
+        searchImageView.kf.setImage(with: imageUrl, placeholder: UIImage(systemName: "figure.flexibility"))
         searchTitleLabel.text = title
         searchLevelLabel.text = "LV. \(level)"
     }

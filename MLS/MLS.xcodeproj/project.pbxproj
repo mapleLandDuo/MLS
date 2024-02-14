@@ -107,6 +107,15 @@
 		775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */; };
 		775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */; };
 		775474C62B56A81300C8DD61 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */; };
+		777FF6542B7B673A00FC7358 /* NanumGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777FF64E2B7B673900FC7358 /* NanumGothicBold.ttf */; };
+		777FF6552B7B673A00FC7358 /* NanumGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777FF64F2B7B673900FC7358 /* NanumGothic.ttf */; };
+		777FF6562B7B673A00FC7358 /* NanumGothicLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777FF6502B7B673900FC7358 /* NanumGothicLight.ttf */; };
+		777FF6572B7B673A00FC7358 /* NanumSquareL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777FF6512B7B673A00FC7358 /* NanumSquareL.ttf */; };
+		777FF6582B7B673A00FC7358 /* NanumSquareB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777FF6522B7B673A00FC7358 /* NanumSquareB.ttf */; };
+		777FF6592B7B673A00FC7358 /* NanumSquareR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 777FF6532B7B673A00FC7358 /* NanumSquareR.ttf */; };
+		777FF6602B7B675400FC7358 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 777FF65C2B7B675300FC7358 /* Pretendard-Bold.otf */; };
+		777FF6622B7B675400FC7358 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 777FF65E2B7B675300FC7358 /* Pretendard-Light.otf */; };
+		777FF6632B7B675400FC7358 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 777FF65F2B7B675400FC7358 /* Pretendard-Regular.otf */; };
 		778E905F2B667ECF008A6E74 /* DictionaryMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E905E2B667ECF008A6E74 /* DictionaryMainViewModel.swift */; };
 		778E90622B668101008A6E74 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E90612B668101008A6E74 /* ItemTableViewCell.swift */; };
 		778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */; };
@@ -201,6 +210,15 @@
 		775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		777FF64E2B7B673900FC7358 /* NanumGothicBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NanumGothicBold.ttf; path = ../../../../../../Downloads/font/NanumGothicBold.ttf; sourceTree = "<group>"; };
+		777FF64F2B7B673900FC7358 /* NanumGothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NanumGothic.ttf; path = ../../../../../../Downloads/font/NanumGothic.ttf; sourceTree = "<group>"; };
+		777FF6502B7B673900FC7358 /* NanumGothicLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NanumGothicLight.ttf; path = ../../../../../../Downloads/font/NanumGothicLight.ttf; sourceTree = "<group>"; };
+		777FF6512B7B673A00FC7358 /* NanumSquareL.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NanumSquareL.ttf; path = ../../../../../../Downloads/font/NanumSquareL.ttf; sourceTree = "<group>"; };
+		777FF6522B7B673A00FC7358 /* NanumSquareB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NanumSquareB.ttf; path = ../../../../../../Downloads/font/NanumSquareB.ttf; sourceTree = "<group>"; };
+		777FF6532B7B673A00FC7358 /* NanumSquareR.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NanumSquareR.ttf; path = ../../../../../../Downloads/font/NanumSquareR.ttf; sourceTree = "<group>"; };
+		777FF65C2B7B675300FC7358 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Pretendard-Bold.otf"; path = "../../../../../../Downloads/font/Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		777FF65E2B7B675300FC7358 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Pretendard-Light.otf"; path = "../../../../../../Downloads/font/Pretendard-Light.otf"; sourceTree = "<group>"; };
+		777FF65F2B7B675400FC7358 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Pretendard-Regular.otf"; path = "../../../../../../Downloads/font/Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		778E905E2B667ECF008A6E74 /* DictionaryMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMainViewModel.swift; sourceTree = "<group>"; };
 		778E90612B668101008A6E74 /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
 		778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -415,6 +433,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				777FF64D2B7B671200FC7358 /* Font */,
 				082D0C282B53CF4600D84CE2 /* AppDelegate.swift */,
 				082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */,
 				082D0C362B53CF4800D84CE2 /* Info.plist */,
@@ -573,6 +592,22 @@
 			path = PostDetailPageScene;
 			sourceTree = "<group>";
 		};
+		777FF64D2B7B671200FC7358 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				777FF65C2B7B675300FC7358 /* Pretendard-Bold.otf */,
+				777FF65E2B7B675300FC7358 /* Pretendard-Light.otf */,
+				777FF65F2B7B675400FC7358 /* Pretendard-Regular.otf */,
+				777FF64F2B7B673900FC7358 /* NanumGothic.ttf */,
+				777FF64E2B7B673900FC7358 /* NanumGothicBold.ttf */,
+				777FF6502B7B673900FC7358 /* NanumGothicLight.ttf */,
+				777FF6522B7B673A00FC7358 /* NanumSquareB.ttf */,
+				777FF6512B7B673A00FC7358 /* NanumSquareL.ttf */,
+				777FF6532B7B673A00FC7358 /* NanumSquareR.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		778E90602B6680F3008A6E74 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -714,7 +749,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
+				777FF6602B7B675400FC7358 /* Pretendard-Bold.otf in Resources */,
+				777FF6542B7B673A00FC7358 /* NanumGothicBold.ttf in Resources */,
+				777FF6632B7B675400FC7358 /* Pretendard-Regular.otf in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
+				777FF6622B7B675400FC7358 /* Pretendard-Light.otf in Resources */,
+				777FF6562B7B673A00FC7358 /* NanumGothicLight.ttf in Resources */,
+				777FF6592B7B673A00FC7358 /* NanumSquareR.ttf in Resources */,
+				777FF6552B7B673A00FC7358 /* NanumGothic.ttf in Resources */,
+				777FF6582B7B673A00FC7358 /* NanumSquareB.ttf in Resources */,
+				777FF6572B7B673A00FC7358 /* NanumSquareL.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

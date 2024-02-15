@@ -63,6 +63,8 @@
 		0886E7E82B6284B500B014F8 /* DictionaryMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0886E7E72B6284B500B014F8 /* DictionaryMainViewController.swift */; };
 		08971A772B70C1AA00FE46BE /* DictionaryNameDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08971A762B70C1AA00FE46BE /* DictionaryNameDescription.swift */; };
 		08971A792B70C1EF00FE46BE /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08971A782B70C1EF00FE46BE /* State.swift */; };
+		08CBCB822B7C99C700C051F7 /* TestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB812B7C99C700C051F7 /* TestController.swift */; };
+		08CBCB862B7C9B1A00C051F7 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB852B7C9B1A00C051F7 /* DBHelper.swift */; };
 		08D50A672B590D9100E94442 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D50A662B590D9100E94442 /* SignInViewController.swift */; };
 		08D50A692B590E3D00E94442 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D50A682B590E3D00E94442 /* SignInViewModel.swift */; };
 		08D50A6B2B59137B00E94442 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D50A6A2B59137B00E94442 /* SignUpViewController.swift */; };
@@ -157,6 +159,8 @@
 		0886E7E72B6284B500B014F8 /* DictionaryMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMainViewController.swift; sourceTree = "<group>"; };
 		08971A762B70C1AA00FE46BE /* DictionaryNameDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryNameDescription.swift; sourceTree = "<group>"; };
 		08971A782B70C1EF00FE46BE /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		08CBCB812B7C99C700C051F7 /* TestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestController.swift; sourceTree = "<group>"; };
+		08CBCB852B7C9B1A00C051F7 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		08D50A662B590D9100E94442 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		08D50A682B590E3D00E94442 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		08D50A6A2B59137B00E94442 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -400,6 +404,7 @@
 				08D50A832B5FD2E600E94442 /* IndicatorMaker.swift */,
 				08D50A892B5FD46700E94442 /* AlertMaker.swift */,
 				081E703E2B6BEBC300CF83F4 /* TextController.swift */,
+				08CBCB852B7C9B1A00C051F7 /* DBHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -408,6 +413,7 @@
 			isa = PBXGroup;
 			children = (
 				082D0C772B53D11900D84CE2 /* BasicController.swift */,
+				08CBCB812B7C99C700C051F7 /* TestController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -773,12 +779,14 @@
 				08EF64FE2B53FA89004CC842 /* MainPageViewModel.swift in Sources */,
 				77B6DB732B692A3E00302173 /* String+.swift in Sources */,
 				08971A792B70C1EF00FE46BE /* State.swift in Sources */,
+				08CBCB822B7C99C700C051F7 /* TestController.swift in Sources */,
 				082D0C832B53D45700D84CE2 /* Post.swift in Sources */,
 				7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */,
 				778E905F2B667ECF008A6E74 /* DictionaryMainViewModel.swift in Sources */,
 				081E6FCE2B663A9800CF83F4 /* DictionaryItem.swift in Sources */,
 				082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */,
 				770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */,
+				08CBCB862B7C9B1A00C051F7 /* DBHelper.swift in Sources */,
 				08D50A7E2B5EB0E800E94442 /* LoginManager.swift in Sources */,
 				775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */,
 				7732E8822B67E7630038C7A9 /* DictionarySearchViewModel.swift in Sources */,

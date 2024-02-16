@@ -7,9 +7,18 @@
 
 import Foundation
 
+// MARK: - Dev 1.0.0
 struct DictionaryMap: Codable {
     var code: String
     var name: String
-    var monsters: [DictionaryNameDescription?]
+    var monsters: [DictionaryNameDescription?] // 이름 , 갯수
     var npcs: [String?]
+}
+
+// MARK: - Dev 1.0.1
+struct DictMap: Codable {
+    var code: String
+    var name: String
+    var monsters: [DictionaryNameDescription] // 이름 , 갯수
+    var npcs: [String]
 }

@@ -116,7 +116,7 @@ class DBHelper {
         return result
     }
     
-    func deleteData() {
+    func fetchData() {
         let query = "delete from myDB where id >= 2"
         var statement: OpaquePointer? = nil
         

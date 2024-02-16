@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - Dev 1.0.0
 struct DictionaryMonster: Codable {
     // ID
     let code: String
@@ -34,4 +35,20 @@ struct DictionaryMonster: Codable {
     let evasionRate: Int
     // 드랍 테이블
     let dropTable: [DictionaryNameDescription]
+}
+
+// MARK: - Dev 1.0.1
+struct DictMonster: Codable {
+    // ID
+    var code: String
+    // 이름
+    var name: String
+    // 기본 정보 [레벨,경험치,HP,MP]
+    var defaultValues: [DictionaryNameDescription]
+    // 세부 정보 [특성,물리방어력,마법방어력,필요명중률,회피율]
+    var detailValues: [DictionaryNameDescription]
+    // 출몰 지역
+    var hauntArea: [String]
+    // 드랍 테이블
+    var dropTable: [DictionaryNameDescription]
 }

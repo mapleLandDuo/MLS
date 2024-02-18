@@ -20,6 +20,20 @@ class DictLandingViewController: BasicController {
     
     var firstSectionView = DictLandingSearchView()
     
+    var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .secondarySystemBackground
+        let separator = UIView()
+        separator.backgroundColor = .systemGray4
+        
+        view.addSubview(separator)
+        separator.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        return view
+    }()
+    
     var secondSectionView: UIView = {
         let view = UIView()
         view.backgroundColor = .yellow
@@ -57,19 +71,28 @@ private extension DictLandingViewController {
     func setUpConstraints() {
         view.addSubview(headerView)
         view.addSubview(firstSectionView)
+        view.addSubview(separatorView)
         view.addSubview(secondSectionView)
         
         headerView.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(56)
         }
+        
         firstSectionView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(200)
         }
-        secondSectionView.snp.makeConstraints {
+        
+        separatorView.snp.makeConstraints {
             $0.top.equalTo(firstSectionView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(4)
+        }
+        
+        secondSectionView.snp.makeConstraints {
+            $0.top.equalTo(separatorView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }

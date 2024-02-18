@@ -39,7 +39,7 @@ class DatabaseUpdateManager {
                 let contents = docs.css("div.search-page-add-content-box-main.mb-3")
                 for content in contents {
                     guard let name = content.css("h3").first?.text else { return }
-                    guard let code = content.css("img.search-page-add-content-box-main-img").map({$0["name"]}).first! else { return }
+                    guard let code = content.css("img.search-page-add-content-box-main-img").map({ $0["name"] }).first! else { return }
                     let item = DictionaryNameLinkUpdateItem(name: name, link: code)
                     FirebaseManager.firebaseManager.updateDictionaryLink(collection: .dictionaryItemLink, documentName: name, item: item) { error in
                         if error != nil {
@@ -59,7 +59,7 @@ class DatabaseUpdateManager {
         if let doc = try? HTML(url: url, encoding: .utf8) {
             doc.css("div.search-page-add-content-box-main.mb-3").forEach { docs in
                 guard let name = docs.css("h3").first?.text else { return }
-                guard let code = docs.css("img.search-page-add-content-box-main-img").map({$0["name"]}).first! else { return }
+                guard let code = docs.css("img.search-page-add-content-box-main-img").map({ $0["name"] }).first! else { return }
                 let item = DictionaryNameLinkUpdateItem(name: name, link: code)
                 FirebaseManager.firebaseManager.updateDictionaryLink(collection: .dictionaryMonstersLink, documentName: name, item: item) { error in
                     if error != nil {
@@ -161,13 +161,12 @@ class DatabaseUpdateManager {
 
 // MARK: - fetch Dictionarys
 extension DatabaseUpdateManager {
-    
     func fetchItems(completion: @escaping ([DictItem]) -> Void) {
         FirebaseManager.firebaseManager.fetchLinks(collectionName: .dictionaryItemLink) { datas in
             var result: [DictItem] = []
             guard let datas = datas else { return }
             for data in datas {
-                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(data.link)&t=item") else { return  }
+                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(data.link)&t=item") else { return }
                 var item = DictItem(
                     name: data.name,
                     code: data.link,
@@ -181,8 +180,8 @@ extension DatabaseUpdateManager {
                 if let doc = try? HTML(url: url, encoding: .utf8) {
                     var count = 0
                     doc.css("div.search-page-info-content-box").forEach { contents in
-                        var keys = contents.css("h4").compactMap({$0.text})
-                        let values = contents.css("span").compactMap({$0.text})
+                        var keys = contents.css("h4").compactMap { $0.text }
+                        let values = contents.css("span").compactMap { $0.text }
                         if keys.count != values.count {
                             keys.insert("설명", at: 1)
                         }
@@ -204,15 +203,15 @@ extension DatabaseUpdateManager {
                             count += 1
                         }
                     }
-                    let dropTableNames = doc.css("h4.text-bold.fs-3.search-page-add-content-box-main-title.mt-2, span.text-bold-underline").compactMap({$0.text})
-                    let dropTableValues = doc.css("span.text-bold-underline").compactMap({$0.text})
+                    let dropTableNames = doc.css("h4.text-bold.fs-3.search-page-add-content-box-main-title.mt-2, span.text-bold-underline").compactMap { $0.text }
+                    let dropTableValues = doc.css("span.text-bold-underline").compactMap { $0.text }
                     let dropTables = zip(dropTableNames, dropTableValues)
-                    for (name,value) in dropTables {
+                    for (name, value) in dropTables {
                         item.dropTable.append(DictionaryNameDescription(name: name, description: value))
                     }
                 }
                 result.append(item)
-                print(item.name,"mapping")
+                print(item.name, "mapping")
             }
             completion(result)
         }
@@ -223,25 +222,25 @@ extension DatabaseUpdateManager {
             var result: [DictMonster] = []
             guard let datas = datas else { return }
             for data in datas {
-                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(data.link)&t=mob") else { return  }
+                guard let url = URL(string: "https://mapledb.kr/search.php?q=\(data.link)&t=mob") else { return }
                 var item = DictMonster(code: data.link, name: data.name, defaultValues: [], detailValues: [], hauntArea: [], dropTable: [])
                 if let doc = try? HTML(url: url, encoding: .utf8) {
                     var count = 0
                     doc.css("div.search-page-info-content-box").forEach { doc2 in
                         if count == 0 {
-                            let key = doc2.css("h4").compactMap({$0.text})
-                            let value = doc2.css("span").compactMap({$0.text})
+                            let key = doc2.css("h4").compactMap { $0.text }
+                            let value = doc2.css("span").compactMap { $0.text }
                             let zip = zip(key, value)
                             for (key, value) in zip {
                                 item.defaultValues.append(DictionaryNameDescription(name: key, description: value))
                             }
                             doc2.css("div.search-page-info-content-spawnmap").forEach { doc3 in
-                                let maps = doc3.css("span").compactMap({$0.text})
+                                let maps = doc3.css("span").compactMap { $0.text }
                                 item.hauntArea = maps
                             }
                         } else if count == 1 {
-                            var key = doc2.css("h4").compactMap({$0.text})
-                            let value = doc2.css("span").compactMap({$0.text})
+                            var key = doc2.css("h4").compactMap { $0.text }
+                            let value = doc2.css("span").compactMap { $0.text }
                             key.insert("레벨별 필요 명중률", at: 3)
                             if key.count != value.count {
                                 key.insert("특성", at: 0)
@@ -254,18 +253,18 @@ extension DatabaseUpdateManager {
                         count += 1
                     }
                     doc.css("div.search-page-add-content").forEach { doc2 in
-                        var key = doc2.css("h4.text-bold.fs-3.search-page-add-content-box-main-title.mt-2").compactMap({$0.text})
-                        var value = doc2.css("span.text-bold-underline").compactMap({$0.text})
+                        var key = doc2.css("h4.text-bold.fs-3.search-page-add-content-box-main-title.mt-2").compactMap { $0.text }
+                        var value = doc2.css("span.text-bold-underline").compactMap { $0.text }
                         guard let money = doc2.css("span.favorite-item-info-text.fs-4.text-bold").first?.css("div").first?.text else { return }
                         key.insert(money, at: 0)
-                        var zip = zip(key,value)
+                        var zip = zip(key, value)
                         for (key, value) in zip {
                             item.dropTable.append(DictionaryNameDescription(name: key, description: value))
                         }
                     }
                 }
                 result.append(item)
-                print(item.name,"mapping")
+                print(item.name, "mapping")
             }
             completion(result)
         }
@@ -301,7 +300,7 @@ extension DatabaseUpdateManager {
                     }
                 }
                 result.append(mapItem)
-                print(mapItem.name,"mapping")
+                print(mapItem.name, "mapping")
             }
             completion(result)
         }
@@ -317,23 +316,23 @@ extension DatabaseUpdateManager {
                 if let doc = try? HTML(url: url, encoding: .utf8) {
                     var count = 0
                     doc.css("div.search-page-add-content.mb-3").forEach { doc2 in
-                        let value = doc2.css("h4").compactMap({$0.text}).filter({$0 != ""})
+                        let value = doc2.css("h4").compactMap { $0.text }.filter { $0 != "" }
                         if count == 0 {
                             npcItem.maps = value
-                        } else if count == 1{
+                        } else if count == 1 {
                             npcItem.quests = value
                         }
                         count += 1
                     }
                     result.append(npcItem)
-                    print(npcItem.name,"mapping")
+                    print(npcItem.name, "mapping")
                 }
             }
             completion(result)
         }
     }
 
-    func fetchQuest(completion: @escaping ([DictQuest])-> Void) {
+    func fetchQuest(completion: @escaping ([DictQuest]) -> Void) {
         FirebaseManager.firebaseManager.fetchLinks(collectionName: .dictionaryQuestLink) { quests in
             guard let quests = quests else { return }
             var result: [DictQuest] = []
@@ -414,17 +413,39 @@ extension DatabaseUpdateManager {
                     }
                 }
                 result.append(questItem)
-                print(questItem.name,"mapping")
+                print(questItem.name, "mapping")
             }
             completion(result)
         }
     }
 }
 
-
 // MARK: - Version Update
 extension DatabaseUpdateManager {
-    func dictVersionUpdate(version: String, dictionary: DictVersion) {
-        
+    func dictVersionUpdate(version: String, dictionary: DictVersion) {}
+}
+
+// MARK: DB to JSON
+extension DatabaseUpdateManager {
+    func changeToJson<T: Codable>(datas: [T], fileName: String) {
+        // "monsters.json"
+        do {
+            let jsonData = try JSONEncoder().encode(datas)
+            if let documentDirectory = FileManager.default.urls(for: .documentDirectory,
+                                                                in: .userDomainMask).first
+            {
+                let pathWithFileName = documentDirectory.appendingPathComponent(fileName)
+                try jsonData.write(to: pathWithFileName)
+            }
+        } catch {
+            print("Error encoding or writing JSON: \(error)")
+        }
+    }
+    
+    func searchDirectory(fileName: String) {
+        if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let pathWithFileName = documentDirectory.appendingPathComponent("monsters.json")
+            print(pathWithFileName)
+        }
     }
 }

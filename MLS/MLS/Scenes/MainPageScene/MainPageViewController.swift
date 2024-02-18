@@ -75,27 +75,33 @@ extension MainPageViewController {
         navigationController?.navigationBar.tintColor = .systemOrange
         setUp()
         
-        let db = SqliteManager()
-        db.deleteTable(tableName: "dictItem")
-        db.createTable(tableName: "dictItem")
-        db.readData(tableName: "dictItem") { (items: [DictItem]) in
-            print(items)
-        }
-        db.insertData(data: DictItem(name: "1번 아이템 이름", code: "1번 아이템 코드", division: "1번 아이템 분류", mainCategory: "1번 아이템 메인 카테고리", subCategory: "1번 아이템 서브 카테고리", defaultValues: [DictionaryNameDescription(name: "1번 아이템 밸류 이름", description: "1번 아이템 밸류 설명")], detailValues: [DictionaryNameDescription(name: "1번 아이템 디테일 이름", description: "1번 아이템 디테일 설명")], dropTable: [DictionaryNameDescription(name: "1번 아이템 드랍테이블 이름", description: "1번 아이템 드랍테이블 설명")]), id: "1번 아이템 이름", tableName: "dictItem") {
-            print("insert")
-        }
-        db.readId(tableName: "dictItem") { id in
-            print("id", id)
-        }
-        db.readData(tableName: "dictItem") { (items: [DictItem]) in
-            print(items)
-        }
-        db.deleteData(tableName: "dictItem", dataName: "1번 아이템 이름") {
-            print("delete")
-        }
-        db.readData(tableName: "dictItem") { (items: [DictItem]) in
-            print(items)
-        }
+//        let db = SqliteManager()
+//        db.deleteTable(tableName: "dictItem")
+//        db.createTable(tableName: "dictItem")
+//        db.fetchData(tableName: "dictItem") { (items: [DictItem]) in
+//            print(items)
+//        }
+//        db.saveData(data: DictItem(name: "1번 아이템 이름", code: "1번 아이템 코드", division: "1번 아이템 분류", mainCategory: "1번 아이템 메인 카테고리", subCategory: "1번 아이템 서브 카테고리", defaultValues: [DictionaryNameDescription(name: "1번 아이템 밸류 이름", description: "1번 아이템 밸류 설명")], detailValues: [DictionaryNameDescription(name: "1번 아이템 디테일 이름", description: "1번 아이템 디테일 설명")], dropTable: [DictionaryNameDescription(name: "1번 아이템 드랍테이블 이름", description: "1번 아이템 드랍테이블 설명")]), id: "1번 아이템 이름", tableName: "dictItem") {
+//            print("insert")
+//        }
+//        db.fetchData(tableName: "dictItem") { (items: [DictItem]) in
+//            print("read", items)
+//        }
+//        db.searchData(tableName: "dictItem", dataName: "1번 아이템 이름") { (item: [DictItem]) in
+//            print("search", item)
+//        }
+//        db.updateData(tableName: "dictItem", newItem: DictItem(name: "2번 아이템 이름", code: "2번 아이템 코드", division: "2번 아이템 분류", mainCategory: "2번 아이템 메인 카테고리", subCategory: "2번 아이템 서브 카테고리", defaultValues: [DictionaryNameDescription(name: "2번 아이템 밸류 이름", description: "2번 아이템 밸류 설명")], detailValues: [DictionaryNameDescription(name: "2번 아이템 디테일 이름", description: "2번 아이템 디테일 설명")], dropTable: [DictionaryNameDescription(name: "2번 아이템 드랍테이블 이름", description: "2번 아이템 드랍테이블 설명")]), id: "1번 아이템 이름") {
+//            print("update")
+//        }
+//        db.fetchData(tableName: "dictItem") { (items: [DictItem]) in
+//            print("read", items)
+//        }
+//        db.deleteData(tableName: "dictItem", dataName: "1번 아이템 이름") {
+//            print("delete")
+//        }
+//        db.fetchData(tableName: "dictItem") { (items: [DictItem]) in
+//            print("read", items)
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

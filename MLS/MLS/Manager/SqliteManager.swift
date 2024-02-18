@@ -17,6 +17,7 @@ class SqliteManager {
         self.db = self.createDB()
     }
     
+    // MARK: Database
     func createDB() -> OpaquePointer? {
         var db: OpaquePointer?
         do {
@@ -32,8 +33,9 @@ class SqliteManager {
         return nil
     }
     
+    // MARK: Table
     func createTable(tableName: String) {
-        let query = "create table if not exists \(tableName) (id text primary key, itemData text)"
+        let query = "CREATE TABLE IF NOT EXISTS \(tableName) (id TEXT PRIMARY KEY, itemData TEXT)"
         var statement: OpaquePointer?
         
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
@@ -63,17 +65,18 @@ class SqliteManager {
         }
     }
     
-    func insertData<T: Codable>(data: T, id: String, tableName: String, completion: @escaping () -> Void) {
-        let query = "insert or replace into \(tableName) (id, itemData) values (?,?)"
+    // MARK: Column
+    func saveData<T: Codable>(data: T, id: String, tableName: String, completion: @escaping () -> Void) {
+        let query = "INSERT OR REPLACE INTO \(tableName) (id, itemData) VALUES (?,?)"
         var statement: OpaquePointer?
 
         do {
             let data = try JSONEncoder().encode(data)
-            let dataToString = String(data: data, encoding: .utf8)
+            guard let dataToString = String(data: data, encoding: .utf8) else { return }
             
             if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
                 sqlite3_bind_text(statement, 1, NSString(string: id).utf8String, -1, nil)
-                sqlite3_bind_text(statement, 2, NSString(string: dataToString!).utf8String, -1, nil)
+                sqlite3_bind_text(statement, 2, NSString(string: dataToString).utf8String, -1, nil)
                 
                 if sqlite3_step(statement) == SQLITE_DONE {
                     print("insert data success")
@@ -82,7 +85,8 @@ class SqliteManager {
                 }
                 
             } else {
-                print("insert Data prepare fail")
+                let err = String(cString: sqlite3_errmsg(self.db))
+                print("failure preparing insert: \(err)")
             }
             sqlite3_finalize(statement)
             completion()
@@ -91,7 +95,7 @@ class SqliteManager {
         }
     }
     
-    func readId(tableName: String, completion: @escaping (String) -> Void) {
+    func fetchId(tableName: String, completion: @escaping (String) -> Void) {
         let query = "SELECT id FROM \(tableName)"
         var statement: OpaquePointer?
 
@@ -103,36 +107,62 @@ class SqliteManager {
                 }
             }
         } else {
-            print("SELECT statement could not be prepared")
+            let err = String(cString: sqlite3_errmsg(self.db))
+            print("failure preparing readId: \(err)")
         }
 
         sqlite3_finalize(statement)
     }
     
-    func readData<T: Codable>(tableName: String, completion: @escaping ([T]) -> Void) {
-        let query = "select * from \(tableName)"
+    func fetchData<T: Codable>(tableName: String, completion: @escaping ([T]) -> Void) {
+        let query = "SELECT * FROM \(tableName)"
         var statement: OpaquePointer?
         var result: [T] = []
         
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
-                let overallData = String(cString: sqlite3_column_text(statement, 1))
+                guard let dataToString = String(cString: sqlite3_column_text(statement, 1)).data(using: .utf8) else { return }
                 do {
-                    let data = try JSONDecoder().decode(T.self, from: overallData.data(using: .utf8)!)
+                    let data = try JSONDecoder().decode(T.self, from: dataToString)
+                    result.append(data)
+                } catch {
+                    let err = String(cString: sqlite3_errmsg(self.db))
+                    print("failure preparing decoding: \(err)")
+                }
+            }
+        } else {
+            let err = String(cString: sqlite3_errmsg(self.db))
+            print("failure preparing readData: \(err)")
+        }
+        sqlite3_finalize(statement)
+        completion(result)
+    }
+    
+    func searchData<T: Codable>(tableName: String, dataName: String, completion: @escaping ([T]) -> Void) {
+        let query = "SELECT * FROM \(tableName) WHERE id = '\(dataName)'"
+        var statement: OpaquePointer?
+        var result: [T] = []
+        
+        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+            while sqlite3_step(statement) == SQLITE_ROW {
+                guard let dataToString = String(cString: sqlite3_column_text(statement, 1)).data(using: .utf8) else { return }
+                do {
+                    let data = try JSONDecoder().decode(T.self, from: dataToString)
                     result.append(data)
                 } catch {
                     print("JSONDecoder Error")
                 }
             }
         } else {
-            print("read Data prepare fail")
+            let err = String(cString: sqlite3_errmsg(self.db))
+            print("failure preparing search: \(err)")
         }
         sqlite3_finalize(statement)
         completion(result)
     }
     
     func deleteData(tableName: String, dataName: String, completion: @escaping () -> Void) {
-        let query = "delete from \(tableName) where id = '\(dataName)'"
+        let query = "DELETE FROM \(tableName) WHERE id = '\(dataName)'"
         var statement: OpaquePointer?
         
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
@@ -144,26 +174,34 @@ class SqliteManager {
         } else {
             let err = String(cString: sqlite3_errmsg(self.db))
             print("failure preparing delete: \(err)")
-            return
-                print("delete data prepare fail")
         }
         sqlite3_finalize(statement)
         completion()
     }
     
-    func updateData<T: Codable>(tableName: String, newItem: T, dataName: String, completion: @escaping () -> Void) {
-        let query = "update \(tableName) set itemData = \(newItem) where id = \(dataName)"
+    func updateData<T: Codable>(tableName: String, newItem: T, id: String, completion: @escaping () -> Void) {
+        let query = "UPDATE \(tableName) SET itemData = ? WHERE id = ?"
         var statement: OpaquePointer?
-        
-        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
-            if sqlite3_step(statement) == SQLITE_DONE {
-                print("success updateData")
-                completion()
+        do {
+            let data = try JSONEncoder().encode(newItem)
+            guard let newItemtoString = String(data: data, encoding: .utf8) else { return }
+            
+            if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+                sqlite3_bind_text(statement, 1, NSString(string: newItemtoString).utf8String, -1, nil)
+                sqlite3_bind_text(statement, 2, NSString(string: id).utf8String, -1, nil)
+                
+                if sqlite3_step(statement) == SQLITE_DONE {
+                    print("success updateData")
+                    completion()
+                } else {
+                    print("updataData sqlite3 step fail")
+                }
             } else {
-                print("updataData sqlite3 step fail")
+                let err = String(cString: sqlite3_errmsg(self.db))
+                print("failure preparing update: \(err)")
             }
-        } else {
-            print("updateData prepare fail")
+        } catch {
+            print("JSONEncoder Error")
         }
     }
 }

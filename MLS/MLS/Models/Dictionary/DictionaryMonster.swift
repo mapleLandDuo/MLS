@@ -38,7 +38,8 @@ struct DictionaryMonster: Codable {
 }
 
 // MARK: - Dev 1.0.1
-struct DictMonster: Codable {
+
+struct DictMonster: Codable, Nameable {
     // ID
     var code: String
     // 이름

@@ -9,6 +9,10 @@ import Foundation
 
 import SQLite3
 
+protocol Nameable {
+    var name: String { get }
+}
+
 class SqliteManager {
     var db: OpaquePointer?
     var path = "mlsDatabase.db"
@@ -65,34 +69,67 @@ class SqliteManager {
         }
     }
     
-    // MARK: Column
-    func saveData<T: Codable>(data: T, id: String, tableName: String, completion: @escaping () -> Void) {
-        let query = "INSERT OR REPLACE INTO \(tableName) (id, itemData) VALUES (?,?)"
-        var statement: OpaquePointer?
+    func fetchTables() {
+        var stmt: OpaquePointer?
+        let query = "SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence';"
 
-        do {
-            let data = try JSONEncoder().encode(data)
-            guard let dataToString = String(data: data, encoding: .utf8) else { return }
-            
-            if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
-                sqlite3_bind_text(statement, 1, NSString(string: id).utf8String, -1, nil)
-                sqlite3_bind_text(statement, 2, NSString(string: dataToString).utf8String, -1, nil)
+        if sqlite3_prepare_v2(db, query, -1, &stmt, nil) == SQLITE_OK {
+            while sqlite3_step(stmt) == SQLITE_ROW {
+                let name = String(cString: sqlite3_column_text(stmt, 0))
+                print("name", name)
+                let query = "SELECT * FROM \(name);"
                 
-                if sqlite3_step(statement) == SQLITE_DONE {
-                    print("insert data success")
+                if sqlite3_prepare_v2(db, query, -1, &stmt, nil) == SQLITE_OK {
+                    while sqlite3_step(stmt) == SQLITE_ROW {
+                        // 각 컬럼에 대해
+                        for i in 0..<sqlite3_column_count(stmt) {
+                            let columnName = String(cString: sqlite3_column_name(stmt, i))
+                            let columnText = String(cString: sqlite3_column_text(stmt, i))
+                            print("\(columnName): \(columnText)")
+                        }
+                    }
                 } else {
-                    print("insert data sqlite3 step fail")
+                    let errmsg = String(cString: sqlite3_errmsg(db))
+                    print("error preparing select: \(errmsg)")
                 }
-                
-            } else {
-                let err = String(cString: sqlite3_errmsg(self.db))
-                print("failure preparing insert: \(err)")
             }
-            sqlite3_finalize(statement)
-            completion()
-        } catch {
-            print("JsonEncoder Error")
+        } else {
+            let errmsg = String(cString: sqlite3_errmsg(db))
+            print("error preparing select: \(errmsg)")
         }
+    }
+    
+    // MARK: Column
+
+    func saveData<T: Codable & Nameable>(data: [T], tableName: String, completion: @escaping () -> Void) {
+        let query = "INSERT OR REPLACE INTO \(tableName) (id, itemData) VALUES (?,?)"
+        
+        for item in data {
+            var statement: OpaquePointer?
+            do {
+                let itemData = try JSONEncoder().encode(item)
+                guard let dataToString = String(data: itemData, encoding: .utf8) else { return }
+                
+                if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+                    sqlite3_bind_text(statement, 1, NSString(string: item.name).utf8String, -1, nil)
+                    sqlite3_bind_text(statement, 2, NSString(string: dataToString).utf8String, -1, nil)
+                    
+                    if sqlite3_step(statement) == SQLITE_DONE {
+                        print("insert data success")
+                    } else {
+                        print("insert data sqlite3 step fail")
+                    }
+                    
+                } else {
+                    let err = String(cString: sqlite3_errmsg(self.db))
+                    print("failure preparing insert: \(err)")
+                }
+                sqlite3_finalize(statement)
+            } catch {
+                print("JsonEncoder Error")
+            }
+        }
+        completion()
     }
     
     func fetchId(tableName: String, completion: @escaping (String) -> Void) {

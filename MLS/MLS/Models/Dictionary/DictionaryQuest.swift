@@ -36,7 +36,7 @@ struct DictionaryQuest: Codable {
 }
 
 // MARK: - Dev 1.0.1
-struct DictQuest: Codable {
+struct DictQuest: Codable, Nameable {
     var code: String
     var name: String
     //이전 퀘스트

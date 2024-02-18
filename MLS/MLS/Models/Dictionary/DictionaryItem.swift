@@ -33,7 +33,7 @@ struct DictionaryItem: Codable {
 }
 
 // MARK: - Dev 1.0.1
-struct DictItem: Codable {
+struct DictItem: Codable, Nameable {
     // 이름
     var name: String
     // id

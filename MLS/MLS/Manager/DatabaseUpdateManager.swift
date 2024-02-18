@@ -492,26 +492,52 @@ extension DatabaseUpdateManager {
     }
     
     func fetchJson(fileName: Filename) {
+        let db = SqliteManager()
         if let url = Bundle.main.url(forResource: fileName.rawValue, withExtension: "json") {
             do {
                 let data = try Data(contentsOf: url)
                 let decoder = JSONDecoder()
                 switch fileName {
                 case .items:
+                    db.createTable(tableName: fileName.rawValue)
                     let jsonData = try decoder.decode([DictItem].self, from: data)
-                    print(jsonData)
+                    db.saveData(data: jsonData, tableName: fileName.rawValue) {
+                        db.fetchData(tableName: fileName.rawValue) { (items: [DictItem]) in
+                            print("fetch", items)
+                        }
+                    }
                 case .monsters:
+                    db.createTable(tableName: fileName.rawValue)
                     let jsonData = try decoder.decode([DictMonster].self, from: data)
-                    print(jsonData)
+                    db.saveData(data: jsonData, tableName: fileName.rawValue) {
+                        db.fetchData(tableName: fileName.rawValue) { (items: [DictMonster]) in
+                            print("fetch", items)
+                        }
+                    }
                 case .maps:
+                    db.createTable(tableName: fileName.rawValue)
                     let jsonData = try decoder.decode([DictMap].self, from: data)
-                    print(jsonData)
+                    db.saveData(data: jsonData, tableName: fileName.rawValue) {
+                        db.fetchData(tableName: fileName.rawValue) { (items: [DictMap]) in
+                            print("fetch", items)
+                        }
+                    }
                 case .npcs:
+                    db.createTable(tableName: fileName.rawValue)
                     let jsonData = try decoder.decode([DictNPC].self, from: data)
-                    print(jsonData)
+                    db.saveData(data: jsonData, tableName: fileName.rawValue) {
+                        db.fetchData(tableName: fileName.rawValue) { (items: [DictNPC]) in
+                            print("fetch", items)
+                        }
+                    }
                 case .quests:
+                    db.createTable(tableName: fileName.rawValue)
                     let jsonData = try decoder.decode([DictQuest].self, from: data)
-                    print(jsonData)
+                    db.saveData(data: jsonData, tableName: fileName.rawValue) {
+                        db.fetchData(tableName: fileName.rawValue) { (items: [DictQuest]) in
+                            print("fetch", items)
+                        }
+                    }
                 }
             } catch {
                 print("Error: \(error)")

@@ -15,7 +15,7 @@ struct DictionaryNPC: Codable {
 }
 
 // MARK: - Dev 1.0.1
-struct DictNPC: Codable {
+struct DictNPC: Codable, Nameable {
     var code: String
     var name: String
     var maps: [String]

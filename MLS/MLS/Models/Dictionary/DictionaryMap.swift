@@ -16,7 +16,7 @@ struct DictionaryMap: Codable {
 }
 
 // MARK: - Dev 1.0.1
-struct DictMap: Codable {
+struct DictMap: Codable, Nameable {
     var code: String
     var name: String
     var monsters: [DictionaryNameDescription] // 이름 , 갯수

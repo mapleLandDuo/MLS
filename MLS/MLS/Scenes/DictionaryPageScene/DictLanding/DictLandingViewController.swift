@@ -18,11 +18,7 @@ class DictLandingViewController: BasicController {
     
     var headerView = DictLandingHeaderView()
     
-    var firstSectionView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .blue
-        return view
-    }()
+    var firstSectionView = DictLandingSearchView()
     
     var secondSectionView: UIView = {
         let view = UIView()
@@ -70,7 +66,7 @@ private extension DictLandingViewController {
         firstSectionView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(204)
+            $0.height.equalTo(200)
         }
         secondSectionView.snp.makeConstraints {
             $0.top.equalTo(firstSectionView.snp.bottom)

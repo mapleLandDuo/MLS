@@ -52,6 +52,7 @@ private extension DictLandingHeaderView {
         rightStackView.addArrangedSubview(myPageIconButton)
         stackView.addArrangedSubview(inquireButton)
         stackView.addArrangedSubview(rightStackView)
+        
         stackView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.spacings.md)
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)

@@ -490,4 +490,34 @@ extension DatabaseUpdateManager {
             print(pathWithFileName)
         }
     }
+    
+    func fetchJson(fileName: Filename) {
+        if let url = Bundle.main.url(forResource: fileName.rawValue, withExtension: "json") {
+            do {
+                let data = try Data(contentsOf: url)
+                let decoder = JSONDecoder()
+                switch fileName {
+                case .items:
+                    let jsonData = try decoder.decode([DictItem].self, from: data)
+                    print(jsonData)
+                case .monsters:
+                    let jsonData = try decoder.decode([DictMonster].self, from: data)
+                    print(jsonData)
+                case .maps:
+                    let jsonData = try decoder.decode([DictMap].self, from: data)
+                    print(jsonData)
+                case .npcs:
+                    let jsonData = try decoder.decode([DictNPC].self, from: data)
+                    print(jsonData)
+                case .quests:
+                    let jsonData = try decoder.decode([DictQuest].self, from: data)
+                    print(jsonData)
+                }
+            } catch {
+                print("Error: \(error)")
+            }
+        } else {
+            print("파일없음")
+        }
+    }
 }

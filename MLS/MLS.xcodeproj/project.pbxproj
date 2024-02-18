@@ -128,6 +128,7 @@
 		77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF47582B5CD63800181D35 /* FirebaseManager.swift */; };
 		77F3D5DC2B81E620000DB65D /* SqliteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F3D5DB2B81E620000DB65D /* SqliteManager.swift */; };
 		77F3D5DE2B81F4F6000DB65D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77F3D5DD2B81F4F6000DB65D /* GoogleService-Info.plist */; };
+		77F3D5E12B824009000DB65D /* monsters.json in Resources */ = {isa = PBXBuildFile; fileRef = 77F3D5E02B824009000DB65D /* monsters.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -229,6 +230,7 @@
 		77EF47582B5CD63800181D35 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		77F3D5DB2B81E620000DB65D /* SqliteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteManager.swift; sourceTree = "<group>"; };
 		77F3D5DD2B81F4F6000DB65D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		77F3D5E02B824009000DB65D /* monsters.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = monsters.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -437,6 +439,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				77F3D5DF2B823FE3000DB65D /* DictJsons */,
 				77F3D5DD2B81F4F6000DB65D /* GoogleService-Info.plist */,
 				082D0C282B53CF4600D84CE2 /* AppDelegate.swift */,
 				082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */,
@@ -643,6 +646,14 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
+		77F3D5DF2B823FE3000DB65D /* DictJsons */ = {
+			isa = PBXGroup;
+			children = (
+				77F3D5E02B824009000DB65D /* monsters.json */,
+			);
+			path = DictJsons;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -737,6 +748,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77F3D5E12B824009000DB65D /* monsters.json in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
 				77F3D5DE2B81F4F6000DB65D /* GoogleService-Info.plist in Resources */,

@@ -78,6 +78,7 @@ extension MainPageViewController {
 //        let db = DatabaseUpdateManager()
 //        db.readyToJson(fileName: .monsters) {
 //            db.searchDirectory(fileName: .monsters)
+//            db.fetchJson(fileName: .monsters)
 //        }
         
 //        let db = SqliteManager()

@@ -25,10 +25,10 @@ struct Spacing {
     let xs_2: CGFloat = 2
     let xs: CGFloat = 4
     let sm: CGFloat = 8
-    let md: CGFloat = 16
-    let lg: CGFloat = 24
-    let xl: CGFloat = 32
-    let xl_2: CGFloat = 40
+    let md: CGFloat = 12
+    let lg: CGFloat = 16
+    let xl: CGFloat = 24
+    let xl_2: CGFloat = 32
     let xl_3: CGFloat = 56
     let xl_4: CGFloat = 80
 }

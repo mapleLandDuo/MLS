@@ -21,14 +21,14 @@ struct Default {
 }
 
 struct Spacing {
-    let xs3: CGFloat = 1
-    let xs2: CGFloat = 2
+    let xs_3: CGFloat = 1
+    let xs_2: CGFloat = 2
     let xs: CGFloat = 4
     let sm: CGFloat = 8
     let md: CGFloat = 16
     let lg: CGFloat = 24
     let xl: CGFloat = 32
-    let xl2: CGFloat = 40
-    let xl3: CGFloat = 56
-    let xl4: CGFloat = 80
+    let xl_2: CGFloat = 40
+    let xl_3: CGFloat = 56
+    let xl_4: CGFloat = 80
 }

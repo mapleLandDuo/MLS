@@ -23,6 +23,7 @@ class InquireButton: UIButton {
         label.font = .customFont(fontSize: .caption_lg, fontType: .medium)
         label.text = "문의하기"
         label.lineBreakMode = .byWordWrapping
+        label.addCharacterSpacing()
         return label
     }()
     

@@ -23,6 +23,7 @@ class JobBadgeButton: UIButton {
         let label = UILabel()
         label.font = .customFont(fontSize: .caption_lg, fontType: .regular)
         label.textColor = .black
+        label.addCharacterSpacing()
         return label
     }()
     
@@ -37,6 +38,7 @@ class JobBadgeButton: UIButton {
         let label = UILabel()
         label.font = .customFont(fontSize: .caption_lg, fontType: .regular)
         label.textColor = .black
+        label.addCharacterSpacing()
         return label
     }()
 

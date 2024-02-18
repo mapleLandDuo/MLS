@@ -93,6 +93,8 @@
 		08D5F0E42B81F3A800E56482 /* Pretendard-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 08D5F0DB2B81F3A800E56482 /* Pretendard-ExtraLight.otf */; };
 		08D5F0E52B81F3A800E56482 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 08D5F0DC2B81F3A800E56482 /* Pretendard-Light.otf */; };
 		08D5F0E62B81F3A800E56482 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 08D5F0DD2B81F3A800E56482 /* Pretendard-Bold.otf */; };
+		08D5F0EC2B81FDE600E56482 /* MyPageIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F0EB2B81FDE600E56482 /* MyPageIconButton.swift */; };
+		08D5F0EE2B820F6000E56482 /* InquireButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F0ED2B820F6000E56482 /* InquireButton.swift */; };
 		08EF64FE2B53FA89004CC842 /* MainPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF64FD2B53FA89004CC842 /* MainPageViewModel.swift */; };
 		08EF65032B54025F004CC842 /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65022B54025F004CC842 /* UICollectionViewCell+.swift */; };
 		08EF65052B5402A3004CC842 /* UITableViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65042B5402A3004CC842 /* UITableViewCell+.swift */; };
@@ -206,6 +208,8 @@
 		08D5F0DB2B81F3A800E56482 /* Pretendard-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraLight.otf"; sourceTree = "<group>"; };
 		08D5F0DC2B81F3A800E56482 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
 		08D5F0DD2B81F3A800E56482 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		08D5F0EB2B81FDE600E56482 /* MyPageIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageIconButton.swift; sourceTree = "<group>"; };
+		08D5F0ED2B820F6000E56482 /* InquireButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquireButton.swift; sourceTree = "<group>"; };
 		08EF64FD2B53FA89004CC842 /* MainPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewModel.swift; sourceTree = "<group>"; };
 		08EF65022B54025F004CC842 /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		08EF65042B5402A3004CC842 /* UITableViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+.swift"; sourceTree = "<group>"; };
@@ -479,6 +483,8 @@
 				08D50A6C2B5936AF00E94442 /* SharedTextField.swift */,
 				08D50A852B5FD30D00E94442 /* ActivityIndicator.swift */,
 				08D5F0C02B81E3DB00E56482 /* JobBadgeButton.swift */,
+				08D5F0EB2B81FDE600E56482 /* MyPageIconButton.swift */,
+				08D5F0ED2B820F6000E56482 /* InquireButton.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -875,6 +881,7 @@
 				7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */,
 				778E905F2B667ECF008A6E74 /* DictionaryMainViewModel.swift in Sources */,
 				081E6FCE2B663A9800CF83F4 /* DictionaryItem.swift in Sources */,
+				08D5F0EC2B81FDE600E56482 /* MyPageIconButton.swift in Sources */,
 				082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */,
 				770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */,
 				08CBCB862B7C9B1A00C051F7 /* DBHelper.swift in Sources */,
@@ -907,6 +914,7 @@
 				778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */,
 				081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */,
 				77A280912B73B8BD0079D0EB /* DictionaryQuest.swift in Sources */,
+				08D5F0EE2B820F6000E56482 /* InquireButton.swift in Sources */,
 				081E700C2B69212800CF83F4 /* ProfilePageViewModel.swift in Sources */,
 				081E6FD32B663B6300CF83F4 /* DictionaryItemViewController.swift in Sources */,
 				08EF650E2B551EB8004CC842 /* MainPageFeatureListPostCell.swift in Sources */,

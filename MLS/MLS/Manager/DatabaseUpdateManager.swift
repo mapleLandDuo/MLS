@@ -427,14 +427,56 @@ extension DatabaseUpdateManager {
 
 // MARK: DB to JSON
 extension DatabaseUpdateManager {
-    func changeToJson<T: Codable>(datas: [T], fileName: String) {
-        // "monsters.json"
+    enum Filename: String {
+        case monsters
+        case items
+        case maps
+        case npcs
+        case quests
+    }
+    
+    func readyToJson(fileName: Filename, completion: @escaping () -> Void) {
+        switch fileName {
+        case .items:
+            FirebaseManager.firebaseManager.fetchDatas(colName: Filename.items.rawValue) { (items: [DictItem]?) in
+                guard let items = items else { return }
+                self.changeToJson(items: items, fileName: Filename.items)
+                completion()
+            }
+        case .monsters:
+            FirebaseManager.firebaseManager.fetchDatas(colName: Filename.monsters.rawValue) { (items: [DictMonster]?) in
+                guard let items = items else { return }
+                self.changeToJson(items: items, fileName: Filename.monsters)
+                completion()
+            }
+        case .maps:
+            FirebaseManager.firebaseManager.fetchDatas(colName: Filename.maps.rawValue) { (items: [DictMap]?) in
+                guard let items = items else { return }
+                self.changeToJson(items: items, fileName: Filename.maps)
+                completion()
+            }
+        case .npcs:
+            FirebaseManager.firebaseManager.fetchDatas(colName: Filename.npcs.rawValue) { (items: [DictNPC]?) in
+                guard let items = items else { return }
+                self.changeToJson(items: items, fileName: Filename.npcs)
+                completion()
+            }
+        case .quests:
+            FirebaseManager.firebaseManager.fetchDatas(colName: Filename.quests.rawValue) { (items: [DictQuest]?) in
+                guard let items = items else { return }
+                self.changeToJson(items: items, fileName: Filename.quests)
+                completion()
+            }
+        }
+    }
+    
+    func changeToJson<T: Codable>(items: [T], fileName: Filename) {
         do {
-            let jsonData = try JSONEncoder().encode(datas)
+            let jsonData = try JSONEncoder().encode(items)
             if let documentDirectory = FileManager.default.urls(for: .documentDirectory,
                                                                 in: .userDomainMask).first
             {
-                let pathWithFileName = documentDirectory.appendingPathComponent(fileName)
+                let pathWithFileName = documentDirectory.appendingPathComponent("\(fileName.rawValue).json")
                 try jsonData.write(to: pathWithFileName)
             }
         } catch {
@@ -442,9 +484,9 @@ extension DatabaseUpdateManager {
         }
     }
     
-    func searchDirectory(fileName: String) {
+    func searchDirectory(fileName: Filename) {
         if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let pathWithFileName = documentDirectory.appendingPathComponent("monsters.json")
+            let pathWithFileName = documentDirectory.appendingPathComponent("\(fileName.rawValue).json")
             print(pathWithFileName)
         }
     }

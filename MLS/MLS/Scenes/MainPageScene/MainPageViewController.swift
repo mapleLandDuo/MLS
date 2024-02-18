@@ -74,6 +74,11 @@ extension MainPageViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = .systemOrange
         setUp()
+
+//        let db = DatabaseUpdateManager()
+//        db.readyToJson(fileName: .monsters) {
+//            db.searchDirectory(fileName: .monsters)
+//        }
         
 //        let db = SqliteManager()
 //        db.deleteTable(tableName: "dictItem")

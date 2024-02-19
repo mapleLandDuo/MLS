@@ -29,7 +29,7 @@ class InquireButton: UIButton {
     
     private let iconImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "edit")
+        view.image = UIImage(named: "editIcon")
         view.contentMode = .scaleAspectFit
         return view
     }()

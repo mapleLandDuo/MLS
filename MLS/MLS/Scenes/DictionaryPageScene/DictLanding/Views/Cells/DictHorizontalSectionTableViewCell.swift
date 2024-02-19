@@ -10,6 +10,10 @@ import UIKit
 import SnapKit
 
 class DictHorizontalSectionTableViewCell: UITableViewCell {
+    // MARK: - Properties
+    
+    private var datas: Observable<[DictSectionData]> = Observable([])
+
     
     // MARK: - Components
     
@@ -26,14 +30,12 @@ class DictHorizontalSectionTableViewCell: UITableViewCell {
     
     private let headerImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "fire")
         view.contentMode = .scaleAspectFit
         return view
     }()
     
     private let headerLabel: UILabel = {
         let label = UILabel()
-        label.text = "사람들이 많이 찾는 아이템"
         label.font = .customFont(fontSize: .body_md, fontType: .bold)
         return label
     }()
@@ -61,6 +63,7 @@ class DictHorizontalSectionTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
+        bind()
     }
 
     @available(*, unavailable)
@@ -109,11 +112,29 @@ private extension DictHorizontalSectionTableViewCell {
 
 extension DictHorizontalSectionTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return datas.value?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictHorizontalCollectionViewCell.identifier, for: indexPath) as? DictHorizontalCollectionViewCell else { return UICollectionViewCell() }
+        guard let datas = datas.value else { return UICollectionViewCell() }
+        cell.bind(data: datas[indexPath.row])
         return cell
+    }
+}
+
+// MARK: - Bind
+extension DictHorizontalSectionTableViewCell {
+    
+    func bind() {
+        datas.bind { [weak self] _ in
+            self?.collectionView.reloadData()
+        }
+    }
+    
+    func bind(data: DictSectionDatas) {
+        headerImageView.image = data.iconImage
+        headerLabel.text = data.description
+        datas.value = data.datas
     }
 }

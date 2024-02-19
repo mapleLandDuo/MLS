@@ -96,6 +96,24 @@ private extension DictHorizontalCollectionViewCell {
             $0.center.equalToSuperview()
             $0.width.height.equalTo(Constants.spacings.xl_5)
         }
-        
+    }
+}
+
+// MARK: - Bind
+extension DictHorizontalCollectionViewCell {
+    func bind(data: DictSectionData) {
+        titleLabel.text = data.title
+        switch data.type {
+        case .item:
+            subTitleLabel.text = "필요레벨"
+        case .monster:
+            subTitleLabel.text = "레벨"
+        case .map:
+            subTitleLabel.text = "필요레벨"
+        case .npc:
+            subTitleLabel.text = "필요레벨"
+        case .quest:
+            subTitleLabel.text = "필요레벨"
+        }
     }
 }

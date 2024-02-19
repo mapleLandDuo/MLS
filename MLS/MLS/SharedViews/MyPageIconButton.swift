@@ -14,7 +14,7 @@ class MyPageIconButton: UIButton {
     
     private let iconImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "mypage")
+        view.image = UIImage(named: "mypageIcon")
         view.contentMode = .scaleAspectFill
         return view
     }()

@@ -55,7 +55,9 @@ class DictLandingViewController: BasicController {
 extension DictLandingViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
         setUp()
+        fetchSectionDatas()
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
@@ -102,18 +104,54 @@ private extension DictLandingViewController {
     }
 }
 
+// MARK: - Bind
+private extension DictLandingViewController {
+    func bind() {
+        viewModel.sectionHeaderInfos.bind { [weak self] _ in
+            self?.tableView.reloadData()
+        }
+    }
+}
+
+// MARK: - Methods
+private extension DictLandingViewController {
+    func fetchSectionDatas() {
+        viewModel.sectionHeaderInfos.value?[0].datas = [
+            DictSectionData(image: "testItem1", title: "testItem1", level: "20", type: .item),
+            DictSectionData(image: "testItem2", title: "testItem2", level: "20", type: .item),
+            DictSectionData(image: "testItem3", title: "testItem3", level: "20", type: .item),
+            DictSectionData(image: "testItem4", title: "testItem4", level: "20", type: .item),
+            DictSectionData(image: "testItem5", title: "testItem5", level: "20", type: .item),
+        ]
+        viewModel.sectionHeaderInfos.value?[1].datas = [
+            DictSectionData(image: "testMonster1", title: "testMonster1", level: "20", type: .monster),
+            DictSectionData(image: "testMonster2", title: "testMonster2", level: "20", type: .monster),
+            DictSectionData(image: "testMonster3", title: "testMonster3", level: "20", type: .monster),
+            DictSectionData(image: "testMonster4", title: "testMonster4", level: "20", type: .monster),
+            DictSectionData(image: "testMonster5", title: "testMonster5", level: "20", type: .monster),
+            DictSectionData(image: "testMonster6", title: "testMonster6", level: "20", type: .monster),
+            DictSectionData(image: "testMonster7", title: "testMonster7", level: "20", type: .monster),
+            DictSectionData(image: "testMonster8", title: "testMonster8", level: "20", type: .monster),
+            DictSectionData(image: "testMonster9", title: "testMonster9", level: "20", type: .monster),
+        ]
+    }
+}
+
 extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return viewModel.fetchSectionHeaderInfos()?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DictHorizontalSectionTableViewCell.identifier, for: indexPath) as? DictHorizontalSectionTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
+        guard let datas = viewModel.fetchSectionHeaderInfos() else { return UITableViewCell() }
+        cell.bind(data: datas[indexPath.section])
         return cell
     }
     
@@ -121,9 +159,8 @@ extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource 
         let view = UIView()
         return view
     }
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return Constants.spacings.xl_3
     }
-    
-    
 }

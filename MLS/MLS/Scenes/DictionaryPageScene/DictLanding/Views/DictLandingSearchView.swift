@@ -94,9 +94,9 @@ private extension DictLandingSearchView {
         shortCutButton.addSubview(buttonLabel)
         
         searchBar.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(Constants.spacings.xl)
+            $0.top.equalToSuperview().inset(Constants.spacings.xl_2)
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
-            $0.height.equalTo(Constants.spacings.xl_3)
+            $0.height.equalTo(Constants.spacings.xl_4)
         }
         
         decoImageView.snp.makeConstraints {

@@ -76,40 +76,57 @@ extension MainPageViewController {
         setUp()
 
 //        let db = DatabaseUpdateManager()
-//        db.readyToJson(fileName: .monsters) {
-//            db.fetchJson(fileName: .monsters)
+//        db.readyToJson(fileName: .items) {
+//            db.searchDirectory(fileName: .items)
+//            db.fetchJson(fileName: .items)
 //        }
         
         let db = SqliteManager()
-        db.deleteTable(tableName: "dictItem")
-        db.createTable(tableName: "dictItem")
-        db.fetchData(tableName: "dictItem") { (items: [DictItem]) in
-            print(items)
+        db.deleteTable(tableName: "itemTable")
+        db.deleteTable(tableName: "monsterTable")
+        db.deleteTable(tableName: "dictItemTable")
+        db.deleteTable(tableName: "dictMapTable")
+        db.createTable(tableName: "dictItemTable", columnNames: DictItem.columnOrder)
+        db.createTable(tableName: "dictMapTable", columnNames: DictMap.columnOrder)
+//        db.fetchTables()
+//        db.showAllTablesInfo()
+        db.saveData(data: [DictItem(name: "1번 아이템 이름", code: "1번 아이템 코드", division: "1번 아이템 분류", mainCategory: "1번 아이템 메인 카테고리", subCategory: "1번 아이템 서브 카테고리", defaultValues: [DictionaryNameDescription(name: "1번 아이템 밸류 이름", description: "1번 아이템 밸류 설명")], detailValues: [DictionaryNameDescription(name: "1번 아이템 디테일 이름", description: "1번 아이템 디테일 설명")], dropTable: [DictionaryNameDescription(name: "1번 아이템 드랍테이블 이름", description: "1번 아이템 드랍테이블 설명")])]) {
+            print("save item")
         }
-        db.saveData(data: [DictItem(name: "1번 아이템 이름", code: "1번 아이템 코드", division: "1번 아이템 분류", mainCategory: "1번 아이템 메인 카테고리", subCategory: "1번 아이템 서브 카테고리", defaultValues: [DictionaryNameDescription(name: "1번 아이템 밸류 이름", description: "1번 아이템 밸류 설명")], detailValues: [DictionaryNameDescription(name: "1번 아이템 디테일 이름", description: "1번 아이템 디테일 설명")], dropTable: [DictionaryNameDescription(name: "1번 아이템 드랍테이블 이름", description: "1번 아이템 드랍테이블 설명")])], tableName: "dictItem") {
-            print("insert")
+//        db.saveData(data: [DictMap(code: "1번 지도 코드", name: "1번 지도 이름", monsters: [DictionaryNameDescription(name: "1번 지도 몬스터 이름", description: "1번 지도 몬스터 설명")], npcs: ["1번 지도 npc1", "1번 지도 npc2"])]) {
+//            print("save map")
+//        }
+//        db.fetchDictItems() { (items: [DictItem]) in
+//            print("fetch item", items)
+//        }
+//        db.fetchDictMaps() { (items: [DictMap]) in
+//            print("fetch map", items)
+//        }
+        db.testItem { items in
+            print("test item", items)
         }
-        db.fetchData(tableName: "dictItem") { (items: [DictItem]) in
-            print("read", items)
+        db.searchData(tableName: .items, dataName: "1번 아이템 이름") { (item: [DictItem]) in
+            print("search item", item)
         }
-        db.searchData(tableName: "dictItem", dataName: "1번 아이템 이름") { (item: [DictItem]) in
-            print("search", item)
-        }
-        db.updateData(tableName: "dictItem", newItem: DictItem(name: "2번 아이템 이름", code: "2번 아이템 코드", division: "2번 아이템 분류", mainCategory: "2번 아이템 메인 카테고리", subCategory: "2번 아이템 서브 카테고리", defaultValues: [DictionaryNameDescription(name: "2번 아이템 밸류 이름", description: "2번 아이템 밸류 설명")], detailValues: [DictionaryNameDescription(name: "2번 아이템 디테일 이름", description: "2번 아이템 디테일 설명")], dropTable: [DictionaryNameDescription(name: "2번 아이템 드랍테이블 이름", description: "2번 아이템 드랍테이블 설명")]), id: "1번 아이템 이름") {
-            print("update")
-        }
-        db.fetchData(tableName: "dictItem") { (items: [DictItem]) in
-            print("read", items)
-        }
-        db.deleteData(tableName: "dictItem", dataName: "1번 아이템 이름") {
-            print("delete")
-        }
-        db.fetchData(tableName: "dictItem") { (items: [DictItem]) in
-            print("read", items)
+//        db.updateData(tableName: .items, itemName: "1번 아이템 이름", fieldName: "code", newValue: "2번 아이템 코드") {
+//            print("update")
+//        }
+//        db.fetchDictItems { (items: [DictItem]) in
+//            print("fetch item", items)
+//        }
+//        db.deleteData(tableName: "dictItemTable", dataName: "1번 아이템 이름") {
+//            print("delete item table")
+//        }
+        db.fetchDictItems { (items: [DictItem]) in
+            print("fetch item", items)
         }
         print("@@@@@@")
         print("@@@@@@")
         print("@@@@@@")
+        print("@@@@@@")
+        db.fetchTables()
+        print("@@@@@@")
+        db.deleteTable(tableName: "dictItemTable")
         print("@@@@@@")
         db.fetchTables()
     }

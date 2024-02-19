@@ -20,4 +20,6 @@ struct DictNPC: Codable, Nameable {
     var name: String
     var maps: [String]
     var quests: [String]
+    
+    static let columnOrder = ["code TEXT", "name TEXT", "maps TEXT", "quests TEXT"]
 }

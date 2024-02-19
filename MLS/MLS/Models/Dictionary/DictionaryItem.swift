@@ -50,4 +50,6 @@ struct DictItem: Codable, Nameable {
     var detailValues: [DictionaryNameDescription]
     // 드랍 테이블
     var dropTable: [DictionaryNameDescription]
+    
+    static let columnOrder = ["name TEXT", "code TEXT", "division TEXT", "mainCategory TEXT", "subCategory TEXT", "defaultValues TEXT", "detailValues TEXT", "dropTable TEXT"]
 }

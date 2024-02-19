@@ -125,10 +125,12 @@
 		77C1ED092B614E74003179B4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 77C1ED082B614E74003179B4 /* FirebaseStorage */; };
 		77C1ED0C2B615471003179B4 /* QnAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C1ED0B2B615471003179B4 /* QnAViewController.swift */; };
 		77C1ED0E2B61590E003179B4 /* QnAPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */; };
+		77CEB5C92B8325330030C48E /* items.json in Resources */ = {isa = PBXBuildFile; fileRef = 77CEB5C82B8325330030C48E /* items.json */; };
 		77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF47582B5CD63800181D35 /* FirebaseManager.swift */; };
 		77F3D5DC2B81E620000DB65D /* SqliteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F3D5DB2B81E620000DB65D /* SqliteManager.swift */; };
 		77F3D5DE2B81F4F6000DB65D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77F3D5DD2B81F4F6000DB65D /* GoogleService-Info.plist */; };
 		77F3D5E12B824009000DB65D /* monsters.json in Resources */ = {isa = PBXBuildFile; fileRef = 77F3D5E02B824009000DB65D /* monsters.json */; };
+		77F3D5E32B827F0A000DB65D /* Encodable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F3D5E22B827F0A000DB65D /* Encodable+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -227,10 +229,12 @@
 		77BA52402B6AAE4600492991 /* DetailLikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailLikeCell.swift; sourceTree = "<group>"; };
 		77C1ED0B2B615471003179B4 /* QnAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnAViewController.swift; sourceTree = "<group>"; };
 		77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnAPageViewModel.swift; sourceTree = "<group>"; };
+		77CEB5C82B8325330030C48E /* items.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = items.json; sourceTree = "<group>"; };
 		77EF47582B5CD63800181D35 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		77F3D5DB2B81E620000DB65D /* SqliteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteManager.swift; sourceTree = "<group>"; };
 		77F3D5DD2B81F4F6000DB65D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		77F3D5E02B824009000DB65D /* monsters.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = monsters.json; sourceTree = "<group>"; };
+		77F3D5E22B827F0A000DB65D /* Encodable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -515,6 +519,7 @@
 				08EF65132B554722004CC842 /* UIColor+.swift */,
 				08D50A872B5FD33B00E94442 /* UIWindow+.swift */,
 				77B6DB722B692A3E00302173 /* String+.swift */,
+				77F3D5E22B827F0A000DB65D /* Encodable+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -649,6 +654,7 @@
 		77F3D5DF2B823FE3000DB65D /* DictJsons */ = {
 			isa = PBXGroup;
 			children = (
+				77CEB5C82B8325330030C48E /* items.json */,
 				77F3D5E02B824009000DB65D /* monsters.json */,
 			);
 			path = DictJsons;
@@ -750,6 +756,7 @@
 			files = (
 				77F3D5E12B824009000DB65D /* monsters.json in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
+				77CEB5C92B8325330030C48E /* items.json in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
 				77F3D5DE2B81F4F6000DB65D /* GoogleService-Info.plist in Resources */,
 			);
@@ -817,6 +824,7 @@
 				082D0C832B53D45700D84CE2 /* Post.swift in Sources */,
 				7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */,
 				778E905F2B667ECF008A6E74 /* DictionaryMainViewModel.swift in Sources */,
+				77F3D5E32B827F0A000DB65D /* Encodable+.swift in Sources */,
 				081E6FCE2B663A9800CF83F4 /* DictionaryItem.swift in Sources */,
 				082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */,
 				770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */,

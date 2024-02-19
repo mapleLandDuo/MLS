@@ -55,4 +55,6 @@ struct DictQuest: Codable, Nameable {
     var toCompletion: [DictionaryNameDescription]
     //보상
     var reward: [DictionaryNameDescription]
+    
+    static let columnOrder = ["code TEXT", "name TEXT", "preQuest TEXT", "currentQuest TEXT", "laterQuest TEXT", "times TEXT", "defaultValues TEXT", "rollToStart TEXT", "toCompletion TEXT", "reward TEXT"]
 }

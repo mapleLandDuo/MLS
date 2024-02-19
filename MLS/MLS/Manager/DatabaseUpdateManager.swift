@@ -427,13 +427,6 @@ extension DatabaseUpdateManager {
 
 // MARK: DB to JSON
 extension DatabaseUpdateManager {
-    enum Filename: String {
-        case monsters
-        case items
-        case maps
-        case npcs
-        case quests
-    }
     
     func readyToJson(fileName: Filename, completion: @escaping () -> Void) {
         switch fileName {
@@ -499,42 +492,42 @@ extension DatabaseUpdateManager {
                 let decoder = JSONDecoder()
                 switch fileName {
                 case .items:
-                    db.createTable(tableName: fileName.rawValue)
                     let jsonData = try decoder.decode([DictItem].self, from: data)
-                    db.saveData(data: jsonData, tableName: fileName.rawValue) {
-                        db.fetchData(tableName: fileName.rawValue) { (items: [DictItem]) in
+                    db.createTable(tableName: fileName.tableName, columnNames: DictItem.columnOrder)
+                    db.saveData(data: jsonData) {
+                        db.fetchDictItems { (items: [DictItem]) in
                             print("fetch", items)
                         }
                     }
                 case .monsters:
-                    db.createTable(tableName: fileName.rawValue)
                     let jsonData = try decoder.decode([DictMonster].self, from: data)
-                    db.saveData(data: jsonData, tableName: fileName.rawValue) {
-                        db.fetchData(tableName: fileName.rawValue) { (items: [DictMonster]) in
+                    db.createTable(tableName: fileName.tableName, columnNames: DictMonster.columnOrder)
+                    db.saveData(data: jsonData) {
+                        db.fetchDictMonsters { (items: [DictMonster]) in
                             print("fetch", items)
                         }
                     }
                 case .maps:
-                    db.createTable(tableName: fileName.rawValue)
                     let jsonData = try decoder.decode([DictMap].self, from: data)
-                    db.saveData(data: jsonData, tableName: fileName.rawValue) {
-                        db.fetchData(tableName: fileName.rawValue) { (items: [DictMap]) in
+                    db.createTable(tableName: fileName.tableName, columnNames: DictMap.columnOrder)
+                    db.saveData(data: jsonData) {
+                        db.fetchDictMaps { (items: [DictMap]) in
                             print("fetch", items)
                         }
                     }
                 case .npcs:
-                    db.createTable(tableName: fileName.rawValue)
                     let jsonData = try decoder.decode([DictNPC].self, from: data)
-                    db.saveData(data: jsonData, tableName: fileName.rawValue) {
-                        db.fetchData(tableName: fileName.rawValue) { (items: [DictNPC]) in
+                    db.createTable(tableName: fileName.tableName, columnNames: DictNPC.columnOrder)
+                    db.saveData(data: jsonData) {
+                        db.fetchDictNPCs { (items: [DictNPC]) in
                             print("fetch", items)
                         }
                     }
                 case .quests:
-                    db.createTable(tableName: fileName.rawValue)
                     let jsonData = try decoder.decode([DictQuest].self, from: data)
-                    db.saveData(data: jsonData, tableName: fileName.rawValue) {
-                        db.fetchData(tableName: fileName.rawValue) { (items: [DictQuest]) in
+                    db.createTable(tableName: fileName.tableName, columnNames: DictQuest.columnOrder)
+                    db.saveData(data: jsonData) {
+                        db.fetchDictQuests { (items: [DictQuest]) in
                             print("fetch", items)
                         }
                     }
@@ -544,6 +537,31 @@ extension DatabaseUpdateManager {
             }
         } else {
             print("파일없음")
+        }
+    }
+}
+
+enum Filename: String {
+    case monsters
+    case items
+    case maps
+    case npcs
+    case quests
+}
+
+extension Filename {
+    var tableName: String {
+        switch self {
+        case .monsters:
+            return "dictMonsterTable"
+        case .items:
+            return "dictItemTable"
+        case .maps:
+            return "dictMapTable"
+        case .npcs:
+            return "dictNpcTable"
+        case .quests:
+            return "dictQuestTable"
         }
     }
 }

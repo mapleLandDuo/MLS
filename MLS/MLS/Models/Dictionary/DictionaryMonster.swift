@@ -52,4 +52,6 @@ struct DictMonster: Codable, Nameable {
     var hauntArea: [String]
     // 드랍 테이블
     var dropTable: [DictionaryNameDescription]
+    
+    static let columnOrder = ["code TEXT", "name TEXT", "defaultValues TEXT", "detailValues TEXT", "hauntArea TEXT", "dropTable TEXT"]
 }

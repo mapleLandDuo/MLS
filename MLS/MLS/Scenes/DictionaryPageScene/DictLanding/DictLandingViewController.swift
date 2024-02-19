@@ -34,9 +34,9 @@ class DictLandingViewController: BasicController {
         return view
     }()
     
-    var secondSectionView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .yellow
+    var tableView: UITableView = {
+        let view = UITableView(frame: .zero, style: .plain)
+        view.separatorStyle = .none
         return view
     }()
 
@@ -66,13 +66,16 @@ extension DictLandingViewController {
 private extension DictLandingViewController {
     func setUp() {
         setUpConstraints()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(DictHorizontalSectionTableViewCell.self, forCellReuseIdentifier: DictHorizontalSectionTableViewCell.identifier)
     }
     
     func setUpConstraints() {
         view.addSubview(headerView)
         view.addSubview(firstSectionView)
         view.addSubview(separatorView)
-        view.addSubview(secondSectionView)
+        view.addSubview(tableView)
         
         headerView.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -91,9 +94,36 @@ private extension DictLandingViewController {
             $0.height.equalTo(4)
         }
         
-        secondSectionView.snp.makeConstraints {
-            $0.top.equalTo(separatorView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(separatorView.snp.bottom).offset(Constants.spacings.xl_2)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
+}
+
+extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DictHorizontalSectionTableViewCell.identifier, for: indexPath) as? DictHorizontalSectionTableViewCell else { return UITableViewCell() }
+        cell.selectionStyle = .none
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView()
+        return view
+    }
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return Constants.spacings.xl_3
+    }
+    
+    
 }

@@ -81,6 +81,7 @@ class DictLandingSearchView: UIView {
 private extension DictLandingSearchView {
     func setUp() {
         setUpConstraints()
+        self.clipsToBounds = true
     }
     
     func setUpConstraints() {

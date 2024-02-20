@@ -9,7 +9,16 @@ import UIKit
 
 import SnapKit
 
+protocol DictLandingSearchViewDelegate: BasicController {
+    func searchBarSearchButtonClicked(searchBarText: String?)
+    func didTapButton()
+}
+
 class DictLandingSearchView: UIView {
+    // MARK: - Properties
+    
+    weak var delegate: DictLandingSearchViewDelegate?
+
     // MARK: - Components
     
     private let searchBar: UISearchBar = {
@@ -82,6 +91,10 @@ private extension DictLandingSearchView {
     func setUp() {
         setUpConstraints()
         self.clipsToBounds = true
+        self.searchBar.delegate = self
+        self.shortCutButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.delegate?.didTapButton()
+        }), for: .primaryActionTriggered)
     }
     
     func setUpConstraints() {
@@ -126,5 +139,11 @@ private extension DictLandingSearchView {
         buttonLabel.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(Constants.spacings.md)
         }
+    }
+}
+
+extension DictLandingSearchView: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.delegate?.searchBarSearchButtonClicked(searchBarText: searchBar.text)
     }
 }

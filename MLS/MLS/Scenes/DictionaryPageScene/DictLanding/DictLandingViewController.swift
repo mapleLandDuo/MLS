@@ -68,6 +68,7 @@ extension DictLandingViewController {
 private extension DictLandingViewController {
     func setUp() {
         setUpConstraints()
+        firstSectionView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(DictHorizontalSectionTableViewCell.self, forCellReuseIdentifier: DictHorizontalSectionTableViewCell.identifier)
@@ -135,6 +136,18 @@ private extension DictLandingViewController {
             DictSectionData(image: "testMonster9", title: "testMonster9", level: "20", type: .monster),
         ]
     }
+}
+
+extension DictLandingViewController: DictLandingSearchViewDelegate {
+    func searchBarSearchButtonClicked(searchBarText: String?) {
+        print(searchBarText)
+    }
+    
+    func didTapButton() {
+        print("Button Tapped")
+    }
+    
+    
 }
 
 extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource {

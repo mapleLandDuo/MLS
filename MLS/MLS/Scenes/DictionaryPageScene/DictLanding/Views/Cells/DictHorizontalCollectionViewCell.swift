@@ -56,6 +56,7 @@ class DictHorizontalCollectionViewCell: UICollectionViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictHorizontalCollectionViewCell {
     func setUp() {
         setUpConstraints()

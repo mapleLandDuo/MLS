@@ -9,8 +9,20 @@ import UIKit
 
 import SnapKit
 
+protocol DictLandingHeaderViewDelegate: BasicController {
+    func didTapInquireButton()
+    func didTapJobBadgeButton()
+    func didTapMyPageButton()
+}
+
 class DictLandingHeaderView: UIView {
     
+    // MARK: - Properties
+    
+    weak var delegate: DictLandingHeaderViewDelegate?
+    
+    // MARK: - Components
+
     private let stackView: UIStackView = {
         let view = UIStackView()
         view.distribution = .equalSpacing
@@ -25,6 +37,7 @@ class DictLandingHeaderView: UIView {
     }()
     
     private let jobBadgeButton = JobBadgeButton(job: "전사", level: "56")
+    
     private let myPageIconButton = MyPageIconButton()
     
     private let inquireButton = InquireButton()
@@ -44,6 +57,19 @@ class DictLandingHeaderView: UIView {
 private extension DictLandingHeaderView {
     func setUp() {
         setUpConstraints()
+        setUpAddAction()
+    }
+    
+    func setUpAddAction() {
+        jobBadgeButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.delegate?.didTapJobBadgeButton()
+        }), for: .primaryActionTriggered)
+        myPageIconButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.delegate?.didTapMyPageButton()
+        }), for: .primaryActionTriggered)
+        inquireButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.delegate?.didTapInquireButton()
+        }), for: .primaryActionTriggered)
     }
     
     func setUpConstraints() {

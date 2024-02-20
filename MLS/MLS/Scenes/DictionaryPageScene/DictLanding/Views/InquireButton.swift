@@ -14,6 +14,7 @@ class InquireButton: UIButton {
     
     private let stackView: UIStackView = {
         let stackView = UIStackView()
+        stackView.isUserInteractionEnabled = false
         stackView.spacing = Constants.spacings.xs_2
         return stackView
     }()
@@ -44,6 +45,7 @@ class InquireButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
 // MARK: - SetUp
 private extension InquireButton {
     func setUp() {

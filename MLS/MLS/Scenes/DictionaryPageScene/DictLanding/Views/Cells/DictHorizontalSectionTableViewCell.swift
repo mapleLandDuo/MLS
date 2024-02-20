@@ -9,11 +9,17 @@ import UIKit
 
 import SnapKit
 
+protocol DictHorizontalSectionTableViewCellDelegate: BasicController {
+    func didTapCellButton(sectionTitle: String?)
+    func didSelectItemAt(itemTitle: String?)
+}
+
 class DictHorizontalSectionTableViewCell: UITableViewCell {
     // MARK: - Properties
     
     private var datas: Observable<[DictSectionData]> = Observable([])
 
+    weak var delegate: DictHorizontalSectionTableViewCellDelegate?
     
     // MARK: - Components
     
@@ -121,6 +127,10 @@ extension DictHorizontalSectionTableViewCell: UICollectionViewDelegate, UICollec
         cell.bind(data: datas[indexPath.row])
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.delegate?.didSelectItemAt(itemTitle: datas.value?[indexPath.row].title)
+    }
 }
 
 // MARK: - Bind
@@ -136,5 +146,8 @@ extension DictHorizontalSectionTableViewCell {
         headerImageView.image = data.iconImage
         headerLabel.text = data.description
         datas.value = data.datas
+        headerButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.delegate?.didTapCellButton(sectionTitle: data.description)
+        }), for: .primaryActionTriggered)
     }
 }

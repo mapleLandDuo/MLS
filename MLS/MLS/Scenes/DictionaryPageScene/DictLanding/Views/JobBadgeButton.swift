@@ -14,6 +14,7 @@ class JobBadgeButton: UIButton {
     
     private let stackView: UIStackView = {
         let view = UIStackView()
+        view.isUserInteractionEnabled = false
         view.spacing = Constants.spacings.xs_2
         view.axis = .horizontal
         return view

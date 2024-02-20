@@ -488,9 +488,6 @@
 				08EF651A2B555BB7004CC842 /* InsetTextField.swift */,
 				08D50A6C2B5936AF00E94442 /* SharedTextField.swift */,
 				08D50A852B5FD30D00E94442 /* ActivityIndicator.swift */,
-				08D5F0C02B81E3DB00E56482 /* JobBadgeButton.swift */,
-				08D5F0EB2B81FDE600E56482 /* MyPageIconButton.swift */,
-				08D5F0ED2B820F6000E56482 /* InquireButton.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -550,6 +547,9 @@
 		08D5F0BB2B81DF7F00E56482 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				08D5F0ED2B820F6000E56482 /* InquireButton.swift */,
+				08D5F0EB2B81FDE600E56482 /* MyPageIconButton.swift */,
+				08D5F0C02B81E3DB00E56482 /* JobBadgeButton.swift */,
 				08D5F0BC2B81DF9200E56482 /* DictLandingHeaderView.swift */,
 				08D5F0F12B8232A700E56482 /* DictLandingSearchView.swift */,
 				08D5F0F72B8337CA00E56482 /* Cells */,

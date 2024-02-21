@@ -26,4 +26,12 @@ extension UserDefaultsManager {
     func fetchIsAutoLogin() -> Bool {
         return defaults.bool(forKey: isAutoLogin)
     }
+    
+    func setIsCheckNotice(toggle: Bool, number: Int) {
+        defaults.set(toggle, forKey: "isCheckNoticeNumber:\(number)")
+    }
+
+    func fetchIsCheckNotice(number: Int) -> Bool {
+        return defaults.bool(forKey: "isCheckNoticeNumber:\(number)")
+    }
 }

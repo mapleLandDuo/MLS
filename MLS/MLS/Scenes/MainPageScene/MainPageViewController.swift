@@ -74,45 +74,6 @@ extension MainPageViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = .systemOrange
         setUp()
-
-//        let db = DatabaseUpdateManager()
-//        db.readyToJson(fileName: .items) {
-//            db.fetchJson(type: DictItem.self)
-//        }
-//        db.readyToJson(fileName: .monsters) {
-//            db.fetchJson(type: DictMonster.self)
-//        }
-//        db.readyToJson(fileName: .maps) {
-//            db.fetchJson(type: DictMap.self)
-//        }
-//        db.readyToJson(fileName: .npcs) {
-//            db.fetchJson(type: DictNPC.self)
-//        }
-//        db.readyToJson(fileName: .quests) {
-//            db.fetchJson(type: DictQuest.self)
-//        }
-//        let db1 = DatabaseUpdateManager()
-//        db1.fetchJson(fileName: .items)
-//        db1.fetchJson(fileName: .monsters)
-        
-//        let db = SqliteManager()
-//        db.fetchTables()
-
-//        db.filterItem(divisionName: nil ,rollName: "전사", minLv: nil, maxLv: nil) { items in
-//            print("filter items", items)
-//        }
-//        
-//        db.filterMonster(minLv: 60, maxLv: 100) { items in
-//            print("filter monsters", items.map { $0.defaultValues })
-//        }
-//        
-//        db.sortItem(field: .defaultValues, sortMenu: .EXP, order: .ASC) { (monsters: [DictMonster]) in
-//            print("sort monsters", monsters.map { $0.defaultValues })
-//        }
-//
-//        db.searchData(dataName: "가고일") { (monster: [DictMonster]) in
-//            print("search monster", monster)
-//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

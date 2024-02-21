@@ -16,11 +16,12 @@ struct DictionaryMap: Codable {
 }
 
 // MARK: - Dev 1.0.1
-struct DictMap: Codable {
+struct DictMap: Sqlable {
     var code: String
     var name: String
     var monsters: [DictionaryNameDescription] // 이름 , 갯수
     var npcs: [String]
     
-    static let columnOrder = ["code TEXT", "name TEXT", "monsters TEXT", "npcs TEXT"]
+    static let columnOrder = ["code", "name", "monsters", "npcs"]
+    static let tableName = Filename.maps
 }

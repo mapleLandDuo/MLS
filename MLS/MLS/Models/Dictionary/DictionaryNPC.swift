@@ -15,11 +15,12 @@ struct DictionaryNPC: Codable {
 }
 
 // MARK: - Dev 1.0.1
-struct DictNPC: Codable, Nameable {
+struct DictNPC: Sqlable {
     var code: String
     var name: String
     var maps: [String]
     var quests: [String]
     
-    static let columnOrder = ["code TEXT", "name TEXT", "maps TEXT", "quests TEXT"]
+    static let columnOrder = ["code", "name", "maps", "quests"]
+    static let tableName = Filename.npcs
 }

@@ -39,7 +39,7 @@ struct DictionaryMonster: Codable {
 
 // MARK: - Dev 1.0.1
 
-struct DictMonster: Codable, Nameable {
+struct DictMonster: Sqlable {
     // ID
     var code: String
     // 이름
@@ -53,5 +53,6 @@ struct DictMonster: Codable, Nameable {
     // 드랍 테이블
     var dropTable: [DictionaryNameDescription]
     
-    static let columnOrder = ["code TEXT", "name TEXT", "defaultValues TEXT", "detailValues TEXT", "hauntArea TEXT", "dropTable TEXT"]
+    static let columnOrder = ["code", "name", "defaultValues", "detailValues", "hauntArea", "dropTable"]
+    static let tableName = Filename.monsters
 }

@@ -102,6 +102,7 @@
 		77082A4F2B63F8E100187906 /* DetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A4E2B63F8E100187906 /* DetailImageCell.swift */; };
 		77082A512B63F90A00187906 /* DetailPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A502B63F90A00187906 /* DetailPostCell.swift */; };
 		77082A532B63F91700187906 /* DetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A522B63F91700187906 /* DetailCommentCell.swift */; };
+		7709A48B2B83B784005DD264 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 7709A48A2B83B784005DD264 /* SQLite */; };
 		7732E8802B67E6D30038C7A9 /* DictionarySearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E87F2B67E6D30038C7A9 /* DictionarySearchViewController.swift */; };
 		7732E8822B67E7630038C7A9 /* DictionarySearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E8812B67E7630038C7A9 /* DictionarySearchViewModel.swift */; };
 		7732E8842B67F3F90038C7A9 /* DictionarySearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E8832B67F3F90038C7A9 /* DictionarySearchCell.swift */; };
@@ -110,6 +111,9 @@
 		775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */; };
 		775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */; };
 		775474C62B56A81300C8DD61 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */; };
+		776C72A12B85F5E4009E03E0 /* npcs.json in Resources */ = {isa = PBXBuildFile; fileRef = 776C729E2B85F5E4009E03E0 /* npcs.json */; };
+		776C72A22B85F5E4009E03E0 /* quests.json in Resources */ = {isa = PBXBuildFile; fileRef = 776C729F2B85F5E4009E03E0 /* quests.json */; };
+		776C72A32B85F5E4009E03E0 /* maps.json in Resources */ = {isa = PBXBuildFile; fileRef = 776C72A02B85F5E4009E03E0 /* maps.json */; };
 		778E905F2B667ECF008A6E74 /* DictionaryMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E905E2B667ECF008A6E74 /* DictionaryMainViewModel.swift */; };
 		778E90622B668101008A6E74 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E90612B668101008A6E74 /* ItemTableViewCell.swift */; };
 		778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */; };
@@ -207,6 +211,8 @@
 		77082A4E2B63F8E100187906 /* DetailImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailImageCell.swift; sourceTree = "<group>"; };
 		77082A502B63F90A00187906 /* DetailPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostCell.swift; sourceTree = "<group>"; };
 		77082A522B63F91700187906 /* DetailCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCommentCell.swift; sourceTree = "<group>"; };
+		7709A4822B83A20D005DD264 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		7709A4842B83A254005DD264 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		7732E87F2B67E6D30038C7A9 /* DictionarySearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchViewController.swift; sourceTree = "<group>"; };
 		7732E8812B67E7630038C7A9 /* DictionarySearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchViewModel.swift; sourceTree = "<group>"; };
 		7732E8832B67F3F90038C7A9 /* DictionarySearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchCell.swift; sourceTree = "<group>"; };
@@ -215,6 +221,9 @@
 		775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		776C729E2B85F5E4009E03E0 /* npcs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = npcs.json; sourceTree = "<group>"; };
+		776C729F2B85F5E4009E03E0 /* quests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = quests.json; sourceTree = "<group>"; };
+		776C72A02B85F5E4009E03E0 /* maps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = maps.json; sourceTree = "<group>"; };
 		778E905E2B667ECF008A6E74 /* DictionaryMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMainViewModel.swift; sourceTree = "<group>"; };
 		778E90612B668101008A6E74 /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
 		778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -257,6 +266,7 @@
 				082D0C412B53CF8A00D84CE2 /* SnapKit in Frameworks */,
 				082D0C4D2B53CFC800D84CE2 /* FirebaseAnalyticsSwift in Frameworks */,
 				082D0C492B53CFC800D84CE2 /* FirebaseAnalytics in Frameworks */,
+				7709A48B2B83B784005DD264 /* SQLite in Frameworks */,
 				082D0C572B53CFC800D84CE2 /* FirebaseAuthCombine-Community in Frameworks */,
 				082D0C552B53CFC800D84CE2 /* FirebaseAuth in Frameworks */,
 				082D0C692B53CFC800D84CE2 /* FirebaseFunctionsCombine-Community in Frameworks */,
@@ -626,6 +636,8 @@
 		77C1ED072B614E74003179B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7709A4842B83A254005DD264 /* libsqlite3.0.tbd */,
+				7709A4822B83A20D005DD264 /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -654,6 +666,9 @@
 		77F3D5DF2B823FE3000DB65D /* DictJsons */ = {
 			isa = PBXGroup;
 			children = (
+				776C72A02B85F5E4009E03E0 /* maps.json */,
+				776C729E2B85F5E4009E03E0 /* npcs.json */,
+				776C729F2B85F5E4009E03E0 /* quests.json */,
 				77CEB5C82B8325330030C48E /* items.json */,
 				77F3D5E02B824009000DB65D /* monsters.json */,
 			);
@@ -703,6 +718,7 @@
 				082D0C702B53CFC800D84CE2 /* FirebaseMLModelDownloader */,
 				082D0C732B53CFFE00D84CE2 /* Kanna */,
 				77C1ED082B614E74003179B4 /* FirebaseStorage */,
+				7709A48A2B83B784005DD264 /* SQLite */,
 			);
 			productName = MLS;
 			productReference = 082D0C252B53CF4600D84CE2 /* MLS.app */;
@@ -739,6 +755,7 @@
 				082D0C442B53CF9B00D84CE2 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				082D0C472B53CFC800D84CE2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				082D0C722B53CFFE00D84CE2 /* XCRemoteSwiftPackageReference "Kanna" */,
+				7709A4892B83B784005DD264 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 			);
 			productRefGroup = 082D0C262B53CF4600D84CE2 /* Products */;
 			projectDirPath = "";
@@ -756,7 +773,10 @@
 			files = (
 				77F3D5E12B824009000DB65D /* monsters.json in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
+				776C72A32B85F5E4009E03E0 /* maps.json in Resources */,
 				77CEB5C92B8325330030C48E /* items.json in Resources */,
+				776C72A22B85F5E4009E03E0 /* quests.json in Resources */,
+				776C72A12B85F5E4009E03E0 /* npcs.json in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
 				77F3D5DE2B81F4F6000DB65D /* GoogleService-Info.plist in Resources */,
 			);
@@ -1130,6 +1150,14 @@
 				minimumVersion = 5.2.7;
 			};
 		};
+		7709A4892B83B784005DD264 /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pinocchio22/SQLite.swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1257,6 +1285,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 082D0C722B53CFFE00D84CE2 /* XCRemoteSwiftPackageReference "Kanna" */;
 			productName = Kanna;
+		};
+		7709A48A2B83B784005DD264 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7709A4892B83B784005DD264 /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
 		};
 		77C1ED082B614E74003179B4 /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;

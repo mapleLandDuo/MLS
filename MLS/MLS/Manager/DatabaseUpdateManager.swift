@@ -428,6 +428,14 @@ extension DatabaseUpdateManager {
 // MARK: DB to JSON
 extension DatabaseUpdateManager {
     
+    func readyToJson<T: Sqlable>(type: T.Type, completion: @escaping () -> Void) {
+        FirebaseManager.firebaseManager.fetchDatas(colName: T.tableName.rawValue) { (items: [T]?) in
+            guard let items = items else { return }
+            self.changeToJson(items: items, fileName: T.tableName)
+            completion()
+        }
+    }
+    
     func readyToJson(fileName: Filename, completion: @escaping () -> Void) {
         switch fileName {
         case .items:
@@ -477,59 +485,18 @@ extension DatabaseUpdateManager {
         }
     }
     
-    func searchDirectory(fileName: Filename) {
-        if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let pathWithFileName = documentDirectory.appendingPathComponent("\(fileName.rawValue).json")
-            print(pathWithFileName)
-        }
-    }
-    
-    func fetchJson(fileName: Filename) {
+    func fetchJson<T: Sqlable>(type: T.Type) {
         let db = SqliteManager()
-        if let url = Bundle.main.url(forResource: fileName.rawValue, withExtension: "json") {
+        if let url = Bundle.main.url(forResource: T.tableName.rawValue, withExtension: "json") {
             do {
                 let data = try Data(contentsOf: url)
                 let decoder = JSONDecoder()
-                switch fileName {
-                case .items:
-                    let jsonData = try decoder.decode([DictItem].self, from: data)
-                    db.createTable(tableName: fileName.tableName, columnNames: DictItem.columnOrder)
-                    db.saveData(data: jsonData) {
-                        db.fetchDictItems { (items: [DictItem]) in
-                            print("fetch", items)
-                        }
-                    }
-                case .monsters:
-                    let jsonData = try decoder.decode([DictMonster].self, from: data)
-                    db.createTable(tableName: fileName.tableName, columnNames: DictMonster.columnOrder)
-                    db.saveData(data: jsonData) {
-                        db.fetchDictMonsters { (items: [DictMonster]) in
-                            print("fetch", items)
-                        }
-                    }
-                case .maps:
-                    let jsonData = try decoder.decode([DictMap].self, from: data)
-                    db.createTable(tableName: fileName.tableName, columnNames: DictMap.columnOrder)
-                    db.saveData(data: jsonData) {
-                        db.fetchDictMaps { (items: [DictMap]) in
-                            print("fetch", items)
-                        }
-                    }
-                case .npcs:
-                    let jsonData = try decoder.decode([DictNPC].self, from: data)
-                    db.createTable(tableName: fileName.tableName, columnNames: DictNPC.columnOrder)
-                    db.saveData(data: jsonData) {
-                        db.fetchDictNPCs { (items: [DictNPC]) in
-                            print("fetch", items)
-                        }
-                    }
-                case .quests:
-                    let jsonData = try decoder.decode([DictQuest].self, from: data)
-                    db.createTable(tableName: fileName.tableName, columnNames: DictQuest.columnOrder)
-                    db.saveData(data: jsonData) {
-                        db.fetchDictQuests { (items: [DictQuest]) in
-                            print("fetch", items)
-                        }
+                let jsonData = try decoder.decode([T].self, from: data)
+                db.deleteTable(tableName: T.tableName.tableName)
+                db.createTable(tableName: T.tableName.tableName, columnNames: T.columnOrder)
+                db.saveData(data: jsonData) {
+                    db.fetchData() { (items: [T]) in
+                        print("fetch \(T.tableName.rawValue)", items)
                     }
                 }
             } catch {
@@ -539,6 +506,74 @@ extension DatabaseUpdateManager {
             print("파일없음")
         }
     }
+    
+    func searchDirectory(fileName: Filename) {
+        if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let pathWithFileName = documentDirectory.appendingPathComponent("\(fileName.rawValue).json")
+            print(pathWithFileName)
+        }
+    }
+
+//    func fetchJson(fileName: Filename) {
+//        let db = SqliteManager()
+//        if let url = Bundle.main.url(forResource: fileName.rawValue, withExtension: "json") {
+//            do {
+//                let data = try Data(contentsOf: url)
+//                let decoder = JSONDecoder()
+//                switch fileName {
+//                case .items:
+//                    let jsonData = try decoder.decode([DictItem].self, from: data)
+//                    db.deleteTable(tableName: fileName.tableName)
+//                    db.createTable(tableName: fileName.tableName, columnNames: DictItem.columnOrder)
+//                    db.saveData(data: jsonData) {
+//                        db.fetchData() { (items: [DictItem]) in
+//                            print("fetch", items)
+//                        }
+//                    }
+//                case .monsters:
+//                    db.deleteTable(tableName: fileName.tableName)
+//                    let jsonData = try decoder.decode([DictMonster].self, from: data)
+//                    db.createTable(tableName: fileName.tableName, columnNames: DictMonster.columnOrder)
+//                    db.saveData(data: jsonData) {
+//                        db.fetchData { (items: [DictMonster]) in
+//                            print("fetch", items)
+//                        }
+//                    }
+//                case .maps:
+//                    db.deleteTable(tableName: fileName.tableName)
+//                    let jsonData = try decoder.decode([DictMap].self, from: data)
+//                    db.createTable(tableName: fileName.tableName, columnNames: DictMap.columnOrder)
+//                    db.saveData(data: jsonData) {
+//                        db.fetchData { (items: [DictMap]) in
+//                            print("fetch", items)
+//                        }
+//                    }
+//                case .npcs:
+//                    db.deleteTable(tableName: fileName.tableName)
+//                    let jsonData = try decoder.decode([DictNPC].self, from: data)
+//                    db.createTable(tableName: fileName.tableName, columnNames: DictNPC.columnOrder)
+//                    db.saveData(data: jsonData) {
+//                        db.fetchData { (items: [DictNPC]) in
+//                            print("fetch", items)
+//                        }
+//                    }
+//                case .quests:
+//                    db.deleteTable(tableName: fileName.tableName)
+//                    let jsonData = try decoder.decode([DictQuest].self, from: data)
+//                    db.createTable(tableName: fileName.tableName, columnNames: DictQuest.columnOrder)
+//                    db.saveData(data: jsonData) {
+//                        db.fetchData { (items: [DictQuest]) in
+//                            print("fetch", items)
+//                        }
+//                    }
+//                }
+//            } catch {
+//                print("Error: \(error)")
+//            }
+//        } else {
+//            print("파일없음")
+//        }
+//    }
 }
 
 enum Filename: String {

@@ -145,6 +145,15 @@
       }
     },
     {
+      "identity" : "sqlite.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pinocchio22/SQLite.swift.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "5a4c94576c65ed3c3da86d47eddb47a318e7c665"
+      }
+    },
+    {
       "identity" : "swift-protobuf",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",

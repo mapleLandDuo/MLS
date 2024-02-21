@@ -43,13 +43,14 @@ class DictHorizontalSectionTableViewCell: UITableViewCell {
     private let headerLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_md, fontType: .bold)
+        label.textColor = .semanticColor.text.primary
         return label
     }()
     
     private let headerButton: UIButton = {
         let button = UIButton()
         button.setTitle("전체보기", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.semanticColor.text.secondary, for: .normal)
         button.titleLabel?.addCharacterSpacing()
         button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .medium)
         return button

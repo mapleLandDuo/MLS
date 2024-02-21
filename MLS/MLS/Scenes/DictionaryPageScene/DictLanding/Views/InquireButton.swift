@@ -23,6 +23,7 @@ class InquireButton: UIButton {
         let label = UILabel()
         label.font = .customFont(fontSize: .caption_lg, fontType: .medium)
         label.text = "문의하기"
+        label.textColor = .semanticColor.text.primary
         label.lineBreakMode = .byWordWrapping
         label.addCharacterSpacing()
         return label
@@ -50,7 +51,7 @@ class InquireButton: UIButton {
 private extension InquireButton {
     func setUp() {
         setUpConstraints()
-        self.backgroundColor = .blue
+        self.backgroundColor = .semanticColor.bg.info_bold
         self.layer.cornerRadius = 12
     }
     

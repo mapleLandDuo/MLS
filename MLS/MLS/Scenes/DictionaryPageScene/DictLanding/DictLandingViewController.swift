@@ -22,9 +22,9 @@ class DictLandingViewController: BasicController {
     
     var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .secondarySystemBackground
+        view.backgroundColor = .semanticColor.bg.primary
         let separator = UIView()
-        separator.backgroundColor = .systemGray4
+        separator.backgroundColor = .semanticColor.bolder.secondary
         
         view.addSubview(separator)
         separator.snp.makeConstraints {

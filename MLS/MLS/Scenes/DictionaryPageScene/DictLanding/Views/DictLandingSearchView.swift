@@ -27,7 +27,10 @@ class DictLandingSearchView: UIView {
         searchBar.searchTextField.backgroundColor = .clear
         searchBar.layer.borderWidth = 1
         searchBar.layer.cornerRadius = 12
-        searchBar.placeholder = "아이템, 몬스터, NPC, 퀘스트, 맵"
+        searchBar.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+        searchBar.backgroundColor = .semanticColor.bg.primary
+        searchBar.placeholder = "아이템,몬스터,NPC,퀘스트,맵"
+        searchBar.searchTextField.font = .customFont(fontSize: .body_md, fontType: .medium)
         return searchBar
     }()
 
@@ -41,6 +44,7 @@ class DictLandingSearchView: UIView {
         let label = UILabel()
         label.font = .customFont(fontSize: .caption_lg, fontType: .medium)
         label.text = "메이플랜드"
+        label.textColor = .semanticColor.text.interactive.primary
         label.addCharacterSpacing()
         return label
     }()
@@ -49,13 +53,14 @@ class DictLandingSearchView: UIView {
         let label = UILabel()
         label.font = .customFont(fontSize: .caption_lg, fontType: .medium)
         label.text = "의 전체 컨텐츠를 보고 싶다면?"
+        label.textColor = .semanticColor.text.secondary
         label.addCharacterSpacing()
         return label
     }()
     
     private let shortCutButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = .semanticColor.bg.interactive.secondary_pressed
         button.layer.cornerRadius = 12
         button.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.32).cgColor
         button.layer.shadowOffset = .init(width: 2, height: 2)
@@ -71,7 +76,7 @@ class DictLandingSearchView: UIView {
         label.text = "도감 바로가기"
         label.lineBreakMode = .byWordWrapping
         label.addCharacterSpacing()
-        label.textColor = .white
+        label.textColor = .themeColor(color: .base, value: .value_white)
         return label
     }()
     

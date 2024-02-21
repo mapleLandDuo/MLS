@@ -23,7 +23,7 @@ class JobBadgeButton: UIButton {
     private let jobLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .caption_lg, fontType: .regular)
-        label.textColor = .black
+        label.textColor = .semanticColor.text.primary
         label.addCharacterSpacing()
         return label
     }()
@@ -38,16 +38,28 @@ class JobBadgeButton: UIButton {
     private let levelLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .caption_lg, fontType: .regular)
-        label.textColor = .black
+        label.textColor = .semanticColor.text.primary
         label.addCharacterSpacing()
         return label
     }()
 
     init(job: String?, level: String?) {
         super.init(frame: .zero)
-        self.backgroundColor = .yellow
         self.jobLabel.text = job
         self.levelLabel.text = level
+        guard let job = job else { return }
+        switch job {
+        case "전사":
+            self.backgroundColor = .jobBadgeColor.warrior
+        case "법사":
+            self.backgroundColor = .jobBadgeColor.mage
+        case "도적":
+            self.backgroundColor = .jobBadgeColor.thief
+        case "궁수":
+            self.backgroundColor = .jobBadgeColor.archer
+        default:
+            self.backgroundColor = .semanticColor.bg.secondary
+        }
         setUp()
     }
     

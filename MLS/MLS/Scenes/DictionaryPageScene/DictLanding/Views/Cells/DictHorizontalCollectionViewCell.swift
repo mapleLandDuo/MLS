@@ -13,7 +13,7 @@ class DictHorizontalCollectionViewCell: UICollectionViewCell {
     
     private let imageBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .secondarySystemBackground
+        view.backgroundColor = .themeColor(color: .brand_primary, value: .value_50)
         view.layer.cornerRadius = 8
         return view
     }()
@@ -27,18 +27,21 @@ class DictHorizontalCollectionViewCell: UICollectionViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .semiBold)
+        label.textColor = .semanticColor.text.primary
         return label
     }()
     
     private let subTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .regular)
+        label.textColor = .semanticColor.text.secondary
         return label
     }()
     
     private let levelLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
+        label.textColor = .semanticColor.text.primary
         return label
     }()
     
@@ -113,5 +116,6 @@ extension DictHorizontalCollectionViewCell {
         case .quest:
             subTitleLabel.text = "필요레벨"
         }
+        levelLabel.text = data.level
     }
 }

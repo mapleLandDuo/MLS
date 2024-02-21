@@ -27,21 +27,18 @@ class DictHorizontalCollectionViewCell: UICollectionViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .semiBold)
-        label.text = "블루어쩌구저쩌구저쩌구"
         return label
     }()
     
     private let subTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .regular)
-        label.text = "필요레벨"
         return label
     }()
     
     private let levelLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
-        label.text = "58"
         return label
     }()
     

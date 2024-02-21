@@ -79,7 +79,7 @@ private extension DetailPostCell {
 
         postTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(Constants.defaults.vertical)
-            $0.top.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
         }
 
         infoStackView.snp.makeConstraints {
@@ -89,7 +89,7 @@ private extension DetailPostCell {
 
         postContentTextView.snp.makeConstraints {
             $0.top.equalTo(infoStackView.snp.bottom).inset(-Constants.defaults.vertical)
-            $0.leading.trailing.equalToSuperview().inset(Constants.defaults.horizontal)
+            $0.leading.trailing.bottom.equalToSuperview().inset(Constants.defaults.horizontal)
         }
 
         spacerView.setContentHuggingPriority(.defaultHigh, for: .horizontal)

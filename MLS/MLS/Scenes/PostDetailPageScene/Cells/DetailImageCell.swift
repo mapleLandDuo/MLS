@@ -19,6 +19,7 @@ class DetailImageCell: UITableViewCell {
     private let imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
         view.backgroundColor = .black
         view.isPagingEnabled = true

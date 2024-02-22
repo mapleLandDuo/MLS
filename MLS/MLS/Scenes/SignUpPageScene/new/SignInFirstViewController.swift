@@ -30,7 +30,7 @@ class SignInFirstViewController: BasicController {
 
     private let emailTextField = CustomTextField(type: .normal, header: "이메일", placeHolder: "이메일을 입력해주세요")
     
-    private let firstPwTextField = CustomTextField(type: .password, header: "비밀번호", placeHolder: "비밀번호를 입력해주세요")
+    private let firstPwTextField = CustomTextField(type: .password, header: "비밀번호", placeHolder: "비밀번호를 입력해주세요", footer: "8자리 이상, 영어, 숫자, 특수문자")
     
     private let secondPwTextField = CustomTextField(type: .password, header: "비밀번호 재확인", placeHolder: "비밀번호를 다시 한 번 입력해주세요")
     
@@ -55,7 +55,7 @@ class SignInFirstViewController: BasicController {
         return button
     }()
     
-    private let nextButton = CustomButton(text: "다음으로", textColor: .semanticColor.text.interactive.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), borderColor: nil)
+    private let nextButton = CustomButton(text: "다음으로", textColor: .semanticColor.text.interactive.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), clickedColor: nil,borderColor: nil)
     
     init(viewModel: SignInFirstViewModel) {
         self.viewModel = viewModel
@@ -168,11 +168,11 @@ private extension SignInFirstViewController {
         }), for: .touchUpInside)
         
         showPrivacyButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.didTapPrivacyButton()
+            self?.didTapShowPrivacyButton()
         }), for: .touchUpInside)
         
         nextButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.didTapPrivacyButton()
+            self?.didTapNextButton()
         }), for: .touchUpInside)
     }
 }
@@ -190,12 +190,11 @@ extension SignInFirstViewController {
         privacyButton.tintColor = privacyButton.isSelected ? .semanticColor.bg.brand : .semanticColor.bolder.primary
     }
     
-    func didTapShowPrivacyButton() {
-        
-    }
+    func didTapShowPrivacyButton() {}
     
     func didTapNextButton() {
-        
+        let vc = SignInSecondViewController(viewModel: SignInSecondViewModel())
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc

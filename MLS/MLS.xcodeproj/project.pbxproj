@@ -142,6 +142,9 @@
 		778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */; };
 		778EF8D12B877C8E006CA0AB /* SignInFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D02B877C8E006CA0AB /* SignInFirstViewController.swift */; };
 		778EF8D32B877CE5006CA0AB /* SignInFirstViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D22B877CE5006CA0AB /* SignInFirstViewModel.swift */; };
+		778EF8D52B879554006CA0AB /* SignInSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D42B879554006CA0AB /* SignInSecondViewController.swift */; };
+		778EF8D72B879569006CA0AB /* SignInSecondViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D62B879569006CA0AB /* SignInSecondViewModel.swift */; };
+		778EF8D92B879A84006CA0AB /* SignInAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D82B879A84006CA0AB /* SignInAccountView.swift */; };
 		779B72BD2B56DA0F007CB6C1 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72BC2B56DA0F007CB6C1 /* Date+.swift */; };
 		779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72BE2B56DA16007CB6C1 /* UIImage+.swift */; };
 		779B72C82B56DBC3007CB6C1 /* CommunityPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72C62B56DBC3007CB6C1 /* CommunityPageViewModel.swift */; };
@@ -271,6 +274,9 @@
 		778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		778EF8D02B877C8E006CA0AB /* SignInFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInFirstViewController.swift; sourceTree = "<group>"; };
 		778EF8D22B877CE5006CA0AB /* SignInFirstViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInFirstViewModel.swift; sourceTree = "<group>"; };
+		778EF8D42B879554006CA0AB /* SignInSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSecondViewController.swift; sourceTree = "<group>"; };
+		778EF8D62B879569006CA0AB /* SignInSecondViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSecondViewModel.swift; sourceTree = "<group>"; };
+		778EF8D82B879A84006CA0AB /* SignInAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAccountView.swift; sourceTree = "<group>"; };
 		779B72BC2B56DA0F007CB6C1 /* Date+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		779B72BE2B56DA16007CB6C1 /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		779B72C62B56DBC3007CB6C1 /* CommunityPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityPageViewModel.swift; sourceTree = "<group>"; };
@@ -732,6 +738,9 @@
 			children = (
 				778EF8D02B877C8E006CA0AB /* SignInFirstViewController.swift */,
 				778EF8D22B877CE5006CA0AB /* SignInFirstViewModel.swift */,
+				778EF8D42B879554006CA0AB /* SignInSecondViewController.swift */,
+				778EF8D62B879569006CA0AB /* SignInSecondViewModel.swift */,
+				778EF8D82B879A84006CA0AB /* SignInAccountView.swift */,
 			);
 			path = new;
 			sourceTree = "<group>";
@@ -901,6 +910,7 @@
 				779B72C82B56DBC3007CB6C1 /* CommunityPageViewModel.swift in Sources */,
 				08D5F10B2B8628F700E56482 /* AnnouncementDatas.swift in Sources */,
 				081E6FDC2B666DA200CF83F4 /* DictionaryNameImageCell.swift in Sources */,
+				778EF8D72B879569006CA0AB /* SignInSecondViewModel.swift in Sources */,
 				77082A512B63F90A00187906 /* DetailPostCell.swift in Sources */,
 				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
 				778E90622B668101008A6E74 /* ItemTableViewCell.swift in Sources */,
@@ -948,6 +958,7 @@
 				08D50A802B5EB56E00E94442 /* User.swift in Sources */,
 				77A2808F2B73B8B40079D0EB /* DictionaryNPC.swift in Sources */,
 				08D50A842B5FD2E600E94442 /* IndicatorMaker.swift in Sources */,
+				778EF8D52B879554006CA0AB /* SignInSecondViewController.swift in Sources */,
 				08EF64FE2B53FA89004CC842 /* MainPageViewModel.swift in Sources */,
 				77B6DB732B692A3E00302173 /* String+.swift in Sources */,
 				08971A792B70C1EF00FE46BE /* State.swift in Sources */,
@@ -970,6 +981,7 @@
 				08D5F1092B8624E800E56482 /* UIViewController+.swift in Sources */,
 				08D50A6B2B59137B00E94442 /* SignUpViewController.swift in Sources */,
 				08D5F0F92B8337FA00E56482 /* DictHorizontalSectionTableViewCell.swift in Sources */,
+				778EF8D92B879A84006CA0AB /* SignInAccountView.swift in Sources */,
 				081E6FD52B663B7600CF83F4 /* DictionaryMonsterViewController.swift in Sources */,
 				7707440E2B55511E00FCEDED /* SearchbarTableViewCell.swift in Sources */,
 				778EF8D32B877CE5006CA0AB /* SignInFirstViewModel.swift in Sources */,

@@ -49,19 +49,19 @@ class LoginViewController: BasicController {
         return button
     }()
         
-    private let logInButton = CustomButton(text: "로그인", textColor: .semanticColor.text.interactive.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), borderColor: nil)
+    private let logInButton = CustomButton(text: "로그인", textColor: .semanticColor.text.interactive.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), clickedColor: nil, borderColor: nil)
         
-    private let signUpButton = CustomButton(text: "회원가입", textColor: .semanticColor.text.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), backgroundColor: .themeColor(color: .base, value: .value_white), borderColor: .semanticColor.bolder.secondary)
+    private let signUpButton = CustomButton(text: "회원가입", textColor: .semanticColor.text.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), backgroundColor: .themeColor(color: .base, value: .value_white), clickedColor: nil, borderColor: .semanticColor.bolder.secondary)
      
     private let descriptionTailImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "loginDescription_tail")
+        view.image = UIImage(named: "description_tail")
         return view
     }()
     
     private let descriptionMainImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "loginDescription_main")
+        view.image = UIImage(named: "logInDescription_main")
         return view
     }()
     

@@ -8,9 +8,15 @@
 import UIKit
 
 class CustomButton: UIButton {
-    init(text: String, textColor: UIColor?, textFont: UIFont?, backgroundColor: UIColor? = .semanticColor.bg.disabled, borderColor: UIColor?, radius: CGFloat = 12) {
+    // MARK: Properties
+    private var isClicked = false
+    
+    init(text: String, textColor: UIColor?, textFont: UIFont?, backgroundColor: UIColor? = .semanticColor.bg.disabled, clickedColor: UIColor?, borderColor: UIColor?, radius: CGFloat = 12) {
         super.init(frame: .zero)
         setUp(text: text, textColor: textColor, textFont: textFont, backgroundColor: backgroundColor, borderColor: borderColor, radius: radius)
+        addAction(UIAction(handler: { [weak self] _ in
+            self?.setButtonClicked(backgroundColor: backgroundColor, clickedColor: clickedColor)
+        }), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -28,5 +34,11 @@ class CustomButton: UIButton {
             self.layer.borderWidth = 1
         }
         self.layer.cornerRadius = radius
+    }
+    
+    private func setButtonClicked(backgroundColor: UIColor?, clickedColor: UIColor?) {
+        guard let backgroundColor = backgroundColor, let clickedColor = clickedColor else { return }
+        isClicked = !isClicked
+        self.backgroundColor = isClicked ? clickedColor : backgroundColor
     }
 }

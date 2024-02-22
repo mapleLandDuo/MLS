@@ -166,7 +166,7 @@ private extension LoginViewController {
     func setUpNavigation() {
         let spacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: nil, action: #selector(didTapBackButton))
+        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
         backButton.tintColor = .themeColor(color: .base, value: .value_black)
         navigationItem.leftBarButtonItems = [spacer, backButton]
         navigationController?.navigationBar.isHidden = false
@@ -195,7 +195,7 @@ extension LoginViewController {
     
     @objc
     func didTapBackButton() {
-        
+        navigationController?.popViewController(animated: true)
     }
 }
 

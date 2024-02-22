@@ -22,7 +22,6 @@ class CustomTextField: UIStackView {
         case pwCheck = "비밀번호를 다시 확인해주세요."
         case pwBlank = "비밀번호를 입력해주세요."
         case pwNotCorrect = "비밀번호가 일치하지 않아요"
-        case inputPw = "8자리 이상, 영어, 숫자, 특수문자"
         case emailExist = "이미 가입된 이메일이에요."
         case nickNameNotCorrect = "닉네임을 2~8자로 지어주세요."
         case nickNameExist = "중복된 닉네임이에요."
@@ -75,6 +74,7 @@ class CustomTextField: UIStackView {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .regular)
         label.textColor = .semanticColor.text.secondary
+        label.text = "8자리 이상, 영어, 숫자, 특수문자"
         label.isHidden = true
         return label
     }()
@@ -82,7 +82,10 @@ class CustomTextField: UIStackView {
     init(type: TextFieldType, header: String?, placeHolder: String) {
         self.type = type
         super.init(frame: .zero)
-        headerLabel.text = header
+        if let header = header {
+            headerLabel.isHidden = false
+            headerLabel.text = header
+        }
         textField.placeholder = placeHolder
         textField.isSecureTextEntry = type == .normal ? false : true
         setUp()
@@ -147,10 +150,6 @@ extension CustomTextField {
         switch state {
         case .normal:
             footerLabel.isHidden = isCorrect
-        case .inputPw:
-            footerLabel.isHidden = !isCorrect
-            footerLabel.textColor = .semanticColor.text.secondary
-            footerLabel.text = state.rawValue
         default:
             setFooterLabel(isCorrect: isCorrect, state: state)
         }

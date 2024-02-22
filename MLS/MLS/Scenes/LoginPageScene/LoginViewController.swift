@@ -35,11 +35,8 @@ class LoginViewController: BasicController {
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
         button.configuration?.imagePlacement = .leading
         button.setTitleColor(.semanticColor.text.secondary, for: .normal)
-        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .regular)
+        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .medium)
         button.tintColor = .semanticColor.bolder.primary
-        button.addAction(UIAction(handler: { [weak self] _ in
-            self?.didTapAutoLoginButton()
-        }), for: .touchUpInside)
         return button
     }()
     
@@ -96,6 +93,7 @@ private extension LoginViewController {
         
         setUpConstraints()
         setUpNavigation()
+        setUpActions()
     }
         
     func setUpConstraints() {
@@ -167,10 +165,33 @@ private extension LoginViewController {
         let spacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
         let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
+        let titleLabel = UILabel()
+        titleLabel.text = "로그인"
+        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
+        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
+        navigationItem.titleView = titleLabel
+        
         backButton.tintColor = .themeColor(color: .base, value: .value_black)
         navigationItem.leftBarButtonItems = [spacer, backButton]
         navigationController?.navigationBar.isHidden = false
-        navigationItem.title = "로그인"
+    }
+    
+    func setUpActions() {
+        autoLoginButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapAutoLoginButton()
+        }), for: .touchUpInside)
+        
+        pwFindButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapPwFindButton()
+        }), for: .touchUpInside)
+        
+        logInButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapLogInButton()
+        }), for: .touchUpInside)
+        
+        signUpButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapSignUpButton()
+        }), for: .touchUpInside)
     }
 }
 
@@ -187,11 +208,14 @@ extension LoginViewController {
         autoLoginButton.tintColor = autoLoginButton.isSelected ? .semanticColor.bg.brand : .semanticColor.bolder.primary
     }
         
-    func didTapPasswordFindButton() {}
+    func didTapPwFindButton() {}
         
     func didTapLogInButton() {}
     
-    func didTapSignUpButton() {}
+    func didTapSignUpButton() {
+        let vc = SignInFirstViewController(viewModel: SignInFirstViewModel())
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
     @objc
     func didTapBackButton() {

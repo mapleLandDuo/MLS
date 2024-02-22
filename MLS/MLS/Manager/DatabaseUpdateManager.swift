@@ -198,7 +198,12 @@ extension DatabaseUpdateManager {
                                 } else if key == "부 카테고리" {
                                     item.subCategory = value
                                 } else {
-                                    item.detailValues.append(DictionaryNameDescription(name: key, description: value))
+                                    if key == "상점 판매가" {
+                                        let money = value.replacingOccurrences(of: "메소", with: "").replacingOccurrences(of: ",", with: "")
+                                        item.detailValues.append(DictionaryNameDescription(name: key, description: money))
+                                    } else {
+                                        item.detailValues.append(DictionaryNameDescription(name: key, description: value))
+                                    }
                                 }
                             }
                             count += 1
@@ -233,7 +238,8 @@ extension DatabaseUpdateManager {
                             let value = doc2.css("span").compactMap({$0.text})
                             let zip = zip(key, value)
                             for (key, value) in zip {
-                                item.defaultValues.append(DictionaryNameDescription(name: key, description: value))
+                                let defaultValue = value.replacingOccurrences(of: ",", with: "")
+                                item.defaultValues.append(DictionaryNameDescription(name: key, description: defaultValue))
                             }
                             doc2.css("div.search-page-info-content-spawnmap").forEach { doc3 in
                                 let maps = doc3.css("span").compactMap({$0.text})
@@ -394,7 +400,8 @@ extension DatabaseUpdateManager {
                                 for i in 0 ..< titles.count {
                                     guard let title = titles[i],
                                           let description = descriptions[i] else { return }
-                                    questItem.reward.append(DictionaryNameDescription(name: title, description: description))
+                                    let value = description.replacingOccurrences(of: "+", with: "").replacingOccurrences(of: ",", with: "")
+                                    questItem.reward.append(DictionaryNameDescription(name: title, description: value))
                                 }
                             }
                             content.css("a.search-page-add-content-box").forEach { item in

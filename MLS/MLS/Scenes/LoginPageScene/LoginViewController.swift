@@ -24,26 +24,31 @@ class LoginViewController: BasicController {
         return view
     }()
         
-    private let emailTextField = CustomTextField(type: .normal, header: nil, placeHolder: "이메일 입력해주세요.")
+    private let emailTextField = CustomTextField(type: .normal, header: nil, placeHolder: "이메일 입력해주세요")
         
-    private let pwTextField = CustomTextField(type: .password, header: nil, placeHolder: "비밀번호를 입력해주세요.")
+    private let pwTextField = CustomTextField(type: .password, header: nil, placeHolder: "비밀번호를 입력해주세요")
 
-    private let autoLoginButton: UIButton = {
+    lazy var autoLoginButton: UIButton = {
         let button = UIButton()
         button.setTitle("자동 로그인", for: .normal)
         button.setImage(UIImage(systemName: "square"), for: .normal)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
         button.configuration?.imagePlacement = .leading
         button.setTitleColor(.semanticColor.text.secondary, for: .normal)
         button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .regular)
         button.tintColor = .semanticColor.bolder.primary
+        button.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapAutoLoginButton()
+        }), for: .touchUpInside)
         return button
     }()
     
     private let pwFindButton: UIButton = {
         let button = UIButton()
-        button.setTitle("비밀번호 변경하기", for: .normal)
-        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .regular)
-        button.setTitleColor(.semanticColor.text.secondary, for: .normal)
+        let attributeString = NSMutableAttributedString(string: "비밀번호 변경하기", attributes: [NSAttributedString.Key.font: UIFont.customFont(fontSize: .body_sm, fontType: .regular) as Any])
+        attributeString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
+        attributeString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.semanticColor.text.secondary as Any, range: NSRange(location: 0, length: attributeString.length))
+        button.setAttributedTitle(attributeString, for: .normal)
         return button
     }()
         
@@ -91,7 +96,6 @@ private extension LoginViewController {
         
         setUpConstraints()
         setUpNavigation()
-        setUpActions()
     }
         
     func setUpConstraints() {
@@ -160,27 +164,13 @@ private extension LoginViewController {
     }
     
     func setUpNavigation() {
+        let spacer = UIBarButtonItem()
+        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
+        let backButton = UIBarButtonItem(image: image, style: .plain, target: nil, action: #selector(didTapBackButton))
+        backButton.tintColor = .themeColor(color: .base, value: .value_black)
+        navigationItem.leftBarButtonItems = [spacer, backButton]
         navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationController?.title = "로그인"
-    }
-
-    func setUpActions() {
-        logInButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.didTapLogInButton()
-        }), for: .primaryActionTriggered)
-            
-        signUpButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.didTapSignUpButton()
-        }), for: .primaryActionTriggered)
-            
-        autoLoginButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.didTapAutoLoginButton()
-        }), for: .primaryActionTriggered)
-            
-        pwFindButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.didTapPasswordFindButton()
-        }), for: .primaryActionTriggered)
+        navigationItem.title = "로그인"
     }
 }
 
@@ -191,18 +181,42 @@ private extension LoginViewController {
 
 // MARK: - Method
 extension LoginViewController {
-    func didTapAutoLoginButton() {}
+    func didTapAutoLoginButton() {
+        autoLoginButton.isSelected = !autoLoginButton.isSelected
+        autoLoginButton.setImage(autoLoginButton.isSelected ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "square"), for: .normal)
+        autoLoginButton.tintColor = autoLoginButton.isSelected ? .semanticColor.bg.brand : .semanticColor.bolder.primary
+    }
         
     func didTapPasswordFindButton() {}
         
     func didTapLogInButton() {}
     
     func didTapSignUpButton() {}
+    
+    @objc
+    func didTapBackButton() {
+        
+    }
 }
 
 extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // 입력완료
+        // 엔터
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // 포커스 이동
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        logInButton.backgroundColor = !updatedText.isEmpty ? .semanticColor.bg.interactive.primary : .semanticColor.bg.disabled
+        logInButton.isUserInteractionEnabled = !updatedText.isEmpty
+        
         return true
     }
 }

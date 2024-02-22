@@ -12,13 +12,13 @@ import SnapKit
 class DictLandingViewController: BasicController {
     // MARK: - Properties
 
-    var viewModel: DictLandingViewModel
+    private let viewModel: DictLandingViewModel
     
     // MARK: - Components
     
-    var firstSectionView = DictLandingSearchView()
+    private let firstSectionView = DictLandingSearchView()
     
-    var separatorView: UIView = {
+    private let separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .semanticColor.bg.primary
         let separator = UIView()
@@ -32,7 +32,7 @@ class DictLandingViewController: BasicController {
         return view
     }()
     
-    var tableView: UITableView = {
+    private let tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
         view.separatorStyle = .none
         return view

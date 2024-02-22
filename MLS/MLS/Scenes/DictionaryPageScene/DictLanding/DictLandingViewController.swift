@@ -16,8 +16,6 @@ class DictLandingViewController: BasicController {
     
     // MARK: - Components
     
-    var headerView = DictLandingHeaderView()
-    
     var firstSectionView = DictLandingSearchView()
     
     var separatorView: UIView = {
@@ -59,35 +57,40 @@ extension DictLandingViewController {
         setUp()
         viewModel.fetchSectionDatas()
     }
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
-    }
 }
 
 // MARK: - SetUp
 private extension DictLandingViewController {
     func setUp() {
         setUpConstraints()
-        headerView.delegate = self
+        setUpNavigation()
         firstSectionView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(DictHorizontalSectionTableViewCell.self, forCellReuseIdentifier: DictHorizontalSectionTableViewCell.identifier)
     }
     
+    func setUpNavigation() {
+        
+        let inquireButton = InquireButton()
+        let leftButton = UIBarButtonItem(customView: inquireButton)
+        
+        let jobBadgeButton = JobBadgeButton(job: "전사", level: "58")
+        let myPageButton = MyPageIconButton()
+        
+        let rightButtonItems = [UIBarButtonItem(customView: jobBadgeButton), UIBarButtonItem(customView: myPageButton)]
+        
+        self.navigationItem.leftBarButtonItem = leftButton
+        self.navigationItem.rightBarButtonItems = rightButtonItems
+    }
+    
     func setUpConstraints() {
-        view.addSubview(headerView)
         view.addSubview(firstSectionView)
         view.addSubview(separatorView)
         view.addSubview(tableView)
         
-        headerView.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(56)
-        }
-        
         firstSectionView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(200)
         }
@@ -118,23 +121,11 @@ private extension DictLandingViewController {
 extension DictLandingViewController: DictLandingSearchViewDelegate {
     func didTapSearchButton() {
         print(#function)
+        let vc = DictSearchViewController(viewModel: DictSearchViewModel())
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func didTapShortCutButton() {
-        print(#function)
-    }
-}
-
-extension DictLandingViewController: DictLandingHeaderViewDelegate {
-    func didTapInquireButton() {
-        print(#function)
-    }
-    
-    func didTapJobBadgeButton() {
-        print(#function)
-    }
-    
-    func didTapMyPageButton() {
         print(#function)
     }
 }

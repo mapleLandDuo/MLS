@@ -116,14 +116,13 @@ private extension DictLandingViewController {
 }
 
 extension DictLandingViewController: DictLandingSearchViewDelegate {
-    func didTapButton() {
+    func didTapSearchButton() {
         print(#function)
     }
     
-    func searchBarSearchButtonClicked(searchBarText: String?) {
-        print(searchBarText)
+    func didTapShortCutButton() {
+        print(#function)
     }
-    
 }
 
 extension DictLandingViewController: DictLandingHeaderViewDelegate {

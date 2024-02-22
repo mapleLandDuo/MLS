@@ -206,7 +206,19 @@ extension LoginViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        // 포커스 이동
+        if textField == emailTextField.textField {
+            emailTextField.checkAdditionalButton(isHidden: false)
+        } else {
+            pwTextField.checkAdditionalButton(isHidden: false)
+        }
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == emailTextField.textField {
+            emailTextField.checkAdditionalButton(isHidden: true)
+        } else {
+            pwTextField.checkAdditionalButton(isHidden: true)
+        }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

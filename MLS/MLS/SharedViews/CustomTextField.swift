@@ -139,37 +139,44 @@ private extension CustomTextField {
 
 // MARK: - Methods
 extension CustomTextField {
-    private func checkState(state: TextState, isHidden: Bool) {
+    func checkAdditionalButton(isHidden: Bool) {
+        additionalButton.isHidden = !isHidden
+    }
+    
+    func checkState(state: TextState, isCorrect: Bool) {
         switch state {
         case .normal:
-            footerLabel.isHidden = !isHidden
-            additionalButton.isHidden = true
+            footerLabel.isHidden = isCorrect
         case .inputPw:
-            footerLabel.isHidden = isHidden
-            footerLabel.textColor = .systemGray6
-            additionalButton.isHidden = false
+            footerLabel.isHidden = !isCorrect
+            footerLabel.textColor = .semanticColor.text.secondary
+            footerLabel.text = state.rawValue
         default:
-            setFooterLabel(isHidden: !isHidden, state: state, color: .systemRed)
+            setFooterLabel(isCorrect: isCorrect, state: state)
         }
     }
 
-    private func setFooterLabel(isHidden: Bool, state: TextState, color: UIColor) {
-        footerLabel.isHidden = isHidden
-        footerLabel.textColor = color
+    private func setFooterLabel(isCorrect: Bool, state: TextState) {
+        footerLabel.isHidden = isCorrect
+        footerLabel.textColor = isCorrect ? UIColor.semanticColor.text.secondary : UIColor.semanticColor.text.distructive
         footerLabel.text = state.rawValue
-        additionalButton.isHidden = false
-        contentView.layer.borderColor = color.cgColor
+        contentView.layer.borderColor = isCorrect ? UIColor.semanticColor.bolder.interactive.secondary?.cgColor : UIColor.semanticColor.bolder.distructive?.cgColor
     }
     
     private func changeShowButtonColor() {
-        textField.isSecureTextEntry.toggle()
-        if textField.isSecureTextEntry {
-            UIView.animate(withDuration: 0.1) {
-                self.additionalButton.setImage(UIImage(systemName: "eye"), for: .normal)
-            }
-        } else {
-            UIView.animate(withDuration: 0.1) {
-                self.additionalButton.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+        switch type {
+        case .normal:
+            textField.text = ""
+        case .password:
+            textField.isSecureTextEntry.toggle()
+            if textField.isSecureTextEntry {
+                UIView.animate(withDuration: 0.1) {
+                    self.additionalButton.setImage(UIImage(systemName: "eye"), for: .normal)
+                }
+            } else {
+                UIView.animate(withDuration: 0.1) {
+                    self.additionalButton.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+                }
             }
         }
     }

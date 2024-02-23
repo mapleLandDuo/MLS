@@ -36,7 +36,7 @@ struct DictionaryQuest: Codable {
 }
 
 // MARK: - Dev 1.0.1
-struct DictQuest: Codable {
+struct DictQuest: Sqlable {
     var code: String
     var name: String
     //이전 퀘스트
@@ -55,4 +55,7 @@ struct DictQuest: Codable {
     var toCompletion: [DictionaryNameDescription]
     //보상
     var reward: [DictionaryNameDescription]
+    
+    static let columnOrder = ["code", "name", "preQuest", "currentQuest", "laterQuest", "times", "defaultValues", "rollToStart", "toCompletion", "reward"]
+    static let tableName = Filename.quests
 }

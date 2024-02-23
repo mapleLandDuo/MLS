@@ -11,7 +11,7 @@ import SnapKit
 
 class FindPasswordViewController: BasicController {
     // MARK: - Properties
-    private let viewModel: SignInFirstViewModel
+    private let viewModel: FindPasswordViewModel
     
     // MARK: - Components
     private let emailTextField = CustomTextField(type: .normal, header: "비밀번호 변경 요청드릴 이메일을 입력해주세요", placeHolder: "ex) mls@naver.com")
@@ -28,7 +28,7 @@ class FindPasswordViewController: BasicController {
     
     private let sendButton = CustomButton(type: .disabled, text: "메일 보내기")
     
-    init(viewModel: SignInFirstViewModel) {
+    init(viewModel: FindPasswordViewModel) {
         self.viewModel = viewModel
         super.init()
     }
@@ -51,6 +51,8 @@ extension FindPasswordViewController {
 // MARK: - SetUp
 private extension FindPasswordViewController {
     func setUp() {
+        emailTextField.textField.delegate = self
+        
         setUpConstraints()
         setUpActions()
     }
@@ -70,7 +72,15 @@ private extension FindPasswordViewController {
         }
     }
     
-    func setUpActions() {}
+    func setUpActions() {
+        cancelButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.dismiss(animated: true)
+        }), for: .touchUpInside)
+        
+        sendButton.addAction(UIAction(handler: { [weak self] _ in
+            // 이메일 전송
+        }), for: .touchUpInside)
+    }
 }
 
 // MARK: - Bind
@@ -79,21 +89,24 @@ private extension FindPasswordViewController {
 }
 
 // MARK: - Method
-extension FindPasswordViewController {
-
+private extension FindPasswordViewController {
+    func checkEmail(isCorrect: Bool) {
+    }
 }
 
 extension FindPasswordViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // 엔터
         return true
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {}
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {}
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        viewModel.checkEmail(email: updatedText) { [weak self] type in
+            self?.sendButton.type.value = type
+        }
         return true
     }
 }

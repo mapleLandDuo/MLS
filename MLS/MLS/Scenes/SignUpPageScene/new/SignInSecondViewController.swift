@@ -200,7 +200,7 @@ private extension SignInSecondViewController {
 }
 
 // MARK: - Method
-extension SignInSecondViewController {
+private extension SignInSecondViewController {
     func didTapCompleteButton() {}
     
     @objc
@@ -214,10 +214,6 @@ extension SignInSecondViewController: UITextFieldDelegate {
         // 엔터
         return true
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {}
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {}
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return true

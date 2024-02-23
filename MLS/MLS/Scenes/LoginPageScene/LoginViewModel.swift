@@ -9,13 +9,6 @@ import Foundation
 
 import FirebaseAuth
 
-enum LogInResult {
-    case emptyEmail
-    case emptyPassword
-    case fail
-    case success
-}
-
 class LoginViewModel {
     // MARK: - Properties
 }

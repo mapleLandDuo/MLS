@@ -126,6 +126,7 @@
 		77082A532B63F91700187906 /* DetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A522B63F91700187906 /* DetailCommentCell.swift */; };
 		770848952B88971B008B68E1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848942B88971B008B68E1 /* FindPasswordViewController.swift */; };
 		770848972B889A0C008B68E1 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848962B889A0C008B68E1 /* PresentationController.swift */; };
+		770848992B88CEA7008B68E1 /* FindPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848982B88CEA7008B68E1 /* FindPasswordViewModel.swift */; };
 		7717D6E92B8714AD0050BD07 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6E82B8714AD0050BD07 /* LoginViewController.swift */; };
 		7717D6EB2B871B200050BD07 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6EA2B871B200050BD07 /* LoginViewModel.swift */; };
 		7717D6ED2B871CD00050BD07 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6EC2B871CD00050BD07 /* CustomTextField.swift */; };
@@ -260,6 +261,7 @@
 		77082A522B63F91700187906 /* DetailCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCommentCell.swift; sourceTree = "<group>"; };
 		770848942B88971B008B68E1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
 		770848962B889A0C008B68E1 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
+		770848982B88CEA7008B68E1 /* FindPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewModel.swift; sourceTree = "<group>"; };
 		7717D6E82B8714AD0050BD07 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7717D6EA2B871B200050BD07 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		7717D6EC2B871CD00050BD07 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -705,6 +707,7 @@
 				7717D6E82B8714AD0050BD07 /* LoginViewController.swift */,
 				7717D6EA2B871B200050BD07 /* LoginViewModel.swift */,
 				770848942B88971B008B68E1 /* FindPasswordViewController.swift */,
+				770848982B88CEA7008B68E1 /* FindPasswordViewModel.swift */,
 			);
 			path = LoginPageScene;
 			sourceTree = "<group>";
@@ -991,6 +994,7 @@
 				778EF8D92B879A84006CA0AB /* SignInAccountView.swift in Sources */,
 				081E6FD52B663B7600CF83F4 /* DictionaryMonsterViewController.swift in Sources */,
 				7707440E2B55511E00FCEDED /* SearchbarTableViewCell.swift in Sources */,
+				770848992B88CEA7008B68E1 /* FindPasswordViewModel.swift in Sources */,
 				778EF8D32B877CE5006CA0AB /* SignInFirstViewModel.swift in Sources */,
 				7732E8842B67F3F90038C7A9 /* DictionarySearchCell.swift in Sources */,
 				779B72BD2B56DA0F007CB6C1 /* Date+.swift in Sources */,

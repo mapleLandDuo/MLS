@@ -163,6 +163,21 @@ private extension SignInFirstViewController {
     }
     
     func setUpActions() {
+        emailTextField.textField.addAction(UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
+            nextButton.type.value = self.isComplete() ? .disabled : .clickabled
+        }), for: .editingChanged)
+        
+        firstPwTextField.textField.addAction(UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
+            nextButton.type.value = self.isComplete() ? .disabled : .clickabled
+        }), for: .editingChanged)
+        
+        secondPwTextField.textField.addAction(UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
+            nextButton.type.value = self.isComplete() ? .disabled : .clickabled
+        }), for: .editingChanged)
+        
         privacyButton.addAction(UIAction(handler: { [weak self] _ in
             self?.didTapPrivacyButton()
         }), for: .touchUpInside)
@@ -179,11 +194,38 @@ private extension SignInFirstViewController {
 
 // MARK: - Bind
 private extension SignInFirstViewController {
-    func bind() {}
+    func bind() {
+        viewModel.emailState.bind { [weak self] _ in
+            guard let state = self?.viewModel.emailState.value else { return }
+            if state == .normal {
+                self?.emailTextField.checkState(state: state, isCorrect: true)
+            } else {
+                self?.emailTextField.checkState(state: state, isCorrect: false)
+            }
+        }
+        
+        viewModel.firstPwState.bind { [weak self] _ in
+            guard let state = self?.viewModel.firstPwState.value else { return }
+            if state == .normal {
+                self?.firstPwTextField.checkState(state: state, isCorrect: true)
+            } else {
+                self?.firstPwTextField.checkState(state: state, isCorrect: false)
+            }
+        }
+        
+        viewModel.secondPwState.bind { [weak self] _ in
+            guard let state = self?.viewModel.secondPwState.value else { return }
+            if state == .normal {
+                self?.secondPwTextField.checkState(state: state, isCorrect: true)
+            } else {
+                self?.secondPwTextField.checkState(state: state, isCorrect: false)
+            }
+        }
+    }
 }
 
 // MARK: - Method
-extension SignInFirstViewController {
+private extension SignInFirstViewController {
     func didTapPrivacyButton() {
         privacyButton.isSelected = !privacyButton.isSelected
         privacyButton.setImage(privacyButton.isSelected ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "square"), for: .normal)
@@ -197,6 +239,21 @@ extension SignInFirstViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    func isComplete() -> Bool {
+        guard let email = emailTextField.textField.text,
+              let first = firstPwTextField.textField.text,
+              let second = secondPwTextField.textField.text else { return true }
+        return email.isEmpty && first.isEmpty && second.isEmpty
+    }
+    
+    func updateText(textField: UITextField, range: NSRange, string: String, type: TextFieldType, state: Observable<TextState>) {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return }
+        viewModel.checkForm(text: currentText.replacingCharacters(in: stringRange, with: string), type: type) { newState in
+            state.value = newState
+        }
+    }
+    
     @objc
     func didTapBackButton() {
         navigationController?.popViewController(animated: true)
@@ -205,20 +262,20 @@ extension SignInFirstViewController {
 
 extension SignInFirstViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // 엔터
-        if textField.text == "1" {
-            nextButton.backgroundColor = textField.text == "1" ? .semanticColor.bg.interactive.primary : .semanticColor.bg.disabled
-            nextButton.isUserInteractionEnabled = textField.text == "1"
-        }
-        
         return true
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {}
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {}
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        switch textField {
+        case emailTextField.textField:
+            updateText(textField: textField, range: range, string: string, type: .normal, state: self.viewModel.emailState)
+        case firstPwTextField.textField:
+            updateText(textField: textField, range: range, string: string, type: .password, state: self.viewModel.firstPwState)
+        case secondPwTextField.textField:
+            updateText(textField: textField, range: range, string: string, type: .password, state: self.viewModel.secondPwState)
+        default:
+            break
+        }
         return true
     }
 }

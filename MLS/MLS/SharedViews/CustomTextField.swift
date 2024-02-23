@@ -20,12 +20,12 @@ enum TextState: String {
     case nickNameExist = "중복된 닉네임이에요."
 }
 
+enum TextFieldType {
+    case normal
+    case password
+}
+
 class CustomTextField: UIStackView {
-    enum TextFieldType {
-        case normal
-        case password
-    }
-    
     // MARK: - Properties
     
     private let type: TextFieldType
@@ -50,12 +50,16 @@ class CustomTextField: UIStackView {
         return view
     }()
     
-    var textField: UITextField = {
+    lazy var textField: UITextField = {
         let view = UITextField()
         view.font = .customFont(fontSize: .body_md, fontType: .medium)
         view.textColor = .semanticColor.text.secondary
         view.inputAccessoryView = nil
         view.autocapitalizationType = .none
+        view.addAction(UIAction(handler: { [weak self] _ in
+            guard let text = self?.textField.text else { return }
+            self?.setAdditional(text: text)
+        }), for: .editingChanged)
         return view
     }()
     
@@ -180,5 +184,8 @@ extension CustomTextField {
             }
         }
     }
+    
+    private func setAdditional(text: String) {
+        additionalButton.isHidden = text == "" ? true : false
+    }
 }
-

@@ -201,7 +201,7 @@ private extension LoginViewController {
 }
 
 // MARK: - Method
-extension LoginViewController {
+private extension LoginViewController {
     func didTapAutoLoginButton() {
         autoLoginButton.isSelected = !autoLoginButton.isSelected
         autoLoginButton.setImage(autoLoginButton.isSelected ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "square"), for: .normal)
@@ -209,7 +209,7 @@ extension LoginViewController {
     }
         
     func didTapPwFindButton() {
-        let vc = FindPasswordViewController(viewModel: SignInFirstViewModel())
+        let vc = FindPasswordViewController(viewModel: FindPasswordViewModel())
         vc.modalPresentationStyle = .custom
         vc.transitioningDelegate = self
         present(vc, animated: true)
@@ -242,23 +242,7 @@ extension LoginViewController: UITextFieldDelegate {
         // 엔터
         return true
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == emailTextField.textField {
-            emailTextField.checkAdditionalButton(isHidden: false)
-        } else {
-            pwTextField.checkAdditionalButton(isHidden: false)
-        }
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == emailTextField.textField {
-            emailTextField.checkAdditionalButton(isHidden: true)
-        } else {
-            pwTextField.checkAdditionalButton(isHidden: true)
-        }
-    }
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }

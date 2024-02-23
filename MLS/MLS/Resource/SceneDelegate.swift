@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = UINavigationController(rootViewController: MainPageViewController(viewModel: MainPageViewModel()))
+        window?.rootViewController = UINavigationController(rootViewController: DictLandingViewController(viewModel: DictLandingViewModel()))
         window?.makeKeyAndVisible()
     }
 
@@ -31,7 +31,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneWillResignActive(_ scene: UIScene) {}
 
-    func sceneWillEnterForeground(_ scene: UIScene) {}
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        guard let rootVC = window?.rootViewController else { return }
+        let manager = UserDefaultsManager()
+        let notice = AnnouncementData(
+            number: 0,
+            title: "공지사항",
+            content: "안녕하세요 메랜사 입니다."
+        )
+        rootVC.checkPopUpView {
+            if !manager.fetchIsCheckNotice(number: notice.number) {
+                PopUpMaker.showPopUp(title: notice.title, content: notice.content)
+                manager.setIsCheckNotice(toggle: true, number: notice.number)
+            }
+        }
+
+    }
 
     func sceneDidEnterBackground(_ scene: UIScene) {}
 }

@@ -103,6 +103,8 @@
 		08D5F10B2B8628F700E56482 /* AnnouncementData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F10A2B8628F700E56482 /* AnnouncementData.swift */; };
 		08D5F11C2B873B1400E56482 /* DictSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F11B2B873B1400E56482 /* DictSearchViewController.swift */; };
 		08D5F11E2B873B1D00E56482 /* DictSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F11D2B873B1D00E56482 /* DictSearchViewModel.swift */; };
+		08D5F1252B8892D800E56482 /* RecentSearchKeywordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F1242B8892D800E56482 /* RecentSearchKeywordCell.swift */; };
+		08D5F1272B88CE4100E56482 /* DictSearchMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F1262B88CE4100E56482 /* DictSearchMenuCell.swift */; };
 		08EF64FE2B53FA89004CC842 /* MainPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF64FD2B53FA89004CC842 /* MainPageViewModel.swift */; };
 		08EF65032B54025F004CC842 /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65022B54025F004CC842 /* UICollectionViewCell+.swift */; };
 		08EF65052B5402A3004CC842 /* UITableViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65042B5402A3004CC842 /* UITableViewCell+.swift */; };
@@ -230,6 +232,8 @@
 		08D5F10A2B8628F700E56482 /* AnnouncementData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementData.swift; sourceTree = "<group>"; };
 		08D5F11B2B873B1400E56482 /* DictSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchViewController.swift; sourceTree = "<group>"; };
 		08D5F11D2B873B1D00E56482 /* DictSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchViewModel.swift; sourceTree = "<group>"; };
+		08D5F1242B8892D800E56482 /* RecentSearchKeywordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchKeywordCell.swift; sourceTree = "<group>"; };
+		08D5F1262B88CE4100E56482 /* DictSearchMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchMenuCell.swift; sourceTree = "<group>"; };
 		08EF64FD2B53FA89004CC842 /* MainPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewModel.swift; sourceTree = "<group>"; };
 		08EF65022B54025F004CC842 /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		08EF65042B5402A3004CC842 /* UITableViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+.swift"; sourceTree = "<group>"; };
@@ -609,10 +613,20 @@
 		08D5F11A2B873AFB00E56482 /* DictSearching */ = {
 			isa = PBXGroup;
 			children = (
+				08D5F1232B8892C600E56482 /* Cells */,
 				08D5F11B2B873B1400E56482 /* DictSearchViewController.swift */,
 				08D5F11D2B873B1D00E56482 /* DictSearchViewModel.swift */,
 			);
 			path = DictSearching;
+			sourceTree = "<group>";
+		};
+		08D5F1232B8892C600E56482 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				08D5F1262B88CE4100E56482 /* DictSearchMenuCell.swift */,
+				08D5F1242B8892D800E56482 /* RecentSearchKeywordCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		08EF65012B54023F004CC842 /* Extensions */ = {
@@ -883,6 +897,7 @@
 			files = (
 				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
 				7717D6EB2B871B200050BD07 /* LoginViewModel.swift in Sources */,
+				08D5F1272B88CE4100E56482 /* DictSearchMenuCell.swift in Sources */,
 				08D50A6F2B59378F00E94442 /* SignUpViewModel.swift in Sources */,
 				7751CEFB2B5408FA000E5E74 /* CommunityTableViewCell.swift in Sources */,
 				779B72C92B56DBC3007CB6C1 /* CommunityPageViewController.swift in Sources */,
@@ -890,6 +905,7 @@
 				775474C62B56A81300C8DD61 /* CommentTableViewCell.swift in Sources */,
 				08EF65052B5402A3004CC842 /* UITableViewCell+.swift in Sources */,
 				7717D6ED2B871CD00050BD07 /* CustomTextField.swift in Sources */,
+				08D5F1252B8892D800E56482 /* RecentSearchKeywordCell.swift in Sources */,
 				081E700A2B69208100CF83F4 /* ProfilePageViewController.swift in Sources */,
 				779B72C82B56DBC3007CB6C1 /* CommunityPageViewModel.swift in Sources */,
 				08D5F10B2B8628F700E56482 /* AnnouncementData.swift in Sources */,

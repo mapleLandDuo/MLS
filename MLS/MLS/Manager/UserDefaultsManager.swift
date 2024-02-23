@@ -13,6 +13,7 @@ struct UserDefaultsManager {
     private let defaults = UserDefaults.standard
     
     private let isAutoLogin = "isAutoLogin"
+    private let recentSearchKeyWords = "RecentSearchKeyWords"
 }
 
 // MARK: - Methods
@@ -33,5 +34,13 @@ extension UserDefaultsManager {
 
     func fetchIsCheckNotice(number: Int) -> Bool {
         return defaults.bool(forKey: "isCheckNoticeNumber:\(number)")
+    }
+    
+    func setRecentSearchKeyWord(keyWords: [String]) {
+        defaults.set(keyWords, forKey: recentSearchKeyWords)
+    }
+
+    func fetchRecentSearchKeyWord() -> [String] {
+        return defaults.array(forKey: recentSearchKeyWords) as? [String] ?? []
     }
 }

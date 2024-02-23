@@ -30,13 +30,13 @@ class SignInAccountView: UIView {
         return view
     }()
     
-    private let warriorButton = CustomButton(text: "전사", textColor: .semanticColor.text.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), backgroundColor: .themeColor(color: .base, value: .value_white) ,clickedColor: .jobBadgeColor.warrior, borderColor: .semanticColor.bolder.secondary)
+    private let warriorButton = CustomButton(type: .default, text: "전사")
     
-    private let archerButton = CustomButton(text: "궁수", textColor: .semanticColor.text.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), backgroundColor: .themeColor(color: .base, value: .value_white) , clickedColor: .jobBadgeColor.archer, borderColor: .semanticColor.bolder.secondary)
+    private let archerButton = CustomButton(type: .default, text: "궁수")
     
-    private let thiefButton = CustomButton(text: "도적", textColor: .semanticColor.text.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), backgroundColor: .themeColor(color: .base, value: .value_white) , clickedColor: .jobBadgeColor.thief, borderColor: .semanticColor.bolder.secondary)
+    private let thiefButton = CustomButton(type: .default, text: "도적")
     
-    private let mageButton = CustomButton(text: "법사", textColor: .semanticColor.text.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), backgroundColor: .themeColor(color: .base, value: .value_white) , clickedColor: .jobBadgeColor.mage, borderColor: .semanticColor.bolder.secondary)
+    private let mageButton = CustomButton(type: .default, text: "법사")
 
     init() {
         super.init(frame: .zero)

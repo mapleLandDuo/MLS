@@ -48,11 +48,11 @@ class LoginViewController: BasicController {
         button.setAttributedTitle(attributeString, for: .normal)
         return button
     }()
-        
-    private let logInButton = CustomButton(text: "로그인", textColor: .semanticColor.text.interactive.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), clickedColor: nil, borderColor: nil)
-        
-    private let signUpButton = CustomButton(text: "회원가입", textColor: .semanticColor.text.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), backgroundColor: .themeColor(color: .base, value: .value_white), clickedColor: nil, borderColor: .semanticColor.bolder.secondary)
-     
+    
+    private let logInButton = CustomButton(type: .disabled, text: "로그인")
+    
+    private let signUpButton = CustomButton(type: .default, text: "회원가입")
+    
     private let descriptionTailImageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "description_tail")
@@ -208,7 +208,12 @@ extension LoginViewController {
         autoLoginButton.tintColor = autoLoginButton.isSelected ? .semanticColor.bg.brand : .semanticColor.bolder.primary
     }
         
-    func didTapPwFindButton() {}
+    func didTapPwFindButton() {
+        let vc = FindPasswordViewController(viewModel: SignInFirstViewModel())
+        vc.modalPresentationStyle = .custom
+        vc.transitioningDelegate = self
+        present(vc, animated: true)
+    }
         
     func didTapLogInButton() {
         guard let email = emailTextField.textField.text, let password = pwTextField.textField.text else { return }
@@ -263,5 +268,11 @@ extension LoginViewController: UITextFieldDelegate {
         logInButton.isUserInteractionEnabled = !updatedText.isEmpty
         
         return true
+    }
+}
+
+extension LoginViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return PresentationController(presentedViewController: presented, presenting: presenting, size: 210)
     }
 }

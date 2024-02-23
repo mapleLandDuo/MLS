@@ -54,6 +54,7 @@ class CustomTextField: UIStackView {
         let view = UITextField()
         view.font = .customFont(fontSize: .body_md, fontType: .medium)
         view.textColor = .semanticColor.text.secondary
+        view.inputAccessoryView = nil
         view.autocapitalizationType = .none
         return view
     }()

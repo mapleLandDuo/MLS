@@ -55,7 +55,7 @@ class SignInFirstViewController: BasicController {
         return button
     }()
     
-    private let nextButton = CustomButton(text: "다음으로", textColor: .semanticColor.text.interactive.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), clickedColor: nil,borderColor: nil)
+    private let nextButton = CustomButton(type: .disabled, text: "다음으로")
     
     init(viewModel: SignInFirstViewModel) {
         self.viewModel = viewModel
@@ -142,7 +142,7 @@ private extension SignInFirstViewController {
         
         nextButton.snp.makeConstraints {
             $0.top.equalTo(privacyButton.snp.bottom).offset(111)
-            $0.leading.trailing.equalToSuperview().inset(Constants.spacings.sm)
+            $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
             $0.height.equalTo(56)
         }
     }

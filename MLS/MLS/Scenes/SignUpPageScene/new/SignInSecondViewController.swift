@@ -46,9 +46,19 @@ class SignInSecondViewController: BasicController {
         return view
     }()
     
-    private let noneAccountButton = CustomButton(text: "아니요", textColor: .themeColor(color: .base, value: .value_white), textFont: .customFont(fontSize: .body_md, fontType: .semiBold), backgroundColor: .semanticColor.bg.interactive.secondary, clickedColor: .semanticColor.bg.interactive.primary_pressed, borderColor: nil)
+    private let noneAccountButton: CustomButton = {
+        let button = CustomButton(type: .clickabled, text: "아니요")
+        button.backgroundColor = .semanticColor.bg.interactive.secondary
+        button.setTitleColor(.themeColor(color: .base, value: .value_white), for: .normal)
+        return button
+    }()
     
-    private let accountButton = CustomButton(text: "네.있어요", textColor: .themeColor(color: .base, value: .value_white), textFont: .customFont(fontSize: .body_md, fontType: .semiBold), backgroundColor: .semanticColor.bg.interactive.secondary, clickedColor: .semanticColor.bg.interactive.primary_pressed, borderColor: nil)
+    private let accountButton: CustomButton = {
+        let button = CustomButton(type: .clickabled, text: "네.있어요")
+        button.backgroundColor = .semanticColor.bg.interactive.secondary
+        button.setTitleColor(.themeColor(color: .base, value: .value_white), for: .normal)
+        return button
+    }()
     
     private let descriptionTailImageView: UIImageView = {
         let view = UIImageView()
@@ -68,7 +78,7 @@ class SignInSecondViewController: BasicController {
         return view
     }()
     
-    private let completeButton = CustomButton(text: "가입 완료", textColor: .semanticColor.text.interactive.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), clickedColor: nil, borderColor: nil)
+    private let completeButton = CustomButton(type: .disabled, text: "가입 완료")
     
     init(viewModel: SignInSecondViewModel) {
         self.viewModel = viewModel

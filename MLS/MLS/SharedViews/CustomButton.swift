@@ -8,37 +8,80 @@
 import UIKit
 
 class CustomButton: UIButton {
+    enum ButtonType {
+        case `default`
+        case clickabled
+        case disabled
+        case clicked
+    }
+    
     // MARK: Properties
     private var isClicked = false
     
-    init(text: String, textColor: UIColor?, textFont: UIFont?, backgroundColor: UIColor? = .semanticColor.bg.disabled, clickedColor: UIColor?, borderColor: UIColor?, radius: CGFloat = 12) {
+    init(type: ButtonType, text: String, borderColor: UIColor? = .semanticColor.bolder.secondary, radius: CGFloat = 12) {
         super.init(frame: .zero)
-        setUp(text: text, textColor: textColor, textFont: textFont, backgroundColor: backgroundColor, borderColor: borderColor, radius: radius)
-        addAction(UIAction(handler: { [weak self] _ in
-            self?.setButtonClicked(backgroundColor: backgroundColor, clickedColor: clickedColor)
-        }), for: .touchUpInside)
+        self.setUp(type: type, text: text, borderColor: borderColor, radius: radius)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUp(text: String, textColor: UIColor?, textFont: UIFont?, backgroundColor: UIColor?, borderColor: UIColor?, radius: CGFloat) {
+    private func setUp(type: ButtonType, text: String, borderColor: UIColor?, radius: CGFloat) {
         self.setTitle(text, for: .normal)
-        self.setTitleColor(textColor, for: .normal)
-        self.titleLabel?.font = textFont
         self.titleLabel?.textAlignment = .center
-        self.backgroundColor = backgroundColor
-        if let borderColor = borderColor {
-            self.layer.borderColor = borderColor.cgColor
-            self.layer.borderWidth = 1
-        }
         self.layer.cornerRadius = radius
+        self.layer.shadowColor = UIColor(red: 0.98, green: 0.58, blue: 0.239, alpha: 0.16).cgColor
+        self.layer.shadowOpacity = 1
+        self.layer.shadowRadius = 4
+        self.layer.shadowOffset = CGSize(width: 2, height: 2)
+        switch type {
+        case .default:
+            self.setButtonDefault(borderColor: borderColor)
+        case .clickabled:
+            self.setButtonClickabled()
+        case .disabled:
+            self.setButtonDisabled()
+        case .clicked:
+            break
+        }
     }
     
-    private func setButtonClicked(backgroundColor: UIColor?, clickedColor: UIColor?) {
-        guard let backgroundColor = backgroundColor, let clickedColor = clickedColor else { return }
-        isClicked = !isClicked
-        self.backgroundColor = isClicked ? clickedColor : backgroundColor
+    private func setButtonDefault(borderColor: UIColor?) {
+        self.isUserInteractionEnabled = true
+        self.backgroundColor = .themeColor(color: .base, value: .value_white)
+        self.layer.borderWidth = 1
+        self.layer.borderColor = borderColor?.cgColor
+        self.setTitleColor(.semanticColor.text.secondary, for: .normal)
+        self.titleLabel?.font = .customFont(fontSize: .body_md, fontType: .semiBold)
+    }
+    
+    private func setButtonClickabled() {
+        self.isUserInteractionEnabled = true
+        self.backgroundColor = .semanticColor.bg.interactive.primary
+        self.setTitleColor(.themeColor(color: .base, value: .value_white), for: .normal)
+        self.titleLabel?.font = .customFont(fontSize: .body_md, fontType: .semiBold)
+    }
+    
+    private func setButtonDisabled() {
+        self.isUserInteractionEnabled = false
+        self.backgroundColor = .semanticColor.bg.disabled
+        self.setTitleColor(.semanticColor.text.interactive.secondary, for: .normal)
+        self.titleLabel?.font = .customFont(fontSize: .body_md, fontType: .semiBold)
+    }
+    
+    private func setButtonClicked(backgroundColor: UIColor, borderColor: UIColor, titleColor: UIColor, clickedBackgroundColor: UIColor, clickedBorderColor: UIColor, clickedTitleColor: UIColor) {
+        self.layer.borderWidth = 1
+        if self.isClicked == true {
+            self.backgroundColor = backgroundColor
+            self.setTitleColor(titleColor, for: .normal)
+            self.layer.borderColor = borderColor.cgColor
+        } else {
+            self.backgroundColor = clickedBackgroundColor
+            self.setTitleColor(clickedTitleColor, for: .normal)
+            self.layer.borderColor = clickedBorderColor.cgColor
+        }
+        self.isClicked = !self.isClicked
     }
 }

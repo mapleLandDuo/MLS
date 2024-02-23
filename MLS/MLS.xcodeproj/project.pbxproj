@@ -124,6 +124,8 @@
 		77082A4F2B63F8E100187906 /* DetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A4E2B63F8E100187906 /* DetailImageCell.swift */; };
 		77082A512B63F90A00187906 /* DetailPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A502B63F90A00187906 /* DetailPostCell.swift */; };
 		77082A532B63F91700187906 /* DetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A522B63F91700187906 /* DetailCommentCell.swift */; };
+		770848952B88971B008B68E1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848942B88971B008B68E1 /* FindPasswordViewController.swift */; };
+		770848972B889A0C008B68E1 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848962B889A0C008B68E1 /* PresentationController.swift */; };
 		7717D6E92B8714AD0050BD07 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6E82B8714AD0050BD07 /* LoginViewController.swift */; };
 		7717D6EB2B871B200050BD07 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6EA2B871B200050BD07 /* LoginViewModel.swift */; };
 		7717D6ED2B871CD00050BD07 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6EC2B871CD00050BD07 /* CustomTextField.swift */; };
@@ -256,6 +258,8 @@
 		77082A4E2B63F8E100187906 /* DetailImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailImageCell.swift; sourceTree = "<group>"; };
 		77082A502B63F90A00187906 /* DetailPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostCell.swift; sourceTree = "<group>"; };
 		77082A522B63F91700187906 /* DetailCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCommentCell.swift; sourceTree = "<group>"; };
+		770848942B88971B008B68E1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
+		770848962B889A0C008B68E1 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 		7717D6E82B8714AD0050BD07 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7717D6EA2B871B200050BD07 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		7717D6EC2B871CD00050BD07 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -523,6 +527,7 @@
 				08D5F1042B8613A800E56482 /* PopUpView.swift */,
 				7717D6EC2B871CD00050BD07 /* CustomTextField.swift */,
 				7717D6EE2B8731610050BD07 /* CustomButton.swift */,
+				770848962B889A0C008B68E1 /* PresentationController.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -699,6 +704,7 @@
 			children = (
 				7717D6E82B8714AD0050BD07 /* LoginViewController.swift */,
 				7717D6EA2B871B200050BD07 /* LoginViewModel.swift */,
+				770848942B88971B008B68E1 /* FindPasswordViewController.swift */,
 			);
 			path = LoginPageScene;
 			sourceTree = "<group>";
@@ -936,6 +942,7 @@
 				08D5F0BD2B81DF9200E56482 /* DictLandingHeaderView.swift in Sources */,
 				08D5F1072B86156200E56482 /* PopUpMaker.swift in Sources */,
 				081E6FE52B668B7300CF83F4 /* DictionaryMonsterHauntAreaCell.swift in Sources */,
+				770848972B889A0C008B68E1 /* PresentationController.swift in Sources */,
 				77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */,
 				08EF65172B554DA0004CC842 /* AddPostViewController.swift in Sources */,
 				77A2808D2B73B8AB0079D0EB /* DictionaryMap.swift in Sources */,
@@ -1003,6 +1010,7 @@
 				08EF65222B5572C5004CC842 /* AddPostViewModel.swift in Sources */,
 				08D50A672B590D9100E94442 /* SignInViewController.swift in Sources */,
 				082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */,
+				770848952B88971B008B68E1 /* FindPasswordViewController.swift in Sources */,
 				778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */,
 				081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */,
 				77A280912B73B8BD0079D0EB /* DictionaryQuest.swift in Sources */,

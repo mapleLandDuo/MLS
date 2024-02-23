@@ -555,6 +555,27 @@ extension FirebaseManager {
             completion(error.localizedDescription)
         }
     }
+    
+    func fetchDatas<T: Decodable>(colName: String, completion: @escaping ([T]?) -> Void) {
+        db.collection(CollectionName.dictVersion.rawValue).document("V1.0.1").collection(colName).limit(to: 10).getDocuments { querySnapshot, err in
+            if let err = err {
+                print("검색 데이터 없음: \(err)")
+                completion(nil)
+            } else {
+                do {
+                    var results: [T] = []
+                    for document in querySnapshot!.documents {
+                        let data = try Firestore.Decoder().decode(T.self, from: document.data())
+                        results.append(data)
+                    }
+                    completion(results)
+                } catch {
+                    print("검색 데이터 디코딩 실패: \(error)")
+                    completion(nil)
+                }
+            }
+        }
+    }
 }
 
 // MARK: - 지울 예정

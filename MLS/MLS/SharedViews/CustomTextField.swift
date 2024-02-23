@@ -9,21 +9,21 @@ import UIKit
 
 import SnapKit
 
+enum TextState: String {
+    case normal
+    case emailCheck = "이메일을 다시 확인해주세요."
+    case emailBlank = "이메일을 입력해주세요."
+    case pwCheck = "비밀번호를 다시 확인해주세요."
+    case pwBlank = "비밀번호를 입력해주세요."
+    case pwNotCorrect = "비밀번호가 일치하지 않아요"
+    case emailExist = "이미 가입된 이메일이에요."
+    case nickNameExist = "중복된 닉네임이에요."
+}
+
 class CustomTextField: UIStackView {
     enum TextFieldType {
         case normal
         case password
-    }
-    
-    enum TextState: String {
-        case normal
-        case emailCheck = "이메일을 다시 확인해주세요."
-        case emailBlank = "이메일을 입력해주세요."
-        case pwCheck = "비밀번호를 다시 확인해주세요."
-        case pwBlank = "비밀번호를 입력해주세요."
-        case pwNotCorrect = "비밀번호가 일치하지 않아요"
-        case emailExist = "이미 가입된 이메일이에요."
-        case nickNameExist = "중복된 닉네임이에요."
     }
     
     // MARK: - Properties
@@ -149,6 +149,7 @@ extension CustomTextField {
         switch state {
         case .normal:
             footerLabel.isHidden = isCorrect
+            contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
         default:
             setFooterLabel(isCorrect: isCorrect, state: state)
         }

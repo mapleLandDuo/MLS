@@ -72,6 +72,7 @@ extension DictSearchHeaderView {
     }
     
     func setUpConstraints() {
+        
         topStackView.addArrangedSubview(backButton)
         topStackView.addArrangedSubview(searchTrailingView)
         searchStackView.addArrangedSubview(searchTextField)

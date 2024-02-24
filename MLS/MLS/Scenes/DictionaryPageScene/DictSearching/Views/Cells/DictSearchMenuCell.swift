@@ -78,6 +78,7 @@ private extension DictSearchMenuCell {
     }
 }
 
+// MARK: - Bind
 extension DictSearchMenuCell {
     func bind(text:String?) {
         textLabel.text = text

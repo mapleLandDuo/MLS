@@ -39,7 +39,9 @@ class DictSearchDataCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 extension DictSearchDataCell {
+    
     func setUp() {
         setUpConstraints()
     }
@@ -62,6 +64,7 @@ extension DictSearchDataCell {
     }
 }
 
+// MARK: - Bind
 extension DictSearchDataCell {
     func bind(data: DictSectionData) {
         nameLabel.text = data.title

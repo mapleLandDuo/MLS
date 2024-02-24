@@ -142,6 +142,7 @@ private extension DictSearchViewController {
 
 // MARK: - SetUp
 private extension DictSearchViewController {
+    
     func setUp() {
         setUpConstraints()
         setUpAddAction()
@@ -195,7 +196,7 @@ private extension DictSearchViewController {
         searchView.addSubview(searchResultEmptyView)
 
         headerView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(Constants.spacings.lg)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
         }
         
@@ -236,7 +237,14 @@ private extension DictSearchViewController {
     }
 }
 
+extension DictSearchViewController: DictSectionHeaderViewDelegate {
+    func didTapShowButton(title: String?) {
+        print(title)
+    }
+}
+
 extension DictSearchViewController: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let keyword = textField.text else { return true }
         viewModel.recentSearchKeywords.value?.insert(keyword, at: 0)
@@ -392,11 +400,5 @@ extension DictSearchViewController: RecentSearchKeywordCellDelegate {
             searchView.isHidden = true
             searchingView.isHidden = false
         }
-    }
-}
-
-extension DictSearchViewController: DictSectionHeaderViewDelegate {
-    func didTapShowButton(title: String?) {
-        print(title)
     }
 }

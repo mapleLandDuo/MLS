@@ -32,6 +32,7 @@ class MyPageIconButton: UIButton {
 
 // MARK: - SetUp
 private extension MyPageIconButton {
+    
     func setUp() {
         setUpConstraints()
     }

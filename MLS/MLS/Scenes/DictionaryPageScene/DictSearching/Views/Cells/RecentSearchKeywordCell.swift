@@ -84,6 +84,7 @@ private extension RecentSearchKeywordCell {
     }
 }
 
+// MARK: - Bind
 extension RecentSearchKeywordCell {
     func bind(text:String?, index:Int) {
         textLabel.text = text

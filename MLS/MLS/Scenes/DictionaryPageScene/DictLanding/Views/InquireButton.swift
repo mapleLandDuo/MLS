@@ -49,6 +49,7 @@ class InquireButton: UIButton {
 
 // MARK: - SetUp
 private extension InquireButton {
+    
     func setUp() {
         setUpConstraints()
         self.backgroundColor = .semanticColor.bg.info_bold

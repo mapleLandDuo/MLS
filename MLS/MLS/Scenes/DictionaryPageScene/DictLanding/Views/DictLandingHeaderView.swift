@@ -2,7 +2,7 @@
 //  DictLandingHeaderView.swift
 //  MLS
 //
-//  Created by SeoJunYoung on 2/18/24.
+//  Created by SeoJunYoung on 2/24/24.
 //
 
 import UIKit
@@ -36,7 +36,7 @@ class DictLandingHeaderView: UIView {
         return view
     }()
     
-    private let jobBadgeButton = JobBadgeButton(job: "전사", level: "56")
+    private var jobBadgeButton = JobBadgeButton(job: "", level: "")
     
     private let myPageIconButton = MyPageIconButton()
     
@@ -55,6 +55,7 @@ class DictLandingHeaderView: UIView {
 
 // MARK: - SetUp
 private extension DictLandingHeaderView {
+    
     func setUp() {
         setUpConstraints()
         setUpAddAction()
@@ -83,5 +84,11 @@ private extension DictLandingHeaderView {
             $0.top.bottom.equalToSuperview().inset(Constants.spacings.md)
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
         }
+    }
+}
+
+extension DictLandingHeaderView {
+    func resetJobBadge(job: String?, level: String) {
+        jobBadgeButton.reset(job: job, level: level)
     }
 }

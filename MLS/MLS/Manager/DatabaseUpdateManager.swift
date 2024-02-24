@@ -438,8 +438,9 @@ extension DatabaseUpdateManager {
     func readyToJson<T: Sqlable>(type: T.Type, completion: @escaping () -> Void) {
         FirebaseManager.firebaseManager.fetchDatas(colName: T.tableName.rawValue) { (items: [T]?) in
             guard let items = items else { return }
-            self.changeToJson(items: items, fileName: T.tableName)
-            completion()
+            self.changeToJson(items: items, fileName: T.tableName) {
+                completion()
+            }
         }
     }
     
@@ -448,37 +449,43 @@ extension DatabaseUpdateManager {
         case .items:
             FirebaseManager.firebaseManager.fetchDatas(colName: Filename.items.rawValue) { (items: [DictItem]?) in
                 guard let items = items else { return }
-                self.changeToJson(items: items, fileName: Filename.items)
-                completion()
+                self.changeToJson(items: items, fileName: Filename.items) {
+                    completion()
+                }
+                
             }
         case .monsters:
             FirebaseManager.firebaseManager.fetchDatas(colName: Filename.monsters.rawValue) { (items: [DictMonster]?) in
                 guard let items = items else { return }
-                self.changeToJson(items: items, fileName: Filename.monsters)
-                completion()
+                self.changeToJson(items: items, fileName: Filename.monsters) {
+                    completion()
+                }
             }
         case .maps:
             FirebaseManager.firebaseManager.fetchDatas(colName: Filename.maps.rawValue) { (items: [DictMap]?) in
                 guard let items = items else { return }
-                self.changeToJson(items: items, fileName: Filename.maps)
-                completion()
+                self.changeToJson(items: items, fileName: Filename.maps) {
+                    completion()
+                }
             }
         case .npcs:
             FirebaseManager.firebaseManager.fetchDatas(colName: Filename.npcs.rawValue) { (items: [DictNPC]?) in
                 guard let items = items else { return }
-                self.changeToJson(items: items, fileName: Filename.npcs)
-                completion()
+                self.changeToJson(items: items, fileName: Filename.npcs) {
+                    completion()
+                }
             }
         case .quests:
             FirebaseManager.firebaseManager.fetchDatas(colName: Filename.quests.rawValue) { (items: [DictQuest]?) in
                 guard let items = items else { return }
-                self.changeToJson(items: items, fileName: Filename.quests)
-                completion()
+                self.changeToJson(items: items, fileName: Filename.quests) {
+                    completion()
+                }
             }
         }
     }
     
-    func changeToJson<T: Codable>(items: [T], fileName: Filename) {
+    func changeToJson<T: Codable>(items: [T], fileName: Filename, completion: @escaping () -> Void) {
         do {
             let jsonData = try JSONEncoder().encode(items)
             if let documentDirectory = FileManager.default.urls(for: .documentDirectory,
@@ -486,9 +493,12 @@ extension DatabaseUpdateManager {
             {
                 let pathWithFileName = documentDirectory.appendingPathComponent("\(fileName.rawValue).json")
                 try jsonData.write(to: pathWithFileName)
+                print("Encoding")
+                completion()
             }
         } catch {
             print("Error encoding or writing JSON: \(error)")
+            completion()
         }
     }
     

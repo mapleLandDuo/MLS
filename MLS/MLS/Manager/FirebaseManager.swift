@@ -557,7 +557,7 @@ extension FirebaseManager {
     }
     
     func fetchDatas<T: Decodable>(colName: String, completion: @escaping ([T]?) -> Void) {
-        db.collection(CollectionName.dictVersion.rawValue).document("V1.0.1").collection(colName).limit(to: 10).getDocuments { querySnapshot, err in
+        db.collection(CollectionName.dictVersion.rawValue).document("V1.0.2").collection(colName).getDocuments { querySnapshot, err in
             if let err = err {
                 print("검색 데이터 없음: \(err)")
                 completion(nil)

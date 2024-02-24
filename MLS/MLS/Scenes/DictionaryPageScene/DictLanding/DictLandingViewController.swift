@@ -134,6 +134,8 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     
     func didTapMyPageButton() {
         print(#function)
+        let vc = LoginViewController(viewModel: LoginViewModel())
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

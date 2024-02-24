@@ -55,8 +55,8 @@ enum ColorValueEnum: String {
     case value_800 = "800"
     case value_900 = "900"
     case value_950 = "950"
-    case value_white = "White"
-    case value_black = "Black"
+    case value_white = "white"
+    case value_black = "black"
 }
 
 struct SemanticColor {

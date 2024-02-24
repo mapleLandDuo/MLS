@@ -34,14 +34,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         guard let rootVC = window?.rootViewController else { return }
         let manager = UserDefaultsManager()
-        let notices = AnnouncementDatas().datas.filter({$0.isShow})
+        let notice = AnnouncementData(
+            number: 0,
+            title: "공지사항",
+            content: "안녕하세요 메랜사 입니다."
+        )
         rootVC.checkPopUpView {
-            for notice in notices {
-                if !manager.fetchIsCheckNotice(number: notice.number) {
-                    PopUpMaker.showPopUp(title: notice.title, content: notice.content)
-                    manager.setIsCheckNotice(toggle: true, number: notice.number)
-                    break
-                }
+            if !manager.fetchIsCheckNotice(number: notice.number) {
+                PopUpMaker.showPopUp(title: notice.title, content: notice.content)
+                manager.setIsCheckNotice(toggle: true, number: notice.number)
             }
         }
 

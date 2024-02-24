@@ -24,42 +24,44 @@ class LoginViewController: BasicController {
         return view
     }()
         
-    private let emailTextField = CustomTextField(type: .normal, header: nil, placeHolder: "이메일 입력해주세요.")
+    private let emailTextField = CustomTextField(type: .normal, header: nil, placeHolder: "이메일 입력해주세요")
         
-    private let pwTextField = CustomTextField(type: .password, header: nil, placeHolder: "비밀번호를 입력해주세요.")
+    private let pwTextField = CustomTextField(type: .password, header: nil, placeHolder: "비밀번호를 입력해주세요")
 
-    private let autoLoginButton: UIButton = {
+    lazy var autoLoginButton: UIButton = {
         let button = UIButton()
         button.setTitle("자동 로그인", for: .normal)
         button.setImage(UIImage(systemName: "square"), for: .normal)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
         button.configuration?.imagePlacement = .leading
         button.setTitleColor(.semanticColor.text.secondary, for: .normal)
-        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .regular)
+        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .medium)
         button.tintColor = .semanticColor.bolder.primary
         return button
     }()
     
     private let pwFindButton: UIButton = {
         let button = UIButton()
-        button.setTitle("비밀번호 변경하기", for: .normal)
-        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .regular)
-        button.setTitleColor(.semanticColor.text.secondary, for: .normal)
+        let attributeString = NSMutableAttributedString(string: "비밀번호 변경하기", attributes: [NSAttributedString.Key.font: UIFont.customFont(fontSize: .body_sm, fontType: .regular) as Any])
+        attributeString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: attributeString.length))
+        attributeString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.semanticColor.text.secondary as Any, range: NSRange(location: 0, length: attributeString.length))
+        button.setAttributedTitle(attributeString, for: .normal)
         return button
     }()
-        
-    private let logInButton = CustomButton(text: "로그인", textColor: .semanticColor.text.interactive.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), borderColor: nil)
-        
-    private let signUpButton = CustomButton(text: "회원가입", textColor: .semanticColor.text.secondary, textFont: .customFont(fontSize: .body_md, fontType: .semiBold), backgroundColor: .themeColor(color: .base, value: .value_white), borderColor: .semanticColor.bolder.secondary)
-     
+    
+    private let logInButton = CustomButton(type: .disabled, text: "로그인")
+    
+    private let signUpButton = CustomButton(type: .default, text: "회원가입")
+    
     private let descriptionTailImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "loginDescription_tail")
+        view.image = UIImage(named: "description_tail")
         return view
     }()
     
     private let descriptionMainImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "loginDescription_main")
+        view.image = UIImage(named: "logInDescription_main")
         return view
     }()
     
@@ -160,27 +162,36 @@ private extension LoginViewController {
     }
     
     func setUpNavigation() {
+        let spacer = UIBarButtonItem()
+        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
+        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
+        let titleLabel = UILabel()
+        titleLabel.text = "로그인"
+        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
+        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
+        navigationItem.titleView = titleLabel
+        
+        backButton.tintColor = .themeColor(color: .base, value: .value_black)
+        navigationItem.leftBarButtonItems = [spacer, backButton]
         navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationController?.title = "로그인"
     }
-
+    
     func setUpActions() {
-        logInButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.didTapLogInButton()
-        }), for: .primaryActionTriggered)
-            
-        signUpButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.didTapSignUpButton()
-        }), for: .primaryActionTriggered)
-            
         autoLoginButton.addAction(UIAction(handler: { [weak self] _ in
             self?.didTapAutoLoginButton()
-        }), for: .primaryActionTriggered)
-            
+        }), for: .touchUpInside)
+        
         pwFindButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.didTapPasswordFindButton()
-        }), for: .primaryActionTriggered)
+            self?.didTapPwFindButton()
+        }), for: .touchUpInside)
+        
+        logInButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapLogInButton()
+        }), for: .touchUpInside)
+        
+        signUpButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapSignUpButton()
+        }), for: .touchUpInside)
     }
 }
 
@@ -190,19 +201,62 @@ private extension LoginViewController {
 }
 
 // MARK: - Method
-extension LoginViewController {
-    func didTapAutoLoginButton() {}
+private extension LoginViewController {
+    func didTapAutoLoginButton() {
+        autoLoginButton.isSelected = !autoLoginButton.isSelected
+        autoLoginButton.setImage(autoLoginButton.isSelected ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "square"), for: .normal)
+        autoLoginButton.tintColor = autoLoginButton.isSelected ? .semanticColor.bg.brand : .semanticColor.bolder.primary
+    }
         
-    func didTapPasswordFindButton() {}
+    func didTapPwFindButton() {
+        let vc = FindPasswordViewController(viewModel: FindPasswordViewModel())
+        vc.modalPresentationStyle = .custom
+        vc.transitioningDelegate = self
+        present(vc, animated: true)
+    }
         
-    func didTapLogInButton() {}
+    func didTapLogInButton() {
+        guard let email = emailTextField.textField.text, let password = pwTextField.textField.text else { return }
+        viewModel.trySignIn(email: email, password: password) { [weak self] (emailState, passwordState) in
+            let isEmailCorrect = (emailState == .normal)
+            let isPasswordCorrect = (passwordState == .normal)
+
+            self?.emailTextField.checkState(state: emailState, isCorrect: isEmailCorrect)
+            self?.pwTextField.checkState(state: passwordState, isCorrect: isPasswordCorrect)
+        }
+    }
     
-    func didTapSignUpButton() {}
+    func didTapSignUpButton() {
+        let vc = SignInFirstViewController(viewModel: SignInFirstViewModel())
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc
+    func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // 입력완료
+        // 엔터
         return true
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        logInButton.backgroundColor = !updatedText.isEmpty ? .semanticColor.bg.interactive.primary : .semanticColor.bg.disabled
+        logInButton.isUserInteractionEnabled = !updatedText.isEmpty
+        
+        return true
+    }
+}
+
+extension LoginViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return PresentationController(presentedViewController: presented, presenting: presenting, size: 210)
     }
 }

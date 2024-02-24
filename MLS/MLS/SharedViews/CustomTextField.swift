@@ -9,25 +9,23 @@ import UIKit
 
 import SnapKit
 
+enum TextState: String {
+    case normal
+    case emailCheck = "이메일을 다시 확인해주세요."
+    case emailBlank = "이메일을 입력해주세요."
+    case pwCheck = "비밀번호를 다시 확인해주세요."
+    case pwBlank = "비밀번호를 입력해주세요."
+    case pwNotCorrect = "비밀번호가 일치하지 않아요"
+    case emailExist = "이미 가입된 이메일이에요."
+    case nickNameExist = "중복된 닉네임이에요."
+}
+
+enum TextFieldType {
+    case normal
+    case password
+}
+
 class CustomTextField: UIStackView {
-    enum TextFieldType {
-        case normal
-        case password
-    }
-    
-    enum TextState: String {
-        case normal
-        case emailCheck = "이메일을 다시 확인해주세요."
-        case emailBlank = "이메일을 입력해주세요."
-        case pwCheck = "비밀번호를 다시 확인해주세요."
-        case pwBlank = "비밀번호를 입력해주세요."
-        case pwNotCorrect = "비밀번호가 일치하지 않아요"
-        case inputPw = "8자리 이상, 영어, 숫자, 특수문자"
-        case emailExist = "이미 가입된 이메일이에요."
-        case nickNameNotCorrect = "닉네임을 2~8자로 지어주세요."
-        case nickNameExist = "중복된 닉네임이에요."
-    }
-    
     // MARK: - Properties
     
     private let type: TextFieldType
@@ -52,11 +50,16 @@ class CustomTextField: UIStackView {
         return view
     }()
     
-    var textField: UITextField = {
+    lazy var textField: UITextField = {
         let view = UITextField()
         view.font = .customFont(fontSize: .body_md, fontType: .medium)
         view.textColor = .semanticColor.text.secondary
+        view.inputAccessoryView = nil
         view.autocapitalizationType = .none
+        view.addAction(UIAction(handler: { [weak self] _ in
+            guard let text = self?.textField.text else { return }
+            self?.setAdditional(text: text)
+        }), for: .editingChanged)
         return view
     }()
     
@@ -79,10 +82,14 @@ class CustomTextField: UIStackView {
         return label
     }()
     
-    init(type: TextFieldType, header: String?, placeHolder: String) {
+    init(type: TextFieldType, header: String?, placeHolder: String, footer: String = "") {
         self.type = type
         super.init(frame: .zero)
-        headerLabel.text = header
+        if let header = header {
+            headerLabel.isHidden = false
+            headerLabel.text = header
+        }
+        footerLabel.text = footer
         textField.placeholder = placeHolder
         textField.isSecureTextEntry = type == .normal ? false : true
         setUp()
@@ -139,39 +146,46 @@ private extension CustomTextField {
 
 // MARK: - Methods
 extension CustomTextField {
-    private func checkState(state: TextState, isHidden: Bool) {
+    func checkAdditionalButton(isHidden: Bool) {
+        additionalButton.isHidden = !isHidden
+    }
+    
+    func checkState(state: TextState, isCorrect: Bool) {
         switch state {
         case .normal:
-            footerLabel.isHidden = !isHidden
-            additionalButton.isHidden = true
-        case .inputPw:
-            footerLabel.isHidden = isHidden
-            footerLabel.textColor = .systemGray6
-            additionalButton.isHidden = false
+            footerLabel.isHidden = isCorrect
+            contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
         default:
-            setFooterLabel(isHidden: !isHidden, state: state, color: .systemRed)
+            setFooterLabel(isCorrect: isCorrect, state: state)
         }
     }
 
-    private func setFooterLabel(isHidden: Bool, state: TextState, color: UIColor) {
-        footerLabel.isHidden = isHidden
-        footerLabel.textColor = color
+    private func setFooterLabel(isCorrect: Bool, state: TextState) {
+        footerLabel.isHidden = isCorrect
+        footerLabel.textColor = isCorrect ? UIColor.semanticColor.text.secondary : UIColor.semanticColor.text.distructive
         footerLabel.text = state.rawValue
-        additionalButton.isHidden = false
-        contentView.layer.borderColor = color.cgColor
+        contentView.layer.borderColor = isCorrect ? UIColor.semanticColor.bolder.interactive.secondary?.cgColor : UIColor.semanticColor.bolder.distructive?.cgColor
     }
     
     private func changeShowButtonColor() {
-        textField.isSecureTextEntry.toggle()
-        if textField.isSecureTextEntry {
-            UIView.animate(withDuration: 0.1) {
-                self.additionalButton.setImage(UIImage(systemName: "eye"), for: .normal)
-            }
-        } else {
-            UIView.animate(withDuration: 0.1) {
-                self.additionalButton.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+        switch type {
+        case .normal:
+            textField.text = ""
+        case .password:
+            textField.isSecureTextEntry.toggle()
+            if textField.isSecureTextEntry {
+                UIView.animate(withDuration: 0.1) {
+                    self.additionalButton.setImage(UIImage(systemName: "eye"), for: .normal)
+                }
+            } else {
+                UIView.animate(withDuration: 0.1) {
+                    self.additionalButton.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+                }
             }
         }
     }
+    
+    private func setAdditional(text: String) {
+        additionalButton.isHidden = text == "" ? true : false
+    }
 }
-

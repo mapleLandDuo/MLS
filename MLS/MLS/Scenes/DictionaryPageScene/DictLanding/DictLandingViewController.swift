@@ -131,8 +131,8 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
 }
 
 extension DictLandingViewController: DictHorizontalSectionTableViewCellDelegate {
-    func didSelectItemAt(itemTitle: String?) {
-        print(itemTitle)
+    func didSelectItemAt(itemTitle: String?, type: DictType) {
+        print(itemTitle, type)
     }
     
     func didTapCellButton(sectionTitle: String?) {

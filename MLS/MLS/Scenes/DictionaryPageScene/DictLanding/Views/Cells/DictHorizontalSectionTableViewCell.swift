@@ -11,7 +11,7 @@ import SnapKit
 
 protocol DictHorizontalSectionTableViewCellDelegate: BasicController {
     func didTapCellButton(sectionTitle: String?)
-    func didSelectItemAt(itemTitle: String?)
+    func didSelectItemAt(itemTitle: String?, type: DictType)
 }
 
 class DictHorizontalSectionTableViewCell: UITableViewCell {
@@ -130,7 +130,8 @@ extension DictHorizontalSectionTableViewCell: UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.delegate?.didSelectItemAt(itemTitle: datas.value?[indexPath.row].title)
+        guard let datas = datas.value else { return }
+        self.delegate?.didSelectItemAt(itemTitle: datas[indexPath.row].title, type: datas[indexPath.row].type)
     }
 }
 

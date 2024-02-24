@@ -357,11 +357,27 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
         case 0:
-            return Constants.spacings.lg + 24 + 24
+            return Constants.spacings.lg + 48
         default:
-            return Constants.spacings.lg + 24
+            return Constants.spacings.lg + 24 + Constants.spacings.xl_3
         }
-        
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView()
+        let separator = UIView()
+        separator.backgroundColor = .semanticColor.bolder.primary
+        view.addSubview(separator)
+        separator.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return Constants.spacings.xl
     }
 }
 

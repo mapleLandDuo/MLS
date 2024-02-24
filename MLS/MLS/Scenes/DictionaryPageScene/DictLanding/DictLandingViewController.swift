@@ -33,8 +33,9 @@ class DictLandingViewController: BasicController {
     }()
     
     private let tableView: UITableView = {
-        let view = UITableView(frame: .zero, style: .plain)
+        let view = UITableView(frame: .zero, style: .grouped)
         view.separatorStyle = .none
+        view.backgroundColor = .white
         return view
     }()
 
@@ -102,7 +103,7 @@ private extension DictLandingViewController {
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(separatorView.snp.bottom).offset(Constants.spacings.xl_2)
+            $0.top.equalTo(separatorView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
@@ -130,13 +131,15 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
     }
 }
 
+extension DictLandingViewController: DictSectionHeaderViewDelegate {
+    func didTapShowButton(title: String?) {
+        print(title)
+    }
+}
+
 extension DictLandingViewController: DictHorizontalSectionTableViewCellDelegate {
     func didSelectItemAt(itemTitle: String?, type: DictType) {
         print(itemTitle, type)
-    }
-    
-    func didTapCellButton(sectionTitle: String?) {
-        print(sectionTitle)
     }
 }
 
@@ -147,24 +150,43 @@ extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.fetchSectionHeaderInfos()?.count ?? 0
+        return viewModel.fetchSectionHeaderInfos().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DictHorizontalSectionTableViewCell.identifier, for: indexPath) as? DictHorizontalSectionTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
-        guard let datas = viewModel.fetchSectionHeaderInfos() else { return UITableViewCell() }
+        let datas = viewModel.fetchSectionHeaderInfos()
         cell.bind(data: datas[indexPath.section])
         cell.delegate = self
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let datas = viewModel.fetchSectionHeaderInfos()
+        let view = DictSectionHeaderView(image: datas[section].iconImage, title: datas[section].description)
+        view.delegate = self
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+        case 0:
+            return Constants.spacings.lg + 24 + 24
+        default:
+            return Constants.spacings.lg + 24
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
         return view
     }
+
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return Constants.spacings.xl_3
     }
 }
+
+

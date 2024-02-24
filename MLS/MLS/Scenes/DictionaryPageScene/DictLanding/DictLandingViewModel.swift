@@ -40,8 +40,9 @@ class DictLandingViewModel {
 // MARK: - Methods
 extension DictLandingViewModel {
     
-    func fetchSectionHeaderInfos() -> [DictSectionDatas]? {
-        return sectionHeaderInfos.value
+    func fetchSectionHeaderInfos() -> [DictSectionDatas] {
+        guard let data = sectionHeaderInfos.value else { return [] }
+        return data
     }
     
     func fetchSectionDatas() {

@@ -25,6 +25,13 @@ class DictSearchViewModel {
 extension DictSearchViewModel {
     func fetchSearchData(keyword: String) {
         self.searchData.value?[0].datas.append(DictSectionData(image: "", title: "이블아이", level: "50", type: .monster))
+        self.searchData.value?[0].datas.append(DictSectionData(image: "", title: "이블아이", level: "50", type: .monster))
+        self.searchData.value?[0].datas.append(DictSectionData(image: "", title: "이블아이", level: "50", type: .monster))
+        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
+        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
+        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
+        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
+        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
         self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
         
         guard let monsterCount = searchData.value?[0].datas.count,

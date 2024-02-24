@@ -90,7 +90,7 @@ class CustomButton: UIButton {
                 self.layer.borderColor = clickedBorderColor.cgColor
             }
         }
-        self.isClicked = !self.isClicked
+        self.isClicked.toggle()
     }
     
     func bind(text: String, borderColor: UIColor?, radius: CGFloat) {

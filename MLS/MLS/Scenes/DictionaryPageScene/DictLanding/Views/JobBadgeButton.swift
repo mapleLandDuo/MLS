@@ -45,9 +45,10 @@ class JobBadgeButton: UIButton {
 
     init(job: String?, level: String?) {
         super.init(frame: .zero)
+        guard let job = job else { return }
+        setUp()
         self.jobLabel.text = job
         self.levelLabel.text = level
-        guard let job = job else { return }
         switch job {
         case "전사":
             self.backgroundColor = .jobBadgeColor.warrior
@@ -59,8 +60,11 @@ class JobBadgeButton: UIButton {
             self.backgroundColor = .jobBadgeColor.archer
         default:
             self.backgroundColor = .semanticColor.bg.secondary
+            dotImage.removeFromSuperview()
+            levelLabel.removeFromSuperview()
+            jobLabel.text = "미설정"
+            jobLabel.textAlignment = .center
         }
-        setUp()
     }
     
     @available(*, unavailable)
@@ -71,6 +75,7 @@ class JobBadgeButton: UIButton {
 
 // MARK: - SetUp
 private extension JobBadgeButton {
+    
     func setUp() {
         setUpConstraints()
         self.layer.cornerRadius = 12
@@ -93,6 +98,33 @@ private extension JobBadgeButton {
         }
         dotImage.snp.makeConstraints {
             $0.width.height.equalTo(Constants.spacings.xs_2)
+        }
+    }
+}
+
+extension JobBadgeButton {
+    
+    func reset(job: String?, level: String?) {
+        guard let job = job else { return }
+        self.jobLabel.text = job
+        self.levelLabel.text = level
+        stackView.addArrangedSubview(dotImage)
+        stackView.addArrangedSubview(levelLabel)
+        switch job {
+        case "전사":
+            self.backgroundColor = .jobBadgeColor.warrior
+        case "법사":
+            self.backgroundColor = .jobBadgeColor.mage
+        case "도적":
+            self.backgroundColor = .jobBadgeColor.thief
+        case "궁수":
+            self.backgroundColor = .jobBadgeColor.archer
+        default:
+            self.backgroundColor = .semanticColor.bg.secondary
+            dotImage.removeFromSuperview()
+            levelLabel.removeFromSuperview()
+            jobLabel.text = "미설정"
+            jobLabel.textAlignment = .center
         }
     }
 }

@@ -12,15 +12,15 @@ import SnapKit
 class DictLandingViewController: BasicController {
     // MARK: - Properties
 
-    var viewModel: DictLandingViewModel
+    private let viewModel: DictLandingViewModel
     
     // MARK: - Components
     
-    var headerView = DictLandingHeaderView()
+    private let headerView = DictLandingHeaderView()
     
-    var firstSectionView = DictLandingSearchView()
+    private let firstSectionView = DictLandingSearchView()
     
-    var separatorView: UIView = {
+    private let separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .semanticColor.bg.primary
         let separator = UIView()
@@ -34,9 +34,10 @@ class DictLandingViewController: BasicController {
         return view
     }()
     
-    var tableView: UITableView = {
-        let view = UITableView(frame: .zero, style: .plain)
+    private let tableView: UITableView = {
+        let view = UITableView(frame: .zero, style: .grouped)
         view.separatorStyle = .none
+        view.backgroundColor = .white
         return view
     }()
 
@@ -59,13 +60,19 @@ extension DictLandingViewController {
         setUp()
         viewModel.fetchSectionDatas()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
     }
 }
 
 // MARK: - SetUp
 private extension DictLandingViewController {
+    
     func setUp() {
         setUpConstraints()
         headerView.delegate = self
@@ -76,6 +83,7 @@ private extension DictLandingViewController {
     }
     
     func setUpConstraints() {
+        
         view.addSubview(headerView)
         view.addSubview(firstSectionView)
         view.addSubview(separatorView)
@@ -99,7 +107,7 @@ private extension DictLandingViewController {
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(separatorView.snp.bottom).offset(Constants.spacings.xl_2)
+            $0.top.equalTo(separatorView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
@@ -115,17 +123,6 @@ private extension DictLandingViewController {
     }
 }
 
-extension DictLandingViewController: DictLandingSearchViewDelegate {
-    func didTapButton() {
-        print(#function)
-    }
-    
-    func searchBarSearchButtonClicked(searchBarText: String?) {
-        print(searchBarText)
-    }
-    
-}
-
 extension DictLandingViewController: DictLandingHeaderViewDelegate {
     func didTapInquireButton() {
         print(#function)
@@ -136,18 +133,32 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     }
     
     func didTapMyPageButton() {
-        let vc = LoginViewController(viewModel: LoginViewModel())
-        navigationController?.pushViewController(vc, animated: true)
+        print(#function)
+    }
+}
+
+extension DictLandingViewController: DictLandingSearchViewDelegate {
+    func didTapSearchButton() {
+        print(#function)
+        let vc = DictSearchViewController(viewModel: DictSearchViewModel())
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func didTapShortCutButton() {
+        print(#function)
+        headerView.resetJobBadge(job: "전사", level: "56")
+    }
+}
+
+extension DictLandingViewController: DictSectionHeaderViewDelegate {
+    func didTapShowButton(title: String?) {
+        print(title)
     }
 }
 
 extension DictLandingViewController: DictHorizontalSectionTableViewCellDelegate {
-    func didSelectItemAt(itemTitle: String?) {
-        print(itemTitle)
-    }
-    
-    func didTapCellButton(sectionTitle: String?) {
-        print(sectionTitle)
+    func didSelectItemAt(itemTitle: String?, type: DictType) {
+        print(itemTitle, type)
     }
 }
 
@@ -158,24 +169,43 @@ extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.fetchSectionHeaderInfos()?.count ?? 0
+        return viewModel.fetchSectionHeaderInfos().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DictHorizontalSectionTableViewCell.identifier, for: indexPath) as? DictHorizontalSectionTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
-        guard let datas = viewModel.fetchSectionHeaderInfos() else { return UITableViewCell() }
+        let datas = viewModel.fetchSectionHeaderInfos()
         cell.bind(data: datas[indexPath.section])
         cell.delegate = self
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let datas = viewModel.fetchSectionHeaderInfos()
+        let view = DictSectionHeaderView(image: datas[section].iconImage, title: datas[section].description)
+        view.delegate = self
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+        case 0:
+            return Constants.spacings.lg + 24 + 24
+        default:
+            return Constants.spacings.lg + 24
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
         return view
     }
+
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return Constants.spacings.xl_3
     }
 }
+
+

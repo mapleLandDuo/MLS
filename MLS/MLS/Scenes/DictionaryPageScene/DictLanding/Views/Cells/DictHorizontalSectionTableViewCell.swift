@@ -10,8 +10,7 @@ import UIKit
 import SnapKit
 
 protocol DictHorizontalSectionTableViewCellDelegate: BasicController {
-    func didTapCellButton(sectionTitle: String?)
-    func didSelectItemAt(itemTitle: String?)
+    func didSelectItemAt(itemTitle: String?, type: DictType)
 }
 
 class DictHorizontalSectionTableViewCell: UITableViewCell {
@@ -22,39 +21,6 @@ class DictHorizontalSectionTableViewCell: UITableViewCell {
     weak var delegate: DictHorizontalSectionTableViewCellDelegate?
     
     // MARK: - Components
-    
-    private let headerStackView: UIStackView = {
-        let view = UIStackView()
-        return view
-    }()
-    
-    private let headerLeftStackView: UIStackView = {
-        let view = UIStackView()
-        view.spacing = Constants.spacings.xs
-        return view
-    }()
-    
-    private let headerImageView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
-        return view
-    }()
-    
-    private let headerLabel: UILabel = {
-        let label = UILabel()
-        label.font = .customFont(fontSize: .body_md, fontType: .bold)
-        label.textColor = .semanticColor.text.primary
-        return label
-    }()
-    
-    private let headerButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("전체보기", for: .normal)
-        button.setTitleColor(.semanticColor.text.secondary, for: .normal)
-        button.titleLabel?.addCharacterSpacing()
-        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .medium)
-        return button
-    }()
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -91,28 +57,11 @@ private extension DictHorizontalSectionTableViewCell {
     }
     
     func setUpConstraints() {
-        
-        headerLeftStackView.addArrangedSubview(headerImageView)
-        headerLeftStackView.addArrangedSubview(headerLabel)
-        headerStackView.addArrangedSubview(headerLeftStackView)
-        headerStackView.addArrangedSubview(headerButton)
-        contentView.addSubview(headerStackView)
         contentView.addSubview(collectionView)
         
-        headerStackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
-            $0.height.equalTo(24)
-        }
-        
-        headerImageView.snp.makeConstraints {
-            $0.width.height.equalTo(16)
-        }
-        
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(headerStackView.snp.bottom).offset(Constants.spacings.lg)
+            $0.edges.equalToSuperview()
             $0.height.equalTo(170)
-            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
@@ -130,7 +79,8 @@ extension DictHorizontalSectionTableViewCell: UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.delegate?.didSelectItemAt(itemTitle: datas.value?[indexPath.row].title)
+        guard let datas = datas.value else { return }
+        self.delegate?.didSelectItemAt(itemTitle: datas[indexPath.row].title, type: datas[indexPath.row].type)
     }
 }
 
@@ -144,11 +94,6 @@ extension DictHorizontalSectionTableViewCell {
     }
     
     func bind(data: DictSectionDatas) {
-        headerImageView.image = data.iconImage
-        headerLabel.text = data.description
         datas.value = data.datas
-        headerButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.delegate?.didTapCellButton(sectionTitle: data.description)
-        }), for: .primaryActionTriggered)
     }
 }

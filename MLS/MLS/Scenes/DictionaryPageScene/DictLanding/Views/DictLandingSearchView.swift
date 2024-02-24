@@ -10,8 +10,8 @@ import UIKit
 import SnapKit
 
 protocol DictLandingSearchViewDelegate: BasicController {
-    func searchBarSearchButtonClicked(searchBarText: String?)
-    func didTapButton()
+    func didTapShortCutButton()
+    func didTapSearchButton()
 }
 
 class DictLandingSearchView: UIView {
@@ -21,17 +21,35 @@ class DictLandingSearchView: UIView {
 
     // MARK: - Components
     
-    private let searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.backgroundImage = UIImage()
-        searchBar.searchTextField.backgroundColor = .clear
-        searchBar.layer.borderWidth = 1
-        searchBar.layer.cornerRadius = 12
-        searchBar.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
-        searchBar.backgroundColor = .semanticColor.bg.primary
-        searchBar.placeholder = "아이템,몬스터,NPC,퀘스트,맵"
-        searchBar.searchTextField.font = .customFont(fontSize: .body_md, fontType: .medium)
-        return searchBar
+    private let searchButton: UIButton = {
+        let button = UIButton()
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 12
+        button.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+        button.backgroundColor = .semanticColor.bg.primary
+
+        return button
+    }()
+    
+    private let searchIcon: UIView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "search")
+        return view
+    }()
+    
+    private let searchLabel: UILabel = {
+        let label = UILabel()
+        label.text = "아이템,몬스터,NPC,퀘스트,맵"
+        label.textColor = .semanticColor.text.secondary
+        label.font = .customFont(fontSize: .body_md, fontType: .medium)
+        return label
+    }()
+    
+    private let searchStackView: UIStackView = {
+        let view = UIStackView()
+        view.spacing = Constants.spacings.xs
+        view.isUserInteractionEnabled = false
+        return view
     }()
 
     private let decoImageView: UIImageView = {
@@ -96,22 +114,27 @@ private extension DictLandingSearchView {
     func setUp() {
         setUpConstraints()
         self.clipsToBounds = true
-        self.searchBar.delegate = self
         self.shortCutButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.delegate?.didTapButton()
+            self?.delegate?.didTapShortCutButton()
+        }), for: .primaryActionTriggered)
+        self.searchButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.delegate?.didTapSearchButton()
         }), for: .primaryActionTriggered)
     }
     
     func setUpConstraints() {
         
-        self.addSubview(searchBar)
+        self.addSubview(searchButton)
         self.addSubview(decoImageView)
         self.addSubview(orangeLabel)
         self.addSubview(defaultLabel)
         self.addSubview(shortCutButton)
         shortCutButton.addSubview(buttonLabel)
+        searchStackView.addArrangedSubview(searchIcon)
+        searchStackView.addArrangedSubview(searchLabel)
+        searchButton.addSubview(searchStackView)
         
-        searchBar.snp.makeConstraints {
+        searchButton.snp.makeConstraints {
             $0.top.equalToSuperview().inset(Constants.spacings.xl_2)
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
             $0.height.equalTo(Constants.spacings.xl_4)
@@ -144,11 +167,14 @@ private extension DictLandingSearchView {
         buttonLabel.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(Constants.spacings.md)
         }
-    }
-}
-
-extension DictLandingSearchView: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.delegate?.searchBarSearchButtonClicked(searchBarText: searchBar.text)
+        
+        searchIcon.snp.makeConstraints {
+            $0.width.height.equalTo(24)
+        }
+        
+        searchStackView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(Constants.spacings.lg)
+            $0.leading.trailing.equalToSuperview().inset(Constants.spacings.sm)
+        }
     }
 }

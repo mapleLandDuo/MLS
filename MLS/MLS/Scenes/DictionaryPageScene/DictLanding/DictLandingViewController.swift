@@ -124,8 +124,15 @@ private extension DictLandingViewController {
 }
 
 extension DictLandingViewController: DictLandingHeaderViewDelegate {
+    func didTapSignInButton() {
+        print(#function)
+        let vc = LoginViewController(viewModel: LoginViewModel())
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func didTapInquireButton() {
         print(#function)
+        headerView.isLoginButtonShow(isShow: true)
     }
     
     func didTapJobBadgeButton() {
@@ -134,8 +141,6 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     
     func didTapMyPageButton() {
         print(#function)
-        let vc = LoginViewController(viewModel: LoginViewModel())
-        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -124,8 +124,13 @@ private extension DictLandingViewController {
 }
 
 extension DictLandingViewController: DictLandingHeaderViewDelegate {
+    func didTapSignInButton() {
+        print(#function)
+    }
+    
     func didTapInquireButton() {
         print(#function)
+        headerView.isLoginButtonShow(isShow: true)
     }
     
     func didTapJobBadgeButton() {

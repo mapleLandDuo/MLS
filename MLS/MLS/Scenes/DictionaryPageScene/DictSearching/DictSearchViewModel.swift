@@ -23,17 +23,48 @@ class DictSearchViewModel {
 }
 
 extension DictSearchViewModel {
+    
     func fetchSearchData(keyword: String) {
-        self.searchData.value?[0].datas.append(DictSectionData(image: "", title: "이블아이", level: "50", type: .monster))
-        self.searchData.value?[0].datas.append(DictSectionData(image: "", title: "이블아이", level: "50", type: .monster))
-        self.searchData.value?[0].datas.append(DictSectionData(image: "", title: "이블아이", level: "50", type: .monster))
-        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
-        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
-        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
-        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
-        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
-        self.searchData.value?[2].datas.append(DictSectionData(image: "", title: "이블아이의굴", level: "50", type: .map))
-        
+        let manager = SqliteManager()
+        manager.searchData(dataName: keyword) { (monsters:[DictMonster]) in
+            self.searchData.value?[0].datas = monsters.map({DictSectionData(image: $0.code, title: $0.name, level: ":", type: .monster)})
+        }
+        manager.searchData(dataName: keyword) { (items:[DictItem]) in
+            self.searchData.value?[1].datas = items.map({DictSectionData(image: $0.code, title: $0.name, level: "", type: .item)})
+        }
+        manager.searchData(dataName: keyword) { (maps:[DictMap]) in
+            self.searchData.value?[2].datas = maps.map({DictSectionData(image: $0.code, title: $0.name, level: "", type: .map)})
+        }
+        manager.searchData(dataName: keyword) { (npcs:[DictNPC]) in
+            self.searchData.value?[3].datas = npcs.map({DictSectionData(image: $0.code, title: $0.name, level: "", type: .npc)})
+        }
+        manager.searchData(dataName: keyword) { (quests:[DictQuest]) in
+            self.searchData.value?[4].datas = quests.map({DictSectionData(image: $0.code, title: $0.name, level: "", type: .quest)})
+        }
+        fetchMenuData()
+    }
+    
+    func fetchAllData() {
+        let manager = SqliteManager()
+        manager.fetchData() { (monsters:[DictMonster]) in
+            self.searchData.value?[0].datas = monsters.map({DictSectionData(image: $0.code, title: $0.name, level: ":", type: .monster)})
+        }
+        manager.fetchData() { (items:[DictItem]) in
+            self.searchData.value?[1].datas = items.map({DictSectionData(image: $0.code, title: $0.name, level: "", type: .item)})
+        }
+        manager.fetchData() { (maps:[DictMap]) in
+            self.searchData.value?[2].datas = maps.map({DictSectionData(image: $0.code, title: $0.name, level: "", type: .map)})
+        }
+        manager.fetchData() { (npcs:[DictNPC]) in
+            self.searchData.value?[3].datas = npcs.map({DictSectionData(image: $0.code, title: $0.name, level: "", type: .npc)})
+        }
+        manager.fetchData() { (quests:[DictQuest]) in
+            self.searchData.value?[4].datas = quests.map({DictSectionData(image: $0.code, title: $0.name, level: "", type: .quest)})
+        }
+        fetchMenuData()
+    }
+    
+    private func fetchMenuData() {
         guard let monsterCount = searchData.value?[0].datas.count,
               let itemCount = searchData.value?[1].datas.count,
               let mapCount = searchData.value?[2].datas.count,

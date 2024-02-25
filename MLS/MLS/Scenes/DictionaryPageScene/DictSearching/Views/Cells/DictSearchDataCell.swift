@@ -21,6 +21,12 @@ class DictSearchDataCell: UITableViewCell {
         return view
     }()
     
+    private let itemImageView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        return view
+    }()
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
@@ -49,6 +55,7 @@ extension DictSearchDataCell {
     func setUpConstraints() {
         contentView.addSubview(imageBackgroundView)
         contentView.addSubview(nameLabel)
+        imageBackgroundView.addSubview(itemImageView)
         
         imageBackgroundView.snp.makeConstraints {
             $0.width.height.equalTo(60)
@@ -61,6 +68,11 @@ extension DictSearchDataCell {
             $0.centerY.equalTo(imageBackgroundView.snp.centerY)
             $0.leading.equalTo(imageBackgroundView.snp.trailing).offset(Constants.spacings.lg)
         }
+        
+        itemImageView.snp.makeConstraints {
+            $0.width.height.equalTo(Constants.spacings.xl_2)
+            $0.center.equalToSuperview()
+        }
     }
 }
 
@@ -68,5 +80,23 @@ extension DictSearchDataCell {
 extension DictSearchDataCell {
     func bind(data: DictSectionData) {
         nameLabel.text = data.title
+        switch data.type {
+        case .monster:
+            let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(data.image)/render/move?bgColor=")
+            itemImageView.kf.setImage(with: url)
+        case .item:
+            let url = URL(string: "https://maplestory.io/api/gms/62/item/\(data.image)/icon?resize=2")
+            itemImageView.kf.setImage(with: url)
+        case .map:
+            let url = URL(string: "https://maplestory.io/api/kms/284/map/\(data.image)/minimap?resize=2")
+            itemImageView.kf.setImage(with: url)
+        case .npc:
+            let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(data.image)/icon?resize=2")
+            itemImageView.kf.setImage(with: url)
+        case .quest:
+            let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(data.image)/icon")
+            itemImageView.kf.setImage(with: url)
+        }
+        
     }
 }

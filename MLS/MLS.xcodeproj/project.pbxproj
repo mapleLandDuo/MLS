@@ -130,6 +130,7 @@
 		08F95DDD2B8A58FA00AD79DF /* maps.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F95DDC2B8A58FA00AD79DF /* maps.json */; };
 		08F95DDF2B8A592600AD79DF /* npcs.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F95DDE2B8A592600AD79DF /* npcs.json */; };
 		08F95DE12B8A594600AD79DF /* quests.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F95DE02B8A594600AD79DF /* quests.json */; };
+		08F95DE52B8B440600AD79DF /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DE42B8B440600AD79DF /* LoginButton.swift */; };
 		7707440E2B55511E00FCEDED /* SearchbarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */; };
 		770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */; };
 		77082A4A2B63A26200187906 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A492B63A26200187906 /* PostDetailViewModel.swift */; };
@@ -280,6 +281,7 @@
 		08F95DDC2B8A58FA00AD79DF /* maps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = maps.json; sourceTree = "<group>"; };
 		08F95DDE2B8A592600AD79DF /* npcs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = npcs.json; sourceTree = "<group>"; };
 		08F95DE02B8A594600AD79DF /* quests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = quests.json; sourceTree = "<group>"; };
+		08F95DE42B8B440600AD79DF /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchbarTableViewCell.swift; sourceTree = "<group>"; };
 		7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSeparatorType.swift; sourceTree = "<group>"; };
 		77082A492B63A26200187906 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
@@ -628,6 +630,7 @@
 				08D5F0EB2B81FDE600E56482 /* MyPageIconButton.swift */,
 				08D5F0C02B81E3DB00E56482 /* JobBadgeButton.swift */,
 				08D5F0F12B8232A700E56482 /* DictLandingSearchView.swift */,
+				08F95DE42B8B440600AD79DF /* LoginButton.swift */,
 				08D5F0F72B8337CA00E56482 /* Cells */,
 			);
 			path = Views;
@@ -1088,6 +1091,7 @@
 				081E6FD52B663B7600CF83F4 /* DictionaryMonsterViewController.swift in Sources */,
 				7707440E2B55511E00FCEDED /* SearchbarTableViewCell.swift in Sources */,
 				770848992B88CEA7008B68E1 /* FindPasswordViewModel.swift in Sources */,
+				08F95DE52B8B440600AD79DF /* LoginButton.swift in Sources */,
 				778EF8D32B877CE5006CA0AB /* SignInFirstViewModel.swift in Sources */,
 				7732E8842B67F3F90038C7A9 /* DictionarySearchCell.swift in Sources */,
 				779B72BD2B56DA0F007CB6C1 /* Date+.swift in Sources */,

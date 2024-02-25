@@ -13,6 +13,7 @@ protocol DictLandingHeaderViewDelegate: BasicController {
     func didTapInquireButton()
     func didTapJobBadgeButton()
     func didTapMyPageButton()
+    func didTapSignInButton()
 }
 
 class DictLandingHeaderView: UIView {
@@ -41,6 +42,8 @@ class DictLandingHeaderView: UIView {
     private let myPageIconButton = MyPageIconButton()
     
     private let inquireButton = InquireButton()
+    
+    private let loginButton = LoginButton()
     
     init() {
         super.init(frame: .zero)
@@ -71,6 +74,9 @@ private extension DictLandingHeaderView {
         inquireButton.addAction(UIAction(handler: { [weak self] _ in
             self?.delegate?.didTapInquireButton()
         }), for: .primaryActionTriggered)
+        loginButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.delegate?.didTapSignInButton()
+        }), for: .primaryActionTriggered)
     }
     
     func setUpConstraints() {
@@ -90,5 +96,15 @@ private extension DictLandingHeaderView {
 extension DictLandingHeaderView {
     func resetJobBadge(job: String?, level: String) {
         jobBadgeButton.reset(job: job, level: level)
+    }
+    
+    func isLoginButtonShow(isShow: Bool) {
+        if isShow {
+            rightStackView.removeFromSuperview()
+            stackView.addArrangedSubview(loginButton)
+        } else {
+            loginButton.removeFromSuperview()
+            stackView.addArrangedSubview(stackView)
+        }
     }
 }

@@ -343,10 +343,11 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let datas = viewModel.searchData.value?.filter({!$0.datas.isEmpty}) else { return UITableViewCell() }
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: DictSearchDataCell.identifier, for: indexPath) as? DictSearchDataCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DictSearchDataCell.identifier, for: indexPath) as? DictSearchDataCell,
+              let datas = viewModel.searchData.value?.filter({!$0.datas.isEmpty}),
+              let keyword = self.headerView.searchTextField.text else { return UITableViewCell() }
         cell.selectionStyle = .none
-        cell.bind(data: datas[indexPath.section].datas[indexPath.row])
+        cell.bind(data: datas[indexPath.section].datas[indexPath.row],keyword: keyword)
         return cell
     }
     

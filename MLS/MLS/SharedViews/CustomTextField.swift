@@ -69,7 +69,7 @@ class CustomTextField: UIStackView {
         button.isHidden = true
         button.tintColor = .semanticColor.icon.secondary
         button.addAction(UIAction(handler: { [weak self] _ in
-            self?.changeShowButtonColor()
+            self?.changeAdditionalButton()
         }), for: .touchUpInside)
         return button
     }()
@@ -146,10 +146,6 @@ private extension CustomTextField {
 
 // MARK: - Methods
 extension CustomTextField {
-    func checkAdditionalButton(isHidden: Bool) {
-        additionalButton.isHidden = !isHidden
-    }
-    
     func checkState(state: TextState, isCorrect: Bool) {
         switch state {
         case .normal:
@@ -167,7 +163,7 @@ extension CustomTextField {
         contentView.layer.borderColor = isCorrect ? UIColor.semanticColor.bolder.interactive.secondary?.cgColor : UIColor.semanticColor.bolder.distructive?.cgColor
     }
     
-    private func changeShowButtonColor() {
+    private func changeAdditionalButton() {
         switch type {
         case .normal:
             textField.text = ""

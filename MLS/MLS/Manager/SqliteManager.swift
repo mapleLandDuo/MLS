@@ -155,7 +155,9 @@ class SqliteManager {
 
             let name = Expression<String>("name")
 
-            for row in try self.db!.prepare(table.filter(name == dataName)) {
+            let query = table.filter(name.like("%\(dataName)%"))
+
+            for row in try self.db!.prepare(query) {
                 switch T.tableName {
                 case .items:
                     guard let data = decodeItem(row: row) as? T else { return }
@@ -175,10 +177,11 @@ class SqliteManager {
                 }
             }
         } catch {
-            print("failure preparing search: \(error)")
+            print("Failure preparing search: \(error)")
         }
         completion(result)
     }
+
 
     func deleteData(tableName: Filename, dataName: String, completion: @escaping () -> Void) {
         do {

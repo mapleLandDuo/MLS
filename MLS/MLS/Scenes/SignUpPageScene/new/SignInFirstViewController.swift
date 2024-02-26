@@ -18,7 +18,7 @@ class SignInFirstViewController: BasicController {
     
     private let firstPageImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "pagination_first")
+        view.image = UIImage(named: "pagination_first_fill")
         return view
     }()
     
@@ -165,17 +165,14 @@ private extension SignInFirstViewController {
     func setUpActions() {
         emailTextField.textField.addAction(UIAction(handler: { [weak self] _ in
             guard let self = self else { return }
-            nextButton.type.value = self.isComplete() ? .disabled : .clickabled
         }), for: .editingChanged)
         
         firstPwTextField.textField.addAction(UIAction(handler: { [weak self] _ in
             guard let self = self else { return }
-            nextButton.type.value = self.isComplete() ? .disabled : .clickabled
         }), for: .editingChanged)
         
         secondPwTextField.textField.addAction(UIAction(handler: { [weak self] _ in
             guard let self = self else { return }
-            nextButton.type.value = self.isComplete() ? .disabled : .clickabled
         }), for: .editingChanged)
         
         privacyButton.addAction(UIAction(handler: { [weak self] _ in
@@ -235,21 +232,27 @@ private extension SignInFirstViewController {
     func didTapShowPrivacyButton() {}
     
     func didTapNextButton() {
-        let vc = SignInSecondViewController(viewModel: SignInSecondViewModel())
-        navigationController?.pushViewController(vc, animated: true)
+        if isComplete() {
+            let vc = SignInSecondViewController(viewModel: SignInSecondViewModel())
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func isComplete() -> Bool {
         guard let email = emailTextField.textField.text,
               let first = firstPwTextField.textField.text,
               let second = secondPwTextField.textField.text else { return true }
-        return email.isEmpty && first.isEmpty && second.isEmpty
+        // 조건 넣기
+        return !email.isEmpty && !first.isEmpty && !second.isEmpty && privacyButton.isSelected
     }
     
     func updateText(textField: UITextField, range: NSRange, string: String, type: TextFieldType, state: Observable<TextState>) {
         let currentText = textField.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return }
-        viewModel.checkForm(text: currentText.replacingCharacters(in: stringRange, with: string), type: type) { newState in
+        let updatedString = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        nextButton.type.value = updatedString != "" ? .clickabled : .disabled
+        viewModel.checkForm(text: updatedString, type: type) { newState in
             state.value = newState
         }
     }

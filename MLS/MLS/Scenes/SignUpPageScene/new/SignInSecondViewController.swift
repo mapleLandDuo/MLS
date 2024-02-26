@@ -18,13 +18,13 @@ class SignInSecondViewController: BasicController {
     
     private let firstPageImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "pagination_first")
+        view.image = UIImage(named: "pagination_first_fill")
         return view
     }()
     
     private let secondPageImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "pagination_second")
+        view.image = UIImage(named: "pagination_second_fill")
         return view
     }()
 

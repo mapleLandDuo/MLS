@@ -197,7 +197,7 @@ private extension SignInFirstViewController {
     func bind() {
         viewModel.emailState.bind { [weak self] _ in
             guard let state = self?.viewModel.emailState.value else { return }
-            if state == .normal {
+            if state == .complete {
                 self?.emailTextField.checkState(state: state, isCorrect: true)
             } else {
                 self?.emailTextField.checkState(state: state, isCorrect: false)
@@ -206,7 +206,7 @@ private extension SignInFirstViewController {
         
         viewModel.firstPwState.bind { [weak self] _ in
             guard let state = self?.viewModel.firstPwState.value else { return }
-            if state == .normal {
+            if state == .complete {
                 self?.firstPwTextField.checkState(state: state, isCorrect: true)
             } else {
                 self?.firstPwTextField.checkState(state: state, isCorrect: false)
@@ -215,7 +215,7 @@ private extension SignInFirstViewController {
         
         viewModel.secondPwState.bind { [weak self] _ in
             guard let state = self?.viewModel.secondPwState.value else { return }
-            if state == .normal {
+            if state == .complete {
                 self?.secondPwTextField.checkState(state: state, isCorrect: true)
             } else {
                 self?.secondPwTextField.checkState(state: state, isCorrect: false)

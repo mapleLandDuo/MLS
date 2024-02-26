@@ -10,7 +10,8 @@ import UIKit
 import SnapKit
 
 enum TextState: String {
-    case normal
+    case `default`
+    case complete
     case emailCheck = "이메일을 다시 확인해주세요."
     case emailBlank = "이메일을 입력해주세요."
     case pwCheck = "비밀번호를 다시 확인해주세요."
@@ -18,6 +19,9 @@ enum TextState: String {
     case pwNotCorrect = "비밀번호가 일치하지 않아요"
     case emailExist = "이미 가입된 이메일이에요."
     case nickNameExist = "중복된 닉네임이에요."
+    case nickNameNotCorrect = "닉네임을 2~8자로 지어주세요"
+    case pwNotInt = "숫자만 입력해주세요"
+    case pwOutOfBounds = "1~200 사잇값만 넣어주세요"
 }
 
 enum TextFieldType {
@@ -30,7 +34,7 @@ class CustomTextField: UIStackView {
     
     private let type: TextFieldType
     
-    private let state: TextState = .normal
+    var state: TextState = .default
 
     // MARK: - Components
     
@@ -147,8 +151,9 @@ private extension CustomTextField {
 // MARK: - Methods
 extension CustomTextField {
     func checkState(state: TextState, isCorrect: Bool) {
+        self.state = state
         switch state {
-        case .normal:
+        case .complete:
             footerLabel.isHidden = isCorrect
             contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
         default:

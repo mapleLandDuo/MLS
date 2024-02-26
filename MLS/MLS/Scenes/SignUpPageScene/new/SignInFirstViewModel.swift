@@ -20,7 +20,7 @@ extension SignInFirstViewModel {
         switch type {
         case .normal:
             if text == "email" {
-                completion(.normal)
+                completion(.complete)
             } else if text == "" {
                 completion(.emailBlank)
             } else if text == "이미 가입" {
@@ -30,7 +30,7 @@ extension SignInFirstViewModel {
             }
         case .password:
             if text == "password" {
-                completion(.normal)
+                completion(.complete)
             } else if text == "" {
                 completion(.pwBlank)
             } else {

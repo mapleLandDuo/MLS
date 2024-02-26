@@ -78,7 +78,18 @@ private extension FindPasswordViewController {
         }), for: .touchUpInside)
         
         sendButton.addAction(UIAction(handler: { [weak self] _ in
-            // 이메일 전송
+            guard let text = self?.emailTextField.textField.text else { return }
+            self?.viewModel.checkEmailExist(email: text) { [weak self] isExist in
+                if isExist {
+                    // 이메일 보내기
+                } else {
+                    self?.emailTextField.checkState(state: .emailCheck, isCorrect: isExist)
+                    self?.emailTextField.snp.remakeConstraints {
+                        $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
+                        $0.bottom.equalTo((self?.buttonStackView.snp.top)!).inset(-Constants.spacings.xl_2 + 26)
+                    }
+                }
+            }
         }), for: .touchUpInside)
     }
 }
@@ -104,7 +115,7 @@ extension FindPasswordViewController: UITextFieldDelegate {
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
-        viewModel.checkEmail(email: updatedText) { [weak self] type in
+        viewModel.checkEmailValidation(email: updatedText) { [weak self] type in
             self?.sendButton.type.value = type
         }
         return true

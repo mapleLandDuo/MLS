@@ -16,7 +16,15 @@ enum CustomButtonType {
 
 class CustomButton: UIButton {
     // MARK: Properties
-    private var isClicked = false
+//    var isClicked = false
+    private var bgColor: UIColor?
+    private var borderColor: UIColor?
+    private var titleColor: UIColor?
+    private var clickedBackgroundColor: UIColor?
+    private var clickedBorderColor: UIColor?
+    private var clickedTitleColor: UIColor?
+    
+    var isClicked: Observable<Bool> = Observable(false)
     
     var type: Observable<CustomButtonType> = Observable(.default)
     
@@ -75,22 +83,13 @@ class CustomButton: UIButton {
         self.titleLabel?.font = .customFont(fontSize: .body_md, fontType: .semiBold)
     }
     
-    func setButtonClicked(backgroundColor: UIColor, borderColor: UIColor?, titleColor: UIColor, clickedBackgroundColor: UIColor, clickedBorderColor: UIColor?, clickedTitleColor: UIColor) {
-        self.layer.borderWidth = 1
-        if self.isClicked == true {
-            self.backgroundColor = backgroundColor
-            self.setTitleColor(titleColor, for: .normal)
-            if let borderColor = borderColor {
-                self.layer.borderColor = borderColor.cgColor
-            }
-        } else {
-            self.backgroundColor = clickedBackgroundColor
-            self.setTitleColor(clickedTitleColor, for: .normal)
-            if let clickedBorderColor = clickedBorderColor {
-                self.layer.borderColor = clickedBorderColor.cgColor
-            }
-        }
-        self.isClicked.toggle()
+    func setButtonClicked(backgroundColor: UIColor?, borderColor: UIColor?, titleColor: UIColor?, clickedBackgroundColor: UIColor?, clickedBorderColor: UIColor?, clickedTitleColor: UIColor?) {
+        self.bgColor = backgroundColor
+        self.borderColor = borderColor
+        self.titleColor = titleColor
+        self.clickedBackgroundColor = clickedBackgroundColor
+        self.clickedBorderColor = clickedBorderColor
+        self.clickedTitleColor = clickedTitleColor
     }
     
     func bind(text: String, borderColor: UIColor?, radius: CGFloat) {
@@ -113,6 +112,23 @@ class CustomButton: UIButton {
                 break
             case .none:
                 break
+            }
+        }
+        
+        isClicked.bind { [weak self] _ in
+            self?.layer.borderWidth = 1
+            if self?.isClicked.value == false {
+                self?.backgroundColor = self?.bgColor
+                self?.setTitleColor(self?.titleColor, for: .normal)
+                if let borderColor = self?.borderColor {
+                    self?.layer.borderColor = borderColor.cgColor
+                }
+            } else {
+                self?.backgroundColor = self?.clickedBackgroundColor
+                self?.setTitleColor(self?.clickedTitleColor, for: .normal)
+                if let clickedBorderColor = self?.clickedBorderColor {
+                    self?.layer.borderColor = self?.clickedBorderColor?.cgColor
+                }
             }
         }
     }

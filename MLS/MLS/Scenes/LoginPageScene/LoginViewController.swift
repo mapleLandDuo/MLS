@@ -218,8 +218,8 @@ private extension LoginViewController {
     func didTapLogInButton() {
         guard let email = emailTextField.textField.text, let password = pwTextField.textField.text else { return }
         viewModel.trySignIn(email: email, password: password) { [weak self] (emailState, passwordState) in
-            let isEmailCorrect = (emailState == .normal)
-            let isPasswordCorrect = (passwordState == .normal)
+            let isEmailCorrect = (emailState == .complete)
+            let isPasswordCorrect = (passwordState == .complete)
 
             self?.emailTextField.checkState(state: emailState, isCorrect: isEmailCorrect)
             self?.pwTextField.checkState(state: passwordState, isCorrect: isPasswordCorrect)

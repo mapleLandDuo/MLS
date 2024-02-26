@@ -16,12 +16,12 @@ class LoginViewModel {
 // MARK: - Methods
 extension LoginViewModel {
     func trySignIn(email: String, password: String, completion: @escaping ((TextState, TextState)) -> Void) {
-        var result: (TextState, TextState) = (.normal, .normal)
+        var result: (TextState, TextState) = (.default, .default)
         switch email {
         case "":
             result.0 = .emailBlank
         case "email":
-            result.0 = .normal
+            result.0 = .complete
         default:
             result.0 = .emailCheck
         }
@@ -29,7 +29,7 @@ extension LoginViewModel {
         case "":
             result.1 = .pwBlank
         case "password":
-            result.1 = .normal
+            result.1 = .complete
         default:
             result.1 = .pwCheck
         }

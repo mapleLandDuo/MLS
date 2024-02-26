@@ -28,7 +28,7 @@ class SignInSecondViewController: BasicController {
         return view
     }()
 
-    private let nickNameTextField = CustomTextField(type: .normal, header: "사용할 닉네임을 입력해주세요", placeHolder: "닉네임을 입력하세요", footer: "글자수 2~8글자로 닉네임을 지어주세요")
+    private let nickNameTextField = CustomTextField(type: .normal, header: "사용할 닉네임을 입력해주세요", placeHolder: "닉네임을 입력하세요")
     
     private let accountDescriptionLabel: UILabel = {
         let label = UILabel()
@@ -50,6 +50,7 @@ class SignInSecondViewController: BasicController {
         let button = CustomButton(type: .clickabled, text: "아니요")
         button.backgroundColor = .semanticColor.bg.interactive.secondary
         button.setTitleColor(.themeColor(color: .base, value: .value_white), for: .normal)
+        button.setButtonClicked(backgroundColor: .semanticColor.bg.interactive.secondary, borderColor: nil, titleColor: .themeColor(color: .base, value: .value_white), clickedBackgroundColor: .semanticColor.bg.interactive.primary_pressed, clickedBorderColor: nil, clickedTitleColor: .themeColor(color: .base, value: .value_white))
         return button
     }()
     
@@ -57,6 +58,7 @@ class SignInSecondViewController: BasicController {
         let button = CustomButton(type: .clickabled, text: "네.있어요")
         button.backgroundColor = .semanticColor.bg.interactive.secondary
         button.setTitleColor(.themeColor(color: .base, value: .value_white), for: .normal)
+        button.setButtonClicked(backgroundColor: .semanticColor.bg.interactive.secondary, borderColor: nil, titleColor: .themeColor(color: .base, value: .value_white), clickedBackgroundColor: .semanticColor.bg.interactive.primary_pressed, clickedBorderColor: nil, clickedTitleColor: .themeColor(color: .base, value: .value_white))
         return button
     }()
     
@@ -74,7 +76,7 @@ class SignInSecondViewController: BasicController {
     
     private let accountView: SignInAccountView = {
         let view = SignInAccountView()
-        view.isHidden = false
+        view.isHidden = true
         return view
     }()
     
@@ -104,6 +106,9 @@ extension SignInSecondViewController {
 private extension SignInSecondViewController {
     func setUp() {
         accountView.levelTextField.isHidden = false
+        
+        nickNameTextField.textField.delegate = self
+        accountView.levelTextField.textField.delegate = self
         
         setUpConstraints()
         setUpNavigation()
@@ -190,7 +195,17 @@ private extension SignInSecondViewController {
     }
     
     func setUpActions() {
+        noneAccountButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapNoneAccountButton()
+        }), for: .touchUpInside)
         
+        accountButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapAccountButton()
+        }), for: .touchUpInside)
+        
+        completeButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapCompleteButton()
+        }), for: .touchUpInside)
     }
 }
 
@@ -201,7 +216,29 @@ private extension SignInSecondViewController {
 
 // MARK: - Method
 private extension SignInSecondViewController {
-    func didTapCompleteButton() {}
+    func didTapNoneAccountButton() {
+        setAccountButton(isExist: false)
+    }
+    
+    func didTapAccountButton() {
+        setAccountButton(isExist: true)
+    }
+    
+    func didTapCompleteButton() {
+        guard let text = nickNameTextField.textField.text else { return }
+        viewModel.checkNickName(nickName: text) { [weak self] state, isCorrect in
+            self?.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
+        }
+    }
+
+    func setAccountButton(isExist: Bool) {
+        descriptionMainImageView.isHidden = isExist
+        descriptionTailImageView.isHidden = isExist
+        accountView.isHidden = !isExist
+
+        noneAccountButton.isClicked.value = !isExist
+        accountButton.isClicked.value = isExist
+    }
     
     @objc
     func didTapBackButton() {
@@ -216,6 +253,15 @@ extension SignInSecondViewController: UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        if textField == accountView.levelTextField.textField {
+            viewModel.checkLevel(level: updatedText) { [weak self] state, isCorrect in
+                self?.accountView.levelTextField.checkState(state: state, isCorrect: isCorrect)
+            }
+        }
         return true
     }
 }

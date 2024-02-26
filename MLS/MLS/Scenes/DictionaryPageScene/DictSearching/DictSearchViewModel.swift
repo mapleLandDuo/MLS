@@ -20,9 +20,25 @@ class DictSearchViewModel {
         DictSectionDatas(iconImage: UIImage(named: "npcIcon"), description: "NPC", datas: []),
         DictSectionDatas(iconImage: UIImage(named: "questIcon"), description: "퀘스트", datas: [])
     ])
+    
+    let selectedMenuIndex: Observable<Int> = Observable(0)
 }
 
 extension DictSearchViewModel {
+    
+    func fetchSearchData() -> [DictSectionDatas] {
+        guard let data = searchData.value else { return [] }
+        return data
+    }
+    
+    func fetchMenuIndex() -> Int {
+        guard let index = selectedMenuIndex.value else { return 0 }
+        return index
+    }
+    
+    func setMenuIndex(index: Int) {
+        selectedMenuIndex.value = index
+    }
     
     func fetchSearchData(keyword: String) {
         let manager = SqliteManager()

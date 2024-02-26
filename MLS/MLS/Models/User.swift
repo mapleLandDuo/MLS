@@ -15,4 +15,9 @@ struct User: Codable {
     var blockingComments: [String]
     var blockingUsers: [String]
     var blockedUsers: [String]
+    
+    // MARK: - Dev 2.0.0
+    var job: Job?
+    var level: Int?
 }
+

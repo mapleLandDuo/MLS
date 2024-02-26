@@ -23,7 +23,7 @@ class DictSearchDataCell: UITableViewCell {
     
     private let itemImageView: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleAspectFit
         return view
     }()
     

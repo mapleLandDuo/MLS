@@ -137,6 +137,26 @@ private extension DictSearchViewController {
         viewModel.searchMenus.bind { [weak self] _ in
             self?.searchMenuCollectionView.reloadData()
         }
+        viewModel.selectedMenuIndex.bind { [weak self] index in
+            guard let index = index else { return }
+            if index != 0 {
+                guard let count = self?.viewModel.searchData.value?[index - 1].datas.count else { return }
+                if count == 0 {
+                    self?.searchResultEmptyView.isHidden = false
+                } else {
+                    self?.searchResultEmptyView.isHidden = true
+                }
+            } else {
+                guard let datas = self?.viewModel.searchData.value else { return }
+                let count = datas.map({$0.datas.count}).reduce(0){ $0 + $1 }
+                if count == 0 {
+                    self?.searchResultEmptyView.isHidden = false
+                } else {
+                    self?.searchResultEmptyView.isHidden = true
+                }
+            }
+            self?.searchResultTableView.reloadData()
+        }
     }
 }
 
@@ -243,6 +263,20 @@ extension DictSearchViewController: DictSectionHeaderViewDelegate {
     }
 }
 
+extension DictSearchViewController: RecentSearchKeywordCellDelegate {
+    func didTapDeleteButton(index: Int) {
+        viewModel.recentSearchKeywords.value?.remove(at: index)
+        guard let keywords = viewModel.recentSearchKeywords.value else { return }
+        if keywords.isEmpty {
+            searchView.isHidden = false
+            searchingView.isHidden = true
+        } else {
+            searchView.isHidden = true
+            searchingView.isHidden = false
+        }
+    }
+}
+
 extension DictSearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -296,7 +330,7 @@ extension DictSearchViewController: UICollectionViewDelegateFlowLayout, UICollec
         case self.searchMenuCollectionView:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchMenuCell.identifier, for: indexPath) as? DictSearchMenuCell else { return UICollectionViewCell() }
             cell.bind(text: viewModel.searchMenus.value?[indexPath.row])
-            if indexPath.item == 0 {
+            if indexPath.item == viewModel.fetchMenuIndex() {
                 cell.isSelected = true
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
               }
@@ -313,7 +347,7 @@ extension DictSearchViewController: UICollectionViewDelegateFlowLayout, UICollec
             headerView.searchTextField.text = keyword
             view.endEditing(true)
         default:
-            print("tap")
+            viewModel.setMenuIndex(index: indexPath.row)
         }
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -335,19 +369,38 @@ extension DictSearchViewController: UICollectionViewDelegateFlowLayout, UICollec
 }
 
 extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.searchData.value?.filter({!$0.datas.isEmpty})[section].datas.count ?? 0
+        switch viewModel.fetchMenuIndex() {
+        case 0:
+            return viewModel.searchData.value?.filter({!$0.datas.isEmpty})[section].datas.count ?? 0
+        default:
+            return viewModel.searchData.value?[viewModel.fetchMenuIndex() - 1].datas.count ?? 0
+        }
     }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.searchData.value?.filter({!$0.datas.isEmpty}).count ?? 0
+        switch viewModel.fetchMenuIndex() {
+        case 0:
+            return viewModel.searchData.value?.filter({!$0.datas.isEmpty}).count ?? 0
+        default:
+            return 1
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DictSearchDataCell.identifier, for: indexPath) as? DictSearchDataCell,
-              let datas = viewModel.searchData.value?.filter({!$0.datas.isEmpty}),
               let keyword = self.headerView.searchTextField.text else { return UITableViewCell() }
         cell.selectionStyle = .none
-        cell.bind(data: datas[indexPath.section].datas[indexPath.row],keyword: keyword)
+        switch viewModel.fetchMenuIndex() {
+        case 0:
+            guard let datas = viewModel.searchData.value?.filter({!$0.datas.isEmpty}) else { return UITableViewCell() }
+            cell.bind(data: datas[indexPath.section].datas[indexPath.row],keyword: keyword)
+        default:
+            guard let datas = viewModel.searchData.value else { return UITableViewCell() }
+            cell.bind(data: datas[viewModel.fetchMenuIndex() - 1].datas[indexPath.row],keyword: keyword)
+        }
         return cell
     }
     
@@ -390,16 +443,4 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension DictSearchViewController: RecentSearchKeywordCellDelegate {
-    func didTapDeleteButton(index: Int) {
-        viewModel.recentSearchKeywords.value?.remove(at: index)
-        guard let keywords = viewModel.recentSearchKeywords.value else { return }
-        if keywords.isEmpty {
-            searchView.isHidden = false
-            searchingView.isHidden = true
-        } else {
-            searchView.isHidden = true
-            searchingView.isHidden = false
-        }
-    }
-}
+

@@ -131,6 +131,7 @@
 		08F95DDF2B8A592600AD79DF /* npcs.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F95DDE2B8A592600AD79DF /* npcs.json */; };
 		08F95DE12B8A594600AD79DF /* quests.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F95DE02B8A594600AD79DF /* quests.json */; };
 		08F95DE92B8B5ED500AD79DF /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DE82B8B5ED500AD79DF /* LoginButton.swift */; };
+		08F95DF32B8CF0DD00AD79DF /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DF22B8CF0DD00AD79DF /* Job.swift */; };
 		7707440E2B55511E00FCEDED /* SearchbarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */; };
 		770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */; };
 		77082A4A2B63A26200187906 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A492B63A26200187906 /* PostDetailViewModel.swift */; };
@@ -282,6 +283,7 @@
 		08F95DDE2B8A592600AD79DF /* npcs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = npcs.json; sourceTree = "<group>"; };
 		08F95DE02B8A594600AD79DF /* quests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = quests.json; sourceTree = "<group>"; };
 		08F95DE82B8B5ED500AD79DF /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
+		08F95DF22B8CF0DD00AD79DF /* Job.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
 		7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchbarTableViewCell.swift; sourceTree = "<group>"; };
 		7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSeparatorType.swift; sourceTree = "<group>"; };
 		77082A492B63A26200187906 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
@@ -577,6 +579,7 @@
 				77082A4B2B63A2C300187906 /* Comment.swift */,
 				08971A782B70C1EF00FE46BE /* State.swift */,
 				08D5F10A2B8628F700E56482 /* AnnouncementData.swift */,
+				08F95DF22B8CF0DD00AD79DF /* Job.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1076,6 +1079,7 @@
 				770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */,
 				08CBCB862B7C9B1A00C051F7 /* DBHelper.swift in Sources */,
 				08F95DBE2B89F0BD00AD79DF /* DictSectionHeaderView.swift in Sources */,
+				08F95DF32B8CF0DD00AD79DF /* Job.swift in Sources */,
 				08D50A7E2B5EB0E800E94442 /* LoginManager.swift in Sources */,
 				775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */,
 				7732E8822B67E7630038C7A9 /* DictionarySearchViewModel.swift in Sources */,

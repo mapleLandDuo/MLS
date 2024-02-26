@@ -13,7 +13,11 @@ class FindPasswordViewModel {
 
 // MARK: Methods
 extension FindPasswordViewModel {
-    func checkEmail(email: String, completion: @escaping (CustomButtonType) -> Void) {
+    func checkEmailValidation(email: String, completion: @escaping (CustomButtonType) -> Void) {
         completion(email == "email" ? CustomButtonType.clickabled : CustomButtonType.disabled)
+    }
+    
+    func checkEmailExist(email: String, completion: @escaping (Bool) -> Void) {
+        completion(email == "email.com")
     }
 }

@@ -14,8 +14,12 @@ class SignInFirstViewModel {
     var emailState: Observable<TextState> = Observable(nil)
     var firstPwState: Observable<TextState> = Observable(nil)
     var secondPwState: Observable<TextState> = Observable(nil)
+    
     var isCorrect = false
+    var isPrivacyAgree: Observable<Bool> = Observable(nil)
+    
     var checkPassword = [false, false, false, false]
+    var rePassword: String?
 }
 
 // MARK: Methods
@@ -53,10 +57,10 @@ extension SignInFirstViewModel {
         }
     }
 
-    func checkPassword(password: String, title: String) {
-        if title == "비밀번호" {
+    func checkPassword(password: String) {
             if password == "" {
                 firstPwState.value = .pwBlank
+                rePassword = password
                 return
             }
 
@@ -64,9 +68,11 @@ extension SignInFirstViewModel {
             let lengthtesting = NSPredicate(format: "SELF MATCHES %@", lengthreg)
             if lengthtesting.evaluate(with: password) == false {
                 checkPassword[0] = false
+                rePassword = password
                 firstPwState.value = .pwOutOfBounds
             } else {
                 checkPassword[0] = true
+                rePassword = password
                 firstPwState.value = .pwOutOfBounds
             }
 
@@ -76,9 +82,11 @@ extension SignInFirstViewModel {
                 let range = NSRange(location: 0, length: password.utf16.count)
                 if regex.firstMatch(in: password, options: [], range: range) != nil {
                     checkPassword[1] = true
+                    rePassword = password
                     firstPwState.value = .pwNotSymbol
                 } else {
                     checkPassword[1] = false
+                    rePassword = password
                     firstPwState.value = .pwNotSymbol
                 }
             } catch {
@@ -88,84 +96,53 @@ extension SignInFirstViewModel {
             let numbers = CharacterSet.decimalDigits
             if password.rangeOfCharacter(from: numbers) == nil {
                 checkPassword[2] = false
+                rePassword = password
                 firstPwState.value = .pwNotInt
             } else {
                 checkPassword[2] = true
+                rePassword = password
                 firstPwState.value = .pwNotInt
             }
 
             let letters = CharacterSet.letters
             if password.rangeOfCharacter(from: letters) == nil {
                 checkPassword[3] = false
+                rePassword = password
                 firstPwState.value = .pwNotENG
             } else {
                 checkPassword[3] = true
+                rePassword = password
                 firstPwState.value = .pwNotENG
             }
 
             if checkPassword.allSatisfy({ $0 == true }) {
+                rePassword = password
                 firstPwState.value = .complete
             }
 
             firstPwState.value = .complete
-        } else if title == "비밀번호 재확인" {
-            if password == "" {
-                isCorrect = false
-                secondPwState.value = .pwBlank
-                return
-            }
+    }
+    
+    func reCheckPassword(password: String, checkPassword: String) {
+        if password == "" {
+            secondPwState.value = .pwBlank
+            return
+        }
+        print("password", password)
+        print("checkPassword", checkPassword)
+        
+        if password == checkPassword {
+            secondPwState.value = .complete
+        } else {
+            secondPwState.value = .pwNotCorrect
         }
     }
 
-//    func isValidEmail(email: String) {
-//        if email.count == 0 {
-//            emailState.value = .emailBlank
-//            return
-//        }
-//
-//        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-//        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-//        if emailTest.evaluate(with: email) {
-//            Firestore.firestore().collection("users").getDocuments { data, error in
-//                if error != nil {
-//                    print(String(describing: error?.localizedDescription))
-//                } else {
-//                    guard let safeData = data else { return }
-//                    if safeData.documents.map({ $0.documentID }).contains(email) {
-//                        self.emailState.value = .emailExist
-//                    } else {
-//                        self.emailState.value = .complete
-//                    }
-//                }
-//            }
-//        } else {
-//            emailState.value = .emailCheck
-//        }
-//    }
-
-//    func isValidPassword(password: String) {
-//        if password.count == 0 {
-//            passwordState.value = .empty
-//            return
-//        }
-//        let lengthreg = ".{8,20}"
-//        let lengthtesting = NSPredicate(format: "SELF MATCHES %@", lengthreg)
-//        if lengthtesting.evaluate(with: password) == false {
-//            passwordState.value = .length
-//            return
-//        }
-//        let combinationreg = "^(?=.*[A-Za-z])(?=.*[0-9]).{8,20}"
-//        let combinationtesting = NSPredicate(format: "SELF MATCHES %@", combinationreg)
-//        if combinationtesting.evaluate(with: password) == false {
-//            passwordState.value = .combination
-//            return
-//        }
-//        let specialreg = "^(?=.*[!@#$%^&*()_+=-]).{8,20}"
-//        let specialtesting = NSPredicate(format: "SELF MATCHES %@", specialreg)
-//        if specialtesting.evaluate(with: password) == false {
-//            passwordState.value = .special
-//            return
-//        }
-//        passwordState.value = .available
-//    }
+    func isValidSignUp() -> Bool {
+        if emailState.value == .complete && checkPassword.allSatisfy({ $0 == true }) && isPrivacyAgree.value == true {
+            return true
+        } else {
+            return false
+        }
+    }
 }

@@ -242,6 +242,16 @@ extension LoginViewController: UITextFieldDelegate {
         // 엔터
         return true
     }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
+        textField.superview?.layer.borderWidth = 1
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+        textField.superview?.layer.borderWidth = 1
+    }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""

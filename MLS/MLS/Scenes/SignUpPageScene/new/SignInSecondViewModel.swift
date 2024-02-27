@@ -16,13 +16,17 @@ extension SignInSecondViewModel {
     func checkNickName(nickName: String, completion: @escaping ((TextState, Bool)) -> Void) {
         if nickName != "" {
             if nickName == "nickName" {
+                // 존재
                 completion((.nickNameExist, false))
-            } else if nickName == "닉네임" {
+            } else if (2 ... 8).contains(nickName.count) {
+                // 형식
                 completion((.nickNameNotCorrect, false))
             } else {
+                // 성공
                 completion((.complete, true))
             }
         } else {
+            // 형식
             completion((.nickNameNotCorrect, false))
         }
     }
@@ -32,10 +36,10 @@ extension SignInSecondViewModel {
             if 1...200 ~= level {
                 completion((.complete, true))
             } else {
-                completion((.pwOutOfBounds, false))
+                completion((.lvOutOfBounds, false))
             }
         } else {
-            completion((.pwNotInt, false))
+            completion((.lvNotInt, false))
         }
     }
 }

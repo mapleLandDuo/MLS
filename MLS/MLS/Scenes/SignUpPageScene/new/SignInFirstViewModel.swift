@@ -16,7 +16,7 @@ class SignInFirstViewModel {
     var secondPwState: Observable<TextState> = Observable(nil)
     
     var isCorrect = false
-    var isPrivacyAgree: Observable<Bool> = Observable(nil)
+    var isPrivacyAgree: Observable<Bool> = Observable(false)
     
     var checkPassword = [false, false, false, false]
     var rePassword: String?
@@ -128,9 +128,7 @@ extension SignInFirstViewModel {
             secondPwState.value = .pwBlank
             return
         }
-        print("password", password)
-        print("checkPassword", checkPassword)
-        
+
         if password == checkPassword {
             secondPwState.value = .complete
         } else {

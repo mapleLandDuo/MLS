@@ -21,23 +21,6 @@ class SignInAccountView: UIView {
         label.textColor = .semanticColor.text.primary
         return label
     }()
-
-    //    lazy var buttons: [CustomButton] = [
-    //        makeButton(text: "전사", color: .jobBadgeColor.warrior),
-    //        makeButton(text: "궁수", color: .jobBadgeColor.archer),
-    //        makeButton(text: "도적", color: .jobBadgeColor.thief),
-    //        makeButton(text: "법사", color: .jobBadgeColor.mage)
-    //    ]
-    //
-    //    private func makeButton(text: String, color: UIColor?) -> CustomButton {
-    //        let button = CustomButton(type: .default, text: text)
-    //        button.setButtonClicked(backgroundColor: .themeColor(color: .base, value: .value_white), borderColor: .semanticColor.bolder.secondary, titleColor: .semanticColor.text.secondary, clickedBackgroundColor: color, clickedBorderColor: .semanticColor.text.primary, clickedTitleColor: .semanticColor.text.primary)
-    //        button.addAction(UIAction(handler: { [weak self] _ in
-    //            guard let self = self else { return }
-    //            self.buttons.forEach { $0.isClicked.value = $0 == button }
-    //        }), for: .touchUpInside)
-    //        return button
-    //    }
     
     lazy var rollButtonStackView: UIStackView = {
         let buttons = ["전사", "궁수", "도적", "법사"].map { makeButton(text: $0) }

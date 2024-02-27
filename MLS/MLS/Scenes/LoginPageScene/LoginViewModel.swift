@@ -34,14 +34,6 @@ extension LoginViewModel {
             result.1 = .pwCheck
         }
         completion(result)
-        //        Auth.auth().signIn(withEmail: email, password: password) { _, error in
-        //            if error == nil {
-        //                LoginManager.manager.email = Auth.auth().currentUser?.email
-        //                completion(.normal)
-        //            } else {
-        //                completion(.normal)
-        //            }
-        //        }
     }
     
     func setAutoLogIn(isAuto: Bool) {

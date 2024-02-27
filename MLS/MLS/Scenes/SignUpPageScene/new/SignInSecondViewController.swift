@@ -211,7 +211,23 @@ private extension SignInSecondViewController {
 
 // MARK: - Bind
 private extension SignInSecondViewController {
-    func bind() {}
+    func bind() {
+        viewModel.nickNameState.bind { [weak self] _ in
+            guard let state = self?.viewModel.nickNameState.value else { return }
+            let isCorrect = state == .complete
+            self?.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
+        }
+        
+        viewModel.levelState.bind { [weak self] _ in
+            guard let state = self?.viewModel.levelState.value else { return }
+            if state == .default {
+                self?.accountView.levelTextField.setLevelField()
+            } else {
+                let isCorrect = state == .complete
+                self?.accountView.levelTextField.checkState(state: state, isCorrect: isCorrect)
+            }
+        }
+    }
 }
 
 // MARK: - Method
@@ -225,9 +241,18 @@ private extension SignInSecondViewController {
     }
     
     func didTapCompleteButton() {
-        guard let text = nickNameTextField.textField.text else { return }
-        viewModel.checkNickName(nickName: text) { [weak self] state, isCorrect in
-            self?.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
+        viewModel.isValidSignUp { [weak self] state in
+            switch state {
+            case .complete:
+                // 완료
+                print(self?.viewModel.user)
+            case .nickNameExist, .nickNameNotCorrect:
+                self?.nickNameTextField.checkState(state: state, isCorrect: false)
+            case .lvNotInt, .lvOutOfBounds:
+                self?.accountView.levelTextField.checkState(state: state, isCorrect: false)
+            default:
+                break
+            }
         }
     }
 
@@ -262,16 +287,13 @@ extension SignInSecondViewController: UITextFieldDelegate {
         textField.superview?.layer.borderWidth = 1
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let currentText = textField.text ?? ""
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        if textField == accountView.levelTextField.textField {
-            viewModel.checkLevel(level: updatedText) { [weak self] state, isCorrect in
-                self?.accountView.levelTextField.checkState(state: state, isCorrect: isCorrect)
-            }
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if textField == nickNameTextField {
+            guard let text = textField.text else { return }
+            viewModel.checkNickName(nickName: text)
+        } else {
+            guard let text = textField.text else { return }
+            viewModel.checkLevel(level: text)
         }
-        return true
     }
 }

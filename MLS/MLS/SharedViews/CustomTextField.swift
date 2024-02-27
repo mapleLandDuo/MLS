@@ -16,12 +16,16 @@ enum TextState: String {
     case emailBlank = "이메일을 입력해주세요."
     case pwCheck = "비밀번호를 다시 확인해주세요."
     case pwBlank = "비밀번호를 입력해주세요."
+    case pwOutOfBounds
+    case pwNotENG
+    case pwNotInt
+    case pwNotSymbol
     case pwNotCorrect = "비밀번호가 일치하지 않아요"
     case emailExist = "이미 가입된 이메일이에요."
     case nickNameExist = "중복된 닉네임이에요."
     case nickNameNotCorrect = "닉네임을 2~8자로 지어주세요"
-    case pwNotInt = "숫자만 입력해주세요"
-    case pwOutOfBounds = "1~200 사잇값만 넣어주세요"
+    case lvNotInt = "숫자만 입력해주세요"
+    case lvOutOfBounds = "1~200 사잇값만 넣어주세요"
 }
 
 enum TextFieldType {
@@ -35,6 +39,8 @@ class CustomTextField: UIStackView {
     private let type: TextFieldType
     
     var state: TextState = .default
+    
+    var attributedString = NSMutableAttributedString(string: "8자리 이상, 영어, 숫자, 특수문자")
 
     // MARK: - Components
     
@@ -108,10 +114,10 @@ class CustomTextField: UIStackView {
 // MARK: - SetUp
 private extension CustomTextField {
     func setUp() {
-        self.distribution = .fill
-        self.spacing = Constants.spacings.xs
-        self.axis = .vertical
-        self.alignment = .fill
+        distribution = .fill
+        spacing = Constants.spacings.xs
+        axis = .vertical
+        alignment = .fill
         
         addArrangedSubview(headerLabel)
         addArrangedSubview(contentView)
@@ -188,5 +194,158 @@ extension CustomTextField {
     
     private func setAdditional(text: String) {
         additionalButton.isHidden = text == "" ? true : false
+    }
+    
+//    func setPasswordFooter(isCorrect: Bool, state: TextState) {
+//        footerLabel.isHidden = false
+//
+//        let fullText = "8자리 이상, 영어, 숫자, 특수문자"
+//        let attribtuedString = NSMutableAttributedString(string: fullText)
+//        var keyword = ""
+//
+//        switch state {
+//        case .complete:
+//            footerLabel.text = fullText
+//            footerLabel.textColor = isCorrect ? .semanticColor.text.success_bold : .semanticColor.text.distructive_bold
+//            if !isCorrect {
+//                contentView.layer.borderColor = UIColor.semanticColor.bolder.distructive?.cgColor
+//            }
+//        case .pwNotENG:
+//            keyword = "영어"
+//            if isCorrect {
+//                let range = (fullText as NSString).range(of: keyword)
+//                attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.success_bold, range: range)
+//                footerLabel.textColor = UIColor.semanticColor.text.distructive
+//                footerLabel.attributedText = attribtuedString
+//            } else {
+//                let range = (fullText as NSString).range(of: keyword)
+//                attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.distructive_bold, range: range)
+//                footerLabel.textColor = UIColor.semanticColor.text.distructive
+//                footerLabel.attributedText = attribtuedString
+//            }
+//        case .pwNotInt:
+//            keyword = "숫자"
+//            if isCorrect {
+//                let range = (fullText as NSString).range(of: keyword)
+//                attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.success_bold, range: range)
+//                footerLabel.textColor = UIColor.semanticColor.text.distructive
+//                footerLabel.attributedText = attribtuedString
+//            } else {
+//                let range = (fullText as NSString).range(of: keyword)
+//                attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.distructive_bold, range: range)
+//                footerLabel.textColor = UIColor.semanticColor.text.distructive
+//                footerLabel.attributedText = attribtuedString
+//            }
+//        case .pwNotSpecial:
+//            keyword = "특수문자"
+//            if isCorrect {
+//                let range = (fullText as NSString).range(of: keyword)
+//                attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.success_bold, range: range)
+//                footerLabel.textColor = UIColor.semanticColor.text.distructive
+//                footerLabel.attributedText = attribtuedString
+//            } else {
+//                let range = (fullText as NSString).range(of: keyword)
+//                attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.distructive_bold, range: range)
+//                footerLabel.textColor = UIColor.semanticColor.text.distructive
+//                footerLabel.attributedText = attribtuedString
+//            }
+//        case .pwOutOfBounds:
+//            keyword = "8자리 이상"
+//            if isCorrect {
+//                let range = (fullText as NSString).range(of: keyword)
+//                attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.success_bold, range: range)
+//                footerLabel.textColor = UIColor.semanticColor.text.distructive
+//                footerLabel.attributedText = attribtuedString
+//            } else {
+//                let range = (fullText as NSString).range(of: keyword)
+//                attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.distructive_bold, range: range)
+//                footerLabel.textColor = UIColor.semanticColor.text.distructive
+//                footerLabel.attributedText = attribtuedString
+//            }
+//        default:
+//            break
+//        }
+//    }
+    
+    func setPasswordFooter(checkPassword: [Bool], state: TextState) {
+        footerLabel.isHidden = false
+
+        let greenAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.semanticColor.text.success_bold]
+        let redAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.semanticColor.text.distructive_bold]
+        
+        for i in 0...3 {
+            switch i {
+            case 0:
+                guard let range = attributedString.string.range(of: "8자리 이상") else { return }
+                if checkPassword[i] == true {
+                    attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+                } else {
+                    attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+                }
+            case 1:
+                guard let range = attributedString.string.range(of: ", 특수문자") else { return }
+                if checkPassword[i] == true {
+                    attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+                } else {
+                    attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+                }
+            case 2:
+                guard let range = attributedString.string.range(of: ", 숫자") else { return }
+                if checkPassword[i] == true {
+                    attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+                } else {
+                    attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+                }
+            case 3:
+                guard let range = attributedString.string.range(of: ", 영어") else { return }
+                if checkPassword[i] == true {
+                    attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+                } else {
+                    attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+                }
+            default:
+                break
+            }
+        }
+//        switch state {
+//        case .complete:
+//            footerLabel.text = "8자리 이상, 영어, 숫자, 특수문자"
+//            footerLabel.textColor = isCorrect ? .semanticColor.text.success_bold : .semanticColor.text.distructive_bold
+//            if !isCorrect {
+//                contentView.layer.borderColor = UIColor.semanticColor.bolder.distructive?.cgColor
+//            }
+//            attributedString = NSMutableAttributedString(string: "8자리 이상, 영어, 숫자, 특수문자")
+//        case .pwNotENG:
+//            guard let range = attributedString.string.range(of: "영어") else { return }
+//            if isCorrect {
+//                attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+//            } else {
+//                attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+//            }
+//        case .pwNotInt:
+//            guard let range = attributedString.string.range(of: "숫자") else { return }
+//            if isCorrect {
+//                attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+//            } else {
+//                attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+//            }
+//        case .pwNotSymbol:
+//            guard let range = attributedString.string.range(of: "특수문자") else { return }
+//            if isCorrect {
+//                attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+//            } else {
+//                attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+//            }
+//        case .pwOutOfBounds:
+//            guard let range = attributedString.string.range(of: "8자리 이상") else { return }
+//            if isCorrect {
+//                attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+//            } else {
+//                attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+//            }
+//        default:
+//            break
+//        }
+        footerLabel.attributedText = attributedString
     }
 }

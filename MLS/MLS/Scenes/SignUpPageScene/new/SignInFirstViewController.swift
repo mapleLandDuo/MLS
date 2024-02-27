@@ -30,7 +30,10 @@ class SignInFirstViewController: BasicController {
 
     private let emailTextField = CustomTextField(type: .normal, header: "이메일", placeHolder: "이메일을 입력해주세요")
     
-    private let firstPwTextField = CustomTextField(type: .password, header: "비밀번호", placeHolder: "비밀번호를 입력해주세요", footer: "8자리 이상, 영어, 숫자, 특수문자")
+    private let firstPwTextField: CustomTextField = {
+        let textField = CustomTextField(type: .password, header: "비밀번호", placeHolder: "비밀번호를 입력해주세요")
+        return textField
+    }()
     
     private let secondPwTextField = CustomTextField(type: .password, header: "비밀번호 재확인", placeHolder: "비밀번호를 다시 한 번 입력해주세요")
     
@@ -193,29 +196,31 @@ private extension SignInFirstViewController {
 private extension SignInFirstViewController {
     func bind() {
         viewModel.emailState.bind { [weak self] _ in
-            guard let state = self?.viewModel.emailState.value else { return }
+            guard let state = self?.viewModel.emailState.value,
+                  let isCorrect = self?.viewModel.isCorrect else { return }
             if state == .complete {
-                self?.emailTextField.checkState(state: state, isCorrect: true)
+                self?.emailTextField.checkState(state: state, isCorrect: isCorrect)
             } else {
-                self?.emailTextField.checkState(state: state, isCorrect: false)
+                self?.emailTextField.checkState(state: state, isCorrect: isCorrect)
             }
         }
         
         viewModel.firstPwState.bind { [weak self] _ in
-            guard let state = self?.viewModel.firstPwState.value else { return }
-            if state == .complete {
-                self?.firstPwTextField.checkState(state: state, isCorrect: true)
-            } else {
+            guard let state = self?.viewModel.firstPwState.value,
+                  let checkPassword = self?.viewModel.checkPassword else { return }
+            self?.firstPwTextField.setPasswordFooter(checkPassword: checkPassword, state: state)
+            if state == .pwBlank {
                 self?.firstPwTextField.checkState(state: state, isCorrect: false)
             }
         }
         
         viewModel.secondPwState.bind { [weak self] _ in
-            guard let state = self?.viewModel.secondPwState.value else { return }
+            guard let state = self?.viewModel.secondPwState.value,
+                  let isCorrect = self?.viewModel.isCorrect else { return }
             if state == .complete {
-                self?.secondPwTextField.checkState(state: state, isCorrect: true)
+                self?.secondPwTextField.checkState(state: state, isCorrect: isCorrect)
             } else {
-                self?.secondPwTextField.checkState(state: state, isCorrect: false)
+                self?.secondPwTextField.checkState(state: state, isCorrect: isCorrect)
             }
         }
     }
@@ -246,16 +251,14 @@ private extension SignInFirstViewController {
         return !email.isEmpty && !first.isEmpty && !second.isEmpty && privacyButton.isSelected
     }
     
-    func updateText(textField: UITextField, range: NSRange, string: String, type: TextFieldType, state: Observable<TextState>) {
-        let currentText = textField.text ?? ""
-        guard let stringRange = Range(range, in: currentText) else { return }
-        let updatedString = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        nextButton.type.value = updatedString != "" ? .clickabled : .disabled
-        viewModel.checkForm(text: updatedString, type: type) { newState in
-            state.value = newState
-        }
-    }
+//    func updateText(textField: UITextField, range: NSRange, string: String, type: TextFieldType, state: Observable<TextState>) {
+//        let currentText = textField.text ?? ""
+//        guard let stringRange = Range(range, in: currentText) else { return }
+//        let updatedString = currentText.replacingCharacters(in: stringRange, with: string)
+//
+//        nextButton.type.value = updatedString != "" ? .clickabled : .disabled
+//        viewModel.checkEmail(email: updatedString)
+//    }
     
     @objc
     func didTapBackButton() {
@@ -281,11 +284,27 @@ extension SignInFirstViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch textField {
         case emailTextField.textField:
-            updateText(textField: textField, range: range, string: string, type: .normal, state: self.viewModel.emailState)
+            let currentText = textField.text ?? ""
+            guard let stringRange = Range(range, in: currentText) else { return true }
+            let updatedString = currentText.replacingCharacters(in: stringRange, with: string)
+            
+            nextButton.type.value = updatedString != "" ? .clickabled : .disabled
+            viewModel.checkEmail(email: updatedString)
+//            updateText(textField: textField, range: range, string: string, type: .normal, state: self.viewModel.emailState)
         case firstPwTextField.textField:
-            updateText(textField: textField, range: range, string: string, type: .password, state: self.viewModel.firstPwState)
+            let currentText = textField.text ?? ""
+            guard let stringRange = Range(range, in: currentText) else { return true }
+            let updatedString = currentText.replacingCharacters(in: stringRange, with: string)
+            nextButton.type.value = updatedString != "" ? .clickabled : .disabled
+            viewModel.checkPassword(password: updatedString, title: "비밀번호")
+//            updateText(textField: textField, range: range, string: string, type: .password, state: self.viewModel.firstPwState)
         case secondPwTextField.textField:
-            updateText(textField: textField, range: range, string: string, type: .password, state: self.viewModel.secondPwState)
+            let currentText = textField.text ?? ""
+            guard let stringRange = Range(range, in: currentText) else { return true }
+            let updatedString = currentText.replacingCharacters(in: stringRange, with: string)
+            nextButton.type.value = updatedString != "" ? .clickabled : .disabled
+            viewModel.checkPassword(password: updatedString, title: "비밀번호 재확인")
+//            updateText(textField: textField, range: range, string: string, type: .password, state: self.viewModel.secondPwState)
         default:
             break
         }

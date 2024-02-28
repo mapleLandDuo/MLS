@@ -7,6 +7,7 @@
 
 import UIKit
 
+import SafariServices
 import SnapKit
 
 class SignInFirstViewController: BasicController {
@@ -255,7 +256,9 @@ private extension SignInFirstViewController {
     }
     
     func didTapShowPrivacyButton() {
-        // 개인정보처리방침 웹뷰
+        guard let privacyPolicyURL = URL(string: "https://plip.kr/pcc/26c2c65d-d3ca-4903-91f2-50a049b20636/privacy/1.html") else { return }
+        let safariViewController = SFSafariViewController(url: privacyPolicyURL)
+        self.navigationController?.pushViewController(safariViewController, animated: true)
     }
     
     func didTapNextButton() {

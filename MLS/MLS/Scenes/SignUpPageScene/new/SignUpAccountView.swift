@@ -9,13 +9,13 @@ import UIKit
 
 import SnapKit
 
-protocol SignInAccountViewDelegate: AnyObject {
+protocol SignUpAccountViewDelegate: AnyObject {
     func didtapJobButton(job: String)
 }
 
-class SignInAccountView: UIView {
+class SignUpAccountView: UIView {
     // MARK: -Properties
-    weak var delegate: SignInAccountViewDelegate?
+    weak var delegate: SignUpAccountViewDelegate?
     
     // MARK: - Components
 
@@ -61,7 +61,7 @@ class SignInAccountView: UIView {
 }
 
 // MARK: - SetUp
-private extension SignInAccountView {
+private extension SignUpAccountView {
     func setUp() {
         setUpConstraints()
     }

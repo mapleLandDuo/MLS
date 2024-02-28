@@ -9,7 +9,7 @@ import Foundation
 
 import Firebase
 
-class SignInFirstViewModel {
+class SignUpFirstViewModel {
     // MARK: Properties
     var emailState: Observable<TextState> = Observable(nil)
     var firstPwState: Observable<TextState> = Observable(nil)
@@ -23,7 +23,7 @@ class SignInFirstViewModel {
 }
 
 // MARK: Methods
-extension SignInFirstViewModel {
+extension SignUpFirstViewModel {
     func checkEmail(email: String) {
         if email == "" {
             emailState.value = .emailBlank

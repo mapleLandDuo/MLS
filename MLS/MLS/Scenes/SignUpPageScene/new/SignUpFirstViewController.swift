@@ -10,10 +10,10 @@ import UIKit
 import SafariServices
 import SnapKit
 
-class SignInFirstViewController: BasicController {
+class SignUpFirstViewController: BasicController {
     // MARK: - Properties
 
-    private let viewModel: SignInFirstViewModel
+    private let viewModel: SignUpFirstViewModel
         
     // MARK: - Components
     
@@ -75,7 +75,7 @@ class SignInFirstViewController: BasicController {
     
     private let nextButton = CustomButton(type: .disabled, text: "다음으로")
     
-    init(viewModel: SignInFirstViewModel) {
+    init(viewModel: SignUpFirstViewModel) {
         self.viewModel = viewModel
         super.init()
     }
@@ -87,7 +87,7 @@ class SignInFirstViewController: BasicController {
 }
 
 // MARK: - Life Cycle
-extension SignInFirstViewController {
+extension SignUpFirstViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -96,7 +96,7 @@ extension SignInFirstViewController {
 }
 
 // MARK: - SetUp
-private extension SignInFirstViewController {
+private extension SignUpFirstViewController {
     func setUp() {
         emailTextField.textField.delegate = self
         firstPwTextField.textField.delegate = self
@@ -221,7 +221,7 @@ private extension SignInFirstViewController {
 }
 
 // MARK: - Bind
-private extension SignInFirstViewController {
+private extension SignUpFirstViewController {
     func bind() {
         viewModel.emailState.bind { [weak self] _ in
             guard let state = self?.viewModel.emailState.value else { return }
@@ -245,7 +245,7 @@ private extension SignInFirstViewController {
 }
 
 // MARK: - Method
-private extension SignInFirstViewController {
+private extension SignUpFirstViewController {
     func didTapPrivacyButton() {
         privacyButton.isSelected = !privacyButton.isSelected
         privacyButton.setImage(privacyButton.isSelected ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "square"), for: .normal)
@@ -258,7 +258,7 @@ private extension SignInFirstViewController {
     func didTapShowPrivacyButton() {
         guard let privacyPolicyURL = URL(string: "https://plip.kr/pcc/26c2c65d-d3ca-4903-91f2-50a049b20636/privacy/1.html") else { return }
         let safariViewController = SFSafariViewController(url: privacyPolicyURL)
-        self.navigationController?.pushViewController(safariViewController, animated: true)
+        navigationController?.pushViewController(safariViewController, animated: true)
     }
     
     func didTapNextButton() {
@@ -269,7 +269,13 @@ private extension SignInFirstViewController {
         checkTextField(state: viewModel.secondPwState.value, checkField: checkSecondPwField, blankState: .pwBlank)
         
         if viewModel.isValidSignUp() {
-            let vc = SignInSecondViewController(viewModel: SignInSecondViewModel())
+            guard let email = emailTextField.textField.text,
+                  let password = firstPwTextField.textField.text else { return }
+            let vm = SignUpSecondViewModel()
+            vm.user.id = email
+            vm.password = password
+            let vc = SignUpSecondViewController(viewModel: vm)
+                
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -321,7 +327,7 @@ private extension SignInFirstViewController {
     }
 }
 
-extension SignInFirstViewController: UITextFieldDelegate {
+extension SignUpFirstViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }

@@ -237,7 +237,7 @@ private extension LoginViewController {
     }
     
     func didTapSignUpButton() {
-        let vc = SignInFirstViewController(viewModel: SignInFirstViewModel())
+        let vc = SignUpFirstViewController(viewModel: SignUpFirstViewModel())
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

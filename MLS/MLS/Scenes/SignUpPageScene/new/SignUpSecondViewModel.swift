@@ -7,17 +7,21 @@
 
 import Foundation
 
-class SignInSecondViewModel {
+import FirebaseAuth
+
+class SignUpSecondViewModel {
     // MARK: Properties
     var nickNameState: Observable<TextState> = Observable(.default)
     var levelState: Observable<TextState> = Observable(.default)
     var isAccountExist: Observable<Bool> = Observable(nil)
     var job: Observable<Job> = Observable(nil)
-    var user: User?
+    
+    var user = User(id: "", nickName: "", state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
+    var password = ""
 }
 
 // MARK: Methods
-extension SignInSecondViewModel {
+extension SignUpSecondViewModel {
     func checkNickName(nickName: String) {
         if nickName != "" {
 //            if FirebaseManager.firebaseManager.checkNickNameExist() {
@@ -88,6 +92,22 @@ extension SignInSecondViewModel {
             completion(.lvOutOfBounds)
         } else {
             completion(.complete)
+        }
+    }
+    
+    func trySignUp(email: String, password: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
+        Auth.auth().createUser(withEmail: email, password: password) { _, error in
+            if error == nil {
+                FirebaseManager.firebaseManager.saveUser(email: email, nickName: nickName) { isSuccess, errorMessage in
+                    if isSuccess {
+                        completion(true, nil)
+                    } else {
+                        completion(false, errorMessage)
+                    }
+                }
+            } else {
+                completion(false, error?.localizedDescription)
+            }
         }
     }
 }

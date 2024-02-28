@@ -9,10 +9,10 @@ import UIKit
 
 import SnapKit
 
-class SignInSecondViewController: BasicController {
+class SignUpSecondViewController: BasicController {
     // MARK: - Properties
 
-    private let viewModel: SignInSecondViewModel
+    private let viewModel: SignUpSecondViewModel
         
     // MARK: - Components
     
@@ -74,15 +74,15 @@ class SignInSecondViewController: BasicController {
         return view
     }()
     
-    private let accountView: SignInAccountView = {
-        let view = SignInAccountView()
+    private let accountView: SignUpAccountView = {
+        let view = SignUpAccountView()
         view.isHidden = true
         return view
     }()
     
     private let completeButton = CustomButton(type: .disabled, text: "가입 완료")
     
-    init(viewModel: SignInSecondViewModel) {
+    init(viewModel: SignUpSecondViewModel) {
         self.viewModel = viewModel
         super.init()
     }
@@ -94,7 +94,7 @@ class SignInSecondViewController: BasicController {
 }
 
 // MARK: - Life Cycle
-extension SignInSecondViewController {
+extension SignUpSecondViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -103,7 +103,7 @@ extension SignInSecondViewController {
 }
 
 // MARK: - SetUp
-private extension SignInSecondViewController {
+private extension SignUpSecondViewController {
     func setUp() {
         accountView.levelTextField.isHidden = false
         
@@ -211,7 +211,7 @@ private extension SignInSecondViewController {
 }
 
 // MARK: - Bind
-private extension SignInSecondViewController {
+private extension SignUpSecondViewController {
     func bind() {
         viewModel.nickNameState.bind { [weak self] _ in
             self?.activeCompleteButton()
@@ -247,7 +247,7 @@ private extension SignInSecondViewController {
 }
 
 // MARK: - Method
-private extension SignInSecondViewController {
+private extension SignUpSecondViewController {
     func didTapNoneAccountButton() {
         setAccountButton(isExist: false)
         viewModel.isAccountExist.value = false
@@ -309,7 +309,7 @@ private extension SignInSecondViewController {
     }
 }
 
-extension SignInSecondViewController: UITextFieldDelegate {
+extension SignUpSecondViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // 엔터
         return true
@@ -348,7 +348,7 @@ extension SignInSecondViewController: UITextFieldDelegate {
     }
 }
 
-extension SignInSecondViewController: SignInAccountViewDelegate {
+extension SignUpSecondViewController: SignUpAccountViewDelegate {
     func didtapJobButton(job: String) {
         switch job {
         case "전사":

@@ -213,19 +213,34 @@ private extension SignInSecondViewController {
 private extension SignInSecondViewController {
     func bind() {
         viewModel.nickNameState.bind { [weak self] _ in
+            self?.activeCompleteButton()
             guard let state = self?.viewModel.nickNameState.value else { return }
-            let isCorrect = state == .complete
-            self?.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
+            if state != .default {
+                let isCorrect = state == .complete
+                self?.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
+            }
         }
         
         viewModel.levelState.bind { [weak self] _ in
-            guard let state = self?.viewModel.levelState.value else { return }
-            if state == .default {
-                self?.accountView.levelTextField.setLevelField()
+            self?.activeCompleteButton()
+            if let state = self?.viewModel.levelState.value {
+                if state == .default {
+                    self?.accountView.levelTextField.setLevelField()
+                } else {
+                    let isCorrect = state == .complete
+                    self?.accountView.levelTextField.checkState(state: state, isCorrect: isCorrect)
+                }
             } else {
-                let isCorrect = state == .complete
-                self?.accountView.levelTextField.checkState(state: state, isCorrect: isCorrect)
+                self?.accountView.levelTextField.footerLabel.isHidden = false
             }
+        }
+        
+        viewModel.isAccountExist.bind { [weak self] _ in
+            self?.activeCompleteButton()
+        }
+        
+        viewModel.job.bind { [weak self] _ in
+            self?.activeCompleteButton()
         }
     }
 }
@@ -234,10 +249,12 @@ private extension SignInSecondViewController {
 private extension SignInSecondViewController {
     func didTapNoneAccountButton() {
         setAccountButton(isExist: false)
+        viewModel.isAccountExist.value = false
     }
     
     func didTapAccountButton() {
         setAccountButton(isExist: true)
+        viewModel.isAccountExist.value = true
     }
     
     func didTapCompleteButton() {
@@ -265,6 +282,27 @@ private extension SignInSecondViewController {
         accountButton.isClicked.value = isExist
     }
     
+    func updateBorderColor(for textField: UITextField, state: TextState) {
+        let color: UIColor?
+        if state == .complete || state == .default {
+            color = UIColor.semanticColor.bolder.interactive.secondary
+        } else {
+            color = UIColor.semanticColor.bolder.distructive_bold
+        }
+        textField.superview?.layer.borderColor = color?.cgColor
+    }
+    
+    func activeCompleteButton() {
+        self.viewModel.isComplete { [weak self] isComplete in
+            print(isComplete)
+            if isComplete {
+                self?.completeButton.type.value = .clickabled
+            } else {
+                self?.completeButton.type.value = .disabled
+            }
+        }
+    }
+    
     @objc
     func didTapBackButton() {
         navigationController?.popViewController(animated: true)
@@ -283,12 +321,20 @@ extension SignInSecondViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
-        textField.superview?.layer.borderWidth = 1
+        switch textField {
+        case nickNameTextField.textField:
+            guard let state = viewModel.nickNameState.value else { return }
+            updateBorderColor(for: textField, state: state)
+        case accountView.levelTextField.textField:
+            guard let state = viewModel.levelState.value else { return }
+            updateBorderColor(for: textField, state: state)
+        default:
+            break
+        }
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        if textField == nickNameTextField {
+        if textField == nickNameTextField.textField {
             guard let text = textField.text else { return }
             viewModel.checkNickName(nickName: text)
         } else {

@@ -228,13 +228,17 @@ private extension SignInFirstViewController {
         }
         
         viewModel.firstPwState.bind { [weak self] _ in
-            guard let state = self?.viewModel.firstPwState.value else { return }
-            self?.checkFirstPwField(state: state)
+            guard let firstState = self?.viewModel.firstPwState.value,
+                  let secondState = self?.viewModel.secondPwState.value else { return }
+            self?.checkFirstPwField(state: firstState)
+            self?.checkSecondPwField(state: secondState)
         }
         
         viewModel.secondPwState.bind { [weak self] _ in
-            guard let state = self?.viewModel.secondPwState.value else { return }
-            self?.checkSecondPwField(state: state)
+            guard let firstState = self?.viewModel.firstPwState.value,
+                  let secondState = self?.viewModel.secondPwState.value else { return }
+            self?.checkFirstPwField(state: firstState)
+            self?.checkSecondPwField(state: secondState)
         }
     }
 }
@@ -274,6 +278,7 @@ private extension SignInFirstViewController {
     }
     
     func checkEmailField(state: TextState) {
+        if state == .complete {}
         emailTextField.checkState(state: state, isCorrect: viewModel.isCorrect)
     }
     
@@ -297,6 +302,16 @@ private extension SignInFirstViewController {
         }
     }
     
+    func updateBorderColor(for textField: UITextField, state: TextState) {
+        let color: UIColor?
+        if state == .complete || state == .default {
+            color = UIColor.semanticColor.bolder.interactive.secondary
+        } else {
+            color = UIColor.semanticColor.bolder.distructive_bold
+        }
+        textField.superview?.layer.borderColor = color?.cgColor
+    }
+    
     @objc
     func didTapBackButton() {
         navigationController?.popViewController(animated: true)
@@ -314,8 +329,19 @@ extension SignInFirstViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
-        textField.superview?.layer.borderWidth = 1
+        switch textField {
+        case emailTextField.textField:
+            guard let state = viewModel.emailState.value else { return }
+            updateBorderColor(for: textField, state: state)
+        case firstPwTextField.textField:
+            guard let state = viewModel.firstPwState.value else { return }
+            updateBorderColor(for: textField, state: state)
+        case secondPwTextField.textField:
+            guard let state = viewModel.secondPwState.value else { return }
+            updateBorderColor(for: textField, state: state)
+        default:
+            break
+        }
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -324,8 +350,10 @@ extension SignInFirstViewController: UITextFieldDelegate {
             guard let email = emailTextField.textField.text else { return }
             viewModel.checkEmail(email: email)
         case firstPwTextField.textField:
-            guard let password = firstPwTextField.textField.text else { return }
+            guard let password = firstPwTextField.textField.text,
+                  let checkPassword = secondPwTextField.textField.text else { return }
             viewModel.checkPassword(password: password)
+            viewModel.reCheckPassword(password: password, checkPassword: checkPassword)
         case secondPwTextField.textField:
             guard let password = firstPwTextField.textField.text,
                   let checkPassword = secondPwTextField.textField.text else { return }

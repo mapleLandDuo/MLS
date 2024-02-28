@@ -11,6 +11,9 @@ import FirebaseAuth
 
 class LoginViewModel {
     // MARK: - Properties
+    var userDefaultManager = UserDefaultsManager()
+    
+    var isAutoLogin: Observable<Bool> = Observable(false)
 }
 
 // MARK: - Methods

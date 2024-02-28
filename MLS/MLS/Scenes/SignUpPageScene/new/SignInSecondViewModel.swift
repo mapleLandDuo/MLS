@@ -10,9 +10,9 @@ import Foundation
 class SignInSecondViewModel {
     // MARK: Properties
     var nickNameState: Observable<TextState> = Observable(nil)
-    var levelState: Observable<TextState> = Observable(.default)
-    var isAccountExist: Bool?
-    var job: Job?
+    var levelState: Observable<TextState> = Observable(nil)
+    var isAccountExist: Observable<Bool> = Observable(nil)
+    var job: Observable<Job> = Observable(nil)
     var user: User?
 }
 
@@ -22,18 +22,14 @@ extension SignInSecondViewModel {
         if nickName != "" {
 //            if FirebaseManager.firebaseManager.checkNickNameExist() {
             if nickName == "nickName" {
-                // 존재
                 nickNameState.value = .nickNameExist
-            } else if (2 ... 8).contains(nickName.count) {
-                // 형식
+            } else if !(2 ... 8).contains(nickName.count) {
                 nickNameState.value = .nickNameNotCorrect
             } else {
-                // 성공
                 nickNameState.value = .complete
             }
         } else {
-            // 형식
-            nickNameState.value = .nickNameExist
+            nickNameState.value = .default
         }
     }
 
@@ -53,26 +49,35 @@ extension SignInSecondViewModel {
         }
     }
     
-    func checkAccount(completion: @escaping (TextState) -> Void) {
-        if isAccountExist == nil {
-            // 계정 유무 선택 필요
-            completion(.default)
-        } else if !checkJob() {
-            // 직업 고르기
-            completion(.default)
+    func isComplete(completion: @escaping (Bool) -> Void) {
+        guard let isAccountExist = isAccountExist.value else {
+            completion(false)
+            return
+        }
+        if isAccountExist {
+            guard nickNameState.value != .default else {
+                completion(false)
+                return
+            }
+            guard levelState.value != .default else {
+                completion(false)
+                return
+            }
+            guard job.value != nil else {
+                completion(false)
+                return
+            }
         } else {
-            isValidSignUp() { state in
-                completion(state)
+            guard nickNameState.value != .default else {
+                completion(false)
+                return
             }
         }
+        completion(true)
     }
     
-    func checkJob() -> Bool {
-        return job != nil
-    }
-    
-    func isValidSignUp(completion: @escaping(TextState) -> Void) {
-        guard let isAccountExist = isAccountExist else { return }
+    func isValidSignUp(completion: @escaping (TextState) -> Void) {
+        guard let isAccountExist = isAccountExist.value else { return }
         if nickNameState.value == .nickNameExist {
             completion(.nickNameExist)
         } else if nickNameState.value == .nickNameNotCorrect {

@@ -263,7 +263,24 @@ private extension SignUpSecondViewController {
             switch state {
             case .complete:
                 // 완료
-                print(self?.viewModel.user)
+                guard let account = self?.viewModel.isAccountExist.value else { return }
+//                if account {
+//                    // 계정 있음
+//                    guard let nickName = self?.nickNameTextField.textField.text,
+//                          let level = self?.accountView.levelTextField.textField.text,
+//                          let job = self?.viewModel.job.value else { return }
+//                    self?.viewModel.user.nickName = nickName
+//                    self?.viewModel.user.level = Int(level)
+//                    self?.viewModel.user.job = job
+//                    print("계정있음", self?.viewModel.user)
+//                } else {
+//                    // 계정 없음
+//                    guard let nickName = self?.nickNameTextField.textField.text else { return }
+//                    self?.viewModel.user.nickName = nickName
+//                    self?.viewModel.user.level = nil
+//                    self?.viewModel.user.job = nil
+//                    print("계정없음", self?.viewModel.user)
+//                }
             case .nickNameExist, .nickNameNotCorrect:
                 self?.nickNameTextField.checkState(state: state, isCorrect: false)
             case .lvNotInt, .lvOutOfBounds:

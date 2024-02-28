@@ -109,6 +109,7 @@ private extension SignInSecondViewController {
         
         nickNameTextField.textField.delegate = self
         accountView.levelTextField.textField.delegate = self
+        accountView.delegate = self
         
         setUpConstraints()
         setUpNavigation()
@@ -294,7 +295,6 @@ private extension SignInSecondViewController {
     
     func activeCompleteButton() {
         self.viewModel.isComplete { [weak self] isComplete in
-            print(isComplete)
             if isComplete {
                 self?.completeButton.type.value = .clickabled
             } else {
@@ -324,7 +324,11 @@ extension SignInSecondViewController: UITextFieldDelegate {
         switch textField {
         case nickNameTextField.textField:
             guard let state = viewModel.nickNameState.value else { return }
-            updateBorderColor(for: textField, state: state)
+            if state == .default {
+                updateBorderColor(for: textField, state: .nickNameNotCorrect)
+            } else {
+                updateBorderColor(for: textField, state: state)
+            }
         case accountView.levelTextField.textField:
             guard let state = viewModel.levelState.value else { return }
             updateBorderColor(for: textField, state: state)
@@ -340,6 +344,23 @@ extension SignInSecondViewController: UITextFieldDelegate {
         } else {
             guard let text = textField.text else { return }
             viewModel.checkLevel(level: text)
+        }
+    }
+}
+
+extension SignInSecondViewController: SignInAccountViewDelegate {
+    func didtapJobButton(job: String) {
+        switch job {
+        case "전사":
+            viewModel.job.value = .warrior
+        case "궁수":
+            viewModel.job.value = .archer
+        case "도적":
+            viewModel.job.value = .thief
+        case "법사":
+            viewModel.job.value = .mage
+        default:
+            break
         }
     }
 }

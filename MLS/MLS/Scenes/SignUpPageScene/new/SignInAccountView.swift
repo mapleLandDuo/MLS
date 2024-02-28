@@ -9,7 +9,14 @@ import UIKit
 
 import SnapKit
 
+protocol SignInAccountViewDelegate: AnyObject {
+    func didtapJobButton(job: String)
+}
+
 class SignInAccountView: UIView {
+    // MARK: -Properties
+    weak var delegate: SignInAccountViewDelegate?
+    
     // MARK: - Components
 
     lazy var levelTextField = CustomTextField(type: .normal, header: "레벨을 입력해주세요", placeHolder: "ex) 30", footer: "숫자 1~200 사이의 값만 넣어주세요")
@@ -35,7 +42,9 @@ class SignInAccountView: UIView {
         let button = CustomButton(type: .default, text: text)
         button.setButtonClicked(backgroundColor: .themeColor(color: .base, value: .value_white), borderColor: .semanticColor.bolder.secondary, titleColor: .semanticColor.text.secondary, clickedBackgroundColor: nil, clickedBorderColor: .semanticColor.bolder.interactive.secondary_pressed, clickedTitleColor: .semanticColor.text.primary)
         button.addAction(UIAction(handler: { [weak self] _ in
+            guard let job = button.titleLabel?.text else { return }
             self?.rollButtonStackView.arrangedSubviews.forEach { ($0 as? CustomButton)?.isClicked.value = $0 == button }
+            self?.delegate?.didtapJobButton(job: text)
         }), for: .touchUpInside)
         return button
     }

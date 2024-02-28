@@ -9,8 +9,8 @@ import Foundation
 
 class SignInSecondViewModel {
     // MARK: Properties
-    var nickNameState: Observable<TextState> = Observable(nil)
-    var levelState: Observable<TextState> = Observable(nil)
+    var nickNameState: Observable<TextState> = Observable(.default)
+    var levelState: Observable<TextState> = Observable(.default)
     var isAccountExist: Observable<Bool> = Observable(nil)
     var job: Observable<Job> = Observable(nil)
     var user: User?

@@ -57,6 +57,7 @@ class RecentSearchKeywordCell: UICollectionViewCell {
 
 // MARK: - SetUp
 private extension RecentSearchKeywordCell {
+    
     func setUp() {
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.semanticColor.bolder.primary?.cgColor

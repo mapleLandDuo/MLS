@@ -137,6 +137,7 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     
     func didTapJobBadgeButton() {
         print(#function)
+        headerView.resetJobBadge(job: "전사", level: "56")
     }
     
     func didTapMyPageButton() {
@@ -153,7 +154,10 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
     
     func didTapShortCutButton() {
         print(#function)
-        headerView.resetJobBadge(job: "전사", level: "56")
+        let viewModel = DictSearchViewModel()
+        viewModel.fetchAllSearchData()
+        let vc = DictSearchViewController(viewModel: viewModel)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

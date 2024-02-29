@@ -7,27 +7,6 @@
 
 import UIKit
 
-struct DictSectionDatas {
-    let iconImage: UIImage?
-    let description: String
-    var datas: [DictSectionData]
-}
-
-struct DictSectionData {
-    let image: String
-    let title: String
-    let level: String
-    let type: DictType
-}
-
-enum DictType {
-    case item
-    case monster
-    case npc
-    case map
-    case quest
-}
-
 class DictLandingViewModel {
     // MARK: - Properties
 

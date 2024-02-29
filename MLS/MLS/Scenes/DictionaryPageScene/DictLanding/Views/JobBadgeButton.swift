@@ -51,13 +51,13 @@ class JobBadgeButton: UIButton {
         self.levelLabel.text = level
         switch job {
         case "전사":
-            self.backgroundColor = .jobBadgeColor.warrior
+            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
         case "법사":
-            self.backgroundColor = .jobBadgeColor.mage
+            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
         case "도적":
-            self.backgroundColor = .jobBadgeColor.thief
+            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
         case "궁수":
-            self.backgroundColor = .jobBadgeColor.archer
+            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
         default:
             self.backgroundColor = .semanticColor.bg.secondary
             dotImage.removeFromSuperview()
@@ -112,13 +112,13 @@ extension JobBadgeButton {
         stackView.addArrangedSubview(levelLabel)
         switch job {
         case "전사":
-            self.backgroundColor = .jobBadgeColor.warrior
+            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
         case "법사":
-            self.backgroundColor = .jobBadgeColor.mage
+            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
         case "도적":
-            self.backgroundColor = .jobBadgeColor.thief
+            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
         case "궁수":
-            self.backgroundColor = .jobBadgeColor.archer
+            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
         default:
             self.backgroundColor = .semanticColor.bg.secondary
             dotImage.removeFromSuperview()

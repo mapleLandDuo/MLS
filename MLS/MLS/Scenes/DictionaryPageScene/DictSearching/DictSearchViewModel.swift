@@ -22,9 +22,50 @@ class DictSearchViewModel {
     ])
     
     let selectedMenuIndex: Observable<Int> = Observable(0)
+    
+    let itemSorted: Observable<DictSearchSortedEnum> = Observable(.defaultSorted)
+    let monsterSorted: Observable<DictSearchSortedEnum> = Observable(.defaultSorted)
+    let mapSorted: Observable<DictSearchSortedEnum> = Observable(.defaultSorted)
+    let npcSorted: Observable<DictSearchSortedEnum> = Observable(.defaultSorted)
+    let questSorted: Observable<DictSearchSortedEnum> = Observable(.defaultSorted)
 }
 
 extension DictSearchViewModel {
+    
+    func fetchSortedEnum(type: DictType) -> DictSearchSortedEnum {
+        switch type {
+        case .item:
+            guard let sorted = itemSorted.value else { return .defaultSorted}
+            return sorted
+        case .monster:
+            guard let sorted = monsterSorted.value else { return .defaultSorted}
+            return sorted
+        case .npc:
+            guard let sorted = mapSorted.value else { return .defaultSorted}
+            return sorted
+        case .map:
+            guard let sorted = npcSorted.value else { return .defaultSorted}
+            return sorted
+        case .quest:
+            guard let sorted = questSorted.value else { return .defaultSorted}
+            return sorted
+        }
+    }
+    
+    func setSortedEnum(type: DictType, sorted: DictSearchSortedEnum) {
+        switch type {
+        case .item:
+            itemSorted.value = sorted
+        case .monster:
+            monsterSorted.value = sorted
+        case .npc:
+            npcSorted.value = sorted
+        case .map:
+            mapSorted.value = sorted
+        case .quest:
+            questSorted.value = sorted
+        }
+    }
     
     func fetchSearchData() -> [DictSectionDatas] {
         guard let data = searchData.value else { return [] }

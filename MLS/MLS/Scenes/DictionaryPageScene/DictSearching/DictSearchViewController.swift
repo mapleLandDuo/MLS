@@ -67,10 +67,18 @@ class DictSearchViewController: BasicController {
         return view
     }()
     
-    private let searchResultTableView: UITableView = {
+    private let searchTotalResultTableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
         view.separatorStyle = .none
         view.backgroundColor = .white
+        return view
+    }()
+    
+    private let searchMenuTappedResultTableView: UITableView = {
+        let view = UITableView(frame: .zero, style: .plain)
+        view.separatorStyle = .none
+        view.backgroundColor = .white
+        view.isHidden = true
         return view
     }()
     
@@ -123,7 +131,9 @@ private extension DictSearchViewController {
             guard let keywords = keywords else { return }
             manager.setRecentSearchKeyWord(keyWords: keywords)
             self?.recentSearchKeywordCollectionView.reloadData()
+            self?.searchMenuTappedResultTableView.reloadData()
         }
+        
         viewModel.searchData.bind { [weak self] datas in
             guard let datas = datas else { return }
             let count = datas.map({$0.datas.count}).reduce(0) { $0 + $1 }
@@ -132,14 +142,20 @@ private extension DictSearchViewController {
             } else {
                 self?.searchResultEmptyView.isHidden = true
             }
-            self?.searchResultTableView.reloadData()
+            self?.searchTotalResultTableView.reloadData()
+            self?.searchMenuTappedResultTableView.reloadData()
         }
+        
         viewModel.searchMenus.bind { [weak self] _ in
             self?.searchMenuCollectionView.reloadData()
+            self?.searchMenuTappedResultTableView.reloadData()
         }
+        
         viewModel.selectedMenuIndex.bind { [weak self] index in
             guard let index = index else { return }
             if index != 0 {
+                self?.searchTotalResultTableView.isHidden = true
+                self?.searchMenuTappedResultTableView.isHidden = false
                 guard let count = self?.viewModel.searchData.value?[index - 1].datas.count else { return }
                 if count == 0 {
                     self?.searchResultEmptyView.isHidden = false
@@ -147,6 +163,8 @@ private extension DictSearchViewController {
                     self?.searchResultEmptyView.isHidden = true
                 }
             } else {
+                self?.searchTotalResultTableView.isHidden = false
+                self?.searchMenuTappedResultTableView.isHidden = true
                 guard let datas = self?.viewModel.searchData.value else { return }
                 let count = datas.map({$0.datas.count}).reduce(0){ $0 + $1 }
                 if count == 0 {
@@ -155,7 +173,24 @@ private extension DictSearchViewController {
                     self?.searchResultEmptyView.isHidden = true
                 }
             }
-            self?.searchResultTableView.reloadData()
+            self?.searchTotalResultTableView.reloadData()
+            self?.searchMenuTappedResultTableView.reloadData()
+        }
+        
+        viewModel.itemSorted.bind { [weak self]_ in
+            self?.searchMenuTappedResultTableView.reloadData()
+        }
+        viewModel.monsterSorted.bind { [weak self]_ in
+            self?.searchMenuTappedResultTableView.reloadData()
+        }
+        viewModel.mapSorted.bind { [weak self]_ in
+            self?.searchMenuTappedResultTableView.reloadData()
+        }
+        viewModel.npcSorted.bind { [weak self]_ in
+            self?.searchMenuTappedResultTableView.reloadData()
+        }
+        viewModel.questSorted.bind { [weak self]_ in
+            self?.searchMenuTappedResultTableView.reloadData()
         }
     }
 }
@@ -171,7 +206,8 @@ private extension DictSearchViewController {
     }
     
     func setUpRegister() {
-        searchResultTableView.register(DictSearchDataCell.self, forCellReuseIdentifier: DictSearchDataCell.identifier)
+        searchTotalResultTableView.register(DictSearchDataCell.self, forCellReuseIdentifier: DictSearchDataCell.identifier)
+        searchMenuTappedResultTableView.register(DictSearchDataCell.self, forCellReuseIdentifier: DictSearchDataCell.identifier)
         recentSearchKeywordCollectionView.register(RecentSearchKeywordCell.self, forCellWithReuseIdentifier: RecentSearchKeywordCell.identifier)
         searchMenuCollectionView.register(DictSearchMenuCell.self, forCellWithReuseIdentifier: DictSearchMenuCell.identifier)
     }
@@ -182,8 +218,11 @@ private extension DictSearchViewController {
         recentSearchKeywordCollectionView.dataSource = self
         recentSearchKeywordCollectionView.delegate = self
         
-        searchResultTableView.dataSource = self
-        searchResultTableView.delegate = self
+        searchTotalResultTableView.dataSource = self
+        searchTotalResultTableView.delegate = self
+        
+        searchMenuTappedResultTableView.dataSource = self
+        searchMenuTappedResultTableView.delegate = self
         
         searchMenuCollectionView.dataSource = self
         searchMenuCollectionView.delegate = self
@@ -212,7 +251,8 @@ private extension DictSearchViewController {
         searchingView.addSubview(recentSearchKeywordCollectionView)
         searchingView.addSubview(recentSearchClearButton)
         searchView.addSubview(searchMenuCollectionView)
-        searchView.addSubview(searchResultTableView)
+        searchView.addSubview(searchTotalResultTableView)
+        searchView.addSubview(searchMenuTappedResultTableView)
         searchView.addSubview(searchResultEmptyView)
 
         headerView.snp.makeConstraints {
@@ -245,7 +285,12 @@ private extension DictSearchViewController {
             $0.height.equalTo(Constants.spacings.xl_3 + 3)
         }
         
-        searchResultTableView.snp.makeConstraints {
+        searchTotalResultTableView.snp.makeConstraints {
+            $0.top.equalTo(searchMenuCollectionView.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        searchMenuTappedResultTableView.snp.makeConstraints {
             $0.top.equalTo(searchMenuCollectionView.snp.bottom)
             $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
@@ -257,6 +302,39 @@ private extension DictSearchViewController {
     }
 }
 
+extension DictSearchViewController: DictSearchFilterHeaderViewDelegate {
+    func didTapFilterButton(type: DictType) {
+        let vc = DictSearchFilterViewController(type: type)
+        vc.modalPresentationStyle = .custom
+        vc.transitioningDelegate = self
+        vc.title = "filter"
+        present(vc, animated: true)
+    }
+    
+    func didTapFilterResetButton(type: DictType) {
+        print(type)
+    }
+    
+    
+    func didTapSortedButton(type: DictType) {
+        var sorted = viewModel.fetchSortedEnum(type: type)
+        let vc = DictSearchSortedViewController(type: type, selectSortedEnum: sorted)
+        vc.modalPresentationStyle = .custom
+        vc.transitioningDelegate = self
+        vc.delegate = self
+        vc.title = "sorted"
+        present(vc, animated: true)
+    }
+}
+
+extension DictSearchViewController: DictSearchSortedViewControllerDelegate {
+    func viewDidDisappear(type: DictType, sortedEnum: DictSearchSortedEnum) {
+        viewModel.setSortedEnum(type: type, sorted: sortedEnum)
+    }
+    
+    
+    
+}
 extension DictSearchViewController: DictSectionHeaderViewDelegate {
     func didTapShowButton(title: String?) {
         print(title)
@@ -274,6 +352,31 @@ extension DictSearchViewController: RecentSearchKeywordCellDelegate {
             searchView.isHidden = true
             searchingView.isHidden = false
         }
+    }
+}
+
+extension DictSearchViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    
+        guard let title = presented.title else { return nil }
+        
+        switch viewModel.fetchMenuIndex() {
+        case 1:
+            if title == "filter" {
+                return PresentationController(presentedViewController: presented, presenting: presenting, size: DictType.monster.filterControllerSize)
+            } else {
+                return PresentationController(presentedViewController: presented, presenting: presenting, size: DictType.monster.sortedControllerSize)
+            }
+        case 2:
+            if title == "filter" {
+                return PresentationController(presentedViewController: presented, presenting: presenting, size: DictType.item.filterControllerSize)
+            } else {
+                return PresentationController(presentedViewController: presented, presenting: presenting, size: DictType.item.sortedControllerSize)
+            }
+        default:
+            return nil
+        }
+        
     }
 }
 
@@ -384,7 +487,8 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             return viewModel.searchData.value?.filter({!$0.datas.isEmpty}).count ?? 0
         default:
-            return 1
+            let count = viewModel.searchData.value?[viewModel.fetchMenuIndex() - 1].datas.count ?? 0
+            return count == 0 ? 0 : 1
         }
         
     }
@@ -405,23 +509,63 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let datas = viewModel.searchData.value?.filter({!$0.datas.isEmpty}) else { return nil }
-        let view = DictSectionHeaderView(image: datas[section].iconImage, title: datas[section].description)
-        view.delegate = self
-        return view
+        switch tableView {
+        case self.searchTotalResultTableView:
+            guard let datas = viewModel.searchData.value?.filter({!$0.datas.isEmpty}) else { return nil }
+            let view = DictSectionHeaderView(image: datas[section].iconImage, title: datas[section].description)
+            view.delegate = self
+            return view
+        default :
+            switch viewModel.fetchMenuIndex() {
+            case 1:
+                let view = DictSearchFilterHeaderView(selectedMenuIndex: viewModel.fetchMenuIndex(), sorted: viewModel.fetchSortedEnum(type: .monster))
+                view.delegate = self
+                return view
+            case 2:
+                let view = DictSearchFilterHeaderView(selectedMenuIndex: viewModel.fetchMenuIndex(), sorted: viewModel.fetchSortedEnum(type: .item))
+                view.delegate = self
+                return view
+            case 3:
+                let view = DictSearchFilterHeaderView(selectedMenuIndex: viewModel.fetchMenuIndex(), sorted: viewModel.fetchSortedEnum(type: .map))
+                view.delegate = self
+                return view
+            case 4:
+                let view = DictSearchFilterHeaderView(selectedMenuIndex: viewModel.fetchMenuIndex(), sorted: viewModel.fetchSortedEnum(type: .npc))
+                view.delegate = self
+                return view
+            case 5:
+                let view = DictSearchFilterHeaderView(selectedMenuIndex: viewModel.fetchMenuIndex(), sorted: viewModel.fetchSortedEnum(type: .quest))
+                view.delegate = self
+                return view
+            default:
+                let view = DictSearchFilterHeaderView(selectedMenuIndex: viewModel.fetchMenuIndex(), sorted: .defaultSorted)
+                view.delegate = self
+                return view
+            }
+
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let datas = viewModel.searchData.value?.filter({!$0.datas.isEmpty}) else { return }
-        print(datas[indexPath.section].datas[indexPath.row])
+        print("tap")
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        switch section {
-        case 0:
-            return Constants.spacings.lg + 48
-        default:
-            return Constants.spacings.lg + 24 + Constants.spacings.xl_3
+        switch tableView {
+        case self.searchTotalResultTableView:
+            switch section {
+            case 0:
+                return Constants.spacings.lg + 48
+            default:
+                return Constants.spacings.lg + 24 + Constants.spacings.xl_3
+            }
+        default :
+            switch viewModel.fetchMenuIndex() {
+            case 1,2:
+                return 102
+            default:
+                return 0
+            }
         }
     }
     

@@ -81,7 +81,7 @@ private extension FindPasswordViewController {
             guard let text = self?.emailTextField.textField.text else { return }
             self?.viewModel.checkEmailExist(email: text) { [weak self] isExist in
                 if isExist {
-                    // 이메일 보내기
+                    self?.viewModel.findPassword(email: text)
                 } else {
                     self?.emailTextField.checkState(state: .emailCheck, isCorrect: isExist)
                     self?.emailTextField.snp.remakeConstraints {

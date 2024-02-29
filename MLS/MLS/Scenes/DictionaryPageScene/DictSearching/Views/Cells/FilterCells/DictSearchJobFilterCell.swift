@@ -9,16 +9,22 @@ import UIKit
 
 import SnapKit
 
+protocol DictSearchJobFilterCellDelegate: BasicController {
+    func didTapJobButton(job:String)
+}
+
 class DictSearchJobFilterCell: UITableViewCell {
-    
     
     // MARK: - Properties
     
     private let jobs = ["전사", "궁수", "도적", "법사"]
 
+    weak var delegate: DictSearchJobFilterCellDelegate?
     
     // MARK: - Components
 
+    var choiceJob = ""
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_md, fontType: .bold)
@@ -51,7 +57,9 @@ class DictSearchJobFilterCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictSearchJobFilterCell {
+    
     func setUp() {
         setUpConstraints()
         jobCollectionView.delegate = self
@@ -84,8 +92,15 @@ extension DictSearchJobFilterCell: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchJobButtonCell.identifier, for: indexPath) as? DictSearchJobButtonCell else { return  UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchJobButtonCell.identifier, for: indexPath) as? DictSearchJobButtonCell else { return UICollectionViewCell() }
         cell.bind(job: jobs[indexPath.row])
+        if choiceJob == jobs[indexPath.row] {
+            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
+        }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didTapJobButton(job: jobs[indexPath.row])
     }
 }

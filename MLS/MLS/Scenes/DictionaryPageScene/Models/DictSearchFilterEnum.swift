@@ -12,7 +12,6 @@ enum DictSearchFilterEnum: CaseIterable {
     case levelRange
     
     var cellHeight: CGFloat {
-        let defaultHegiht = 48 + Constants.spacings.xl
         switch self {
         case .job:
             return Constants.spacings.xl + Constants.spacings.sm + 48 + Constants.spacings.xl_2
@@ -20,4 +19,9 @@ enum DictSearchFilterEnum: CaseIterable {
             return Constants.spacings.xl + Constants.spacings.sm + Constants.spacings.xl_3 + Constants.spacings.xl_2
         }
     }
+}
+
+struct DictSearchFilter {
+    var job: String?
+    var levelRange: (Int, Int)?
 }

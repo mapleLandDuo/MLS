@@ -64,7 +64,6 @@ class DictSearchFilterHeaderView: UIView {
     
     private let sortedLabel: UILabel = {
         let label = UILabel()
-        label.text = "레벨 높은 순"
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
         label.textColor = .semanticColor.text.primary
         return label
@@ -101,6 +100,7 @@ class DictSearchFilterHeaderView: UIView {
     
 }
 
+// MARK: - SetUp
 private extension DictSearchFilterHeaderView {
     
     func setUp() {
@@ -167,8 +167,6 @@ private extension DictSearchFilterHeaderView {
         sortedDownImage.snp.makeConstraints {
             $0.size.equalTo(20)
         }
-        
-
     }
 }
 

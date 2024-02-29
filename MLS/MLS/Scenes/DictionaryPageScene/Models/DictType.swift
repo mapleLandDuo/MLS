@@ -18,19 +18,9 @@ enum DictType: String {
     var sortedArray: [DictSearchSortedEnum] {
         switch self {
         case .item:
-            return [
-                .defaultSorted,
-                .highestLevel,
-                .lowestLevel
-            ]
+            return [.defaultSorted, .highestLevel, .lowestLevel ]
         case .monster:
-            return [
-                .defaultSorted,
-                .highestLevel,
-                .lowestLevel,
-                .highestExp,
-                .lowestExp
-            ]
+            return [ .defaultSorted, .highestLevel, .lowestLevel, .highestExp, .lowestExp]
         case .npc:
             return [.defaultSorted]
         case .map:

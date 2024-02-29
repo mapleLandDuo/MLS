@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 protocol DictSearchSortedViewControllerDelegate: BasicController {
-    func viewDidDisappear(type: DictType, sortedEnum: DictSearchSortedEnum)
+    func viewWillDisappear(type: DictType, sortedEnum: DictSearchSortedEnum)
 }
 
 class DictSearchSortedViewController: BasicController {
@@ -55,13 +55,14 @@ extension DictSearchSortedViewController {
         setUp()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        delegate?.viewDidDisappear(type: type, sortedEnum: selectSortedEnum)
+    override func viewWillDisappear(_ animated: Bool) {
+        delegate?.viewWillDisappear(type: type, sortedEnum: selectSortedEnum)
     }
 }
 
 // MARK: - SetUp
 private extension DictSearchSortedViewController {
+    
     func setUp() {
         setUpConstraints()
         tableview.delegate = self

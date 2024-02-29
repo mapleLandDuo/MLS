@@ -50,8 +50,8 @@ class DictSearchSortedCell: UITableViewCell {
 }
 
 // MARK: - SetUp
-
 private extension DictSearchSortedCell {
+    
     func setUp() {
         setUpConstraints()
     }
@@ -74,6 +74,7 @@ private extension DictSearchSortedCell {
     }
 }
 
+// MARK: - Bind
 extension DictSearchSortedCell {
     func bind(title: String) {
         sortedLabel.text = title

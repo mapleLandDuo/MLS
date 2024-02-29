@@ -54,7 +54,7 @@ class DictSectionHeaderView: UIView {
     }
     
 }
-
+// MARK: - SetUp
 private extension DictSectionHeaderView {
     
     func setUp() {

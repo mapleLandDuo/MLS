@@ -11,6 +11,8 @@ import SnapKit
 
 class DictSearchJobButtonCell: UICollectionViewCell {
     
+    // MARK: - Components
+
     private let jobLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_md, fontType: .semiBold)
@@ -43,7 +45,9 @@ class DictSearchJobButtonCell: UICollectionViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictSearchJobButtonCell {
+    
     func setUp() {
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.semanticColor.bolder.secondary?.cgColor
@@ -59,6 +63,7 @@ private extension DictSearchJobButtonCell {
     }
 }
 
+// MARK: - Bind
 extension DictSearchJobButtonCell {
     func bind(job: String) {
         jobLabel.text = job

@@ -219,14 +219,21 @@ class SqliteManager {
     }
 
     // 필터링 아이템
-    func filterItem(divisionName: String?, rollName: String?, minLv: Int?, maxLv: Int?, completion: @escaping ([DictItem]) -> Void) {
+    
+    func filterItem(searchKeyword: String?, divisionName: String?, rollName: String?, minLv: Int?, maxLv: Int?, completion: @escaping ([DictItem]) -> Void) {
         var result: [DictItem] = []
         var index = 0
         var query = "SELECT * FROM dictItemTable"
         
+        if let searchKeyword = searchKeyword {
+            query += " WHERE name LIKE '%\(searchKeyword)%'"
+            index += 1
+        }
+        
         if let divisionName = divisionName {
             let divisionString = divisionName.replacingOccurrences(of: "'", with: "''")
-            query += " WHERE division = '\(divisionString)'"
+            query = index == 0 ? query + " WHERE " : query + " AND "
+            query += "division = '\(divisionString)'"
             index += 1
         }
         
@@ -238,7 +245,7 @@ class SqliteManager {
         
         if let minLv = minLv, let maxLv = maxLv {
             query = index == 0 ? query + " WHERE " : query + "AND "
-            query += "EXISTS (SELECT * FROM json_each(dictItemTable.\(FieldMenu.detailValues)) WHERE json_extract(value, '$.name') = 'LEVEL' AND CAST(json_extract(value, '$.description') AS INTEGER) BETWEEN \(minLv) AND \(maxLv))"
+            query += "EXISTS (SELECT * FROM json_each(dictItemTable.\(FieldMenu.defaultValues)) WHERE json_extract(value, '$.name') = 'LEVEL' AND CAST(json_extract(value, '$.description') AS INTEGER) BETWEEN \(minLv) AND \(maxLv))"
             index += 1
         }
         
@@ -251,11 +258,40 @@ class SqliteManager {
         } catch {
             print("Fetch failed: \(error)")
         }
-        
         completion(result)
     }
 
     // 필터링 몬스터
+    
+    func filterMonster(searchKeyword: String?, minLv: Int?, maxLv: Int?, completion: @escaping ([DictMonster]) -> Void) {
+        var result: [DictMonster] = []
+        var index = 0
+        var query = "SELECT * FROM dictMonsterTable"
+        
+        if let searchKeyword = searchKeyword {
+            query += " WHERE name LIKE '%\(searchKeyword)%'"
+            index += 1
+        }
+        
+        if let minLv = minLv, let maxLv = maxLv {
+            query = index == 0 ? query + " WHERE " : query + "AND "
+            query += "EXISTS (SELECT * FROM json_each(dictMonsterTable.\(FieldMenu.defaultValues)) WHERE json_extract(value, '$.name') = 'LEVEL' AND CAST(json_extract(value, '$.description') AS INTEGER) BETWEEN \(minLv) AND \(maxLv))"
+            index += 1
+        }
+        
+        do {
+            for row in try self.db!.prepare(query) {
+                if let item = decodeMonster(row: row) {
+                    result.append(item)
+                }
+            }
+        } catch {
+            print("Fetch failed: \(error)")
+        }
+        
+        completion(result)
+    }
+    
     func filterMonster(minLv: Int, maxLv: Int, completion: @escaping ([DictMonster]) -> Void) {
         var result: [DictMonster] = []
         let query = "SELECT * FROM (SELECT *, CAST(json_extract(value, '$.description') AS INTEGER) as level FROM dictMonsterTable, json_each(dictMonsterTable.defaultValues) WHERE json_extract(value, '$.name') = 'LEVEL') WHERE level BETWEEN \(minLv) AND \(maxLv) ORDER BY level ASC"

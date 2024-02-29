@@ -155,7 +155,7 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
     func didTapShortCutButton() {
         print(#function)
         let viewModel = DictSearchViewModel()
-        viewModel.fetchAllData()
+        viewModel.fetchAllSearchData()
         let vc = DictSearchViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(vc, animated: true)
     }

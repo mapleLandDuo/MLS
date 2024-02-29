@@ -9,8 +9,16 @@ import UIKit
 
 import SnapKit
 
+protocol DictSearchLevelRangeCellDelegate: BasicController {
+    func availableRange(firstNum: Int, secondNum: Int)
+}
+
 class DictSearchLevelRangeCell: UITableViewCell {
     
+    // MARK: - Properties
+    
+    weak var delegate: DictSearchLevelRangeCellDelegate?
+
     // MARK: - Components
 
     private let titleLabel: UILabel = {
@@ -77,9 +85,13 @@ class DictSearchLevelRangeCell: UITableViewCell {
     }
 }
 
+// MARK: - SetUp
 private extension DictSearchLevelRangeCell {
+    
     func setUp() {
         setUpConstraints()
+        leftTextField.delegate = self
+        rightTextField.delegate = self
     }
     
     func setUpConstraints() {
@@ -122,6 +134,45 @@ private extension DictSearchLevelRangeCell {
             $0.height.equalTo(Constants.spacings.xl_3)
             $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
         }
+    }
+}
+
+extension DictSearchLevelRangeCell: UITextFieldDelegate {
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        switch textField {
+        case leftTextField:
+            rightTextField.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+            leftTextField.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary?.cgColor
+        case rightTextField:
+            leftTextField.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+            rightTextField.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary?.cgColor
+        default:
+            print("등록되지 않은 텍스트 필드")
+        }
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        textField.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+        guard let firstString = leftTextField.text else { return true }
+        guard let firstNum = Int(firstString) else { return true }
+        guard let secondString = rightTextField.text else { return true }
+        guard let secondNum = Int(secondString) else { return true }
         
+        if (firstNum...150).contains(secondNum) {
+            delegate?.availableRange(firstNum: firstNum, secondNum: secondNum)
+        } else {
+            rightTextField.text = nil
+        }
+        return true
+    }
+}
+
+// MARK: - Bind
+extension DictSearchLevelRangeCell {
+    func bind(firstNum: String, secondNum: String) {
+        leftTextField.text = firstNum
+        rightTextField.text = secondNum
     }
 }

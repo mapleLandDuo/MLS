@@ -9,10 +9,21 @@ import UIKit
 
 import SnapKit
 
+protocol DictSearchFilterViewControllerDelegate: BasicController {
+    func didTapResetButton(type: DictType)
+    func didTapApplyButton(type: DictType, datas: [Any], filter: DictSearchFilter)
+}
+
 class DictSearchFilterViewController: BasicController {
     // MARK: - Properties
     
     private let type: DictType
+    
+    private var filter: DictSearchFilter
+    
+    private var searchKeyword: String
+    
+    weak var delegate: DictSearchFilterViewControllerDelegate?
     
     // MARK: - Components
     
@@ -55,8 +66,10 @@ class DictSearchFilterViewController: BasicController {
         return button
     }()
     
-    init(type: DictType) {
+    init(type: DictType, filter: DictSearchFilter, searchKeyword: String) {
         self.type = type
+        self.filter = filter
+        self.searchKeyword = searchKeyword
         super.init()
     }
     
@@ -77,10 +90,27 @@ extension DictSearchFilterViewController {
 private extension DictSearchFilterViewController {
     func setUp() {
         setUpConstraints()
+        setUpAddAction()
         filterTableView.delegate = self
         filterTableView.dataSource = self
         filterTableView.register(DictSearchJobFilterCell.self, forCellReuseIdentifier: DictSearchJobFilterCell.identifier)
         filterTableView.register(DictSearchLevelRangeCell.self, forCellReuseIdentifier: DictSearchLevelRangeCell.identifier)
+    }
+    
+    func setUpAddAction() {
+        applyButton.addAction(UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.filterDatas() { datas in
+                self.delegate?.didTapApplyButton(type: self.type, datas: datas, filter: self.filter)
+            }
+            self.dismiss(animated: true)
+        }), for: .primaryActionTriggered)
+        
+        resetButton.addAction(UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.didTapResetButton(type: self.type)
+            self.dismiss(animated: true)
+        }), for: .primaryActionTriggered)
     }
     
     func setUpConstraints() {
@@ -102,6 +132,31 @@ private extension DictSearchFilterViewController {
     }
 }
 
+// MARK: - Methods
+private extension DictSearchFilterViewController {
+    func filterDatas(completion: @escaping ([Any]) -> Void) {
+        let manager = SqliteManager()
+        switch type {
+        case .monster:
+            let minLevel = filter.levelRange?.0 ?? nil
+            let maxLevel = filter.levelRange?.1 ?? nil
+            manager.filterMonster(searchKeyword: searchKeyword, minLv: minLevel, maxLv: maxLevel) { monsters in
+                completion(monsters)
+            }
+        case .item:
+            let jobName = filter.job ?? nil
+            let minLevel = filter.levelRange?.0 ?? nil
+            let maxLevel = filter.levelRange?.1 ?? nil
+            manager.filterItem(searchKeyword: searchKeyword, divisionName: nil, rollName: jobName, minLv: minLevel, maxLv: maxLevel) { items in
+                completion(items)
+            }
+        default:
+            print(#function, "switch default")
+        }
+        
+    }
+}
+
 extension DictSearchFilterViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return type.filterArray.count
@@ -113,14 +168,31 @@ extension DictSearchFilterViewController: UITableViewDelegate, UITableViewDataSo
         case .job:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictSearchJobFilterCell.identifier) as? DictSearchJobFilterCell else { return UITableViewCell() }
             cell.selectionStyle = .none
+            if let choiceJob = filter.job {
+                cell.choiceJob = choiceJob
+            }
+            cell.delegate = self
             return cell
         case .levelRange:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictSearchLevelRangeCell.identifier) as? DictSearchLevelRangeCell else { return UITableViewCell() }
+            cell.delegate = self
             cell.selectionStyle = .none
+            if let firstNum = filter.levelRange?.0, let secondNum = filter.levelRange?.1 {
+                cell.bind(firstNum: String(firstNum), secondNum: String(secondNum))
+            }
             return cell
         }
-
     }
-    
-    
+}
+
+extension DictSearchFilterViewController: DictSearchJobFilterCellDelegate {
+    func didTapJobButton(job: String) {
+        self.filter.job = job
+    }
+}
+
+extension DictSearchFilterViewController: DictSearchLevelRangeCellDelegate {
+    func availableRange(firstNum: Int, secondNum: Int) {
+        self.filter.levelRange = (firstNum, secondNum)
+    }
 }

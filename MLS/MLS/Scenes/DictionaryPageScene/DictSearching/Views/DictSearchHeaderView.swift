@@ -67,6 +67,7 @@ class DictSearchHeaderView: UIView {
 
 // MARK: - SetUp
 extension DictSearchHeaderView {
+    
     func setUp() {
         setUpConstraints()
     }

@@ -7,12 +7,13 @@
 
 import UIKit
 
+import SafariServices
 import SnapKit
 
-class SignInFirstViewController: BasicController {
+class SignUpFirstViewController: BasicController {
     // MARK: - Properties
 
-    private let viewModel: SignInFirstViewModel
+    private let viewModel: SignUpFirstViewModel
         
     // MARK: - Components
     
@@ -30,7 +31,10 @@ class SignInFirstViewController: BasicController {
 
     private let emailTextField = CustomTextField(type: .normal, header: "이메일", placeHolder: "이메일을 입력해주세요")
     
-    private let firstPwTextField = CustomTextField(type: .password, header: "비밀번호", placeHolder: "비밀번호를 입력해주세요", footer: "8자리 이상, 영어, 숫자, 특수문자")
+    private let firstPwTextField: CustomTextField = {
+        let textField = CustomTextField(type: .password, header: "비밀번호", placeHolder: "비밀번호를 입력해주세요")
+        return textField
+    }()
     
     private let secondPwTextField = CustomTextField(type: .password, header: "비밀번호 재확인", placeHolder: "비밀번호를 다시 한 번 입력해주세요")
     
@@ -55,9 +59,23 @@ class SignInFirstViewController: BasicController {
         return button
     }()
     
+    private let descriptionTailImageView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "description_tail_red")
+        view.isHidden = true
+        return view
+    }()
+    
+    private let descriptionMainImageView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "privacyDescription_main")
+        view.isHidden = true
+        return view
+    }()
+    
     private let nextButton = CustomButton(type: .disabled, text: "다음으로")
     
-    init(viewModel: SignInFirstViewModel) {
+    init(viewModel: SignUpFirstViewModel) {
         self.viewModel = viewModel
         super.init()
     }
@@ -69,7 +87,7 @@ class SignInFirstViewController: BasicController {
 }
 
 // MARK: - Life Cycle
-extension SignInFirstViewController {
+extension SignUpFirstViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -78,13 +96,11 @@ extension SignInFirstViewController {
 }
 
 // MARK: - SetUp
-private extension SignInFirstViewController {
+private extension SignUpFirstViewController {
     func setUp() {
         emailTextField.textField.delegate = self
         firstPwTextField.textField.delegate = self
         secondPwTextField.textField.delegate = self
-        
-        firstPwTextField.footerLabel.isHidden = false
         
         setUpConstraints()
         setUpNavigation()
@@ -100,6 +116,8 @@ private extension SignInFirstViewController {
         view.addSubview(privacyButton)
         view.addSubview(showPrivacyButton)
         view.addSubview(nextButton)
+        view.addSubview(descriptionTailImageView)
+        view.addSubview(descriptionMainImageView)
         
         firstPageImageView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -140,6 +158,19 @@ private extension SignInFirstViewController {
             $0.height.equalTo(22)
         }
         
+        descriptionTailImageView.snp.makeConstraints {
+            $0.top.equalTo(privacyButton.snp.bottom)
+            $0.leading.equalTo(descriptionMainImageView.snp.leading).offset(Constants.spacings.md)
+            $0.size.equalTo(12)
+        }
+        
+        descriptionMainImageView.snp.makeConstraints {
+            $0.top.equalTo(descriptionTailImageView.snp.bottom)
+            $0.leading.equalTo(privacyButton)
+            $0.height.equalTo(44)
+            $0.width.equalTo(207)
+        }
+        
         nextButton.snp.makeConstraints {
             $0.top.equalTo(privacyButton.snp.bottom).offset(111)
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
@@ -164,15 +195,15 @@ private extension SignInFirstViewController {
     
     func setUpActions() {
         emailTextField.textField.addAction(UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
+            self?.nextButton.type.value = .clickabled
         }), for: .editingChanged)
         
         firstPwTextField.textField.addAction(UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
+            self?.nextButton.type.value = .clickabled
         }), for: .editingChanged)
         
         secondPwTextField.textField.addAction(UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
+            self?.nextButton.type.value = .clickabled
         }), for: .editingChanged)
         
         privacyButton.addAction(UIAction(handler: { [weak self] _ in
@@ -190,71 +221,104 @@ private extension SignInFirstViewController {
 }
 
 // MARK: - Bind
-private extension SignInFirstViewController {
+private extension SignUpFirstViewController {
     func bind() {
         viewModel.emailState.bind { [weak self] _ in
             guard let state = self?.viewModel.emailState.value else { return }
-            if state == .complete {
-                self?.emailTextField.checkState(state: state, isCorrect: true)
-            } else {
-                self?.emailTextField.checkState(state: state, isCorrect: false)
-            }
+            self?.checkEmailField(state: state)
         }
         
         viewModel.firstPwState.bind { [weak self] _ in
-            guard let state = self?.viewModel.firstPwState.value else { return }
-            if state == .complete {
-                self?.firstPwTextField.checkState(state: state, isCorrect: true)
-            } else {
-                self?.firstPwTextField.checkState(state: state, isCorrect: false)
-            }
+            guard let firstState = self?.viewModel.firstPwState.value,
+                  let secondState = self?.viewModel.secondPwState.value else { return }
+            self?.checkFirstPwField(state: firstState)
+            self?.checkSecondPwField(state: secondState)
         }
         
         viewModel.secondPwState.bind { [weak self] _ in
-            guard let state = self?.viewModel.secondPwState.value else { return }
-            if state == .complete {
-                self?.secondPwTextField.checkState(state: state, isCorrect: true)
-            } else {
-                self?.secondPwTextField.checkState(state: state, isCorrect: false)
-            }
+            guard let firstState = self?.viewModel.firstPwState.value,
+                  let secondState = self?.viewModel.secondPwState.value else { return }
+            self?.checkFirstPwField(state: firstState)
+            self?.checkSecondPwField(state: secondState)
         }
     }
 }
 
 // MARK: - Method
-private extension SignInFirstViewController {
+private extension SignUpFirstViewController {
     func didTapPrivacyButton() {
         privacyButton.isSelected = !privacyButton.isSelected
         privacyButton.setImage(privacyButton.isSelected ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "square"), for: .normal)
         privacyButton.tintColor = privacyButton.isSelected ? .semanticColor.bg.brand : .semanticColor.bolder.primary
+        viewModel.isPrivacyAgree.value?.toggle()
+        
+        checkPrivacy()
     }
     
-    func didTapShowPrivacyButton() {}
+    func didTapShowPrivacyButton() {
+        guard let privacyPolicyURL = URL(string: "https://plip.kr/pcc/26c2c65d-d3ca-4903-91f2-50a049b20636/privacy/1.html") else { return }
+        let safariViewController = SFSafariViewController(url: privacyPolicyURL)
+        navigationController?.pushViewController(safariViewController, animated: true)
+    }
     
     func didTapNextButton() {
-        if isComplete() {
-            let vc = SignInSecondViewController(viewModel: SignInSecondViewModel())
+        checkPrivacy()
+        
+        checkTextField(state: viewModel.emailState.value, checkField: checkEmailField, blankState: .emailBlank)
+        checkTextField(state: viewModel.firstPwState.value, checkField: checkFirstPwField, blankState: .pwBlank)
+        checkTextField(state: viewModel.secondPwState.value, checkField: checkSecondPwField, blankState: .pwBlank)
+        
+        if viewModel.isValidSignUp() {
+            guard let email = emailTextField.textField.text,
+                  let password = firstPwTextField.textField.text else { return }
+            let vm = SignUpSecondViewModel()
+            vm.user.id = email
+            vm.password = password
+            let vc = SignUpSecondViewController(viewModel: vm)
+                
             navigationController?.pushViewController(vc, animated: true)
         }
     }
     
-    func isComplete() -> Bool {
-        guard let email = emailTextField.textField.text,
-              let first = firstPwTextField.textField.text,
-              let second = secondPwTextField.textField.text else { return true }
-        // 조건 넣기
-        return !email.isEmpty && !first.isEmpty && !second.isEmpty && privacyButton.isSelected
+    func checkPrivacy() {
+        guard let isPrivacyAgree = viewModel.isPrivacyAgree.value else { return }
+        descriptionTailImageView.isHidden = isPrivacyAgree
+        descriptionMainImageView.isHidden = isPrivacyAgree
     }
     
-    func updateText(textField: UITextField, range: NSRange, string: String, type: TextFieldType, state: Observable<TextState>) {
-        let currentText = textField.text ?? ""
-        guard let stringRange = Range(range, in: currentText) else { return }
-        let updatedString = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        nextButton.type.value = updatedString != "" ? .clickabled : .disabled
-        viewModel.checkForm(text: updatedString, type: type) { newState in
-            state.value = newState
+    func checkEmailField(state: TextState) {
+        if state == .complete {}
+        emailTextField.checkState(state: state, isCorrect: viewModel.isCorrect)
+    }
+    
+    func checkFirstPwField(state: TextState) {
+        firstPwTextField.setPasswordFooter(checkPassword: viewModel.checkPassword, state: state)
+        if state == .pwBlank {
+            firstPwTextField.checkState(state: state, isCorrect: false)
         }
+    }
+    
+    func checkSecondPwField(state: TextState) {
+        let isCorrect = state == .complete
+        secondPwTextField.checkState(state: state, isCorrect: isCorrect)
+    }
+    
+    func checkTextField(state: TextState?, checkField: (TextState) -> Void, blankState: TextState) {
+        if let unwrappedState = state {
+            checkField(unwrappedState)
+        } else {
+            checkField(blankState)
+        }
+    }
+    
+    func updateBorderColor(for textField: UITextField, state: TextState) {
+        let color: UIColor?
+        if state == .complete || state == .default {
+            color = UIColor.semanticColor.bolder.interactive.secondary
+        } else {
+            color = UIColor.semanticColor.bolder.distructive_bold
+        }
+        textField.superview?.layer.borderColor = color?.cgColor
     }
     
     @objc
@@ -263,22 +327,48 @@ private extension SignInFirstViewController {
     }
 }
 
-extension SignInFirstViewController: UITextFieldDelegate {
+extension SignUpFirstViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
+        textField.superview?.layer.borderWidth = 1
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
         case emailTextField.textField:
-            updateText(textField: textField, range: range, string: string, type: .normal, state: self.viewModel.emailState)
+            guard let state = viewModel.emailState.value else { return }
+            updateBorderColor(for: textField, state: state)
         case firstPwTextField.textField:
-            updateText(textField: textField, range: range, string: string, type: .password, state: self.viewModel.firstPwState)
+            guard let state = viewModel.firstPwState.value else { return }
+            updateBorderColor(for: textField, state: state)
         case secondPwTextField.textField:
-            updateText(textField: textField, range: range, string: string, type: .password, state: self.viewModel.secondPwState)
+            guard let state = viewModel.secondPwState.value else { return }
+            updateBorderColor(for: textField, state: state)
         default:
             break
         }
-        return true
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        switch textField {
+        case emailTextField.textField:
+            guard let email = emailTextField.textField.text else { return }
+            viewModel.checkEmail(email: email)
+        case firstPwTextField.textField:
+            guard let password = firstPwTextField.textField.text,
+                  let checkPassword = secondPwTextField.textField.text else { return }
+            viewModel.checkPassword(password: password)
+            viewModel.reCheckPassword(password: password, checkPassword: checkPassword)
+        case secondPwTextField.textField:
+            guard let password = firstPwTextField.textField.text,
+                  let checkPassword = secondPwTextField.textField.text else { return }
+            viewModel.reCheckPassword(password: password, checkPassword: checkPassword)
+        default:
+            break
+        }
     }
 }

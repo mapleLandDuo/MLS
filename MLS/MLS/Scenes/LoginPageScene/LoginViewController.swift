@@ -197,15 +197,25 @@ private extension LoginViewController {
 
 // MARK: - Bind
 private extension LoginViewController {
-    func bind() {}
+    func bind() {
+        viewModel.isAutoLogin.bind { [weak self] state in
+            guard let state = state else { return }
+            self?.viewModel.userDefaultManager.setAutoLogin(toggle: state)
+            if state {
+                self?.autoLoginButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+                self?.autoLoginButton.tintColor = .semanticColor.bg.brand
+            } else {
+                self?.autoLoginButton.setImage(UIImage(systemName: "square"), for: .normal)
+                self?.autoLoginButton.tintColor = .semanticColor.bolder.primary
+            }
+        }
+    }
 }
 
 // MARK: - Method
 private extension LoginViewController {
     func didTapAutoLoginButton() {
-        autoLoginButton.isSelected = !autoLoginButton.isSelected
-        autoLoginButton.setImage(autoLoginButton.isSelected ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "square"), for: .normal)
-        autoLoginButton.tintColor = autoLoginButton.isSelected ? .semanticColor.bg.brand : .semanticColor.bolder.primary
+        viewModel.isAutoLogin.value?.toggle()
     }
         
     func didTapPwFindButton() {
@@ -227,7 +237,7 @@ private extension LoginViewController {
     }
     
     func didTapSignUpButton() {
-        let vc = SignInFirstViewController(viewModel: SignInFirstViewModel())
+        let vc = SignUpFirstViewController(viewModel: SignUpFirstViewModel())
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -241,6 +251,14 @@ extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // 엔터
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

@@ -16,12 +16,16 @@ enum TextState: String {
     case emailBlank = "이메일을 입력해주세요."
     case pwCheck = "비밀번호를 다시 확인해주세요."
     case pwBlank = "비밀번호를 입력해주세요."
+    case pwOutOfBounds
+    case pwNotENG
+    case pwNotInt
+    case pwNotSymbol
     case pwNotCorrect = "비밀번호가 일치하지 않아요"
     case emailExist = "이미 가입된 이메일이에요."
     case nickNameExist = "중복된 닉네임이에요."
     case nickNameNotCorrect = "닉네임을 2~8자로 지어주세요"
-    case pwNotInt = "숫자만 입력해주세요"
-    case pwOutOfBounds = "1~200 사잇값만 넣어주세요"
+    case lvNotInt = "숫자만 입력해주세요"
+    case lvOutOfBounds = "1~200 사잇값만 넣어주세요"
 }
 
 enum TextFieldType {
@@ -35,6 +39,8 @@ class CustomTextField: UIStackView {
     private let type: TextFieldType
     
     var state: TextState = .default
+    
+    var attributedString = NSMutableAttributedString(string: "8자리 이상, 영어, 숫자, 특수문자")
 
     // MARK: - Components
     
@@ -108,10 +114,10 @@ class CustomTextField: UIStackView {
 // MARK: - SetUp
 private extension CustomTextField {
     func setUp() {
-        self.distribution = .fill
-        self.spacing = Constants.spacings.xs
-        self.axis = .vertical
-        self.alignment = .fill
+        distribution = .fill
+        spacing = Constants.spacings.xs
+        axis = .vertical
+        alignment = .fill
         
         addArrangedSubview(headerLabel)
         addArrangedSubview(contentView)
@@ -188,5 +194,55 @@ extension CustomTextField {
     
     private func setAdditional(text: String) {
         additionalButton.isHidden = text == "" ? true : false
+    }
+
+    func setPasswordFooter(checkPassword: [Bool], state: TextState) {
+        footerLabel.isHidden = false
+
+        let greenAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.semanticColor.text.success_bold]
+        let redAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.semanticColor.text.distructive_bold]
+        
+        for i in 0...3 {
+            switch i {
+            case 0:
+                guard let range = attributedString.string.range(of: "8자리 이상") else { return }
+                if checkPassword[i] == true {
+                    attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+                } else {
+                    attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+                }
+            case 1:
+                guard let range = attributedString.string.range(of: ", 특수문자") else { return }
+                if checkPassword[i] == true {
+                    attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+                } else {
+                    attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+                }
+            case 2:
+                guard let range = attributedString.string.range(of: ", 숫자") else { return }
+                if checkPassword[i] == true {
+                    attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+                } else {
+                    attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+                }
+            case 3:
+                guard let range = attributedString.string.range(of: ", 영어") else { return }
+                if checkPassword[i] == true {
+                    attributedString.addAttributes(greenAttributes, range: NSRange(range, in: attributedString.string))
+                } else {
+                    attributedString.addAttributes(redAttributes, range: NSRange(range, in: attributedString.string))
+                }
+            default:
+                break
+            }
+        }
+        footerLabel.attributedText = attributedString
+    }
+    
+    func setLevelField() {
+        footerLabel.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+        footerLabel.textColor = .semanticColor.text.secondary
+        footerLabel.text = "숫자 1~200 사이의 값만 넣어주세요"
+        footerLabel.isHidden = false
     }
 }

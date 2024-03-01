@@ -110,11 +110,11 @@ extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
         switch selectedTab {
         case 0:
             // 아이템 정보
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictItemDefaultCell.identifier) as? DictItemDefaultCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell else { return UITableViewCell() }
             return cell
         case 1:
             // 세부 정보
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictItemDetailCell.identifier) as? DictItemDetailCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell else { return UITableViewCell() }
             return cell
         case 2:
             // 드랍 정보

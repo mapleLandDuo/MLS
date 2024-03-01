@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-class DictItemDefaultCell: UITableViewCell {
+class DictDetailContentsCell: UITableViewCell {
     // MARK: Properties
     private var items: [DetailContent]?
     
@@ -33,7 +33,7 @@ class DictItemDefaultCell: UITableViewCell {
 }
 
 // MARK: SetUp
-private extension DictItemDefaultCell {
+private extension DictDetailContentsCell {
     func setUp() {
         defaultTableView.delegate = self
         
@@ -46,13 +46,13 @@ private extension DictItemDefaultCell {
 }
 
 // MARK: bind
-extension DictItemDefaultCell {
+extension DictDetailContentsCell {
     func bind(items: [DetailContent]) {
         self.items = items
     }
 }
 
-extension DictItemDefaultCell: UITableViewDelegate, UITableViewDataSource {
+extension DictDetailContentsCell: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let count = items?.count else { return 0 }
         return count

@@ -182,6 +182,37 @@ class SqliteManager {
         completion(result)
     }
 
+    func searchDetailData<T: Sqlable>(dataName: String, completion: @escaping (T) -> Void) {
+        do {
+            let table = Table(T.tableName.tableName)
+
+            let name = Expression<String>("name")
+
+            let query = table.filter(name == dataName)
+
+            for row in try self.db!.prepare(query) {
+                switch T.tableName {
+                case .items:
+                    guard let data = decodeItem(row: row) as? T else { return }
+                    completion(data)
+                case .monsters:
+                    guard let data = decodeMonster(row: row) as? T else { return }
+                    completion(data)
+                case .maps:
+                    guard let data = decodeMap(row: row) as? T else { return }
+                    completion(data)
+                case .npcs:
+                    guard let data = decodeNPC(row: row) as? T else { return }
+                    completion(data)
+                case .quests:
+                    guard let data = decodeQuest(row: row) as? T else { return }
+                    completion(data)
+                }
+            }
+        } catch {
+            print("Failure preparing search: \(error)")
+        }
+    }
 
     func deleteData(tableName: Filename, dataName: String, completion: @escaping () -> Void) {
         do {

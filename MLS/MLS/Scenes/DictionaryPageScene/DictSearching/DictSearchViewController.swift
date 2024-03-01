@@ -598,7 +598,24 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
             print(datas[indexPath.section].datas[indexPath.row].title)
         } else {
             datas = viewModel.fetchSearchData()
-            print(datas[viewModel.fetchMenuIndex() - 1].datas[indexPath.row].title)
+            let title = datas[viewModel.fetchMenuIndex() - 1].datas[indexPath.row].title
+            switch viewModel.fetchMenuIndex() {
+            case 1:
+                break
+            case 2:
+                let vm = DictItemViewModel(selectedName: title)
+                let vc = DictItemViewController(viewModel: vm)
+                navigationController?.pushViewController(vc, animated: true)
+            case 3:
+                break
+            case 4:
+                break
+            case 5:
+                break
+            default:
+                break
+                
+            }
         }
     }
     

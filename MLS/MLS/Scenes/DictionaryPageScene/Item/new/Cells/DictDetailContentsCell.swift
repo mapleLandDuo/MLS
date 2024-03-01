@@ -12,12 +12,19 @@ import SnapKit
 class DictDetailContentsCell: UITableViewCell {
     // MARK: Properties
     private var items: [DetailContent]?
-    
+
     // MARK: Components
+    private let leadingView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .semanticColor.bg.secondary
+        view.layer.cornerRadius = 8
+        return view
+    }()
+
     private let defaultTableView: UITableView = {
         let view = UITableView()
-        view.backgroundColor = .semanticColor.bg.primary
-        view.layer.cornerRadius = 8
+        view.register(DictDescriptionCell.self, forCellReuseIdentifier: DictDescriptionCell.identifier)
+        view.separatorStyle = .none
         return view
     }()
 
@@ -35,20 +42,39 @@ class DictDetailContentsCell: UITableViewCell {
 // MARK: SetUp
 private extension DictDetailContentsCell {
     func setUp() {
-        defaultTableView.delegate = self
-        
         setUpConstraints()
+
+        defaultTableView.delegate = self
+        defaultTableView.dataSource = self
     }
 
     func setUpConstraints() {
-        addSubview(defaultTableView)
+        addSubview(leadingView)
+        leadingView.addSubview(defaultTableView)
+
+        leadingView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(Constants.spacings.lg)
+            $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
+        }
+
+        defaultTableView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(Constants.spacings.xl)
+        }
     }
 }
 
 // MARK: bind
 extension DictDetailContentsCell {
-    func bind(items: [DetailContent]) {
-        self.items = items
+    func bind(items: [DetailContent]?) {
+        if let items = items {
+            self.items = items
+            defaultTableView.snp.makeConstraints {
+                $0.edges.equalToSuperview().inset(Constants.spacings.xl)
+                $0.height.equalTo(24 * items.count)
+            }
+        } else {
+            // alert
+        }
     }
 }
 
@@ -57,14 +83,11 @@ extension DictDetailContentsCell: UITableViewDelegate, UITableViewDataSource {
         guard let count = items?.count else { return 0 }
         return count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        guard let item = items?[indexPath.row] else { return UITableViewCell()}
-        var content = cell.defaultContentConfiguration()
-        content.text = item.title
-        content.secondaryText = item.description
-        cell.contentConfiguration = content
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDescriptionCell.identifier) as? DictDescriptionCell,
+              let item = items?[indexPath.row] else { return UITableViewCell() }
+        cell.bind(item: item)
         return cell
     }
 }

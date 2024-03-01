@@ -40,6 +40,7 @@ class DictItemDropCell: UITableViewCell {
 private extension DictItemDropCell {
     func setUp() {
         dropCollectionView.delegate = self
+        dropCollectionView.dataSource = self
         
         setUpConstraints()
     }
@@ -56,8 +57,12 @@ private extension DictItemDropCell {
 
 // MARK: bind
 extension DictItemDropCell {
-    func bind(items: [DictDropContent]) {
-        self.items = items
+    func bind(items: [DictDropContent]?) {
+        if let items = items {
+            self.items = items
+        } else {
+            // alert
+        }
     }
 }
 
@@ -69,6 +74,8 @@ extension DictItemDropCell: UICollectionViewDelegateFlowLayout, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DropCollectionViewCell.identifier, for: indexPath) as? DropCollectionViewCell else { return UICollectionViewCell() }
+        guard let item = items?[indexPath.row] else { return UICollectionViewCell()}
+        cell.bind(data: item, type: .item)
         return cell
     }
 }

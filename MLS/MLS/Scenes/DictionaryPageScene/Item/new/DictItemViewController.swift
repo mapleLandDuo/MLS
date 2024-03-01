@@ -67,6 +67,8 @@ private extension DictItemViewController {
     }
 
     func setUpConstraints() {
+        view.addSubview(dictItemTableView)
+        
         dictItemTableView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
@@ -99,6 +101,7 @@ extension DictItemViewController {
 
 extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let selectedTab = viewModel.selectedTab.value, selectedTab == section else { return 0 }
         return 1
     }
     
@@ -107,17 +110,19 @@ extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
         switch selectedTab {
         case 0:
             // 아이템 정보
-            break
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictItemDefaultCell.identifier) as? DictItemDefaultCell else { return UITableViewCell() }
+            return cell
         case 1:
             // 세부 정보
-            break
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictItemDetailCell.identifier) as? DictItemDetailCell else { return UITableViewCell() }
+            return cell
         case 2:
             // 드랍 정보
-            break
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictItemDropCell.identifier) as? DictItemDropCell else { return UITableViewCell() }
+            return cell
         default:
-            break
+            return UITableViewCell()
         }
-        return UITableViewCell()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

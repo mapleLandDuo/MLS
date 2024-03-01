@@ -10,7 +10,16 @@ import UIKit
 import SnapKit
 
 class DictItemDefaultCell: UITableViewCell {
+    // MARK: Properties
+    private var items: [DetailContent]?
+    
     // MARK: Components
+    private let defaultTableView: UITableView = {
+        let view = UITableView()
+        view.backgroundColor = .semanticColor.bg.primary
+        view.layer.cornerRadius = 8
+        return view
+    }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -25,20 +34,37 @@ class DictItemDefaultCell: UITableViewCell {
 
 // MARK: SetUp
 private extension DictItemDefaultCell {
-
     func setUp() {
+        defaultTableView.delegate = self
+        
         setUpConstraints()
     }
 
     func setUpConstraints() {
-        
+        addSubview(defaultTableView)
     }
 }
 
 // MARK: bind
 extension DictItemDefaultCell {
+    func bind(items: [DetailContent]) {
+        self.items = items
+    }
+}
 
-    func bind(item: DictionaryItem) {
-
+extension DictItemDefaultCell: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let count = items?.count else { return 0 }
+        return count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        guard let item = items?[indexPath.row] else { return UITableViewCell()}
+        var content = cell.defaultContentConfiguration()
+        content.text = item.title
+        content.secondaryText = item.description
+        cell.contentConfiguration = content
+        return cell
     }
 }

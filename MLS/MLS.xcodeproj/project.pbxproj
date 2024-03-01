@@ -175,6 +175,7 @@
 		778EB9362B91A53E00DC9B63 /* DictItemDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB9352B91A53E00DC9B63 /* DictItemDefaultCell.swift */; };
 		778EB9382B91A54700DC9B63 /* DictItemDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB9372B91A54700DC9B63 /* DictItemDetailCell.swift */; };
 		778EB93A2B91A55000DC9B63 /* DictItemDropCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB9392B91A55000DC9B63 /* DictItemDropCell.swift */; };
+		778EB93D2B91CE3B00DC9B63 /* DetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB93C2B91CE3B00DC9B63 /* DetailContent.swift */; };
 		778EF8D12B877C8E006CA0AB /* SignUpFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D02B877C8E006CA0AB /* SignUpFirstViewController.swift */; };
 		778EF8D32B877CE5006CA0AB /* SignUpFirstViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D22B877CE5006CA0AB /* SignUpFirstViewModel.swift */; };
 		778EF8D52B879554006CA0AB /* SignUpSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D42B879554006CA0AB /* SignUpSecondViewController.swift */; };
@@ -345,6 +346,7 @@
 		778EB9352B91A53E00DC9B63 /* DictItemDefaultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictItemDefaultCell.swift; sourceTree = "<group>"; };
 		778EB9372B91A54700DC9B63 /* DictItemDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictItemDetailCell.swift; sourceTree = "<group>"; };
 		778EB9392B91A55000DC9B63 /* DictItemDropCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictItemDropCell.swift; sourceTree = "<group>"; };
+		778EB93C2B91CE3B00DC9B63 /* DetailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailContent.swift; sourceTree = "<group>"; };
 		778EF8D02B877C8E006CA0AB /* SignUpFirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFirstViewController.swift; sourceTree = "<group>"; };
 		778EF8D22B877CE5006CA0AB /* SignUpFirstViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFirstViewModel.swift; sourceTree = "<group>"; };
 		778EF8D42B879554006CA0AB /* SignUpSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpSecondViewController.swift; sourceTree = "<group>"; };
@@ -890,6 +892,7 @@
 			children = (
 				778EB92E2B91A0AA00DC9B63 /* DictItemViewController.swift */,
 				778EB9302B91A0E800DC9B63 /* DictItemViewModel.swift */,
+				778EB93B2B91CE1100DC9B63 /* Model */,
 				778EB9322B91A50A00DC9B63 /* Cells */,
 			);
 			path = new;
@@ -904,6 +907,14 @@
 				778EB9392B91A55000DC9B63 /* DictItemDropCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		778EB93B2B91CE1100DC9B63 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				778EB93C2B91CE3B00DC9B63 /* DetailContent.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		778EF8CF2B877C68006CA0AB /* new */ = {
@@ -1184,6 +1195,7 @@
 				08CBCB862B7C9B1A00C051F7 /* DBHelper.swift in Sources */,
 				08F95DBE2B89F0BD00AD79DF /* DictSectionHeaderView.swift in Sources */,
 				08F95DF32B8CF0DD00AD79DF /* Job.swift in Sources */,
+				778EB93D2B91CE3B00DC9B63 /* DetailContent.swift in Sources */,
 				08D50A7E2B5EB0E800E94442 /* LoginManager.swift in Sources */,
 				775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */,
 				7732E8822B67E7630038C7A9 /* DictionarySearchViewModel.swift in Sources */,

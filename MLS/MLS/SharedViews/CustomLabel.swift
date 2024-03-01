@@ -10,7 +10,7 @@ import UIKit
 class CustomLabel: UILabel {
     private var padding = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
 
-    init(text: String, textColor: UIColor = .black, font: UIFont, padding: UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)) {
+    init(text: String, textColor: UIColor? = .black, font: UIFont?, padding: UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)) {
         super.init(frame: .zero)
         self.text = text
         self.font = font

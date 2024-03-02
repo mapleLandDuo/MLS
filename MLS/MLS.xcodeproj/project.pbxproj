@@ -60,6 +60,7 @@
 		082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C772B53D11900D84CE2 /* BasicController.swift */; };
 		082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C7D2B53D26800D84CE2 /* Constants.swift */; };
 		082D0C832B53D45700D84CE2 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C822B53D45600D84CE2 /* Post.swift */; };
+		087D251E2B932FDB00A998E4 /* DictNameCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087D251D2B932FDB00A998E4 /* DictNameCount.swift */; };
 		0886E7E82B6284B500B014F8 /* DictionaryMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0886E7E72B6284B500B014F8 /* DictionaryMainViewController.swift */; };
 		08971A772B70C1AA00FE46BE /* DictionaryNameDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08971A762B70C1AA00FE46BE /* DictionaryNameDescription.swift */; };
 		08971A792B70C1EF00FE46BE /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08971A782B70C1EF00FE46BE /* State.swift */; };
@@ -228,6 +229,7 @@
 		082D0C772B53D11900D84CE2 /* BasicController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicController.swift; sourceTree = "<group>"; };
 		082D0C7D2B53D26800D84CE2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		082D0C822B53D45600D84CE2 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		087D251D2B932FDB00A998E4 /* DictNameCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictNameCount.swift; sourceTree = "<group>"; };
 		0886E7E72B6284B500B014F8 /* DictionaryMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMainViewController.swift; sourceTree = "<group>"; };
 		08971A762B70C1AA00FE46BE /* DictionaryNameDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryNameDescription.swift; sourceTree = "<group>"; };
 		08971A782B70C1EF00FE46BE /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 		081E6FC62B640A7900CF83F4 /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
+				08CB4E582B8F377200336FE6 /* DictType.swift */,
 				081E6FCD2B663A9800CF83F4 /* DictionaryItem.swift */,
 				081E6FC72B640A8A00CF83F4 /* DictionaryMonster.swift */,
 				77A2808C2B73B8AB0079D0EB /* DictionaryMap.swift */,
@@ -411,6 +414,7 @@
 				77A280902B73B8BD0079D0EB /* DictionaryQuest.swift */,
 				08CBCB8D2B7F340700C051F7 /* DictVersion.swift */,
 				08971A762B70C1AA00FE46BE /* DictionaryNameDescription.swift */,
+				087D251D2B932FDB00A998E4 /* DictNameCount.swift */,
 			);
 			path = Dictionary;
 			sourceTree = "<group>";
@@ -634,7 +638,6 @@
 			isa = PBXGroup;
 			children = (
 				08CB4E562B8F375300336FE6 /* DictSectionDatas.swift */,
-				08CB4E582B8F377200336FE6 /* DictType.swift */,
 				08CB4E5A2B8F37B200336FE6 /* DictSearchSortedEnum.swift */,
 				08CB4E5F2B8F383500336FE6 /* DictSearchFilterEnum.swift */,
 			);
@@ -1129,6 +1132,7 @@
 				081E6FE52B668B7300CF83F4 /* DictionaryMonsterHauntAreaCell.swift in Sources */,
 				770848972B889A0C008B68E1 /* PresentationController.swift in Sources */,
 				77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */,
+				087D251E2B932FDB00A998E4 /* DictNameCount.swift in Sources */,
 				08EF65172B554DA0004CC842 /* AddPostViewController.swift in Sources */,
 				77A2808D2B73B8AB0079D0EB /* DictionaryMap.swift in Sources */,
 				08D50A8A2B5FD46700E94442 /* AlertMaker.swift in Sources */,

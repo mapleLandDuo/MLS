@@ -54,4 +54,19 @@ enum DictType: String {
         let filterHeight:CGFloat = CGFloat(self.filterArray.map({$0.cellHeight}).reduce(0){$0 + $1})
         return filterHeight + 48 + Constants.spacings.xl + 34 + 22
     }
+    
+    var collectionName: String {
+        switch self {
+        case .monster:
+            return "monstersSearchCount"
+        case .item:
+            return "itemsSearchCount"
+        case .map:
+            return "mapsSearchCount"
+        case .npc:
+            return "npcsSearchCount"
+        case .quest:
+            return "questsSearchCount"
+        }
+    }
 }

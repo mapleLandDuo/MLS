@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 protocol DictHorizontalSectionTableViewCellDelegate: BasicController {
-    func didSelectItemAt(itemTitle: String?, type: DictType)
+    func didSelectItemAt(itemTitle: String, type: DictType)
 }
 
 class DictHorizontalSectionTableViewCell: UITableViewCell {

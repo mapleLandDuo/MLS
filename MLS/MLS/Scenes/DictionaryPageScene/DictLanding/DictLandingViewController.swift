@@ -142,6 +142,8 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     
     func didTapMyPageButton() {
         print(#function)
+        let vc = MyPageViewController(viewModel: MyPageViewModel())
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

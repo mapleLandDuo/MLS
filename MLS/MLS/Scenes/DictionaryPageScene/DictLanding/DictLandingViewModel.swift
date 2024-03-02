@@ -45,7 +45,7 @@ extension DictLandingViewModel {
             for data in searchCountDatas {
                 dbManager.searchData(dataName: data.name) { (items:[DictMonster]) in
                     guard let item = items.first else { return }
-                    let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "-", type: .item)
+                    let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "-", type: .monster)
                     temp.append(dictData)
                 }
             }

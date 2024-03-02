@@ -37,7 +37,7 @@ class MyPageSecessionViewController: BasicController {
     
     private let warningImage: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "alertTriangle")
+        view.image = UIImage(named: "alert-triangle")
         return view
     }()
     

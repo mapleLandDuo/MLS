@@ -58,11 +58,11 @@ extension DictLandingViewController {
         super.viewDidLoad()
         bind()
         setUp()
-        viewModel.fetchSectionDatas()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+        viewModel.fetchSectionDatas()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -170,8 +170,9 @@ extension DictLandingViewController: DictSectionHeaderViewDelegate {
 }
 
 extension DictLandingViewController: DictHorizontalSectionTableViewCellDelegate {
-    func didSelectItemAt(itemTitle: String?, type: DictType) {
+    func didSelectItemAt(itemTitle: String, type: DictType) {
         print(itemTitle, type)
+        FirebaseManager.firebaseManager.countUpDictSearch(type: type, name: itemTitle)
     }
 }
 

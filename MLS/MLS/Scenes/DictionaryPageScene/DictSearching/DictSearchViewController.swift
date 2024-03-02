@@ -595,10 +595,12 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
         var datas: [DictSectionDatas]
         if viewModel.fetchMenuIndex() == 0 {
             datas = viewModel.fetchSearchData().filter({!$0.datas.isEmpty})
-            print(datas[indexPath.section].datas[indexPath.row].title)
+            let data = datas[indexPath.section].datas[indexPath.row]
+            FirebaseManager.firebaseManager.countUpDictSearch(type: data.type, name: data.title)
         } else {
             datas = viewModel.fetchSearchData()
-            print(datas[viewModel.fetchMenuIndex() - 1].datas[indexPath.row].title)
+            let data = datas[viewModel.fetchMenuIndex() - 1].datas[indexPath.row]
+            FirebaseManager.firebaseManager.countUpDictSearch(type: data.type, name: data.title)
         }
     }
     

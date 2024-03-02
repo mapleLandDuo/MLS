@@ -16,7 +16,7 @@ class DictDetailContentsCell: UITableViewCell {
     // MARK: Components
     private let leadingView: UIView = {
         let view = UIView()
-        view.backgroundColor = .semanticColor.bg.secondary
+        view.backgroundColor = .semanticColor.bg.primary
         view.layer.cornerRadius = 8
         return view
     }()

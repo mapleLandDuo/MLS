@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-class DictItemInfoCell: UITableViewCell {
+class DictMainInfoCell: UITableViewCell {
     // MARK: Components
 
     private let itemImageView: UIImageView = {
@@ -63,7 +63,7 @@ class DictItemInfoCell: UITableViewCell {
 }
 
 // MARK: SetUp
-private extension DictItemInfoCell {
+private extension DictMainInfoCell {
     func setUp() {
         setUpConstraints()
     }
@@ -112,11 +112,33 @@ private extension DictItemInfoCell {
 }
 
 // MARK: bind
-extension DictItemInfoCell {
-    func bind(item: DictItem) {
-        itemImageView.kf.setImage(with: URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2"), placeholder: UIImage(named: "Deco-maple"))
-        nameLabel.text = item.name
-        if let description = item.detailValues.filter({ $0.name == "설명" }).first?.description {
+extension DictMainInfoCell {
+    func bind<T>(item: T) {
+        var url: String
+        var itemName: String
+        var itemDescription: String?
+        
+        switch item.self {
+        case is DictItem:
+            guard let item = item as? DictItem else { return }
+            url = "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2"
+            itemName = item.name
+            itemDescription = item.detailValues.filter({ $0.name == "설명" }).first?.description
+            
+        case is DictMonster:
+            guard let item = item as? DictMonster else { return }
+            url = "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor="
+            itemName = item.name
+            itemDescription = item.detailValues.filter({ $0.name == "설명" }).first?.description
+            
+        default:
+            return
+        }
+        
+        itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
+        nameLabel.text = itemName
+        
+        if let description = itemDescription {
             descriptionTextLabel.text = description
             descriptionTextLabel.textAlignment = .left
         } else {

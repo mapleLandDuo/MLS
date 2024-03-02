@@ -164,6 +164,10 @@
 		773B3FFB2B92577F008670AE /* DictDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773B3FFA2B92577F008670AE /* DictDescriptionCell.swift */; };
 		7751CEFB2B5408FA000E5E74 /* CommunityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */; };
 		7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFC2B54129C000E5E74 /* CustomLabel.swift */; };
+		7752C25B2B9301F800C891A5 /* DictMonsterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C25A2B9301F800C891A5 /* DictMonsterViewController.swift */; };
+		7752C25D2B93023800C891A5 /* DictMonsterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C25C2B93023800C891A5 /* DictMonsterViewModel.swift */; };
+		7752C2602B93085000C891A5 /* DictTagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C25F2B93085000C891A5 /* DictTagTableViewCell.swift */; };
+		7752C2622B9308A100C891A5 /* DictTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C2612B9308A100C891A5 /* DictTagCell.swift */; };
 		775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */; };
 		775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */; };
 		775474C62B56A81300C8DD61 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */; };
@@ -172,7 +176,7 @@
 		778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */; };
 		778EB92F2B91A0AA00DC9B63 /* DictItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB92E2B91A0AA00DC9B63 /* DictItemViewController.swift */; };
 		778EB9312B91A0E800DC9B63 /* DictItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB9302B91A0E800DC9B63 /* DictItemViewModel.swift */; };
-		778EB9342B91A52200DC9B63 /* DictItemInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB9332B91A52200DC9B63 /* DictItemInfoCell.swift */; };
+		778EB9342B91A52200DC9B63 /* DictMainInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB9332B91A52200DC9B63 /* DictMainInfoCell.swift */; };
 		778EB9362B91A53E00DC9B63 /* DictDetailContentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB9352B91A53E00DC9B63 /* DictDetailContentsCell.swift */; };
 		778EB93A2B91A55000DC9B63 /* DictItemDropCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB9392B91A55000DC9B63 /* DictItemDropCell.swift */; };
 		778EB93D2B91CE3B00DC9B63 /* DetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB93C2B91CE3B00DC9B63 /* DetailContent.swift */; };
@@ -337,6 +341,10 @@
 		773B3FFA2B92577F008670AE /* DictDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictDescriptionCell.swift; sourceTree = "<group>"; };
 		7751CEFA2B5408FA000E5E74 /* CommunityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityTableViewCell.swift; sourceTree = "<group>"; };
 		7751CEFC2B54129C000E5E74 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
+		7752C25A2B9301F800C891A5 /* DictMonsterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMonsterViewController.swift; sourceTree = "<group>"; };
+		7752C25C2B93023800C891A5 /* DictMonsterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMonsterViewModel.swift; sourceTree = "<group>"; };
+		7752C25F2B93085000C891A5 /* DictTagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictTagTableViewCell.swift; sourceTree = "<group>"; };
+		7752C2612B9308A100C891A5 /* DictTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictTagCell.swift; sourceTree = "<group>"; };
 		775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
@@ -345,7 +353,7 @@
 		778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		778EB92E2B91A0AA00DC9B63 /* DictItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictItemViewController.swift; sourceTree = "<group>"; };
 		778EB9302B91A0E800DC9B63 /* DictItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictItemViewModel.swift; sourceTree = "<group>"; };
-		778EB9332B91A52200DC9B63 /* DictItemInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictItemInfoCell.swift; sourceTree = "<group>"; };
+		778EB9332B91A52200DC9B63 /* DictMainInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMainInfoCell.swift; sourceTree = "<group>"; };
 		778EB9352B91A53E00DC9B63 /* DictDetailContentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictDetailContentsCell.swift; sourceTree = "<group>"; };
 		778EB9392B91A55000DC9B63 /* DictItemDropCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictItemDropCell.swift; sourceTree = "<group>"; };
 		778EB93C2B91CE3B00DC9B63 /* DetailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailContent.swift; sourceTree = "<group>"; };
@@ -450,6 +458,7 @@
 		081E6FD12B663B3A00CF83F4 /* Monster */ = {
 			isa = PBXGroup;
 			children = (
+				7752C2592B9301E400C891A5 /* new */,
 				081E6FD42B663B7600CF83F4 /* DictionaryMonsterViewController.swift */,
 				081E6FDD2B66704F00CF83F4 /* DictionaryMonsterViewModel.swift */,
 				081E6FDA2B666D7B00CF83F4 /* Cells */,
@@ -871,6 +880,25 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		7752C2592B9301E400C891A5 /* new */ = {
+			isa = PBXGroup;
+			children = (
+				7752C25E2B9307BA00C891A5 /* Cells */,
+				7752C25A2B9301F800C891A5 /* DictMonsterViewController.swift */,
+				7752C25C2B93023800C891A5 /* DictMonsterViewModel.swift */,
+			);
+			path = new;
+			sourceTree = "<group>";
+		};
+		7752C25E2B9307BA00C891A5 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7752C25F2B93085000C891A5 /* DictTagTableViewCell.swift */,
+				7752C2612B9308A100C891A5 /* DictTagCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		775474BD2B565A4D00C8DD61 /* PostDetailPageScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -905,7 +933,7 @@
 		778EB9322B91A50A00DC9B63 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				778EB9332B91A52200DC9B63 /* DictItemInfoCell.swift */,
+				778EB9332B91A52200DC9B63 /* DictMainInfoCell.swift */,
 				778EB9352B91A53E00DC9B63 /* DictDetailContentsCell.swift */,
 				778EB9392B91A55000DC9B63 /* DictItemDropCell.swift */,
 				778EB9402B91D8A500DC9B63 /* DropCollectionViewCell.swift */,
@@ -1170,6 +1198,7 @@
 				081E70032B69130000CF83F4 /* AppInfoPageViewController.swift in Sources */,
 				08EF65122B554710004CC842 /* UILabel+.swift in Sources */,
 				08EF65082B54034D004CC842 /* MainPageFeatureDefaultsCell.swift in Sources */,
+				7752C25D2B93023800C891A5 /* DictMonsterViewModel.swift in Sources */,
 				77082A4F2B63F8E100187906 /* DetailImageCell.swift in Sources */,
 				77BA52412B6AAE4600492991 /* DetailLikeCell.swift in Sources */,
 				7717D6EF2B8731610050BD07 /* CustomButton.swift in Sources */,
@@ -1210,7 +1239,7 @@
 				7732E8802B67E6D30038C7A9 /* DictionarySearchViewController.swift in Sources */,
 				08CB4E672B8F721100336FE6 /* DictSearchLevelRangeCell.swift in Sources */,
 				08D5F1052B8613A800E56482 /* PopUpView.swift in Sources */,
-				778EB9342B91A52200DC9B63 /* DictItemInfoCell.swift in Sources */,
+				778EB9342B91A52200DC9B63 /* DictMainInfoCell.swift in Sources */,
 				081E6FE72B66902200CF83F4 /* DictionaryMonsterHauntAreaCollectionViewCell.swift in Sources */,
 				08D50A8C2B5FD61E00E94442 /* UserDefaultsManager.swift in Sources */,
 				08CB4E652B8F6B9C00336FE6 /* DictSearchJobButtonCell.swift in Sources */,
@@ -1235,6 +1264,7 @@
 				081E6FDE2B66704F00CF83F4 /* DictionaryMonsterViewModel.swift in Sources */,
 				77C1ED0C2B615471003179B4 /* QnAViewController.swift in Sources */,
 				775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */,
+				7752C2602B93085000C891A5 /* DictTagTableViewCell.swift in Sources */,
 				08EF650A2B540A4A004CC842 /* Typography.swift in Sources */,
 				081E6FFE2B68F8E800CF83F4 /* DictionaryGraySeparatorDescriptionCell.swift in Sources */,
 				77082A4A2B63A26200187906 /* PostDetailViewModel.swift in Sources */,
@@ -1249,6 +1279,7 @@
 				08D50A672B590D9100E94442 /* SignInViewController.swift in Sources */,
 				082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */,
 				770848952B88971B008B68E1 /* FindPasswordViewController.swift in Sources */,
+				7752C2622B9308A100C891A5 /* DictTagCell.swift in Sources */,
 				778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */,
 				08D5F11C2B873B1400E56482 /* DictSearchViewController.swift in Sources */,
 				081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */,
@@ -1259,6 +1290,7 @@
 				081E6FD32B663B6300CF83F4 /* DictionaryItemViewController.swift in Sources */,
 				08EF650E2B551EB8004CC842 /* MainPageFeatureListPostCell.swift in Sources */,
 				08EF65142B554722004CC842 /* UIColor+.swift in Sources */,
+				7752C25B2B9301F800C891A5 /* DictMonsterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

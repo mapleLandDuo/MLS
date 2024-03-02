@@ -601,6 +601,9 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
             let title = datas[viewModel.fetchMenuIndex() - 1].datas[indexPath.row].title
             switch viewModel.fetchMenuIndex() {
             case 1:
+                let vm = DictMonsterViewModel(selectedName: title)
+                let vc = DictMonsterViewController(viewModel: vm)
+                navigationController?.pushViewController(vc, animated: true)
                 break
             case 2:
                 let vm = DictItemViewModel(selectedName: title)

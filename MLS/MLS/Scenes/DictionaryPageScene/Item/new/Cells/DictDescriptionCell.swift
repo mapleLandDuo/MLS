@@ -23,6 +23,7 @@ class DictDescriptionCell: UITableViewCell {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_md, fontType: .semiBold)
         label.textColor = .semanticColor.text.primary
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -42,7 +43,7 @@ private extension DictDescriptionCell {
     func setUp() {
         setUpConstraints()
         
-        self.backgroundColor = .semanticColor.bg.secondary
+        self.backgroundColor = .semanticColor.bg.primary
     }
 
     func setUpConstraints() {
@@ -59,6 +60,8 @@ private extension DictDescriptionCell {
             $0.top.trailing.bottom.equalToSuperview()
             $0.height.equalTo(24)
         }
+        
+        titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 }
 

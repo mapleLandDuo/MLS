@@ -131,6 +131,12 @@ extension DictMainInfoCell {
             itemName = item.name
             itemDescription = item.detailValues.filter({ $0.name == "설명" }).first?.description
             
+            descriptionView.snp.remakeConstraints {
+                $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
+                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
+                $0.height.equalTo(38)
+                $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
+            }
         default:
             return
         }

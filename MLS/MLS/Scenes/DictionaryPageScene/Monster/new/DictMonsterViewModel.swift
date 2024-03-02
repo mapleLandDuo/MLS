@@ -53,9 +53,11 @@ extension DictMonsterViewModel {
     func fetchDropInfos(completion: @escaping () -> Void) {
         guard let dropTable = selectedMonster.value?.dropTable else { return }
         for dropContent in dropTable {
-            self.sqliteManager.searchDetailData(dataName: dropContent.name) { [weak self] (item: DictMonster) in
-                guard let level = item.defaultValues.filter({ $0.name == "LEVEL" }).first?.description else { return}
-                self?.dropTableContents.append(DictDropContent(name: item.name, code: item.code, level: level, description: dropContent.description))
+            if dropContent.name.contains("메소 드랍") {
+                self.dropTableContents.append(DictDropContent(name: "메소", code: "", level: dropContent.name.replacingOccurrences(of: " 드랍", with: ""), description: dropContent.description))
+            }
+            self.sqliteManager.searchDetailData(dataName: dropContent.name) { [weak self] (item: DictItem) in
+                self?.dropTableContents.append(DictDropContent(name: item.name, code: item.code, level: dropContent.name, description: dropContent.description))
             }
         }
         completion()

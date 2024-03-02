@@ -21,6 +21,7 @@ class DictMonsterViewController: BasicController {
         view.register(DictMainInfoCell.self, forCellReuseIdentifier: DictMainInfoCell.identifier)
         view.register(DictDetailContentsCell.self, forCellReuseIdentifier: DictDetailContentsCell.identifier)
         view.register(DictTagTableViewCell.self, forCellReuseIdentifier: DictTagTableViewCell.identifier)
+        view.register(DictMonsterDropCell.self, forCellReuseIdentifier: DictMonsterDropCell.identifier)
         view.separatorStyle = .none
         return view
     }()
@@ -155,10 +156,9 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
                 cell.bind(items: items, descriptionType: .map)
                 return cell
             case 2:
-//                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictItemDropCell.identifier) as? DictItemDropCell else { return UITableViewCell() }
-//                cell.bind(items: viewModel.dropTableContents)
-//                return cell
-                return UITableViewCell()
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
+                cell.bind(items: viewModel.dropTableContents, type: .item)
+                return cell
             default:
                 return UITableViewCell()
             }

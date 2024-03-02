@@ -36,7 +36,7 @@ extension DictMonsterViewModel {
         selectedTab.value = index
     }
     
-    func fetchItem() {
+    func fetchMonster() {
         guard let name = self.selectedName else { return }
         sqliteManager.searchDetailData(dataName: name) { [weak self] (item: DictMonster) in
             self?.selectedMonster.value = item

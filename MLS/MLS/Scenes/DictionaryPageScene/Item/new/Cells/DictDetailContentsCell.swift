@@ -74,7 +74,7 @@ extension DictDetailContentsCell {
             }
             defaultTableView.reloadData()
         } else {
-            // alert
+            defaultTableView.isHidden = true
         }
     }
 }

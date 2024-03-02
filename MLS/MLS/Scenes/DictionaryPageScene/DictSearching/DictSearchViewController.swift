@@ -610,6 +610,9 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
                 let vc = DictItemViewController(viewModel: vm)
                 navigationController?.pushViewController(vc, animated: true)
             case 3:
+                let vm = DictMapViewModel(selectedName: title)
+                let vc = DictMapViewController(viewModel: vm)
+                navigationController?.pushViewController(vc, animated: true)
                 break
             case 4:
                 break

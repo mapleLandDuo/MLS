@@ -124,12 +124,13 @@ extension DictMainInfoCell {
             url = "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2"
             itemName = item.name
             itemDescription = item.detailValues.filter({ $0.name == "설명" }).first?.description
-            
+            itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
         case is DictMonster:
             guard let item = item as? DictMonster else { return }
             url = "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor="
             itemName = item.name
             itemDescription = item.detailValues.filter({ $0.name == "설명" }).first?.description
+            itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
             
             descriptionView.snp.remakeConstraints {
                 $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
@@ -137,11 +138,30 @@ extension DictMainInfoCell {
                 $0.height.equalTo(38)
                 $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
             }
+        case is DictMap:
+            guard let item = item as? DictMap else { return }
+//            url = "https://mapledb.kr/Assets/image/minimaps/\(item.code).png"
+            itemName = item.name
+            
+//            itemImageView.snp.remakeConstraints {
+//                $0.top.equalToSuperview().inset(Constants.spacings.lg)
+//                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.lg)
+//                $0.bottom.equalTo(nameLabel.snp.top).inset(-Constants.spacings.lg)
+//                $0.height.equalTo(150)
+//            }
+            
+            descriptionView.snp.remakeConstraints {
+                $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
+                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
+                $0.height.equalTo(38)
+                $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
+            }
+            
+            itemImageView.image = UIImage(named: "dictMapIcon")
         default:
             return
         }
         
-        itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
         nameLabel.text = itemName
         
         if let description = itemDescription {

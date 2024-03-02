@@ -32,17 +32,7 @@ class DictItemViewController: BasicController {
         layout.minimumLineSpacing = Constants.spacings.xl_3
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.showsHorizontalScrollIndicator = false
-        let backgroundView = UIView()
-        let separator = UIView()
-        separator.backgroundColor = .semanticColor.bolder.secondary
-        backgroundView.addSubview(separator)
-        separator.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(1)
-            $0.height.equalTo(1)
-        }
         view.register(DictSearchMenuCell.self, forCellWithReuseIdentifier: DictSearchMenuCell.identifier)
-        view.backgroundView = backgroundView
         return view
     }()
 
@@ -170,7 +160,23 @@ extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
-            return infoMenuCollectionView
+            let view = UIView()
+            view.addSubview(infoMenuCollectionView)
+            infoMenuCollectionView.snp.makeConstraints {
+                $0.width.equalTo(Constants.screenWidth)
+                $0.height.equalTo(40)
+                $0.center.equalToSuperview()
+            }
+            
+            let separator = UIView()
+            separator.backgroundColor = .semanticColor.bolder.secondary
+            view.addSubview(separator)
+            separator.snp.makeConstraints {
+                $0.leading.trailing.equalToSuperview()
+                $0.bottom.equalToSuperview().offset(1)
+                $0.height.equalTo(1)
+            }
+            return view
         } else {
             return nil
         }

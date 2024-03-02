@@ -1,17 +1,19 @@
 //
-//  DictItemDropCell.swift
+//  DictMapToMonsterCell.swift
 //  MLS
 //
-//  Created by JINHUN CHOI on 2024/03/01.
+//  Created by JINHUN CHOI on 2024/03/02.
 //
 
 import UIKit
 
 import SnapKit
 
-class DictItemDropCell: UITableViewCell {
+class DictMapTableViewCell: UITableViewCell {
     // MARK: Properties
     private var items: [DictDropContent]?
+
+    private var type: DictType?
 
     // MARK: Components
     private let dropCollectionView: UICollectionView = {
@@ -38,17 +40,17 @@ class DictItemDropCell: UITableViewCell {
 }
 
 // MARK: SetUp
-private extension DictItemDropCell {
+private extension DictMapTableViewCell {
     func setUp() {
         dropCollectionView.delegate = self
         dropCollectionView.dataSource = self
-        
+
         setUpConstraints()
     }
 
     func setUpConstraints() {
         addSubview(dropCollectionView)
-        
+
         dropCollectionView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.spacings.lg)
             $0.leading.trailing.equalToSuperview().inset(47.5)
@@ -57,10 +59,11 @@ private extension DictItemDropCell {
 }
 
 // MARK: bind
-extension DictItemDropCell {
-    func bind(items: [DictDropContent]?) {
+extension DictMapTableViewCell {
+    func bind(items: [DictDropContent]?, type: DictType?) {
         if let items = items {
             self.items = items
+            self.type = type
             dropCollectionView.snp.remakeConstraints {
                 $0.top.bottom.equalToSuperview().inset(Constants.spacings.lg)
                 $0.leading.trailing.equalToSuperview().inset(47.5)
@@ -74,16 +77,17 @@ extension DictItemDropCell {
     }
 }
 
-extension DictItemDropCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension DictMapTableViewCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let count = items?.count else { return 0 }
         return count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DropCollectionViewCell.identifier, for: indexPath) as? DropCollectionViewCell else { return UICollectionViewCell() }
-        guard let item = items?[indexPath.row] else { return UICollectionViewCell()}
-        cell.bind(data: item, type: .monster)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DropCollectionViewCell.identifier, for: indexPath) as? DropCollectionViewCell,
+              let item = items?[indexPath.row],
+              let type = self.type else { return UICollectionViewCell() }
+        cell.bind(data: item, type: type)
         return cell
     }
 }

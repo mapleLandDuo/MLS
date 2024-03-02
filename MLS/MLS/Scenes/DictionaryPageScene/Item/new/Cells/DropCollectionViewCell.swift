@@ -33,6 +33,7 @@ class DropCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .semiBold)
         label.textColor = .semanticColor.text.primary
+        label.numberOfLines = 2
         return label
     }()
     
@@ -107,6 +108,7 @@ private extension DropCollectionViewCell {
         nameLabel.snp.makeConstraints {
             $0.top.equalTo(imageBackgroundView.snp.bottom).offset(Constants.spacings.xs)
             $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44)
         }
         
         levelTitleLabel.snp.makeConstraints {
@@ -140,19 +142,26 @@ private extension DropCollectionViewCell {
 // MARK: - Bind
 extension DropCollectionViewCell {
     func bind(data: DictDropContent, type: DictType) {
+        print(items, type)
         nameLabel.text = data.name
         levelLabel.text = data.level
         descriptionLabel.text = data.description
         switch type {
         case .item:
             let url = URL(string: "https://maplestory.io/api/gms/62/item/\(data.code)/icon?resize=2")
-            print(url)
             imageView.kf.setImage(with: url)
             descriptionTitleLabel.text = "드롭률"
-        case .map:
-            let url = URL(string: "https://mapledb.kr/Assets/image/minimaps/\(data.code).png")
+        case .monster:
+            let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(data.code)/render/move?bgColor=")
             imageView.kf.setImage(with: url)
             descriptionTitleLabel.text = "출현 몬스터 수"
+        case .npc:
+            let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(data.code)/icon?resize=2")
+            imageView.kf.setImage(with: url)
+            levelTitleLabel.isHidden = true
+            levelLabel.isHidden = true
+            descriptionTitleLabel.isHidden = true
+            descriptionLabel.isHidden = true
         default:
             break
         }

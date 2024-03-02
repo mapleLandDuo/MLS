@@ -54,12 +54,16 @@ extension DictMonsterDropCell {
 
 // MARK: Bind
 extension DictMonsterDropCell {
-    func bind(items: [DictDropContent], type: DictType) {
-        self.items = items
-        
-        monsterDropTableView.snp.remakeConstraints {
-            $0.edges.equalToSuperview().inset(Constants.spacings.xl)
-            $0.height.equalTo(80 * items.count)
+    func bind(items: [DictDropContent]?) {
+        if let items = items {
+            self.items = items
+            monsterDropTableView.snp.remakeConstraints {
+                $0.edges.equalToSuperview().inset(Constants.spacings.xl)
+                $0.height.equalTo(80 * items.count)
+            }
+            monsterDropTableView.reloadData()
+        } else {
+            monsterDropTableView.isHidden = true
         }
     }
 }

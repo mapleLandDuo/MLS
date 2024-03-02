@@ -102,6 +102,7 @@ extension DictTagTableViewCell {
             self.items = items
             tagCollectionView.reloadData()
         } else {
+            tagCollectionView.isHidden = true
             // alert
         }
         

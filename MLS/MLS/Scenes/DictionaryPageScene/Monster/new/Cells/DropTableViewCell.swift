@@ -39,7 +39,7 @@ class DropTableViewCell: UITableViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
-        label.textColor = .semanticColor.text.secondary
+        label.textColor = .semanticColor.text.primary
         label.textAlignment = .right
 //        label.isHidden = true
         return label
@@ -48,7 +48,7 @@ class DropTableViewCell: UITableViewCell {
     private let descriptionTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
-        label.textColor = .semanticColor.text.primary
+        label.textColor = .semanticColor.text.secondary
         return label
     }()
     
@@ -135,6 +135,7 @@ extension DropTableViewCell {
 extension DropTableViewCell {
     func bind(item: DictDropContent, type: DictType) {
         if item.name == "메소" {
+            descriptionTitleLabel.text = "드롭률"
             nameLabel.isHidden = false
             nameLabel.text = item.level
             itemImageView.image = UIImage(named: "mesoIcon")

@@ -142,7 +142,6 @@ private extension DropCollectionViewCell {
 // MARK: - Bind
 extension DropCollectionViewCell {
     func bind(data: DictDropContent, type: DictType) {
-        print(items, type)
         nameLabel.text = data.name
         levelLabel.text = data.level
         descriptionLabel.text = data.description

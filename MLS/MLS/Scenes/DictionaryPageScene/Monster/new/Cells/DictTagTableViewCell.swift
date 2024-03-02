@@ -98,11 +98,16 @@ private extension DictTagTableViewCell {
 // MARK: bind
 extension DictTagTableViewCell {
     func bind(items: [String]?, descriptionType: DictType) {
+        print(items)
         if let items = items {
             self.items = items
             tagCollectionView.reloadData()
+            if items == [] {
+                leadingView.isHidden = true
+                // alert
+            }
         } else {
-            tagCollectionView.isHidden = true
+            leadingView.isHidden = true
             // alert
         }
         

@@ -1,25 +1,25 @@
 //
-//  DictMapViewController.swift
+//  DictNPCViewController.swift
 //  MLS
 //
-//  Created by JINHUN CHOI on 2024/03/02.
+//  Created by JINHUN CHOI on 2024/03/03.
 //
 
 import UIKit
 
 import SnapKit
 
-class DictMapViewController: BasicController {
+class DictNPCViewController: BasicController {
     // MARK: Properties
 
-    let viewModel: DictMapViewModel
+    let viewModel: DictNPCViewModel
 
     // MARK: Components
 
-    private let dictMapTableView: UITableView = {
+    private let dictNPCTableView: UITableView = {
         let view = UITableView()
         view.register(DictMainInfoCell.self, forCellReuseIdentifier: DictMainInfoCell.identifier)
-        view.register(DictMapTableViewCell.self, forCellReuseIdentifier: DictMapTableViewCell.identifier)
+        view.register(DictTagTableViewCell.self, forCellReuseIdentifier: DictTagTableViewCell.identifier)
         view.separatorStyle = .none
         return view
     }()
@@ -35,7 +35,7 @@ class DictMapViewController: BasicController {
         return view
     }()
 
-    init(viewModel: DictMapViewModel) {
+    init(viewModel: DictNPCViewModel) {
         self.viewModel = viewModel
         super.init()
     }
@@ -47,7 +47,7 @@ class DictMapViewController: BasicController {
 }
 
 // MARK: Life Cycle
-extension DictMapViewController {
+extension DictNPCViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -56,48 +56,44 @@ extension DictMapViewController {
 }
 
 // MARK: SetUp
-private extension DictMapViewController {
+private extension DictNPCViewController {
     func setUp() {
-        dictMapTableView.delegate = self
-        dictMapTableView.dataSource = self
+        dictNPCTableView.delegate = self
+        dictNPCTableView.dataSource = self
 
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchMap()
+        viewModel.fetchNPC()
 
         setUpConstraints()
         setUpNavigation()
     }
 
     func setUpConstraints() {
-        view.addSubview(dictMapTableView)
+        view.addSubview(dictNPCTableView)
 
-        dictMapTableView.snp.makeConstraints {
+        dictNPCTableView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
 
 // MARK: Bind
-extension DictMapViewController {
+extension DictNPCViewController {
     func bind() {
-        viewModel.selectedMap.bind { [weak self] _ in
-            self?.viewModel.fetchApearMonsters {
-                self?.viewModel.fetchApearNPCs {
-                    self?.dictMapTableView.reloadData()
-                }
-            }
+        viewModel.selectedNPC.bind { [weak self] _ in
+            self?.dictNPCTableView.reloadData()
         }
 
         viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictMapTableView.reloadData()
+            self?.dictNPCTableView.reloadData()
         }
     }
 }
 
 // MARK: Methods
-extension DictMapViewController {
+extension DictNPCViewController {
     func setUpNavigation() {
         let spacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
@@ -120,7 +116,7 @@ extension DictMapViewController {
     }
 }
 
-extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
+extension DictNPCViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -129,19 +125,19 @@ extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
         guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
-                  let item = viewModel.selectedMap.value else { return UITableViewCell() }
+                  let item = viewModel.selectedNPC.value else { return UITableViewCell() }
             cell.contentView.isUserInteractionEnabled = false
             cell.bind(item: item)
             return cell
         } else {
             switch selectedTab {
             case 0:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
-                cell.bind(items: viewModel.apearMonsterContents, type: .monster)
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
+                cell.bind(items: viewModel.selectedNPC.value?.maps, descriptionType: .map)
                 return cell
             case 1:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
-                cell.bind(items: viewModel.apearNpcContents, type: .npc)
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
+                cell.bind(items: viewModel.selectedNPC.value?.quests, descriptionType: .quest)
                 return cell
             default:
                 return UITableViewCell()
@@ -187,7 +183,7 @@ extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension DictMapViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension DictNPCViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.tabMenus.count
     }

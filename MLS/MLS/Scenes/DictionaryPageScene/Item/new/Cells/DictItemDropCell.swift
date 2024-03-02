@@ -18,7 +18,6 @@ class DictItemDropCell: UITableViewCell {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = .init(width: 120, height: 216)
         layout.minimumLineSpacing = Constants.spacings.xl_3
-        layout.minimumInteritemSpacing = Constants.spacings.lg
         layout.scrollDirection = .vertical
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.showsVerticalScrollIndicator = false
@@ -64,7 +63,7 @@ extension DictItemDropCell {
             dropCollectionView.snp.remakeConstraints {
                 $0.top.bottom.equalToSuperview().inset(Constants.spacings.lg)
                 $0.leading.trailing.equalToSuperview().inset(47.5)
-                $0.height.equalTo(216 * (items.count / 2 + items.count % 2) + Int(Constants.spacings.lg))
+                $0.height.equalTo(216 * (items.count / 2 + items.count % 2) + Int(Constants.spacings.xl_3) * ((items.count / 2 + items.count % 2) - 1))
             }
             dropCollectionView.reloadData()
         } else {

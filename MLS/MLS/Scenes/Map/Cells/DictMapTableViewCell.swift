@@ -67,7 +67,7 @@ extension DictMapTableViewCell {
             dropCollectionView.snp.remakeConstraints {
                 $0.top.bottom.equalToSuperview().inset(Constants.spacings.lg)
                 $0.leading.trailing.equalToSuperview().inset(47.5)
-                $0.height.equalTo(216 * (items.count / 2 + items.count % 2) + Int(Constants.spacings.lg))
+                $0.height.equalTo(216 * (items.count / 2 + items.count % 2) + Int(Constants.spacings.xl_3) * ((items.count / 2 + items.count % 2) - 1))
             }
             dropCollectionView.reloadData()
         } else {

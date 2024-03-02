@@ -156,8 +156,19 @@ extension DictMainInfoCell {
                 $0.height.equalTo(38)
                 $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
             }
-            
             itemImageView.image = UIImage(named: "dictMapIcon")
+        case is DictNPC:
+            guard let item = item as? DictNPC else { return }
+            url = "https://maplestory.io/api/gms/62/npc/\(item.code)/icon?resize=2"
+            itemName = item.name
+            itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
+            
+            descriptionView.snp.remakeConstraints {
+                $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
+                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
+                $0.height.equalTo(38)
+                $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
+            }
         default:
             return
         }

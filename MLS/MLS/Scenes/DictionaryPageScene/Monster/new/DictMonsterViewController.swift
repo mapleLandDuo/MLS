@@ -177,6 +177,7 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
                 $0.bottom.equalToSuperview().offset(1)
                 $0.height.equalTo(1)
             }
+            view.backgroundColor = .themeColor(color: .base, value: .value_white)
             return view
         } else {
             return nil

@@ -163,6 +163,8 @@
 		7719DD422B935664003797F4 /* DictMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719DD412B935664003797F4 /* DictMapViewController.swift */; };
 		7719DD442B9356CA003797F4 /* DictMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719DD432B9356CA003797F4 /* DictMapViewModel.swift */; };
 		7719DD472B9359C5003797F4 /* DictMapTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719DD462B9359C5003797F4 /* DictMapTableViewCell.swift */; };
+		7719DD4F2B939579003797F4 /* DictNPCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719DD4E2B939579003797F4 /* DictNPCViewController.swift */; };
+		7719DD512B9395D1003797F4 /* DictNPCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719DD502B9395D1003797F4 /* DictNPCViewModel.swift */; };
 		7732E8802B67E6D30038C7A9 /* DictionarySearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E87F2B67E6D30038C7A9 /* DictionarySearchViewController.swift */; };
 		7732E8822B67E7630038C7A9 /* DictionarySearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E8812B67E7630038C7A9 /* DictionarySearchViewModel.swift */; };
 		7732E8842B67F3F90038C7A9 /* DictionarySearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E8832B67F3F90038C7A9 /* DictionarySearchCell.swift */; };
@@ -345,6 +347,8 @@
 		7719DD412B935664003797F4 /* DictMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMapViewController.swift; sourceTree = "<group>"; };
 		7719DD432B9356CA003797F4 /* DictMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMapViewModel.swift; sourceTree = "<group>"; };
 		7719DD462B9359C5003797F4 /* DictMapTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMapTableViewCell.swift; sourceTree = "<group>"; };
+		7719DD4E2B939579003797F4 /* DictNPCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictNPCViewController.swift; sourceTree = "<group>"; };
+		7719DD502B9395D1003797F4 /* DictNPCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictNPCViewModel.swift; sourceTree = "<group>"; };
 		7732E87F2B67E6D30038C7A9 /* DictionarySearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchViewController.swift; sourceTree = "<group>"; };
 		7732E8812B67E7630038C7A9 /* DictionarySearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchViewModel.swift; sourceTree = "<group>"; };
 		7732E8832B67F3F90038C7A9 /* DictionarySearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchCell.swift; sourceTree = "<group>"; };
@@ -552,6 +556,7 @@
 				081E70082B69206F00CF83F4 /* ProfilePageScene */,
 				0886E7E62B62849A00B014F8 /* DictionaryPageScene */,
 				7719DD402B93564D003797F4 /* Map */,
+				7719DD4D2B93955D003797F4 /* NPC */,
 				77C1ED0A2B61544D003179B4 /* QnAPageScene */,
 				779B72C52B56DB9B007CB6C1 /* CommunityPageScene */,
 				08EF65152B554D83004CC842 /* AddPostPageScene */,
@@ -899,6 +904,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		7719DD4D2B93955D003797F4 /* NPC */ = {
+			isa = PBXGroup;
+			children = (
+				7719DD4E2B939579003797F4 /* DictNPCViewController.swift */,
+				7719DD502B9395D1003797F4 /* DictNPCViewModel.swift */,
+			);
+			path = NPC;
+			sourceTree = "<group>";
+		};
 		7732E87E2B67E6B20038C7A9 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -1226,6 +1240,7 @@
 				08D50A8A2B5FD46700E94442 /* AlertMaker.swift in Sources */,
 				779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */,
 				081E6FE92B66A41B00CF83F4 /* DictionaryGraySeparatorOneLineCell.swift in Sources */,
+				7719DD4F2B939579003797F4 /* DictNPCViewController.swift in Sources */,
 				08CBCB8C2B7F09E000C051F7 /* TestController.swift in Sources */,
 				081E70032B69130000CF83F4 /* AppInfoPageViewController.swift in Sources */,
 				08EF65122B554710004CC842 /* UILabel+.swift in Sources */,
@@ -1314,6 +1329,7 @@
 				082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */,
 				770848952B88971B008B68E1 /* FindPasswordViewController.swift in Sources */,
 				7752C2622B9308A100C891A5 /* DictTagCell.swift in Sources */,
+				7719DD512B9395D1003797F4 /* DictNPCViewModel.swift in Sources */,
 				778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */,
 				08D5F11C2B873B1400E56482 /* DictSearchViewController.swift in Sources */,
 				081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */,
@@ -1479,8 +1495,9 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "메랜사";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1511,8 +1528,9 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "메랜사";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

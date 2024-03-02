@@ -27,7 +27,7 @@ class DictItemInfoCell: UITableViewCell {
         return label
     }()
     
-    lazy var descritptionView: UIView = {
+    lazy var descriptionView: UIView = {
         let view = UIView()
         view.backgroundColor = .semanticColor.bg.primary
         view.layer.cornerRadius = 8
@@ -39,6 +39,7 @@ class DictItemInfoCell: UITableViewCell {
         view.font = .customFont(fontSize: .body_sm, fontType: .regular)
         view.textColor = .semanticColor.text.primary
         view.backgroundColor = .clear
+        view.numberOfLines = 2
         return view
     }()
 
@@ -70,9 +71,9 @@ private extension DictItemInfoCell {
     func setUpConstraints() {
         addSubview(itemImageView)
         addSubview(nameLabel)
-        addSubview(descritptionView)
-        descritptionView.addSubview(descriptionTextLabel)
-        descritptionView.addSubview(expandButton)
+        addSubview(descriptionView)
+        descriptionView.addSubview(descriptionTextLabel)
+        descriptionView.addSubview(expandButton)
         
         itemImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(40)
@@ -86,7 +87,7 @@ private extension DictItemInfoCell {
             $0.height.equalTo(32)
         }
         
-        descritptionView.snp.makeConstraints {
+        descriptionView.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
             $0.height.equalTo(60)
@@ -113,9 +114,14 @@ private extension DictItemInfoCell {
 // MARK: bind
 extension DictItemInfoCell {
     func bind(item: DictItem) {
-        itemImageView.kf.setImage(with: URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2"))
+        itemImageView.kf.setImage(with: URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2"), placeholder: UIImage(named: "Deco-maple"))
         nameLabel.text = item.name
-        descriptionTextLabel.text = item.detailValues.filter{ $0.name == "설명" }.first?.description
-        print(item.detailValues.filter{ $0.name == "설명" }.first?.description)
+        if let description = item.detailValues.filter({ $0.name == "설명" }).first?.description {
+            descriptionTextLabel.text = description
+            descriptionTextLabel.textAlignment = .left
+        } else {
+            descriptionTextLabel.text = "설명 없음"
+            descriptionTextLabel.textAlignment = .center
+        }
     }
 }

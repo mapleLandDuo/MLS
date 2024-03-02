@@ -146,6 +146,7 @@ extension DropCollectionViewCell {
         switch type {
         case .item:
             let url = URL(string: "https://maplestory.io/api/gms/62/item/\(data.code)/icon?resize=2")
+            print(url)
             imageView.kf.setImage(with: url)
             descriptionTitleLabel.text = "드롭률"
         case .map:

@@ -22,6 +22,7 @@ class DictItemDropCell: UITableViewCell {
         layout.scrollDirection = .vertical
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.showsVerticalScrollIndicator = false
+        view.register(DropCollectionViewCell.self, forCellWithReuseIdentifier: DropCollectionViewCell.identifier)
         return view
     }()
 
@@ -49,7 +50,7 @@ private extension DictItemDropCell {
         addSubview(dropCollectionView)
         
         dropCollectionView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(Constants.spacings.lg)
             $0.leading.trailing.equalToSuperview().inset(47.5)
         }
     }
@@ -60,6 +61,12 @@ extension DictItemDropCell {
     func bind(items: [DictDropContent]?) {
         if let items = items {
             self.items = items
+            dropCollectionView.snp.remakeConstraints {
+                print(items.count / 2)
+                $0.top.bottom.equalToSuperview().inset(Constants.spacings.lg)
+                $0.leading.trailing.equalToSuperview().inset(47.5)
+                $0.height.equalTo(216 * (items.count / 2 + items.count % 2) + Int(Constants.spacings.lg))
+            }
         } else {
             // alert
         }

@@ -66,6 +66,11 @@ private extension DictDescriptionCell {
 extension DictDescriptionCell {
     func bind(item: DetailContent) {
         titleLabel.text = item.title
-        descriptionLabel.text = item.description
+        if item.title == "상점 판매가" {
+            descriptionLabel.text = "\(item.description)메소"
+        } else {
+            descriptionLabel.text = item.description
+        }
+        
     }
 }

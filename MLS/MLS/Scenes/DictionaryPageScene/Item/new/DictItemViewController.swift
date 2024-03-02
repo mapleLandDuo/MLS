@@ -75,10 +75,7 @@ private extension DictItemViewController {
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchItem {
-            print(self.viewModel.selectedItem.value)
-            self.viewModel.fetchDropInfos()
-        }
+        viewModel.fetchItem()
 
         setUpConstraints()
         setUpNavigation()
@@ -97,6 +94,12 @@ private extension DictItemViewController {
 extension DictItemViewController {
     func bind() {
         viewModel.selectedItem.bind { [weak self] _ in
+            self?.viewModel.fetchDropInfos {
+                self?.dictItemTableView.reloadData()
+            }
+        }
+        
+        viewModel.selectedTab.bind { [weak self] _ in
             self?.dictItemTableView.reloadData()
         }
     }
@@ -148,13 +151,12 @@ extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
                 return cell
             case 1:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
-                      let items = viewModel.fetchDefaultInfos() else { return UITableViewCell() }
+                      let items = viewModel.fetchDetailInfos() else { return UITableViewCell() }
                 cell.bind(items: items)
                 return cell
             case 2:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictItemDropCell.identifier) as? DictItemDropCell,
-                      let items = viewModel.dropTableContents else { return UITableViewCell() }
-                cell.bind(items: items)
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictItemDropCell.identifier) as? DictItemDropCell else { return UITableViewCell() }
+                cell.bind(items: viewModel.dropTableContents)
                 return cell
             default:
                 return UITableViewCell()

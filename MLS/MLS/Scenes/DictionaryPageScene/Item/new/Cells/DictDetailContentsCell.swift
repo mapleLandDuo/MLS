@@ -68,10 +68,11 @@ extension DictDetailContentsCell {
     func bind(items: [DetailContent]?) {
         if let items = items {
             self.items = items
-            defaultTableView.snp.makeConstraints {
+            defaultTableView.snp.remakeConstraints {
                 $0.edges.equalToSuperview().inset(Constants.spacings.xl)
                 $0.height.equalTo(24 * items.count)
             }
+            defaultTableView.reloadData()
         } else {
             // alert
         }

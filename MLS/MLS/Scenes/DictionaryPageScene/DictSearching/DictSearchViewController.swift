@@ -421,7 +421,7 @@ extension DictSearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let keyword = textField.text else { return true }
-        if keyword == "" {
+        if keyword.replacingOccurrences(of: " ", with: "").count == 0 {
             viewModel.fetchAllSearchData()
         } else {
             guard let keywords = viewModel.recentSearchKeywords.value else { return true }

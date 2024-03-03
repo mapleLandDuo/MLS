@@ -208,7 +208,7 @@ extension DatabaseUpdateManager {
                             count += 1
                         }
                     }
-                    let dropTableNames = doc.css("h4.text-bold.fs-3.search-page-add-content-box-main-title.mt-2, span.text-bold-underline").compactMap { $0.text }
+                    let dropTableNames = doc.css("h4.text-bold.fs-3.search-page-add-content-box-main-title.mt-2").compactMap { $0.text }
                     let dropTableValues = doc.css("span.text-bold-underline").compactMap { $0.text }
                     let dropTables = zip(dropTableNames, dropTableValues)
                     for (name, value) in dropTables {

@@ -27,7 +27,7 @@ class DictSectionHeaderView: UIView {
         return view
     }()
     
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .semanticColor.text.primary
         label.font = .customFont(fontSize: .body_md, fontType: .bold)

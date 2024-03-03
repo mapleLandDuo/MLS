@@ -107,7 +107,6 @@ extension DictionaryItemViewController: UITableViewDelegate, UITableViewDataSour
             } else {
                 let datas = viewModel.fetchDefaultInfoArray()
                 if datas[indexPath.row - 1].name == "설명" {
-                    print("description cell")
                     guard let cell = tableView.dequeueReusableCell(withIdentifier: DictionaryGraySeparatorDescriptionCell.identifier, for: indexPath) as? DictionaryGraySeparatorDescriptionCell else { return UITableViewCell() }
                     cell.bind(data: datas[indexPath.row - 1])
                     cell.selectionStyle = .none

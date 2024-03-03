@@ -57,8 +57,12 @@ class SqliteManager {
         let createTable = table.create { table in
             print("table table", table)
             for columnName in columnNames {
-                let column = Expression<String>(columnName)
-                table.column(column)
+                let column = Expression<String?>(columnName)
+                if columnName == "preQuest" || columnName == "laterQuest" {
+                    table.column(column, defaultValue: nil)
+                } else {
+                    table.column(column)
+                }
             }
         }
         do {
@@ -104,7 +108,15 @@ class SqliteManager {
         let placeholders = String(repeating: "?, ", count: T.columnOrder.count).dropLast(2)
         let query = "INSERT OR REPLACE INTO \(T.tableName.tableName) (\(columns)) VALUES (\(placeholders))"
         for item in data {
-            let values = encodeData(item: item)
+            var values = encodeData(item: item)
+            if let item = item as? DictQuest {
+                if T.columnOrder.contains("preQuest") {
+                    values[T.columnOrder.firstIndex(of: "preQuest")!] = item.preQuest ?? ""
+                }
+                if T.columnOrder.contains("laterQuest") {
+                    values[T.columnOrder.firstIndex(of: "laterQuest")!] = item.laterQuest ?? ""
+                }
+            }
             do {
                 let statement = try db?.prepare(query)
                 try statement?.run(values)
@@ -182,6 +194,37 @@ class SqliteManager {
         completion(result)
     }
 
+    func searchDetailData<T: Sqlable>(dataName: String, completion: @escaping (T) -> Void) {
+        do {
+            let table = Table(T.tableName.tableName)
+
+            let name = Expression<String>("name")
+
+            let query = table.filter(name == dataName)
+
+            for row in try self.db!.prepare(query) {
+                switch T.tableName {
+                case .items:
+                    guard let data = decodeItem(row: row) as? T else { return }
+                    completion(data)
+                case .monsters:
+                    guard let data = decodeMonster(row: row) as? T else { return }
+                    completion(data)
+                case .maps:
+                    guard let data = decodeMap(row: row) as? T else { return }
+                    completion(data)
+                case .npcs:
+                    guard let data = decodeNPC(row: row) as? T else { return }
+                    completion(data)
+                case .quests:
+                    guard let data = decodeQuest(row: row) as? T else { return }
+                    completion(data)
+                }
+            }
+        } catch {
+            print("Failure preparing search: \(error)")
+        }
+    }
 
     func deleteData(tableName: Filename, dataName: String, completion: @escaping () -> Void) {
         do {

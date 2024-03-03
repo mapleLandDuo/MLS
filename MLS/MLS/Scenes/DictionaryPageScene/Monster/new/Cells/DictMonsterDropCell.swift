@@ -12,9 +12,11 @@ import SnapKit
 class DictMonsterDropCell: UITableViewCell {
     // MARK: Properties
     private var items: [DictDropContent]?
-    
+
+    private var type: String?
+
     // MARK: Components
-    
+
     private let monsterDropTableView: UITableView = {
         let view = UITableView()
         view.register(DropTableViewCell.self, forCellReuseIdentifier: DropTableViewCell.identifier)
@@ -35,17 +37,16 @@ class DictMonsterDropCell: UITableViewCell {
 
 // MARK: SetUp
 extension DictMonsterDropCell {
-    
     func setUp() {
         monsterDropTableView.delegate = self
         monsterDropTableView.dataSource = self
-        
+
         setUpConstraints()
     }
-    
+
     func setUpConstraints() {
         addSubview(monsterDropTableView)
-        
+
         monsterDropTableView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(Constants.spacings.xl)
         }
@@ -54,9 +55,10 @@ extension DictMonsterDropCell {
 
 // MARK: Bind
 extension DictMonsterDropCell {
-    func bind(items: [DictDropContent]?) {
+    func bind(items: [DictDropContent]?, type: String?) {
         if let items = items {
             self.items = items
+            self.type = type
             monsterDropTableView.snp.remakeConstraints {
                 $0.edges.equalToSuperview().inset(Constants.spacings.xl)
                 $0.height.equalTo(80 * items.count)
@@ -73,11 +75,12 @@ extension DictMonsterDropCell: UITableViewDelegate, UITableViewDataSource {
         guard let count = items?.count else { return 0 }
         return count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DropTableViewCell.identifier) as? DropTableViewCell,
-              let item = items?[indexPath.row] else { return UITableViewCell() }
-        cell.bind(item: item, type: .item)
+              let item = items?[indexPath.row],
+              let type = type else { return UITableViewCell() }
+        cell.bind(item: item, type: type)
         return cell
     }
 }

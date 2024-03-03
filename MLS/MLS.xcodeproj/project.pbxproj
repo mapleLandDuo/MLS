@@ -165,6 +165,9 @@
 		7719DD472B9359C5003797F4 /* DictMapTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719DD462B9359C5003797F4 /* DictMapTableViewCell.swift */; };
 		7719DD4F2B939579003797F4 /* DictNPCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719DD4E2B939579003797F4 /* DictNPCViewController.swift */; };
 		7719DD512B9395D1003797F4 /* DictNPCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719DD502B9395D1003797F4 /* DictNPCViewModel.swift */; };
+		7724EF592B94485600C59FE6 /* DictQuestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7724EF582B94485600C59FE6 /* DictQuestViewController.swift */; };
+		7724EF5B2B94486700C59FE6 /* DictQuestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7724EF5A2B94486700C59FE6 /* DictQuestViewModel.swift */; };
+		7724EF5E2B9448D600C59FE6 /* DictQuestOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7724EF5D2B9448D600C59FE6 /* DictQuestOrderCell.swift */; };
 		7732E8802B67E6D30038C7A9 /* DictionarySearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E87F2B67E6D30038C7A9 /* DictionarySearchViewController.swift */; };
 		7732E8822B67E7630038C7A9 /* DictionarySearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E8812B67E7630038C7A9 /* DictionarySearchViewModel.swift */; };
 		7732E8842B67F3F90038C7A9 /* DictionarySearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7732E8832B67F3F90038C7A9 /* DictionarySearchCell.swift */; };
@@ -349,6 +352,9 @@
 		7719DD462B9359C5003797F4 /* DictMapTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMapTableViewCell.swift; sourceTree = "<group>"; };
 		7719DD4E2B939579003797F4 /* DictNPCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictNPCViewController.swift; sourceTree = "<group>"; };
 		7719DD502B9395D1003797F4 /* DictNPCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictNPCViewModel.swift; sourceTree = "<group>"; };
+		7724EF582B94485600C59FE6 /* DictQuestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictQuestViewController.swift; sourceTree = "<group>"; };
+		7724EF5A2B94486700C59FE6 /* DictQuestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictQuestViewModel.swift; sourceTree = "<group>"; };
+		7724EF5D2B9448D600C59FE6 /* DictQuestOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictQuestOrderCell.swift; sourceTree = "<group>"; };
 		7732E87F2B67E6D30038C7A9 /* DictionarySearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchViewController.swift; sourceTree = "<group>"; };
 		7732E8812B67E7630038C7A9 /* DictionarySearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchViewModel.swift; sourceTree = "<group>"; };
 		7732E8832B67F3F90038C7A9 /* DictionarySearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchCell.swift; sourceTree = "<group>"; };
@@ -557,6 +563,7 @@
 				0886E7E62B62849A00B014F8 /* DictionaryPageScene */,
 				7719DD402B93564D003797F4 /* Map */,
 				7719DD4D2B93955D003797F4 /* NPC */,
+				7724EF572B94483200C59FE6 /* Quest */,
 				77C1ED0A2B61544D003179B4 /* QnAPageScene */,
 				779B72C52B56DB9B007CB6C1 /* CommunityPageScene */,
 				08EF65152B554D83004CC842 /* AddPostPageScene */,
@@ -913,6 +920,24 @@
 			path = NPC;
 			sourceTree = "<group>";
 		};
+		7724EF572B94483200C59FE6 /* Quest */ = {
+			isa = PBXGroup;
+			children = (
+				7724EF5C2B94487F00C59FE6 /* Cells */,
+				7724EF582B94485600C59FE6 /* DictQuestViewController.swift */,
+				7724EF5A2B94486700C59FE6 /* DictQuestViewModel.swift */,
+			);
+			path = Quest;
+			sourceTree = "<group>";
+		};
+		7724EF5C2B94487F00C59FE6 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7724EF5D2B9448D600C59FE6 /* DictQuestOrderCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		7732E87E2B67E6B20038C7A9 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -1257,6 +1282,7 @@
 				082D0C762B53D0F200D84CE2 /* MainPageViewController.swift in Sources */,
 				77082A4C2B63A2C300187906 /* Comment.swift in Sources */,
 				778EB9412B91D8A500DC9B63 /* DropCollectionViewCell.swift in Sources */,
+				7724EF592B94485600C59FE6 /* DictQuestViewController.swift in Sources */,
 				7719DD442B9356CA003797F4 /* DictMapViewModel.swift in Sources */,
 				08EF65242B5572E3004CC842 /* Observable.swift in Sources */,
 				08CB4E572B8F375300336FE6 /* DictSectionDatas.swift in Sources */,
@@ -1270,8 +1296,10 @@
 				08971A792B70C1EF00FE46BE /* State.swift in Sources */,
 				082D0C832B53D45700D84CE2 /* Post.swift in Sources */,
 				7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */,
+				7724EF5E2B9448D600C59FE6 /* DictQuestOrderCell.swift in Sources */,
 				08F95DC32B8A0A5500AD79DF /* DictSearchHeaderView.swift in Sources */,
 				778E905F2B667ECF008A6E74 /* DictionaryMainViewModel.swift in Sources */,
+				7724EF5B2B94486700C59FE6 /* DictQuestViewModel.swift in Sources */,
 				778EB9312B91A0E800DC9B63 /* DictItemViewModel.swift in Sources */,
 				77F3D5E32B827F0A000DB65D /* Encodable+.swift in Sources */,
 				081E6FCE2B663A9800CF83F4 /* DictionaryItem.swift in Sources */,
@@ -1489,7 +1517,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W5QTRMS954;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MLS/Resource/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "메랜사";
@@ -1522,7 +1550,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W5QTRMS954;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MLS/Resource/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "메랜사";

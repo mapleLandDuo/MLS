@@ -133,7 +133,7 @@ extension DropTableViewCell {
 
 // MARK: - Bind
 extension DropTableViewCell {
-    func bind(item: DictDropContent, type: DictType) {
+    func bind(item: DictDropContent, type: String) {
         if item.name == "메소" {
             descriptionTitleLabel.text = "드롭률"
             nameLabel.isHidden = false
@@ -142,25 +142,25 @@ extension DropTableViewCell {
         } else {
             nameLabel.isHidden = true
             switch type {
-            case .monster:
-                let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor=")
-                itemImageView.kf.setImage(with: url)
-            case .item:
+            case "드롭 정보":
                 descriptionTitleLabel.text = "드롭률"
                 let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2")
                 itemImageView.kf.setImage(with: url)
-            case .map:
-                let url = URL(string: "https://mapledb.kr/Assets/image/minimaps/\(item.code).png")
+                descriptionLabel.text = item.description
+            case "정보 완료 조건":
+                descriptionTitleLabel.text = "처치 마리수"
+                let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor=")
                 itemImageView.kf.setImage(with: url)
-            case .npc:
-                let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(item.code)/icon?resize=2")
+                descriptionLabel.text = "\(item.description)마리"
+            case "퀘스트 보상":
+                descriptionTitleLabel.text = "개수"
+                let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2")
                 itemImageView.kf.setImage(with: url)
-            case .quest:
-                let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(item.code)/icon")
-                itemImageView.kf.setImage(with: url)
+                descriptionLabel.text = "\(item.description)개"
+            default:
+                break
             }
         }
         nameTitleLabel.text = item.name
-        descriptionLabel.text = item.description
     }
 }

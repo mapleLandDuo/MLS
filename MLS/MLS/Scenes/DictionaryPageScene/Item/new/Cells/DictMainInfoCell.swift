@@ -123,13 +123,13 @@ extension DictMainInfoCell {
             guard let item = item as? DictItem else { return }
             url = "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2"
             itemName = item.name
-            itemDescription = item.detailValues.filter({ $0.name == "설명" }).first?.description
+            itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
             itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
         case is DictMonster:
             guard let item = item as? DictMonster else { return }
             url = "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor="
             itemName = item.name
-            itemDescription = item.detailValues.filter({ $0.name == "설명" }).first?.description
+            itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
             itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
             
             descriptionView.snp.remakeConstraints {
@@ -162,6 +162,17 @@ extension DictMainInfoCell {
             url = "https://maplestory.io/api/gms/62/npc/\(item.code)/icon?resize=2"
             itemName = item.name
             itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
+            
+            descriptionView.snp.remakeConstraints {
+                $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
+                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
+                $0.height.equalTo(38)
+                $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
+            }
+        case is DictQuest:
+            guard let item = item as? DictQuest else { return }
+            itemName = item.name
+            itemImageView.image = UIImage(named: "dictQuestIcon")
             
             descriptionView.snp.remakeConstraints {
                 $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)

@@ -59,6 +59,13 @@ extension DictLandingViewController {
         bind()
         setUp()
         viewModel.fetchSectionDatas()
+        
+//        let db = DatabaseUpdateManager()
+//        db.fetchJson(type: DictItem.self)
+//        db.fetchJson(type: DictMonster.self)
+//        db.fetchJson(type: DictMap.self)
+//        db.fetchJson(type: DictNPC.self)
+//        db.fetchJson(type: DictQuest.self)
     }
     
     override func viewWillAppear(_ animated: Bool) {

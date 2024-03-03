@@ -98,7 +98,6 @@ private extension DictTagTableViewCell {
 // MARK: bind
 extension DictTagTableViewCell {
     func bind(items: [String]?, descriptionType: DictType) {
-        print(items)
         if let items = items {
             self.items = items
             tagCollectionView.reloadData()

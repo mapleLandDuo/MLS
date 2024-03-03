@@ -1,27 +1,27 @@
 //
-//  DictMonsterViewController.swift
+//  DictQuestViewController.swift
 //  MLS
 //
-//  Created by JINHUN CHOI on 2024/03/02.
+//  Created by JINHUN CHOI on 2024/03/03.
 //
 
 import UIKit
 
 import SnapKit
 
-class DictMonsterViewController: BasicController {
+class DictQuestViewController: BasicController {
     // MARK: Properties
 
-    let viewModel: DictMonsterViewModel
+    let viewModel: DictQuestViewModel
 
     // MARK: Components
 
-    private let dictMonsterTableView: UITableView = {
+    private let dictQuestTableView: UITableView = {
         let view = UITableView()
         view.register(DictMainInfoCell.self, forCellReuseIdentifier: DictMainInfoCell.identifier)
         view.register(DictDetailContentsCell.self, forCellReuseIdentifier: DictDetailContentsCell.identifier)
-        view.register(DictTagTableViewCell.self, forCellReuseIdentifier: DictTagTableViewCell.identifier)
         view.register(DictMonsterDropCell.self, forCellReuseIdentifier: DictMonsterDropCell.identifier)
+        view.register(DictQuestOrderCell.self, forCellReuseIdentifier: DictQuestOrderCell.identifier)
         view.separatorStyle = .none
         return view
     }()
@@ -30,14 +30,14 @@ class DictMonsterViewController: BasicController {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = .init(top: 0, left: Constants.spacings.xl, bottom: 0, right: 0)
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = Constants.spacings.xl_3
+        layout.minimumLineSpacing = Constants.spacings.xl_2
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.showsHorizontalScrollIndicator = false
         view.register(DictSearchMenuCell.self, forCellWithReuseIdentifier: DictSearchMenuCell.identifier)
         return view
     }()
 
-    init(viewModel: DictMonsterViewModel) {
+    init(viewModel: DictQuestViewModel) {
         self.viewModel = viewModel
         super.init()
     }
@@ -49,7 +49,7 @@ class DictMonsterViewController: BasicController {
 }
 
 // MARK: Life Cycle
-extension DictMonsterViewController {
+extension DictQuestViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -58,46 +58,48 @@ extension DictMonsterViewController {
 }
 
 // MARK: SetUp
-private extension DictMonsterViewController {
+private extension DictQuestViewController {
     func setUp() {
-        dictMonsterTableView.delegate = self
-        dictMonsterTableView.dataSource = self
-        
+        dictQuestTableView.delegate = self
+        dictQuestTableView.dataSource = self
+
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchMonster()
+        viewModel.fetchQuest()
 
         setUpConstraints()
         setUpNavigation()
     }
 
     func setUpConstraints() {
-        view.addSubview(dictMonsterTableView)
+        view.addSubview(dictQuestTableView)
 
-        dictMonsterTableView.snp.makeConstraints {
+        dictQuestTableView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
 
 // MARK: Bind
-extension DictMonsterViewController {
+extension DictQuestViewController {
     func bind() {
-        viewModel.selectedMonster.bind { [weak self] _ in
-            self?.viewModel.fetchDropInfos {
-                self?.dictMonsterTableView.reloadData()
+        viewModel.selectedQuest.bind { [weak self] _ in
+            self?.viewModel.fetchCompleteInfos {
+                self?.viewModel.fetchRewardInfos {
+                    self?.dictQuestTableView.reloadData()
+                }
             }
         }
-        
+
         viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictMonsterTableView.reloadData()
+            self?.dictQuestTableView.reloadData()
         }
     }
 }
 
 // MARK: Methods
-extension DictMonsterViewController {
+extension DictQuestViewController {
     func setUpNavigation() {
         let spacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
@@ -120,7 +122,7 @@ extension DictMonsterViewController {
     }
 }
 
-extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource {
+extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -129,25 +131,37 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
         guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
-                  let item = viewModel.selectedMonster.value else { return UITableViewCell() }
+                  let item = viewModel.selectedQuest.value else { return UITableViewCell() }
             cell.contentView.isUserInteractionEnabled = false
             cell.bind(item: item)
             return cell
         } else {
             switch selectedTab {
             case 0:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
-                      let items = viewModel.fetchDetailInfos() else { return UITableViewCell() }
-                cell.bind(items: items)
-                return cell
+                if indexPath.row == 0 {
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
+                          let items = viewModel.fetchDefaultInfos() else { return UITableViewCell() }
+                    cell.bind(items: items)
+                    return cell
+                } else {
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
+                    cell.bind(items: viewModel.completeTableContents, type: "정보 완료 조건")
+                    return cell
+                }
             case 1:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell,
-                      let items = viewModel.selectedMonster.value?.hauntArea else { return UITableViewCell() }
-                cell.bind(items: items, descriptionType: .map)
-                return cell
+                if indexPath.row == 0 {
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell else { return UITableViewCell() }
+                    cell.bind(items: viewModel.fetchRewardTableContents())
+                    return cell
+                } else {
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
+                    cell.bind(items: viewModel.rewardTableContents, type: "퀘스트 보상")
+                    return cell
+                }
             case 2:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
-                cell.bind(items: viewModel.dropTableContents, type: "드롭 정보")
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictQuestOrderCell.identifier) as? DictQuestOrderCell,
+                      let currentQuest = viewModel.selectedQuest.value?.currentQuest else { return UITableViewCell() }
+                cell.bind(preQuest: viewModel.selectedQuest.value?.preQuest, currentQuest: currentQuest, laterQuest: viewModel.selectedQuest.value?.laterQuest)
                 return cell
             default:
                 return UITableViewCell()
@@ -168,7 +182,7 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
                 $0.height.equalTo(40)
                 $0.center.equalToSuperview()
             }
-            
+
             let separator = UIView()
             separator.backgroundColor = .semanticColor.bolder.secondary
             view.addSubview(separator)
@@ -193,7 +207,7 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
     }
 }
 
-extension DictMonsterViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension DictQuestViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.tabMenus.count
     }
@@ -207,13 +221,13 @@ extension DictMonsterViewController: UICollectionViewDelegateFlowLayout, UIColle
         }
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.setMenuIndex(index: indexPath.row)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = Double((Constants.screenWidth - Constants.spacings.xl_3 * 2 - Constants.spacings.xl * 2) / 3)
+        let width = Double((Constants.screenWidth - Constants.spacings.xl_2 * 2 - Constants.spacings.xl * 2) / 3)
         let height = 40.0
         return CGSize(width: width, height: height)
     }

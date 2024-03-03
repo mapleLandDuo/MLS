@@ -9,9 +9,15 @@ import UIKit
 
 import SnapKit
 
+protocol MyPageViewControllerDelegate: BasicController {
+    func didTapSecessionButton()
+}
+
 class MyPageViewController: BasicController {
     // MARK: - Properties
     private let viewModel: MyPageViewModel
+    
+    weak var delegate: MyPageViewControllerDelegate?
     
     // MARK: - Components
 
@@ -269,6 +275,7 @@ extension MyPageViewController: UIViewControllerTransitioningDelegate {
 
 extension MyPageViewController: MyPageSecessionViewControllerDelegate {
     func didTapApplyButton() {
+        delegate?.didTapSecessionButton()
         navigationController?.popViewController(animated: true)
     }
 }

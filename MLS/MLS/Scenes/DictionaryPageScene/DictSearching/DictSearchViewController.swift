@@ -603,41 +603,38 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
         var datas: [DictSectionDatas]
         if viewModel.fetchMenuIndex() == 0 {
             datas = viewModel.fetchSearchData().filter({!$0.datas.isEmpty})
-            print(indexPath.section, "+", datas[indexPath.section].datas[indexPath.row].title)
-        } else {
-            datas = viewModel.fetchSearchData()
-            let title = datas[viewModel.fetchMenuIndex() - 1].datas[indexPath.row].title
-            switch viewModel.fetchMenuIndex() {
-            case 1:
-                let vm = DictMonsterViewModel(selectedName: title)
-                let vc = DictMonsterViewController(viewModel: vm)
-                navigationController?.pushViewController(vc, animated: true)
-            case 2:
-                let vm = DictItemViewModel(selectedName: title)
-                let vc = DictItemViewController(viewModel: vm)
-                navigationController?.pushViewController(vc, animated: true)
-            case 3:
-                let vm = DictMapViewModel(selectedName: title)
-                let vc = DictMapViewController(viewModel: vm)
-                navigationController?.pushViewController(vc, animated: true)
-            case 4:
-                let vm = DictNPCViewModel(selectedName: title)
-                let vc = DictNPCViewController(viewModel: vm)
-                navigationController?.pushViewController(vc, animated: true)
-            case 5:
-                let vm = DictQuestViewModel(selectedName: title)
-                let vc = DictQuestViewController(viewModel: vm)
-                navigationController?.pushViewController(vc, animated: true)
-            default:
-                break
-                
-            }
             let data = datas[indexPath.section].datas[indexPath.row]
             FirebaseManager.firebaseManager.countUpDictSearch(type: data.type, name: data.title)
         } else {
             datas = viewModel.fetchSearchData()
             let data = datas[viewModel.fetchMenuIndex() - 1].datas[indexPath.row]
             FirebaseManager.firebaseManager.countUpDictSearch(type: data.type, name: data.title)
+            
+            switch viewModel.fetchMenuIndex() {
+            case 1:
+                let vm = DictMonsterViewModel(selectedName: data.title)
+                let vc = DictMonsterViewController(viewModel: vm)
+                navigationController?.pushViewController(vc, animated: true)
+            case 2:
+                let vm = DictItemViewModel(selectedName: data.title)
+                let vc = DictItemViewController(viewModel: vm)
+                navigationController?.pushViewController(vc, animated: true)
+            case 3:
+                let vm = DictMapViewModel(selectedName: data.title)
+                let vc = DictMapViewController(viewModel: vm)
+                navigationController?.pushViewController(vc, animated: true)
+            case 4:
+                let vm = DictNPCViewModel(selectedName: data.title)
+                let vc = DictNPCViewController(viewModel: vm)
+                navigationController?.pushViewController(vc, animated: true)
+            case 5:
+                let vm = DictQuestViewModel(selectedName: data.title)
+                let vc = DictQuestViewController(viewModel: vm)
+                navigationController?.pushViewController(vc, animated: true)
+            default:
+                break
+                
+            }
         }
     }
     

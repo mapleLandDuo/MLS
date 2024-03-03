@@ -55,19 +55,23 @@ class DatabaseUpdateManager {
     
     func updateMonsterLink() {
         guard let url = URL(string: "https://mapledb.kr/mob.php") else { return }
-        
+        var updateMonsters: [String] = []
         if let doc = try? HTML(url: url, encoding: .utf8) {
             doc.css("div.search-page-add-content-box-main.mb-3").forEach { docs in
                 guard let name = docs.css("h3").first?.text else { return }
                 guard let code = docs.css("img.search-page-add-content-box-main-img").map({ $0["name"] }).first! else { return }
-                let item = DictionaryNameLinkUpdateItem(name: name, link: code)
-                FirebaseManager.firebaseManager.updateDictionaryLink(collection: .dictionaryMonstersLink, documentName: name, item: item) { error in
-                    if error != nil {
-                        print(name, "fail")
-                    } else {
-                        print(name, "update")
+                if !updateMonsters.contains(name) {
+                    updateMonsters.append(name)
+                    let item = DictionaryNameLinkUpdateItem(name: name, link: code)
+                    FirebaseManager.firebaseManager.updateDictionaryLink(collection: .dictionaryMonstersLink, documentName: name, item: item) { error in
+                        if error != nil {
+                            print(name, "fail")
+                        } else {
+                            print(name, "update")
+                        }
                     }
                 }
+
             }
         }
     }
@@ -425,11 +429,6 @@ extension DatabaseUpdateManager {
             completion(result)
         }
     }
-}
-
-// MARK: - Version Update
-extension DatabaseUpdateManager {
-    func dictVersionUpdate(version: String, dictionary: DictVersion) {}
 }
 
 // MARK: DB to JSON

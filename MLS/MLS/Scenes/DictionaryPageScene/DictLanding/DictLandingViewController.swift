@@ -58,11 +58,11 @@ extension DictLandingViewController {
         super.viewDidLoad()
         bind()
         setUp()
-        viewModel.fetchSectionDatas()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+        viewModel.fetchSectionDatas()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -142,6 +142,21 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     
     func didTapMyPageButton() {
         print(#function)
+        let vc = MyPageViewController(viewModel: MyPageViewModel())
+        vc.delegate = self
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension DictLandingViewController: MyPageViewControllerDelegate {
+    func didTapSecessionButton() {
+        AlertManager.showAlert(
+            vc: self,
+            type: .green,
+            title: "회원 탈퇴 완료",
+            description: "다시 가입을 원하시면 회원가입을 눌러주세요",
+            location: .bottom
+        )
     }
 }
 
@@ -149,6 +164,7 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
     func didTapSearchButton() {
         print(#function)
         let vc = DictSearchViewController(viewModel: DictSearchViewModel())
+        vc.headerView.searchTextField.becomeFirstResponder()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -168,8 +184,9 @@ extension DictLandingViewController: DictSectionHeaderViewDelegate {
 }
 
 extension DictLandingViewController: DictHorizontalSectionTableViewCellDelegate {
-    func didSelectItemAt(itemTitle: String?, type: DictType) {
+    func didSelectItemAt(itemTitle: String, type: DictType) {
         print(itemTitle, type)
+        FirebaseManager.firebaseManager.countUpDictSearch(type: type, name: itemTitle)
     }
 }
 

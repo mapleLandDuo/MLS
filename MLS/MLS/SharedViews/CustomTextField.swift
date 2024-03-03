@@ -49,6 +49,7 @@ class CustomTextField: UIStackView {
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
         label.textColor = .semanticColor.text.primary
         label.isHidden = true
+        label.addCharacterSpacing()
         return label
     }()
     

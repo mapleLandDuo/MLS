@@ -16,7 +16,7 @@ class DictSearchViewController: BasicController {
     
     // MARK: - Components
     
-    private let headerView = DictSearchHeaderView()
+    let headerView = DictSearchHeaderView()
     
     private let searchingView: UIView = {
         let view = UIView()
@@ -113,13 +113,6 @@ extension DictSearchViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        DispatchQueue.main.async {
-            self.headerView.searchTextField.becomeFirstResponder()
-        }
-        
     }
 }
 
@@ -428,8 +421,17 @@ extension DictSearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let keyword = textField.text else { return true }
-        viewModel.recentSearchKeywords.value?.insert(keyword, at: 0)
-        viewModel.fetchSearchData(keyword: keyword)
+        if keyword == "" {
+            viewModel.fetchAllSearchData()
+        } else {
+            guard let keywords = viewModel.recentSearchKeywords.value else { return true }
+            var cleanKeywords: [String] = [keyword]
+            for keyword in keywords {
+                if !cleanKeywords.contains(keyword) { cleanKeywords.append(keyword) }
+            }
+            viewModel.recentSearchKeywords.value = cleanKeywords
+            viewModel.fetchSearchData(keyword: keyword)
+        }
         viewModel.searchKeyword = keyword
         view.endEditing(true)
         return true
@@ -490,7 +492,13 @@ extension DictSearchViewController: UICollectionViewDelegateFlowLayout, UICollec
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch collectionView {
         case self.recentSearchKeywordCollectionView :
-            guard let keyword = viewModel.recentSearchKeywords.value?[indexPath.row] else { return }
+            guard let keywords = viewModel.recentSearchKeywords.value else { return }
+            let keyword = keywords[indexPath.row]
+            var cleanKeywords: [String] = [keyword]
+            for keyword in keywords {
+                if !cleanKeywords.contains(keyword) { cleanKeywords.append(keyword) }
+            }
+            viewModel.recentSearchKeywords.value = cleanKeywords
             viewModel.fetchSearchData(keyword: keyword)
             headerView.searchTextField.text = keyword
             viewModel.searchKeyword = keyword
@@ -624,6 +632,12 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
                 break
                 
             }
+            let data = datas[indexPath.section].datas[indexPath.row]
+            FirebaseManager.firebaseManager.countUpDictSearch(type: data.type, name: data.title)
+        } else {
+            datas = viewModel.fetchSearchData()
+            let data = datas[viewModel.fetchMenuIndex() - 1].datas[indexPath.row]
+            FirebaseManager.firebaseManager.countUpDictSearch(type: data.type, name: data.title)
         }
     }
     

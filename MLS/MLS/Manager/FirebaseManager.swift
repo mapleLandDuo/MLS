@@ -983,3 +983,52 @@ extension FirebaseManager {
     }
 }
 
+// MARK: - DictSearchCount
+extension FirebaseManager {
+    
+    func countUpDictSearch(type: DictType, name: String) {
+        
+        db.collection(type.collectionName).document(name).getDocument { [weak self] querySnapshot, error in
+            if error == nil {
+                if querySnapshot?.data() == nil {
+                    do {
+                        let searchCountData = DictNameCount(name: name, count: 1)
+                        let data = try Firestore.Encoder().encode(searchCountData)
+                        self?.db.collection(type.collectionName).document(name).setData(data)
+                    } catch {
+                        print(error)
+                    }
+                } else {
+                    self?.db.collection(type.collectionName).document(name).updateData([
+                        "count": FieldValue.increment(Int64(1))
+                    ]) { error in
+                        if let error = error {
+                            print("카운트 증가 실패: \(error)")
+                        } else {
+                            print("카운트 증가 성공")
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    func fetchDictSearchCount(type: DictType , completion: @escaping ([DictNameCount]) -> Void) {
+        db.collection(type.collectionName).getDocuments { querySnapshot, error in
+            do {
+                guard let documents = querySnapshot?.documents else { return }
+                var datas = try Firestore.Decoder().decode([DictNameCount].self, from: documents.map({$0.data()}))
+                datas.sort { first, second in
+                    return first.count > second.count
+                }
+                completion(datas)
+            } catch {
+                print(error)
+                completion([])
+            }
+        }
+    }
+}
+
+

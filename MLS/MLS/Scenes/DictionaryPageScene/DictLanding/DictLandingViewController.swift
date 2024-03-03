@@ -164,6 +164,7 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
     func didTapSearchButton() {
         print(#function)
         let vc = DictSearchViewController(viewModel: DictSearchViewModel())
+        vc.headerView.searchTextField.becomeFirstResponder()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

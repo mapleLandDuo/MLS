@@ -92,14 +92,12 @@ extension DictSearchDataCell {
             let url = URL(string: "https://maplestory.io/api/gms/62/item/\(data.image)/icon?resize=2")
             itemImageView.kf.setImage(with: url)
         case .map:
-            let url = URL(string: "https://mapledb.kr/Assets/image/minimaps/\(data.image).png")
-            itemImageView.kf.setImage(with: url)
+            itemImageView.image = UIImage(named: "Map-Image")
         case .npc:
             let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(data.image)/icon?resize=2")
             itemImageView.kf.setImage(with: url)
         case .quest:
-            let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(data.image)/icon")
-            itemImageView.kf.setImage(with: url)
+            itemImageView.image = UIImage(named: "quest-Image")
         }
     }
 }

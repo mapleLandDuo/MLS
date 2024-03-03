@@ -49,11 +49,11 @@ private extension DictDetailContentsCell {
     }
 
     func setUpConstraints() {
-        addSubview(leadingView)
+        contentView.addSubview(leadingView)
         leadingView.addSubview(defaultTableView)
 
         leadingView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(Constants.spacings.lg)
+            $0.top.bottom.equalToSuperview().inset(Constants.spacings.lg)
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
         }
 
@@ -68,10 +68,17 @@ extension DictDetailContentsCell {
     func bind(items: [DetailContent]?) {
         if let items = items {
             self.items = items
-            defaultTableView.snp.remakeConstraints {
-                $0.edges.equalToSuperview().inset(Constants.spacings.xl)
-                $0.height.equalTo(24 * items.count)
+            contentView.snp.remakeConstraints {
+                $0.edges.equalToSuperview()
+                $0.height.equalTo(24 * items.count + Int(Constants.spacings.xl) * 2)
             }
+            
+            leadingView.snp.remakeConstraints {
+                $0.top.equalToSuperview().inset(Constants.spacings.lg)
+                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
+                $0.height.equalTo(24 * items.count + Int(Constants.spacings.xl) * 2)
+            }
+
             defaultTableView.reloadData()
         } else {
             defaultTableView.isHidden = true
@@ -89,6 +96,7 @@ extension DictDetailContentsCell: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDescriptionCell.identifier) as? DictDescriptionCell,
               let item = items?[indexPath.row] else { return UITableViewCell() }
         cell.bind(item: item)
+        cell.selectionStyle = .none
         return cell
     }
 }

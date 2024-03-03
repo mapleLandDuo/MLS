@@ -595,7 +595,7 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
         var datas: [DictSectionDatas]
         if viewModel.fetchMenuIndex() == 0 {
             datas = viewModel.fetchSearchData().filter({!$0.datas.isEmpty})
-            print(datas[indexPath.section].datas[indexPath.row].title)
+            print(indexPath.section, "+", datas[indexPath.section].datas[indexPath.row].title)
         } else {
             datas = viewModel.fetchSearchData()
             let title = datas[viewModel.fetchMenuIndex() - 1].datas[indexPath.row].title

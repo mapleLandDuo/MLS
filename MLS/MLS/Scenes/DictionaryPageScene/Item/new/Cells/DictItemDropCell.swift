@@ -9,8 +9,14 @@ import UIKit
 
 import SnapKit
 
+protocol DictItemDropCellDelegate: AnyObject {
+    func didTapItemDropCell(title: String)
+}
+
 class DictItemDropCell: UITableViewCell {
     // MARK: Properties
+    weak var delegate: DictItemDropCellDelegate?
+    
     private var items: [DictDropContent]?
 
     // MARK: Components
@@ -84,5 +90,10 @@ extension DictItemDropCell: UICollectionViewDelegateFlowLayout, UICollectionView
         guard let item = items?[indexPath.row] else { return UICollectionViewCell()}
         cell.bind(data: item, type: .monster)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let item = items?[indexPath.row] else { return }
+        delegate?.didTapItemDropCell(title: item.name)
     }
 }

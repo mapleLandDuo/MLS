@@ -9,7 +9,13 @@ import UIKit
 
 import SnapKit
 
+protocol DictMonsterDropCellDelegate: AnyObject {
+    func didTapDropTableCell(title: String, type: DictType?)
+}
+
 class DictMonsterDropCell: UITableViewCell {
+    weak var delegate: DictMonsterDropCellDelegate?
+    
     // MARK: Properties
     private var items: [DictDropContent]?
 
@@ -81,6 +87,18 @@ extension DictMonsterDropCell: UITableViewDelegate, UITableViewDataSource {
               let item = items?[indexPath.row],
               let type = type else { return UITableViewCell() }
         cell.bind(item: item, type: type)
+        cell.selectionStyle = .none
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let item = items?[indexPath.row] else { return }
+        if item.name != "메소" {
+            if item.description.contains("전달") {
+                delegate?.didTapDropTableCell(title: item.name, type: .item)
+            } else {
+                delegate?.didTapDropTableCell(title: item.name, type: .monster)
+            }
+        }
     }
 }

@@ -137,10 +137,16 @@ extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
             switch selectedTab {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
+                cell.delegate = self
+                cell.isUserInteractionEnabled = true
+                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.apearMonsterContents, type: .monster)
                 return cell
             case 1:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
+                cell.delegate = self
+                cell.isUserInteractionEnabled = true
+                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.apearNpcContents, type: .npc)
                 return cell
             default:
@@ -210,5 +216,22 @@ extension DictMapViewController: UICollectionViewDelegateFlowLayout, UICollectio
         let width = 75.0
         let height = 40.0
         return CGSize(width: width, height: height)
+    }
+}
+
+extension DictMapViewController: DictMapTableViewCellDelegate {
+    func didTapMapTableCell(title: String) {
+        switch viewModel.selectedTab.value {
+        case 0:
+            let vm = DictMonsterViewModel(selectedName: title)
+            let vc = DictMonsterViewController(viewModel: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        case 1:
+            let vm = DictNPCViewModel(selectedName: title)
+            let vc = DictNPCViewController(viewModel: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            break
+        }
     }
 }

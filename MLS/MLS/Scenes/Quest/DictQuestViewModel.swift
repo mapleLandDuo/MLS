@@ -54,10 +54,16 @@ extension DictQuestViewModel {
     }
     
     func fetchCompleteInfos(completion: @escaping () -> Void) {
-        guard let dropTable = selectedQuest.value?.toCompletion else { return }
-        for dropContent in dropTable {
-            self.sqliteManager.searchDetailData(dataName: dropContent.name) { [weak self] (item: DictMonster) in
-                self?.completeTableContents.append(DictDropContent(name: item.name, code: item.code, level: "", description: dropContent.description))
+        guard let completions = selectedQuest.value?.toCompletion else { return }
+        for completion in completions {
+            if completion.description.contains("전달") {
+                self.sqliteManager.searchDetailData(dataName: completion.name) { [weak self] (item: DictItem) in
+                    self?.completeTableContents.append(DictDropContent(name: item.name, code: item.code, level: "", description: completion.description))
+                }
+            } else {
+                self.sqliteManager.searchDetailData(dataName: completion.name) { [weak self] (item: DictMonster) in
+                    self?.completeTableContents.append(DictDropContent(name: item.name, code: item.code, level: "", description: completion.description))
+                }
             }
         }
         completion()
@@ -84,10 +90,10 @@ extension DictQuestViewModel {
     }
     
     func fetchRewardInfos(completion: @escaping () -> Void) {
-        guard let dropTable = selectedQuest.value?.reward else { return }
-        for dropContent in dropTable {
-            self.sqliteManager.searchDetailData(dataName: dropContent.name) { [weak self] (item: DictMonster) in
-                self?.completeTableContents.append(DictDropContent(name: item.name, code: item.code, level: "", description: dropContent.description))
+        guard let rewards = selectedQuest.value?.reward else { return }
+        for reward in rewards {
+            self.sqliteManager.searchDetailData(dataName: reward.name) { [weak self] (item: DictItem) in
+                self?.rewardTableContents.append(DictDropContent(name: item.name, code: item.code, level: "", description: reward.description))
             }
         }
         completion()

@@ -153,7 +153,11 @@ extension DropCollectionViewCell {
         case .monster:
             let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(data.code)/render/move?bgColor=")
             imageView.kf.setImage(with: url)
-            descriptionTitleLabel.text = "출현 몬스터 수"
+            if data.description.contains("%") {
+                descriptionTitleLabel.text = "드롭률"
+            } else {
+                descriptionTitleLabel.text = "출현 몬스터 수"
+            }
         case .npc:
             let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(data.code)/icon?resize=2")
             imageView.kf.setImage(with: url)

@@ -20,6 +20,8 @@ class DictMonsterViewModel {
     
     var dropTableContents = [DictDropContent]()
     
+    var totalTextSize: Observable<CGFloat> = Observable(0.0)
+    
     init(selectedName: String) {
         self.selectedName = selectedName
     }

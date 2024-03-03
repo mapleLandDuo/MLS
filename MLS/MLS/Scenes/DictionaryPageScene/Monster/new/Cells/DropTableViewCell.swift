@@ -134,6 +134,7 @@ extension DropTableViewCell {
 // MARK: - Bind
 extension DropTableViewCell {
     func bind(item: DictDropContent, type: String) {
+        print(item, "@", type)
         if item.name == "메소" {
             descriptionTitleLabel.text = "드롭률"
             nameLabel.isHidden = false
@@ -148,15 +149,25 @@ extension DropTableViewCell {
                 itemImageView.kf.setImage(with: url)
                 descriptionLabel.text = item.description
             case "정보 완료 조건":
-                descriptionTitleLabel.text = "처치 마리수"
-                let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor=")
-                itemImageView.kf.setImage(with: url)
-                descriptionLabel.text = "\(item.description)마리"
+                print(item.name, "+", item.description)
+                if item.description.contains("전달") {
+                    print(1)
+                    descriptionTitleLabel.text = "전달 개수"
+                    let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2")
+                    itemImageView.kf.setImage(with: url)
+                    descriptionLabel.text = "\(item.description)"
+                } else {
+                    print(2)
+                    descriptionTitleLabel.text = "처치 마리수"
+                    let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor=")
+                    itemImageView.kf.setImage(with: url)
+                    descriptionLabel.text = "\(item.description)마리"
+                }
             case "퀘스트 보상":
                 descriptionTitleLabel.text = "개수"
                 let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2")
                 itemImageView.kf.setImage(with: url)
-                descriptionLabel.text = "\(item.description)개"
+                descriptionLabel.text = item.description
             default:
                 break
             }

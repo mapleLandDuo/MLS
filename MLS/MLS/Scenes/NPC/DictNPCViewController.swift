@@ -133,10 +133,16 @@ extension DictNPCViewController: UITableViewDelegate, UITableViewDataSource {
             switch selectedTab {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
+                cell.delegate = self
+                cell.isUserInteractionEnabled = true
+                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.selectedNPC.value?.maps, descriptionType: .map)
                 return cell
             case 1:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
+                cell.delegate = self
+                cell.isUserInteractionEnabled = true
+                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.selectedNPC.value?.quests, descriptionType: .quest)
                 return cell
             default:
@@ -206,5 +212,22 @@ extension DictNPCViewController: UICollectionViewDelegateFlowLayout, UICollectio
         let width = 75.0
         let height = 40.0
         return CGSize(width: width, height: height)
+    }
+}
+
+extension DictNPCViewController: DictTagTableViewCellDelegate {
+    func didTapTagCell(title: String) {
+        switch viewModel.selectedTab.value {
+        case 0:
+            let vm = DictMapViewModel(selectedName: title)
+            let vc = DictMapViewController(viewModel: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        case 1:
+            let vm = DictQuestViewModel(selectedName: title)
+            let vc = DictQuestViewController(viewModel: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            break
+        }
     }
 }

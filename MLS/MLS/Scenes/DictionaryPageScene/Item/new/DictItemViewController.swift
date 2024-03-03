@@ -131,6 +131,7 @@ extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
                   let item = viewModel.selectedItem.value else { return UITableViewCell() }
             cell.contentView.isUserInteractionEnabled = false
             cell.bind(item: item)
+            cell.selectionStyle = .none
             return cell
         } else {
             switch selectedTab {
@@ -138,15 +139,21 @@ extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
                       let items = viewModel.fetchDefaultInfos() else { return UITableViewCell() }
                 cell.bind(items: items)
+                cell.selectionStyle = .none
                 return cell
             case 1:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
                       let items = viewModel.fetchDetailInfos() else { return UITableViewCell() }
                 cell.bind(items: items)
+                cell.selectionStyle = .none
                 return cell
             case 2:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictItemDropCell.identifier) as? DictItemDropCell else { return UITableViewCell() }
+                cell.delegate = self
+                cell.isUserInteractionEnabled = true
+                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.dropTableContents)
+                cell.selectionStyle = .none
                 return cell
             default:
                 return UITableViewCell()
@@ -215,5 +222,13 @@ extension DictItemViewController: UICollectionViewDelegateFlowLayout, UICollecti
         let width = Double((Constants.screenWidth - Constants.spacings.xl_3 * 2 - Constants.spacings.xl * 2) / 3)
         let height = 40.0
         return CGSize(width: width, height: height)
+    }
+}
+
+extension DictItemViewController: DictItemDropCellDelegate {
+    func didTapItemDropCell(title: String) {
+        let vm = DictMonsterViewModel(selectedName: title)
+        let vc = DictMonsterViewController(viewModel: vm)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

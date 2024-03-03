@@ -9,12 +9,18 @@ import UIKit
 
 import SnapKit
 
+protocol DictTagTableViewCellDelegate: AnyObject {
+    func didTapTagCell(title: String)
+}
+
 class DictTagTableViewCell: UITableViewCell {
     // MARK: Properties
+    weak var delegate: DictTagTableViewCellDelegate?
+    
     private var items: [String]?
 
     // MARK: Components
-    private let leadingView: UIView = {
+    let leadingView: UIView = {
         let view = UIView()
         view.backgroundColor = .semanticColor.bg.primary
         view.layer.cornerRadius = 8
@@ -34,7 +40,7 @@ class DictTagTableViewCell: UITableViewCell {
         return label
     }()
 
-    private let tagCollectionView: UICollectionView = {
+    lazy var tagCollectionView: UICollectionView = {
         let layout = LeftAlignedCollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = Constants.spacings.md
@@ -65,7 +71,7 @@ private extension DictTagTableViewCell {
     }
 
     func setUpConstraints() {
-        addSubview(leadingView)
+        contentView.addSubview(leadingView)
         leadingView.addSubview(tagCollectionView)
         leadingView.addSubview(descriptionImageView)
         leadingView.addSubview(descriptionLabel)
@@ -90,7 +96,6 @@ private extension DictTagTableViewCell {
         tagCollectionView.snp.makeConstraints {
             $0.top.equalTo(descriptionImageView.snp.bottom).offset(Constants.spacings.lg)
             $0.leading.trailing.bottom.equalToSuperview().inset(Constants.spacings.xl)
-            $0.height.equalTo(100)
         }
     }
 }
@@ -100,6 +105,20 @@ extension DictTagTableViewCell {
     func bind(items: [String]?, descriptionType: DictType) {
         if let items = items {
             self.items = items
+            
+            print(tagCollectionView.collectionViewLayout.layoutAttributesForElements(in: CGRect(x: 0.0, y: 0.0, width: Constants.screenHeight, height: Constants.screenHeight))!)
+            
+            contentView.snp.remakeConstraints {
+                $0.edges.equalToSuperview()
+                $0.height.equalTo(200)
+            }
+    
+            leadingView.snp.makeConstraints {
+                $0.top.equalToSuperview().inset(Constants.spacings.lg)
+                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
+                $0.height.equalTo(200)
+            }
+            
             tagCollectionView.reloadData()
             if items == [] {
                 leadingView.isHidden = true
@@ -134,15 +153,11 @@ extension DictTagTableViewCell: UICollectionViewDelegateFlowLayout, UICollection
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictTagCell.identifier, for: indexPath) as? DictTagCell else { return CGSize() }
-        let targetSize = CGSize(width: collectionView.bounds.width, height: UIView.layoutFittingExpandedSize.height)
-        let fittingSize = cell.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .fittingSizeLevel)
-
-        return fittingSize
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.row)
+        guard let item = items?[indexPath.row] else { return }
+        delegate?.didTapTagCell(title: item)
     }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {}
 }
 
 class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
@@ -161,6 +176,8 @@ class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
             leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
             maxY = max(layoutAttribute.frame.maxY, maxY)
         }
+
+//        print(Int((attributes.map { $0.map { $0.frame.width }}?.reduce(0, { $0 + $1 }) ?? 0) / (Constants.screenWidth - Constants.spacings.xl * 4)) + 1)
 
         estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         return attributes

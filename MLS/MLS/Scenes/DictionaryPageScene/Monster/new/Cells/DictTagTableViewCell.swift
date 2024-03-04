@@ -128,11 +128,9 @@ extension DictTagTableViewCell {
             tagCollectionView.reloadData()
             if items == [] {
                 leadingView.isHidden = true
-                // alert
             }
         } else {
             leadingView.isHidden = true
-            // alert
         }
         
         switch descriptionType {

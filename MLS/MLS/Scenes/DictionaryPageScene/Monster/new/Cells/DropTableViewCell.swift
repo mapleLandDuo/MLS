@@ -57,6 +57,7 @@ class DropTableViewCell: UITableViewCell {
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
         label.textColor = .semanticColor.text.interactive.primary
         label.textAlignment = .right
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
 
@@ -134,7 +135,6 @@ extension DropTableViewCell {
 // MARK: - Bind
 extension DropTableViewCell {
     func bind(item: DictDropContent, type: String) {
-        print(item, "@", type)
         if item.name == "메소" {
             descriptionTitleLabel.text = "드롭률"
             nameLabel.isHidden = false

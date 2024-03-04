@@ -64,11 +64,13 @@ extension DictLandingViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+      
         self.navigationController?.navigationBar.isHidden = true
         IndicatorManager.showIndicator(vc: self)
         viewModel.fetchSectionDatas() {
             IndicatorManager.hideIndicator(vc: self)
         }
+
         
         if LoginManager.manager.isLogin() {
             guard let email = LoginManager.manager.email else { return }
@@ -85,13 +87,12 @@ extension DictLandingViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isHidden = false
     }
 }
 
 // MARK: - SetUp
 private extension DictLandingViewController {
-    
     func setUp() {
         setUpConstraints()
         headerView.delegate = self
@@ -102,7 +103,6 @@ private extension DictLandingViewController {
     }
     
     func setUpConstraints() {
-        
         view.addSubview(headerView)
         view.addSubview(firstSectionView)
         view.addSubview(separatorView)
@@ -156,7 +156,7 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     func didTapSignInButton() {
         print(#function)
         let vc = LoginViewController(viewModel: LoginViewModel())
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func didTapInquireButton() {
@@ -216,7 +216,7 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
         print(#function)
         let vc = DictSearchViewController(viewModel: DictSearchViewModel())
         vc.headerView.searchTextField.becomeFirstResponder()
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func didTapShortCutButton() {
@@ -224,13 +224,17 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
         let viewModel = DictSearchViewModel()
         viewModel.fetchAllSearchData()
         let vc = DictSearchViewController(viewModel: viewModel)
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 extension DictLandingViewController: DictSectionHeaderViewDelegate {
     func didTapShowButton(title: String?) {
-        print(title)
+        guard let datas = viewModel.sectionHeaderInfos.value,
+              let title = title else { return }
+        let vm = PopularViewModel(datas: datas, title: title)
+        let vc = PopularViewController(viewModel: vm)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -263,7 +267,6 @@ extension DictLandingViewController: DictHorizontalSectionTableViewCellDelegate 
 }
 
 extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -302,10 +305,7 @@ extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource 
         return view
     }
 
-    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return Constants.spacings.xl_3
     }
 }
-
-

@@ -70,8 +70,6 @@ extension DictMonsterDropCell {
                 $0.height.equalTo(80 * items.count)
             }
             monsterDropTableView.reloadData()
-        } else {
-            monsterDropTableView.isHidden = true
         }
     }
 }

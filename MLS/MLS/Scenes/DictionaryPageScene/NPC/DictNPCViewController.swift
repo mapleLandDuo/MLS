@@ -207,6 +207,15 @@ extension DictNPCViewController: UICollectionViewDelegateFlowLayout, UICollectio
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.setMenuIndex(index: indexPath.row)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        let contents = indexPath.row == 0 ? viewModel.selectedNPC.value?.maps : viewModel.selectedNPC.value?.quests
+        if contents == nil || ((contents?.isEmpty) != nil) {
+            AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
+            return false
+        }
+        return true
+    }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = 75.0

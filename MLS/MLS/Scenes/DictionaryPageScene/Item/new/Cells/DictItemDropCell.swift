@@ -72,9 +72,6 @@ extension DictItemDropCell {
                 $0.height.equalTo(216 * (items.count / 2 + items.count % 2) + Int(Constants.spacings.xl_3) * ((items.count / 2 + items.count % 2) - 1))
             }
             dropCollectionView.reloadData()
-        } else {
-            dropCollectionView.isHidden = true
-            // alert
         }
     }
 }

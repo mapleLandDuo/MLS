@@ -142,6 +142,11 @@ private extension DropCollectionViewCell {
 // MARK: - Bind
 extension DropCollectionViewCell {
     func bind(data: DictDropContent, type: DictType) {
+        levelTitleLabel.isHidden = false
+        levelLabel.isHidden = false
+        descriptionTitleLabel.isHidden = false
+        descriptionLabel.isHidden = false
+        
         nameLabel.text = data.name
         levelLabel.text = data.level
         descriptionLabel.text = data.description

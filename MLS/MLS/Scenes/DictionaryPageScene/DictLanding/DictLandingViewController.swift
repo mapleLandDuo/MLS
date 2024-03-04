@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 
 import FirebaseAuth
+import MessageUI
 
 class DictLandingViewController: BasicController {
     // MARK: - Properties
@@ -138,6 +139,16 @@ private extension DictLandingViewController {
     }
 }
 
+// MARK: - Methods
+private extension DictLandingViewController {
+    func checkMail() {
+        let sendMailErrorAlert = UIAlertController(title: "메일을 전송 실패", message: "아이폰 이메일 설정을 확인하고 다시 시도해주세요.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "확인", style: .default)
+        sendMailErrorAlert.addAction(confirmAction)
+        self.present(sendMailErrorAlert, animated: true, completion: nil)
+    }
+}
+
 extension DictLandingViewController: DictLandingHeaderViewDelegate {
     func didTapSignInButton() {
         print(#function)
@@ -147,6 +158,18 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     
     func didTapInquireButton() {
         print(#function)
+        if MFMailComposeViewController.canSendMail() {
+            let compseViewController = MFMailComposeViewController()
+            compseViewController.setToRecipients(["maplelands2024@gmail.com"])
+            compseViewController.setSubject("문의하기")
+            compseViewController.setMessageBody("문의 내용을 자세하게 입력해 주세요!", isHTML: false)
+
+            self.present(compseViewController, animated: true, completion: nil)
+
+        } else {
+            print(Error.self)
+            self.checkMail()
+        }
         
     }
     

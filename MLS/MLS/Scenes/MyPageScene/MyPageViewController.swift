@@ -15,12 +15,11 @@ protocol MyPageViewControllerDelegate: BasicController {
 
 class MyPageViewController: BasicController {
     // MARK: - Properties
-    private let viewModel: MyPageViewModel
-    
+    private var user: User
     weak var delegate: MyPageViewControllerDelegate?
     
     // MARK: - Components
-
+    
     private let topBackGroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .themeColor(color: .brand_primary, value: .value_50)
@@ -31,22 +30,16 @@ class MyPageViewController: BasicController {
         let label = UILabel()
         label.numberOfLines = 2
         label.textAlignment = .center
-        label.text = "어서오세요\nnickName 님"
         label.font = .customFont(fontSize: .heading_md, fontType: .semiBold)
         label.textColor = .semanticColor.text.primary
         label.addCharacterSpacing()
-//        label.at
-//        let fullText = data.title
-//        let attribtuedString = NSMutableAttributedString(string: fullText)
-//        let range = (fullText as NSString).range(of: keyword)
-//        attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.interactive.primary, range: range)
-//        nameLabel.attributedText = attribtuedString
+        label.text = "어서오세요\n??? 님"
         return label
     }()
     
-    private let emailLabel: UILabel = {
+    lazy var emailLabel: UILabel = {
         let label = UILabel()
-        label.text = "abc123@naver.com"
+        label.text = user.id
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
         label.textColor = .semanticColor.text.secondary
         label.addCharacterSpacing()
@@ -62,29 +55,57 @@ class MyPageViewController: BasicController {
         return view
     }()
     
+    private let levelStackView: UIStackView = {
+        let view = UIStackView()
+        view.spacing = Constants.spacings.sm
+        return view
+    }()
+    
     private let levelLabel: UILabel = {
         let label = UILabel()
-        label.text = "레벨  LV"
+        label.text = "레벨"
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
         label.textColor = .semanticColor.text.primary
         label.addCharacterSpacing()
-        label.textAlignment = .right
         return label
+    }()
+    
+    lazy var levelValueLabel: UILabel = {
+        let label = UILabel()
+        label.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
+        label.textColor = .semanticColor.text.info_bold
+        label.addCharacterSpacing()
+        label.text = String(user.level ?? 0)
+        return label
+    }()
+    
+    private let jobStackView: UIStackView = {
+        let view = UIStackView()
+        view.spacing = Constants.spacings.sm
+        return view
     }()
     
     private let jobLabel: UILabel = {
         let label = UILabel()
-        label.text = "직업  Job"
+        label.text = "직업"
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
         label.textColor = .semanticColor.text.primary
         label.addCharacterSpacing()
+        return label
+    }()
+    
+    lazy var jobValueLabel: UILabel = {
+        let label = UILabel()
+        label.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
+        label.textColor = .semanticColor.text.info_bold
+        label.addCharacterSpacing()
+        label.text = (user.job?.rawValue ?? "미설정")
         return label
     }()
     
     private let infoStackView: UIStackView = {
         let view = UIStackView()
         view.spacing = Constants.spacings.xl
-        view.distribution = .fillEqually
         return view
     }()
     
@@ -134,8 +155,19 @@ class MyPageViewController: BasicController {
         return button
     }()
     
-    init(viewModel: MyPageViewModel) {
-        self.viewModel = viewModel
+    private let logOutButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("로그아웃", for: .normal)
+        button.setTitleColor(.semanticColor.text.info_bold, for: .normal)
+        button.titleLabel?.font = .customFont(fontSize: .caption_lg, fontType: .regular)
+        let attributedString = NSMutableAttributedString.init(string: "로그아웃")
+        attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: .init(location: 0, length: attributedString.length))
+        button.titleLabel?.attributedText = attributedString
+        return button
+    }()
+    
+    init(user: User) {
+        self.user = user
         super.init()
     }
     
@@ -149,6 +181,25 @@ extension MyPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        guard let email = LoginManager.manager.email else { return }
+        FirebaseManager.firebaseManager.fetchUserData(userEmail: email) { [weak self] user in
+            self?.user = user
+            let fullText = "어서오세요\n\(user.nickName) 님"
+            let attribtuedString = NSMutableAttributedString(string: fullText)
+            let range = (fullText as NSString).range(of: user.nickName)
+            attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.interactive.primary, range: range)
+            self?.titleLabel.attributedText = attribtuedString
+            self?.levelValueLabel.text = String(user.level ?? 0)
+            if user.job == nil {
+                self?.jobValueLabel.text = "미설정"
+            } else {
+                self?.jobValueLabel.text = user.job?.rawValue
+            }
+            self?.emailLabel.text = user.id
+        }
     }
 }
 
@@ -172,12 +223,21 @@ private extension MyPageViewController {
     
     func setUpAddAction() {
         editButton.addAction(UIAction(handler: { [weak self] _ in
-            let vc = MyPageEditViewController(viewModel: MyPageEditViewModel())
-            self?.navigationController?.pushViewController(vc, animated: true)
+            guard let self = self else { return }
+            let vc = MyPageEditViewController(viewModel: MyPageEditViewModel(user: self.user))
+            self.navigationController?.pushViewController(vc, animated: true)
         }), for: .primaryActionTriggered)
         
         secessionButton.addAction(UIAction(handler: { [weak self] _ in
-            let vc = MyPageSecessionViewController()
+            let vc = MyPageBottomViewController(type: .secession)
+            vc.modalPresentationStyle = .custom
+            vc.transitioningDelegate = self
+            vc.delegate = self
+            self?.present(vc, animated: true)
+        }), for: .primaryActionTriggered)
+        
+        logOutButton.addAction(UIAction(handler: { [weak self] _ in
+            let vc = MyPageBottomViewController(type: .logout)
             vc.modalPresentationStyle = .custom
             vc.transitioningDelegate = self
             vc.delegate = self
@@ -193,12 +253,17 @@ private extension MyPageViewController {
         topBackGroundView.addSubview(editButton)
         editButton.addSubview(editButtonLabel)
         editButton.addSubview(editButtonImageView)
-        infoStackView.addArrangedSubview(levelLabel)
-        infoStackView.addArrangedSubview(jobLabel)
+        levelStackView.addArrangedSubview(levelLabel)
+        levelStackView.addArrangedSubview(levelValueLabel)
+        jobStackView.addArrangedSubview(jobLabel)
+        jobStackView.addArrangedSubview(jobValueLabel)
+        infoStackView.addArrangedSubview(levelStackView)
+        infoStackView.addArrangedSubview(jobStackView)
         infoBoxView.addSubview(infoStackView)
         view.addSubview(emptyImageView)
         view.addSubview(emptyTitleLabel)
         view.addSubview(secessionButton)
+        view.addSubview(logOutButton)
         
         topBackGroundView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
@@ -222,7 +287,7 @@ private extension MyPageViewController {
         }
         
         infoStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(Constants.spacings.xl)
+            $0.center.equalToSuperview()
         }
         
         editButton.snp.makeConstraints {
@@ -253,9 +318,14 @@ private extension MyPageViewController {
             $0.top.equalTo(emptyImageView.snp.bottom).offset(Constants.spacings.sm)
         }
         
+        logOutButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(46)
+        }
+        
         secessionButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(Constants.spacings.xl)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.spacings.xl)
+            $0.trailing.equalToSuperview().inset(Constants.spacings.xl)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(46)
         }
     }
 }
@@ -273,9 +343,14 @@ extension MyPageViewController: UIViewControllerTransitioningDelegate {
     }
 }
 
-extension MyPageViewController: MyPageSecessionViewControllerDelegate {
-    func didTapApplyButton() {
-        delegate?.didTapSecessionButton()
-        navigationController?.popViewController(animated: true)
+extension MyPageViewController: MyPageBottomViewControllerDelegate {
+    func didTapApplyButton(type: MyPageBottomControllerTypeEnum) {
+        switch type {
+        case .logout:
+            navigationController?.popViewController(animated: true)
+        case .secession:
+            delegate?.didTapSecessionButton()
+            navigationController?.popViewController(animated: true)
+        }
     }
 }

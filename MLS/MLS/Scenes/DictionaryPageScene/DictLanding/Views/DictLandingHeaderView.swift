@@ -39,7 +39,7 @@ class DictLandingHeaderView: UIView {
     
     private var jobBadgeButton = JobBadgeButton(job: "", level: "")
     
-    private let myPageIconButton = MyPageIconButton()
+    var myPageIconButton = MyPageIconButton()
     
     private let inquireButton = InquireButton()
     
@@ -104,7 +104,7 @@ extension DictLandingHeaderView {
             stackView.addArrangedSubview(loginButton)
         } else {
             loginButton.removeFromSuperview()
-            stackView.addArrangedSubview(stackView)
+            stackView.addArrangedSubview(rightStackView)
         }
     }
 }

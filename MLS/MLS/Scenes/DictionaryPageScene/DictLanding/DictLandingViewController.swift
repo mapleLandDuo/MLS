@@ -60,12 +60,24 @@ extension DictLandingViewController {
         super.viewDidLoad()
         bind()
         setUp()
-        print(Auth.auth().currentUser?.email)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
         viewModel.fetchSectionDatas()
+        
+        if LoginManager.manager.isLogin() {
+            guard let email = LoginManager.manager.email else { return }
+            FirebaseManager.firebaseManager.fetchUserData(userEmail: email) { [weak self] user in
+                self?.headerView.isLoginButtonShow(isShow: false)
+                DispatchQueue.main.async {
+                    self?.headerView.resetJobBadge(job: user.job?.rawValue, level: String(user.level ?? 0))
+                }
+            }
+        } else {
+            headerView.isLoginButtonShow(isShow: true)
+        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -133,19 +145,27 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     
     func didTapInquireButton() {
         print(#function)
-        headerView.isLoginButtonShow(isShow: true)
+        
     }
     
     func didTapJobBadgeButton() {
         print(#function)
-        headerView.resetJobBadge(job: "전사", level: "56")
+
     }
     
     func didTapMyPageButton() {
         print(#function)
-        let vc = MyPageViewController(viewModel: MyPageViewModel())
-        vc.delegate = self
-        navigationController?.pushViewController(vc, animated: true)
+        self.headerView.myPageIconButton.isEnabled = false
+        guard let email = LoginManager.manager.email else {
+            self.headerView.myPageIconButton.isEnabled = true
+            return
+        }
+        FirebaseManager.firebaseManager.fetchUserData(userEmail: email) { [weak self] user in
+            let vc = MyPageViewController(user: user)
+            vc.delegate = self
+            self?.navigationController?.pushViewController(vc, animated: true)
+            self?.headerView.myPageIconButton.isEnabled = true
+        }
     }
 }
 

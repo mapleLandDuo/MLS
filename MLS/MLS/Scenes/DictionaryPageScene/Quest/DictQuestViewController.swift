@@ -165,6 +165,9 @@ extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
             case 2:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictQuestOrderCell.identifier) as? DictQuestOrderCell,
                       let currentQuest = viewModel.selectedQuest.value?.currentQuest else { return UITableViewCell() }
+                cell.delegate = self
+                cell.isUserInteractionEnabled = true
+                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(preQuest: viewModel.selectedQuest.value?.preQuest, currentQuest: currentQuest, laterQuest: viewModel.selectedQuest.value?.laterQuest)
                 cell.selectionStyle = .none
                 return cell
@@ -280,5 +283,11 @@ extension DictQuestViewController: DictMonsterDropCellDelegate {
         default:
             break
         }
+    }
+}
+
+extension DictQuestViewController: DictQuestOrderCellDelegate {
+    func didTapQuestCell(title: String) {
+        print(title)
     }
 }

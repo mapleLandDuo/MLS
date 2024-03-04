@@ -227,18 +227,24 @@ private extension LoginViewController {
         
     func didTapLogInButton() {
         guard let email = emailTextField.textField.text, let password = pwTextField.textField.text else { return }
-        viewModel.trySignIn(email: email, password: password) { [weak self] (emailState, passwordState) in
-            let isEmailCorrect = (emailState == .complete)
-            let isPasswordCorrect = (passwordState == .complete)
+        viewModel.trySignIn(email: email, password: password) { [weak self] emailState, passwordState in
+            print("11", emailState, passwordState)
+            let isEmailCorrect = (emailState == .complete || emailState == .default)
+            let isPasswordCorrect = (passwordState == .complete || passwordState == .default)
 
             self?.emailTextField.checkState(state: emailState, isCorrect: isEmailCorrect)
             self?.pwTextField.checkState(state: passwordState, isCorrect: isPasswordCorrect)
+            if emailState == .complete, passwordState == .complete {
+                AlertMaker.showAlertAction1(vc: self, title: "로그인 성공", message: "확인 버튼을 누르면 메인 화면으로 돌아갑니다.") {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            }
         }
     }
     
     func didTapSignUpButton() {
         let vc = SignUpFirstViewController(viewModel: SignUpFirstViewModel())
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc
@@ -266,10 +272,13 @@ extension LoginViewController: UITextFieldDelegate {
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
-        logInButton.backgroundColor = !updatedText.isEmpty ? .semanticColor.bg.interactive.primary : .semanticColor.bg.disabled
-        logInButton.isUserInteractionEnabled = !updatedText.isEmpty
-        
         return true
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        logInButton.backgroundColor = !text.isEmpty ? .semanticColor.bg.interactive.primary : .semanticColor.bg.disabled
+        logInButton.isUserInteractionEnabled = !text.isEmpty
     }
 }
 

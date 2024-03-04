@@ -15,7 +15,7 @@ class SignUpSecondViewModel {
     var levelState: Observable<TextState> = Observable(.default)
     var isAccountExist: Observable<Bool> = Observable(nil)
     var job: Observable<Job> = Observable(nil)
-    
+
     var user = User(id: "", nickName: "", state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
     var password = ""
 }
@@ -24,13 +24,15 @@ class SignUpSecondViewModel {
 extension SignUpSecondViewModel {
     func checkNickName(nickName: String) {
         if nickName != "" {
-//            if FirebaseManager.firebaseManager.checkNickNameExist() {
-            if nickName == "nickName" {
-                nickNameState.value = .nickNameExist
-            } else if !(2 ... 8).contains(nickName.count) {
-                nickNameState.value = .nickNameNotCorrect
-            } else {
-                nickNameState.value = .complete
+            FirebaseManager.firebaseManager.checkNickNameExist(nickName: nickName) { [weak self] isExist in
+                guard let isExist = isExist else { return }
+                if isExist {
+                    self?.nickNameState.value = .nickNameExist
+                } else if !(2 ... 8).contains(nickName.count) {
+                    self?.nickNameState.value = .nickNameNotCorrect
+                } else {
+                    self?.nickNameState.value = .complete
+                }
             }
         } else {
             nickNameState.value = .default
@@ -52,7 +54,7 @@ extension SignUpSecondViewModel {
             }
         }
     }
-    
+
     func isComplete(completion: @escaping (Bool) -> Void) {
         guard let isAccountExist = isAccountExist.value else {
             completion(false)
@@ -79,7 +81,7 @@ extension SignUpSecondViewModel {
         }
         completion(true)
     }
-    
+
     func isValidSignUp(completion: @escaping (TextState) -> Void) {
         guard let isAccountExist = isAccountExist.value else { return }
         if nickNameState.value == .nickNameExist {
@@ -94,11 +96,12 @@ extension SignUpSecondViewModel {
             completion(.complete)
         }
     }
-    
+
     func trySignUp(email: String, password: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
-        Auth.auth().createUser(withEmail: email, password: password) { _, error in
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] _, error in
             if error == nil {
-                FirebaseManager.firebaseManager.saveUser(email: email, nickName: nickName) { isSuccess, errorMessage in
+                guard let user = self?.user else { return }
+                FirebaseManager.firebaseManager.saveUserData(user: user) { isSuccess, errorMessage in
                     if isSuccess {
                         completion(true, nil)
                     } else {

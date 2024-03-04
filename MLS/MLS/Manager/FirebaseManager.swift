@@ -33,6 +33,8 @@ enum CollectionName: String {
     case dictionaryQuestLink = "dictionaryQuestLink"
     
     case dictVersion = "dictVersion"
+    
+    case userDatas = "userDatas"
 }
 
 class FirebaseManager {
@@ -61,6 +63,20 @@ extension FirebaseManager {
         }
     }
     
+    func checkNickNameExist(nickName: String, completion: @escaping (Bool?) -> Void) {
+        db.collection(CollectionName.userDatas.rawValue).whereField("nickName", isEqualTo: nickName).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("닉네임 가져오지 못함: \(error)")
+                completion(false)
+            } else if let querySnapshot = querySnapshot, !querySnapshot.isEmpty {
+                completion(true)
+            } else {
+                print("닉네임 가져오지 못함")
+                completion(false)
+            }
+        }
+    }
+    
     func saveUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
         let userData = User(id: email, nickName: nickName, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
         do {
@@ -69,6 +85,16 @@ extension FirebaseManager {
             completion(true, nil)
         } catch {
             completion(false, "FirebaseManager_EncodeFail")
+        }
+    }
+    
+    func saveUserData(user: User, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(user)
+            db.collection(CollectionName.userDatas.rawValue).document(user.id).setData(data)
+            completion(true, nil)
+        } catch {
+            print(false, "FirebaseManager_EncodeFail")
         }
     }
     

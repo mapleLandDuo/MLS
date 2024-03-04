@@ -258,29 +258,66 @@ private extension SignUpSecondViewController {
         viewModel.isAccountExist.value = true
     }
     
-    func didTapCompleteButton() {
-        viewModel.isValidSignUp { [weak self] state in
-            switch state {
-            case .complete:
-                // 완료
-                guard let account = self?.viewModel.isAccountExist.value else { return }
+//    func didTapCompleteButton() {
+//        viewModel.isValidSignUp { [weak self] state in
+//            switch state {
+//            case .complete:
+//                // 완료
+//                guard let account = self?.viewModel.isAccountExist.value else { return }
 //                if account {
 //                    // 계정 있음
 //                    guard let nickName = self?.nickNameTextField.textField.text,
 //                          let level = self?.accountView.levelTextField.textField.text,
-//                          let job = self?.viewModel.job.value else { return }
+//                          let job = self?.viewModel.job.value,
+//                          let id = self?.viewModel.user.id,
+//                          let password = self?.viewModel.password else { return }
 //                    self?.viewModel.user.nickName = nickName
 //                    self?.viewModel.user.level = Int(level)
 //                    self?.viewModel.user.job = job
 //                    print("계정있음", self?.viewModel.user)
+//                    self?.viewModel.trySignUp(email: id, password: password, nickName: nickName) { isSuccess, errorMessage in
+//                        if isSuccess {
+//                            AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인버튼을 누르면 메인으로 돌아갑니다.") {
+//                                self?.changeRootViewController()
+//                            }
+//                        } else {
+//                            AlertMaker.showAlertAction1(vc: self, title: "회원가입 실패", message: errorMessage)
+//                        }
+//                    }
 //                } else {
 //                    // 계정 없음
-//                    guard let nickName = self?.nickNameTextField.textField.text else { return }
+//                    guard let nickName = self?.nickNameTextField.textField.text,
+//                          let id = self?.viewModel.user.id,
+//                          let password = self?.viewModel.password else { return }
 //                    self?.viewModel.user.nickName = nickName
 //                    self?.viewModel.user.level = nil
 //                    self?.viewModel.user.job = nil
 //                    print("계정없음", self?.viewModel.user)
+//                    self?.viewModel.trySignUp(email: id, password: password, nickName: nickName) { isSuccess, errorMessage in
+//                        if isSuccess {
+//                            AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인버튼을 누르면 메인으로 돌아갑니다.") {
+//                                self?.changeRootViewController()
+//                            }
+//                        } else {
+//                            AlertMaker.showAlertAction1(vc: self, title: "회원가입 실패", message: errorMessage)
+//                        }
+//                    }
 //                }
+//            case .nickNameExist, .nickNameNotCorrect:
+//                self?.nickNameTextField.checkState(state: state, isCorrect: false)
+//            case .lvNotInt, .lvOutOfBounds:
+//                self?.accountView.levelTextField.checkState(state: state, isCorrect: false)
+//            default:
+//                break
+//            }
+//        }
+//    }
+
+    func didTapCompleteButton() {
+        viewModel.isValidSignUp { [weak self] state in
+            switch state {
+            case .complete:
+                self?.trySignUp()
             case .nickNameExist, .nickNameNotCorrect:
                 self?.nickNameTextField.checkState(state: state, isCorrect: false)
             case .lvNotInt, .lvOutOfBounds:
@@ -290,7 +327,7 @@ private extension SignUpSecondViewController {
             }
         }
     }
-
+    
     func setAccountButton(isExist: Bool) {
         descriptionMainImageView.isHidden = isExist
         descriptionTailImageView.isHidden = isExist
@@ -311,12 +348,51 @@ private extension SignUpSecondViewController {
     }
     
     func activeCompleteButton() {
-        self.viewModel.isComplete { [weak self] isComplete in
+        viewModel.isComplete { [weak self] isComplete in
             if isComplete {
                 self?.completeButton.type.value = .clickabled
             } else {
                 self?.completeButton.type.value = .disabled
             }
+        }
+    }
+    
+   func trySignUp() {
+        guard let nickName = nickNameTextField.textField.text,
+       let isAccountExist = viewModel.isAccountExist.value else { return }
+
+        var level: Int? = nil
+        var job: Job? = nil
+
+        if isAccountExist {
+            guard let levelText = accountView.levelTextField.textField.text,
+                  let jobValue = viewModel.job.value else { return }
+            level = Int(levelText)
+            job = jobValue
+        }
+
+        viewModel.user.nickName = nickName
+        viewModel.user.level = level
+        viewModel.user.job = job
+        
+       viewModel.trySignUp(email: viewModel.user.id, password: viewModel.password, nickName: nickName) { isSuccess, errorMessage in
+            if isSuccess {
+                AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인버튼을 누르면 메인으로 돌아갑니다.") {
+                    self.changeRootViewController()
+                }
+            } else {
+                AlertMaker.showAlertAction1(vc: self, title: "회원가입 실패", message: errorMessage)
+            }
+        }
+    }
+    
+    func changeRootViewController() {
+        let vc = DictLandingViewController(viewModel: DictLandingViewModel())
+        let navigationController = UINavigationController(rootViewController: vc)
+        
+        if let window = UIApplication.shared.windows.first {
+            window.rootViewController = navigationController
+            window.makeKeyAndVisible()
         }
     }
     

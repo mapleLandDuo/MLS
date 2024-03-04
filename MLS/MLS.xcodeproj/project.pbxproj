@@ -189,6 +189,7 @@
 		775474C02B565A7300C8DD61 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */; };
 		775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */; };
 		775474C62B56A81300C8DD61 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */; };
+		776B21182B94E0CD002F4F03 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 776B21172B94E0CD002F4F03 /* GoogleService-Info.plist */; };
 		778E905F2B667ECF008A6E74 /* DictionaryMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E905E2B667ECF008A6E74 /* DictionaryMainViewModel.swift */; };
 		778E90622B668101008A6E74 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E90612B668101008A6E74 /* ItemTableViewCell.swift */; };
 		778E90642B668476008A6E74 /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */; };
@@ -383,6 +384,7 @@
 		775474BF2B565A7300C8DD61 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		775474C12B566EB700C8DD61 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		775474C52B56A81300C8DD61 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		776B21172B94E0CD002F4F03 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		778E905E2B667ECF008A6E74 /* DictionaryMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMainViewModel.swift; sourceTree = "<group>"; };
 		778E90612B668101008A6E74 /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
 		778E90632B668476008A6E74 /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -578,9 +580,6 @@
 				08CB4E722B91D65900336FE6 /* MyPageScene */,
 				081E70082B69206F00CF83F4 /* ProfilePageScene */,
 				0886E7E62B62849A00B014F8 /* DictionaryPageScene */,
-				7719DD402B93564D003797F4 /* Map */,
-				7719DD4D2B93955D003797F4 /* NPC */,
-				7724EF572B94483200C59FE6 /* Quest */,
 				77C1ED0A2B61544D003179B4 /* QnAPageScene */,
 				779B72C52B56DB9B007CB6C1 /* CommunityPageScene */,
 				08EF65152B554D83004CC842 /* AddPostPageScene */,
@@ -632,6 +631,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				776B21172B94E0CD002F4F03 /* GoogleService-Info.plist */,
 				77F3D5DF2B823FE3000DB65D /* DictJsons */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
 				082D0C282B53CF4600D84CE2 /* AppDelegate.swift */,
@@ -681,8 +681,11 @@
 			isa = PBXGroup;
 			children = (
 				08CB4E552B8F373300336FE6 /* Models */,
-				08D5F11A2B873AFB00E56482 /* DictSearching */,
 				08D5F0B42B81D7B900E56482 /* DictLanding */,
+				08D5F11A2B873AFB00E56482 /* DictSearching */,
+				7724EF572B94483200C59FE6 /* Quest */,
+				7719DD4D2B93955D003797F4 /* NPC */,
+				7719DD402B93564D003797F4 /* Map */,
 				081E6FCF2B663B2E00CF83F4 /* Main */,
 				081E6FD02B663B3600CF83F4 /* Item */,
 				081E6FD12B663B3A00CF83F4 /* Monster */,
@@ -1219,6 +1222,7 @@
 				08D5F0E42B81F3A800E56482 /* Pretendard-ExtraLight.otf in Resources */,
 				08D5F0E02B81F3A800E56482 /* Pretendard-ExtraBold.otf in Resources */,
 				08F95DE12B8A594600AD79DF /* quests.json in Resources */,
+				776B21182B94E0CD002F4F03 /* GoogleService-Info.plist in Resources */,
 				08D5F0E22B81F3A800E56482 /* Pretendard-Medium.otf in Resources */,
 				08D5F0E52B81F3A800E56482 /* Pretendard-Light.otf in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,

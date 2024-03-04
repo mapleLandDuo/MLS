@@ -78,7 +78,6 @@ extension DictMapTableViewCell {
             dropCollectionView.reloadData()
         } else {
             dropCollectionView.isHidden = true
-            // alert
         }
     }
 }

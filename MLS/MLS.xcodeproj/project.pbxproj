@@ -218,6 +218,10 @@
 		77C1ED0C2B615471003179B4 /* QnAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C1ED0B2B615471003179B4 /* QnAViewController.swift */; };
 		77C1ED0E2B61590E003179B4 /* QnAPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */; };
 		77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF47582B5CD63800181D35 /* FirebaseManager.swift */; };
+		77F358F92B95ED9200B0C5A2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77F358F82B95ED9200B0C5A2 /* GoogleService-Info.plist */; };
+		77F358FC2B95EF6500B0C5A2 /* PopularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */; };
+		77F358FE2B95EF7000B0C5A2 /* PopularViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */; };
+		77F359012B95F4D600B0C5A2 /* PopularTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F359002B95F4D600B0C5A2 /* PopularTableViewCell.swift */; };
 		77F3D5DC2B81E620000DB65D /* SqliteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F3D5DB2B81E620000DB65D /* SqliteManager.swift */; };
 		77F3D5E32B827F0A000DB65D /* Encodable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F3D5E22B827F0A000DB65D /* Encodable+.swift */; };
 /* End PBXBuildFile section */
@@ -411,6 +415,10 @@
 		77C1ED0B2B615471003179B4 /* QnAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnAViewController.swift; sourceTree = "<group>"; };
 		77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnAPageViewModel.swift; sourceTree = "<group>"; };
 		77EF47582B5CD63800181D35 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		77F358F82B95ED9200B0C5A2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewController.swift; sourceTree = "<group>"; };
+		77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewModel.swift; sourceTree = "<group>"; };
+		77F359002B95F4D600B0C5A2 /* PopularTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularTableViewCell.swift; sourceTree = "<group>"; };
 		77F3D5DB2B81E620000DB65D /* SqliteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteManager.swift; sourceTree = "<group>"; };
 		77F3D5E22B827F0A000DB65D /* Encodable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -629,6 +637,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				77F358F82B95ED9200B0C5A2 /* GoogleService-Info.plist */,
 				77F3D5DF2B823FE3000DB65D /* DictJsons */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
 				082D0C282B53CF4600D84CE2 /* AppDelegate.swift */,
@@ -677,6 +686,7 @@
 		0886E7E62B62849A00B014F8 /* DictionaryPageScene */ = {
 			isa = PBXGroup;
 			children = (
+				77F358FA2B95EF4900B0C5A2 /* Popular */,
 				08CB4E552B8F373300336FE6 /* Models */,
 				08D5F0B42B81D7B900E56482 /* DictLanding */,
 				08D5F11A2B873AFB00E56482 /* DictSearching */,
@@ -1100,6 +1110,24 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
+		77F358FA2B95EF4900B0C5A2 /* Popular */ = {
+			isa = PBXGroup;
+			children = (
+				77F358FF2B95F4C700B0C5A2 /* Cells */,
+				77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */,
+				77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */,
+			);
+			path = Popular;
+			sourceTree = "<group>";
+		};
+		77F358FF2B95F4C700B0C5A2 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				77F359002B95F4D600B0C5A2 /* PopularTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		77F3D5DF2B823FE3000DB65D /* DictJsons */ = {
 			isa = PBXGroup;
 			children = (
@@ -1219,6 +1247,7 @@
 				08D5F0E42B81F3A800E56482 /* Pretendard-ExtraLight.otf in Resources */,
 				08D5F0E02B81F3A800E56482 /* Pretendard-ExtraBold.otf in Resources */,
 				08F95DE12B8A594600AD79DF /* quests.json in Resources */,
+				77F358F92B95ED9200B0C5A2 /* GoogleService-Info.plist in Resources */,
 				08D5F0E22B81F3A800E56482 /* Pretendard-Medium.otf in Resources */,
 				08D5F0E52B81F3A800E56482 /* Pretendard-Light.otf in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
@@ -1316,6 +1345,7 @@
 				77082A4C2B63A2C300187906 /* Comment.swift in Sources */,
 				778EB9412B91D8A500DC9B63 /* DropCollectionViewCell.swift in Sources */,
 				7724EF592B94485600C59FE6 /* DictQuestViewController.swift in Sources */,
+				77F359012B95F4D600B0C5A2 /* PopularTableViewCell.swift in Sources */,
 				7719DD442B9356CA003797F4 /* DictMapViewModel.swift in Sources */,
 				08EF65242B5572E3004CC842 /* Observable.swift in Sources */,
 				08CB4E572B8F375300336FE6 /* DictSectionDatas.swift in Sources */,
@@ -1361,6 +1391,7 @@
 				08D50A6B2B59137B00E94442 /* SignUpViewController.swift in Sources */,
 				08D5F0F92B8337FA00E56482 /* DictHorizontalSectionTableViewCell.swift in Sources */,
 				08CB4E632B8F5B8A00336FE6 /* DictSearchJobFilterCell.swift in Sources */,
+				77F358FE2B95EF7000B0C5A2 /* PopularViewModel.swift in Sources */,
 				778EF8D92B879A84006CA0AB /* SignUpAccountView.swift in Sources */,
 				778EF8D92B879A84006CA0AB /* SignUpAccountView.swift in Sources */,
 				081E6FD52B663B7600CF83F4 /* DictionaryMonsterViewController.swift in Sources */,
@@ -1400,6 +1431,7 @@
 				087D25242B936F5700A998E4 /* AlertManager.swift in Sources */,
 				08D5F0EE2B820F6000E56482 /* InquireButton.swift in Sources */,
 				08F95DFD2B8E18A300AD79DF /* DictSearchFilterViewController.swift in Sources */,
+				77F358FC2B95EF6500B0C5A2 /* PopularViewController.swift in Sources */,
 				081E700C2B69212800CF83F4 /* ProfilePageViewModel.swift in Sources */,
 				081E6FD32B663B6300CF83F4 /* DictionaryItemViewController.swift in Sources */,
 				08EF650E2B551EB8004CC842 /* MainPageFeatureListPostCell.swift in Sources */,

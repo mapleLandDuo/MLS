@@ -31,7 +31,7 @@ class AlertManager {
     ///   - description: description
     ///   - location: Alert Location
     ///
-    static func showAlert(vc: UIViewController, type: AlertTypeEnum, title: String, description: String, location: AlertLocationEnum) {
+    static func showAlert(vc: UIViewController, type: AlertTypeEnum, title: String?, description: String?, location: AlertLocationEnum) {
         let backGroundView = AlertView(type: type, title: title, description: description)
         vc.view.addSubview(backGroundView)
         switch location {
@@ -46,5 +46,9 @@ class AlertManager {
                 $0.center.equalToSuperview()
             }
         }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+               backGroundView.removeFromSuperview()
+           }
     }
 }

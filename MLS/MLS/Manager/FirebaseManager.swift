@@ -77,6 +77,20 @@ extension FirebaseManager {
         }
     }
     
+    func checkEmailExist(email: String, completion: @escaping (Bool?) -> Void) {
+        db.collection(CollectionName.userDatas.rawValue).document(email).getDocument { document, error in
+            if let error = error {
+                print("이메일 가져오지 못함: \(error)")
+                completion(false)
+            } else if let document = document, document.exists {
+                completion(true)
+            } else {
+                print("이메일 가져오지 못함")
+                completion(false)
+            }
+        }
+    }
+    
     func saveUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
         let userData = User(id: email, nickName: nickName, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
         do {

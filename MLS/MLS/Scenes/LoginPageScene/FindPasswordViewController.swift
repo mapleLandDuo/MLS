@@ -13,6 +13,8 @@ class FindPasswordViewController: BasicController {
     // MARK: - Properties
     private let viewModel: FindPasswordViewModel
     
+    var preVC: UIViewController?
+    
     // MARK: - Components
     private let emailTextField = CustomTextField(type: .normal, header: "비밀번호 변경 요청드릴 이메일을 입력해주세요", placeHolder: "ex) mls@naver.com")
     
@@ -81,7 +83,17 @@ private extension FindPasswordViewController {
             guard let text = self?.emailTextField.textField.text else { return }
             self?.viewModel.checkEmailExist(email: text) { [weak self] isExist in
                 if isExist {
-                    self?.viewModel.findPassword(email: text)
+                    self?.viewModel.findPassword(email: text) { isSuccess in
+                        if isSuccess {
+                            self?.dismiss(animated: true) {
+                                if let preVC = self?.preVC {
+                                    AlertManager.showAlert(vc: preVC, type: .green, title: nil, description: "메일로 비밀번호 변경 링크를 보내드렸어요.", location: .bottom)
+                                }
+                            }
+                        } else {
+                            print("이메일 전송 실패")
+                        }
+                    }
                 } else {
                     self?.emailTextField.checkState(state: .emailCheck, isCorrect: isExist)
                     self?.emailTextField.snp.remakeConstraints {
@@ -101,8 +113,7 @@ private extension FindPasswordViewController {
 
 // MARK: - Method
 private extension FindPasswordViewController {
-    func checkEmail(isCorrect: Bool) {
-    }
+    func checkEmail(isCorrect: Bool) {}
 }
 
 extension FindPasswordViewController: UITextFieldDelegate {

@@ -11,11 +11,9 @@ import SnapKit
 
 class LoginViewController: BasicController {
     // MARK: - Properties
-
     private let viewModel: LoginViewModel
-        
+    
     // MARK: - Components
-
     private let logoImageView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = .systemOrange
@@ -220,6 +218,7 @@ private extension LoginViewController {
         
     func didTapPwFindButton() {
         let vc = FindPasswordViewController(viewModel: FindPasswordViewModel())
+        vc.preVC = self
         vc.modalPresentationStyle = .custom
         vc.transitioningDelegate = self
         present(vc, animated: true)
@@ -228,7 +227,6 @@ private extension LoginViewController {
     func didTapLogInButton() {
         guard let email = emailTextField.textField.text, let password = pwTextField.textField.text else { return }
         viewModel.trySignIn(email: email, password: password) { [weak self] emailState, passwordState in
-            print("11", emailState, passwordState)
             let isEmailCorrect = (emailState == .complete || emailState == .default)
             let isPasswordCorrect = (passwordState == .complete || passwordState == .default)
 

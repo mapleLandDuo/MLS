@@ -122,11 +122,13 @@ extension DictNPCViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print(#function)
         guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedNPC.value else { return UITableViewCell() }
             cell.contentView.isUserInteractionEnabled = false
+            cell.selectionStyle = .none
             cell.bind(item: item)
             return cell
         } else {
@@ -134,15 +136,12 @@ extension DictNPCViewController: UITableViewDelegate, UITableViewDataSource {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
                 cell.delegate = self
-                cell.isUserInteractionEnabled = true
-                cell.contentView.isUserInteractionEnabled = false
+                cell.selectionStyle = .none
                 cell.bind(items: viewModel.selectedNPC.value?.maps, descriptionType: .map)
                 return cell
             case 1:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
                 cell.delegate = self
-                cell.isUserInteractionEnabled = true
-                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.selectedNPC.value?.quests, descriptionType: .quest)
                 return cell
             default:

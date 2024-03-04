@@ -151,16 +151,12 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell,
                       let items = viewModel.selectedMonster.value?.hauntArea else { return UITableViewCell() }
                 cell.delegate = self
-                cell.isUserInteractionEnabled = true
-                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: items, descriptionType: .map)
-//                cell.selectionStyle = .none
+                cell.selectionStyle = .none
                 return cell
             case 2:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
                 cell.delegate = self
-                cell.isUserInteractionEnabled = true
-                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.dropTableContents, type: "드롭 정보")
                 cell.selectionStyle = .none
                 return cell

@@ -188,8 +188,29 @@ extension DictLandingViewController: DictSectionHeaderViewDelegate {
 
 extension DictLandingViewController: DictHorizontalSectionTableViewCellDelegate {
     func didSelectItemAt(itemTitle: String, type: DictType) {
-        print(itemTitle, type)
         FirebaseManager.firebaseManager.countUpDictSearch(type: type, name: itemTitle)
+        switch type {
+        case .monster:
+            let vm = DictMonsterViewModel(selectedName: itemTitle)
+            let vc = DictMonsterViewController(viewModel: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        case .item:
+            let vm = DictItemViewModel(selectedName: itemTitle)
+            let vc = DictItemViewController(viewModel: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        case .map:
+            let vm = DictMapViewModel(selectedName: itemTitle)
+            let vc = DictMapViewController(viewModel: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        case .npc:
+            let vm = DictNPCViewModel(selectedName: itemTitle)
+            let vc = DictNPCViewController(viewModel: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        case .quest:
+            let vm = DictQuestViewModel(selectedName: itemTitle)
+            let vc = DictQuestViewController(viewModel: vm)
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 

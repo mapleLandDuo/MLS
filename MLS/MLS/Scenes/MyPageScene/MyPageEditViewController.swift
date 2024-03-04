@@ -83,7 +83,9 @@ private extension MyPageEditViewController {
         jobCollectionView.register(DictSearchJobButtonCell.self, forCellWithReuseIdentifier: DictSearchJobButtonCell.identifier)
         editButton.addAction(UIAction(handler: { [weak self] _ in
             guard let self = self else { return }
+            IndicatorManager.showIndicator(vc: self)
             FirebaseManager.firebaseManager.updateUserData(user: viewModel.user) {
+                IndicatorManager.hideIndicator(vc: self)
                 self.navigationController?.popViewController(animated: true)
             }
         }), for: .primaryActionTriggered)

@@ -65,7 +65,10 @@ extension DictLandingViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
-        viewModel.fetchSectionDatas()
+        IndicatorManager.showIndicator(vc: self)
+        viewModel.fetchSectionDatas() {
+            IndicatorManager.hideIndicator(vc: self)
+        }
         
         if LoginManager.manager.isLogin() {
             guard let email = LoginManager.manager.email else { return }
@@ -170,7 +173,6 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
             print(Error.self)
             self.checkMail()
         }
-        
     }
     
     func didTapJobBadgeButton() {
@@ -185,11 +187,14 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
             self.headerView.myPageIconButton.isEnabled = true
             return
         }
+        IndicatorManager.showIndicator(vc: self)
         FirebaseManager.firebaseManager.fetchUserData(userEmail: email) { [weak self] user in
+            guard let self = self else { return }
+            IndicatorManager.hideIndicator(vc: self)
             let vc = MyPageViewController(user: user)
             vc.delegate = self
-            self?.navigationController?.pushViewController(vc, animated: true)
-            self?.headerView.myPageIconButton.isEnabled = true
+            self.navigationController?.pushViewController(vc, animated: true)
+            self.headerView.myPageIconButton.isEnabled = true
         }
     }
 }

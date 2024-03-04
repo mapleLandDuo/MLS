@@ -24,7 +24,7 @@ extension DictLandingViewModel {
         return data
     }
     
-    func fetchSectionDatas() {
+    func fetchSectionDatas(completion: @escaping () -> Void) {
         
         let dbManager = SqliteManager()
         
@@ -38,18 +38,18 @@ extension DictLandingViewModel {
                 }
             }
             self?.sectionHeaderInfos.value?[0].datas = temp
-        }
-        
-        FirebaseManager.firebaseManager.fetchDictSearchCount(type: .monster) { [weak self] searchCountDatas in
-            var temp: [DictSectionData] = []
-            for data in searchCountDatas {
-                dbManager.searchData(dataName: data.name) { (items:[DictMonster]) in
-                    guard let item = items.first else { return }
-                    let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "-", type: .monster)
-                    temp.append(dictData)
+            FirebaseManager.firebaseManager.fetchDictSearchCount(type: .monster) { [weak self] searchCountDatas in
+                var temp: [DictSectionData] = []
+                for data in searchCountDatas {
+                    dbManager.searchData(dataName: data.name) { (items:[DictMonster]) in
+                        guard let item = items.first else { return }
+                        let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "-", type: .monster)
+                        temp.append(dictData)
+                    }
                 }
+                self?.sectionHeaderInfos.value?[1].datas = temp
             }
-            self?.sectionHeaderInfos.value?[1].datas = temp
+            completion()
         }
     }
 }

@@ -226,15 +226,18 @@ private extension LoginViewController {
         
     func didTapLogInButton() {
         guard let email = emailTextField.textField.text, let password = pwTextField.textField.text else { return }
+        IndicatorManager.showIndicator(vc: self)
         viewModel.trySignIn(email: email, password: password) { [weak self] emailState, passwordState in
+            guard let self = self else { return }
+            IndicatorManager.hideIndicator(vc: self)
             let isEmailCorrect = (emailState == .complete || emailState == .default)
             let isPasswordCorrect = (passwordState == .complete || passwordState == .default)
 
-            self?.emailTextField.checkState(state: emailState, isCorrect: isEmailCorrect)
-            self?.pwTextField.checkState(state: passwordState, isCorrect: isPasswordCorrect)
+            self.emailTextField.checkState(state: emailState, isCorrect: isEmailCorrect)
+            self.pwTextField.checkState(state: passwordState, isCorrect: isPasswordCorrect)
             if emailState == .complete, passwordState == .complete {
                 AlertMaker.showAlertAction1(vc: self, title: "로그인 성공", message: "확인 버튼을 누르면 메인 화면으로 돌아갑니다.") {
-                    self?.navigationController?.popViewController(animated: true)
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
         }

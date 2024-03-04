@@ -81,6 +81,8 @@
 		08CBCB862B7C9B1A00C051F7 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB852B7C9B1A00C051F7 /* DBHelper.swift */; };
 		08CBCB8C2B7F09E000C051F7 /* TestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB8B2B7F09E000C051F7 /* TestController.swift */; };
 		08CBCB8E2B7F340700C051F7 /* DictVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB8D2B7F340700C051F7 /* DictVersion.swift */; };
+		08D2A3D92B963C4E00E236D1 /* IndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D2A3D82B963C4E00E236D1 /* IndicatorManager.swift */; };
+		08D2A3DF2B96462E00E236D1 /* indicator.gif in Resources */ = {isa = PBXBuildFile; fileRef = 08D2A3DE2B96462E00E236D1 /* indicator.gif */; };
 		08D50A672B590D9100E94442 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D50A662B590D9100E94442 /* SignInViewController.swift */; };
 		08D50A692B590E3D00E94442 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D50A682B590E3D00E94442 /* SignInViewModel.swift */; };
 		08D50A6B2B59137B00E94442 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D50A6A2B59137B00E94442 /* SignUpViewController.swift */; };
@@ -274,6 +276,8 @@
 		08CBCB852B7C9B1A00C051F7 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		08CBCB8B2B7F09E000C051F7 /* TestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestController.swift; sourceTree = "<group>"; };
 		08CBCB8D2B7F340700C051F7 /* DictVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictVersion.swift; sourceTree = "<group>"; };
+		08D2A3D82B963C4E00E236D1 /* IndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorManager.swift; sourceTree = "<group>"; };
+		08D2A3DE2B96462E00E236D1 /* indicator.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = indicator.gif; sourceTree = "<group>"; };
 		08D50A662B590D9100E94442 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		08D50A682B590E3D00E94442 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		08D50A6A2B59137B00E94442 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -627,6 +631,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				08D2A3DC2B9645E900E236D1 /* GIF */,
 				77F3D5DF2B823FE3000DB65D /* DictJsons */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
 				082D0C282B53CF4600D84CE2 /* AppDelegate.swift */,
@@ -726,6 +731,14 @@
 				08CB4E7B2B921F5000336FE6 /* MyPageBottomViewController.swift */,
 			);
 			path = MyPageScene;
+			sourceTree = "<group>";
+		};
+		08D2A3DC2B9645E900E236D1 /* GIF */ = {
+			isa = PBXGroup;
+			children = (
+				08D2A3DE2B96462E00E236D1 /* indicator.gif */,
+			);
+			path = GIF;
 			sourceTree = "<group>";
 		};
 		08D50A622B590D0A00E94442 /* SignInPageScene */ = {
@@ -1093,6 +1106,7 @@
 				081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */,
 				77F3D5DB2B81E620000DB65D /* SqliteManager.swift */,
 				087D25232B936F5700A998E4 /* AlertManager.swift */,
+				08D2A3D82B963C4E00E236D1 /* IndicatorManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -1219,6 +1233,7 @@
 				08D5F0E22B81F3A800E56482 /* Pretendard-Medium.otf in Resources */,
 				08D5F0E52B81F3A800E56482 /* Pretendard-Light.otf in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
+				08D2A3DF2B96462E00E236D1 /* indicator.gif in Resources */,
 				08D5F0E12B81F3A800E56482 /* Pretendard-Regular.otf in Resources */,
 				08D5F0E32B81F3A800E56482 /* Pretendard-SemiBold.otf in Resources */,
 				08D5F0DE2B81F3A800E56482 /* Pretendard-Black.otf in Resources */,
@@ -1249,6 +1264,7 @@
 				08F95DBC2B89E50900AD79DF /* DictSearchDataCell.swift in Sources */,
 				08CB4E7A2B92101D00336FE6 /* MyPageEditViewModel.swift in Sources */,
 				08D5F10B2B8628F700E56482 /* AnnouncementData.swift in Sources */,
+				08D2A3D92B963C4E00E236D1 /* IndicatorManager.swift in Sources */,
 				08D5F11E2B873B1D00E56482 /* DictSearchViewModel.swift in Sources */,
 				081E6FDC2B666DA200CF83F4 /* DictionaryNameImageCell.swift in Sources */,
 				778EF8D72B879569006CA0AB /* SignUpSecondViewModel.swift in Sources */,
@@ -1549,7 +1565,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W5QTRMS954;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MLS/Resource/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "메랜사";
@@ -1581,7 +1597,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W5QTRMS954;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MLS/Resource/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "메랜사";

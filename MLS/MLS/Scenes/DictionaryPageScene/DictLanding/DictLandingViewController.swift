@@ -9,6 +9,8 @@ import UIKit
 
 import SnapKit
 
+import FirebaseAuth
+
 class DictLandingViewController: BasicController {
     // MARK: - Properties
 
@@ -58,6 +60,7 @@ extension DictLandingViewController {
         super.viewDidLoad()
         bind()
         setUp()
+        print(Auth.auth().currentUser?.email)
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -217,6 +217,7 @@
 		77C1ED0C2B615471003179B4 /* QnAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C1ED0B2B615471003179B4 /* QnAViewController.swift */; };
 		77C1ED0E2B61590E003179B4 /* QnAPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */; };
 		77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF47582B5CD63800181D35 /* FirebaseManager.swift */; };
+		77F359032B9634F600B0C5A2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77F359022B9634F600B0C5A2 /* GoogleService-Info.plist */; };
 		77F3D5DC2B81E620000DB65D /* SqliteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F3D5DB2B81E620000DB65D /* SqliteManager.swift */; };
 		77F3D5E32B827F0A000DB65D /* Encodable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F3D5E22B827F0A000DB65D /* Encodable+.swift */; };
 /* End PBXBuildFile section */
@@ -409,6 +410,7 @@
 		77C1ED0B2B615471003179B4 /* QnAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnAViewController.swift; sourceTree = "<group>"; };
 		77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnAPageViewModel.swift; sourceTree = "<group>"; };
 		77EF47582B5CD63800181D35 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		77F359022B9634F600B0C5A2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		77F3D5DB2B81E620000DB65D /* SqliteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteManager.swift; sourceTree = "<group>"; };
 		77F3D5E22B827F0A000DB65D /* Encodable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -627,6 +629,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				77F359022B9634F600B0C5A2 /* GoogleService-Info.plist */,
 				77F3D5DF2B823FE3000DB65D /* DictJsons */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
 				082D0C282B53CF4600D84CE2 /* AppDelegate.swift */,
@@ -1216,6 +1219,7 @@
 				08D5F0E42B81F3A800E56482 /* Pretendard-ExtraLight.otf in Resources */,
 				08D5F0E02B81F3A800E56482 /* Pretendard-ExtraBold.otf in Resources */,
 				08F95DE12B8A594600AD79DF /* quests.json in Resources */,
+				77F359032B9634F600B0C5A2 /* GoogleService-Info.plist in Resources */,
 				08D5F0E22B81F3A800E56482 /* Pretendard-Medium.otf in Resources */,
 				08D5F0E52B81F3A800E56482 /* Pretendard-Light.otf in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,

@@ -9,14 +9,21 @@ import UIKit
 
 import SnapKit
 
-protocol MyPageSecessionViewControllerDelegate: BasicController {
-    func didTapApplyButton()
+protocol MyPageBottomViewControllerDelegate: BasicController {
+    func didTapApplyButton(type: MyPageBottomControllerTypeEnum)
 }
 
-class MyPageSecessionViewController: BasicController {
+enum MyPageBottomControllerTypeEnum {
+    case logout
+    case secession
+}
+
+class MyPageBottomViewController: BasicController {
     // MARK: - Properties
     
-    weak var delegate: MyPageSecessionViewControllerDelegate?
+    private var type: MyPageBottomControllerTypeEnum
+    
+    weak var delegate: MyPageBottomViewControllerDelegate?
 
     // MARK: - Components
 
@@ -88,10 +95,28 @@ class MyPageSecessionViewController: BasicController {
         button.layer.shadowOffset = CGSize(width: 2, height: 2)
         return button
     }()
+    
+    init(type: MyPageBottomControllerTypeEnum) {
+        self.type = type
+        switch type {
+        case .logout:
+            titleLabel.text = "로그아웃 하시겠어요?"
+            applyButton.setTitle("로그아웃", for: .normal)
+            warningLabel.isHidden = true
+            warningImage.isHidden = true
+        case .secession:
+            print(#function)
+        }
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 // MARK: - LifeCycle
-extension MyPageSecessionViewController {
+extension MyPageBottomViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -99,7 +124,7 @@ extension MyPageSecessionViewController {
 }
 
 // MARK: - SetUp
-extension MyPageSecessionViewController {
+extension MyPageBottomViewController {
     func setUp() {
         setUpConstraints()
         setUpAddAction()
@@ -111,9 +136,24 @@ extension MyPageSecessionViewController {
         }), for: .primaryActionTriggered)
         
         applyButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.dismiss(animated: true, completion: {
-                self?.delegate?.didTapApplyButton()
-            })
+            guard let self = self else { return }
+            guard let email = LoginManager.manager.email else { return }
+            switch self.type {
+            case .secession:
+                FirebaseManager.firebaseManager.deleteUser(email: email) {
+                    LoginManager.manager.deleteUser {
+                        self.dismiss(animated: true, completion: {
+                            self.delegate?.didTapApplyButton(type: self.type)
+                        })
+                    }
+                }
+            case .logout:
+                LoginManager.manager.logOut { isLogOut in
+                    self.dismiss(animated: true) {
+                        self.delegate?.didTapApplyButton(type: self.type)
+                    }
+                }
+            }
         }), for: .primaryActionTriggered)
     }
     
@@ -146,8 +186,4 @@ extension MyPageSecessionViewController {
             $0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(Constants.spacings.xl)
         }
     }
-}
-
-extension MyPageSecessionViewController {
-    
 }

@@ -47,6 +47,22 @@ class FirebaseManager {
 
 extension FirebaseManager {
     // MARK: User
+    
+    func fetchUserData(userEmail: String, completion: @escaping (User) -> Void) {
+        db.collection(CollectionName.userDatas.rawValue).document(userEmail).getDocument { querySnapshot, error in
+            if error == nil {
+                do {
+                    guard let doc = querySnapshot?.data() else { return }
+                    let data = try Firestore.Decoder().decode(User.self, from: doc)
+                    completion(data)
+                } catch {
+                    print(#function, "decoding Fail")
+                }
+            } else {
+                print(error)
+            }
+        }
+    }
 
     func fetchNickname(userEmail: String, completion: @escaping (String?) -> Void) {
         db.collection(CollectionName.users.rawValue).document(userEmail).getDocument { document, error in
@@ -122,6 +138,27 @@ extension FirebaseManager {
             self.db.collection(CollectionName.users.rawValue).document(email).delete { _ in
                 completion()
             }
+        }
+    }
+    
+    func updateUserData(user: User, completion: @escaping () -> Void) {
+        do {
+            let data = try Firestore.Encoder().encode(user)
+            db.collection(CollectionName.userDatas.rawValue).document(user.id).updateData(data) { error in
+                if error == nil {
+                    completion()
+                } else {
+                    print(#function, "update Fail")
+                }
+            }
+        } catch {
+            print(#function, "encoding Fail")
+        }
+    }
+    
+    func deleteUser(email: String, completion: @escaping () -> Void) {
+        db.collection(CollectionName.userDatas.rawValue).document(email).delete { _ in
+            completion()
         }
     }
 }

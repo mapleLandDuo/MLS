@@ -75,10 +75,9 @@
 		08CB4E652B8F6B9C00336FE6 /* DictSearchJobButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E642B8F6B9C00336FE6 /* DictSearchJobButtonCell.swift */; };
 		08CB4E672B8F721100336FE6 /* DictSearchLevelRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E662B8F721100336FE6 /* DictSearchLevelRangeCell.swift */; };
 		08CB4E742B91D66C00336FE6 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E732B91D66C00336FE6 /* MyPageViewController.swift */; };
-		08CB4E762B91D76900336FE6 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E752B91D76900336FE6 /* MyPageViewModel.swift */; };
 		08CB4E782B92101200336FE6 /* MyPageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E772B92101200336FE6 /* MyPageEditViewController.swift */; };
 		08CB4E7A2B92101D00336FE6 /* MyPageEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E792B92101D00336FE6 /* MyPageEditViewModel.swift */; };
-		08CB4E7C2B921F5000336FE6 /* MyPageSecessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E7B2B921F5000336FE6 /* MyPageSecessionViewController.swift */; };
+		08CB4E7C2B921F5000336FE6 /* MyPageBottomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E7B2B921F5000336FE6 /* MyPageBottomViewController.swift */; };
 		08CBCB862B7C9B1A00C051F7 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB852B7C9B1A00C051F7 /* DBHelper.swift */; };
 		08CBCB8C2B7F09E000C051F7 /* TestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB8B2B7F09E000C051F7 /* TestController.swift */; };
 		08CBCB8E2B7F340700C051F7 /* DictVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB8D2B7F340700C051F7 /* DictVersion.swift */; };
@@ -269,10 +268,9 @@
 		08CB4E642B8F6B9C00336FE6 /* DictSearchJobButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchJobButtonCell.swift; sourceTree = "<group>"; };
 		08CB4E662B8F721100336FE6 /* DictSearchLevelRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchLevelRangeCell.swift; sourceTree = "<group>"; };
 		08CB4E732B91D66C00336FE6 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
-		08CB4E752B91D76900336FE6 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		08CB4E772B92101200336FE6 /* MyPageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditViewController.swift; sourceTree = "<group>"; };
 		08CB4E792B92101D00336FE6 /* MyPageEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditViewModel.swift; sourceTree = "<group>"; };
-		08CB4E7B2B921F5000336FE6 /* MyPageSecessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSecessionViewController.swift; sourceTree = "<group>"; };
+		08CB4E7B2B921F5000336FE6 /* MyPageBottomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBottomViewController.swift; sourceTree = "<group>"; };
 		08CBCB852B7C9B1A00C051F7 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		08CBCB8B2B7F09E000C051F7 /* TestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestController.swift; sourceTree = "<group>"; };
 		08CBCB8D2B7F340700C051F7 /* DictVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictVersion.swift; sourceTree = "<group>"; };
@@ -723,10 +721,9 @@
 			isa = PBXGroup;
 			children = (
 				08CB4E732B91D66C00336FE6 /* MyPageViewController.swift */,
-				08CB4E752B91D76900336FE6 /* MyPageViewModel.swift */,
 				08CB4E772B92101200336FE6 /* MyPageEditViewController.swift */,
 				08CB4E792B92101D00336FE6 /* MyPageEditViewModel.swift */,
-				08CB4E7B2B921F5000336FE6 /* MyPageSecessionViewController.swift */,
+				08CB4E7B2B921F5000336FE6 /* MyPageBottomViewController.swift */,
 			);
 			path = MyPageScene;
 			sourceTree = "<group>";
@@ -1264,7 +1261,6 @@
 				08EF65202B556C19004CC842 /* AddPostImageCell.swift in Sources */,
 				08D5F0B62B81D81300E56482 /* DictLandingViewController.swift in Sources */,
 				7717D6E92B8714AD0050BD07 /* LoginViewController.swift in Sources */,
-				08CB4E762B91D76900336FE6 /* MyPageViewModel.swift in Sources */,
 				081E6FE32B6686F100CF83F4 /* DictionaryMonsterDetailCell.swift in Sources */,
 				7719DD472B9359C5003797F4 /* DictMapTableViewCell.swift in Sources */,
 				08CB4E592B8F377200336FE6 /* DictType.swift in Sources */,
@@ -1373,7 +1369,7 @@
 				08D5F0FB2B833F7C00E56482 /* DictHorizontalCollectionViewCell.swift in Sources */,
 				778EF8D12B877C8E006CA0AB /* SignUpFirstViewController.swift in Sources */,
 				081E6FDE2B66704F00CF83F4 /* DictionaryMonsterViewModel.swift in Sources */,
-				08CB4E7C2B921F5000336FE6 /* MyPageSecessionViewController.swift in Sources */,
+				08CB4E7C2B921F5000336FE6 /* MyPageBottomViewController.swift in Sources */,
 				77C1ED0C2B615471003179B4 /* QnAViewController.swift in Sources */,
 				775474C22B566EB700C8DD61 /* ImageCollectionViewCell.swift in Sources */,
 				7752C2602B93085000C891A5 /* DictTagTableViewCell.swift in Sources */,

@@ -9,6 +9,8 @@ import UIKit
 
 import SnapKit
 
+import FirebaseAuth
+
 class SignUpSecondViewController: BasicController {
     // MARK: - Properties
 
@@ -377,8 +379,14 @@ private extension SignUpSecondViewController {
         
        viewModel.trySignUp(email: viewModel.user.id, password: viewModel.password, nickName: nickName) { isSuccess, errorMessage in
             if isSuccess {
-                AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인버튼을 누르면 메인으로 돌아갑니다.") {
-                    self.changeRootViewController()
+                AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인버튼을 누르면 메인으로 돌아갑니다.") { [weak self]  in
+                    guard let self = self else { return }
+                    Auth.auth().signIn(withEmail: self.viewModel.user.id, password: self.viewModel.password) { _, error in
+                        if error == nil {
+                            LoginManager.manager.email = Auth.auth().currentUser?.email
+                            self.changeRootViewController()
+                        }
+                    }
                 }
             } else {
                 AlertMaker.showAlertAction1(vc: self, title: "회원가입 실패", message: errorMessage)

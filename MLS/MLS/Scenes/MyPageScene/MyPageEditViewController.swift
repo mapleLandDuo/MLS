@@ -15,9 +15,9 @@ class MyPageEditViewController: BasicController {
     
     // MARK: - Components
     
-    private let nickNameTextField = CustomTextField(type: .normal, header: "닉네임", placeHolder: "test")
+    lazy var nickNameTextField = CustomTextField(type: .normal, header: "닉네임", placeHolder: viewModel.fetchUser().nickName)
     
-    private let levelTextField = CustomTextField(type: .normal, header: "레벨", placeHolder: "test")
+    lazy var levelTextField = CustomTextField(type: .normal, header: "레벨", placeHolder: String(viewModel.fetchUser().level ?? 0))
 
     private let jobTitleLabel: UILabel = {
         let label = UILabel()
@@ -66,7 +66,9 @@ extension MyPageEditViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        bind()
         nickNameTextField.textField.delegate = self
+        levelTextField.textField.delegate = self
     }
 }
 
@@ -79,6 +81,12 @@ private extension MyPageEditViewController {
         jobCollectionView.delegate = self
         jobCollectionView.dataSource = self
         jobCollectionView.register(DictSearchJobButtonCell.self, forCellWithReuseIdentifier: DictSearchJobButtonCell.identifier)
+        editButton.addAction(UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
+            FirebaseManager.firebaseManager.updateUserData(user: viewModel.user) {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }), for: .primaryActionTriggered)
     }
     
     func setUpConstraints() {
@@ -126,6 +134,46 @@ private extension MyPageEditViewController {
     }
 }
 
+// MARK: - Bind
+private extension MyPageEditViewController {
+    func bind() {
+        viewModel.nickNameState.bind { [weak self] state in
+            guard let state = state else { return }
+            if state != .default {
+                let isCorrect = state == .complete
+                self?.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
+            }
+            self?.viewModel.isValidButton()
+        }
+        
+        viewModel.levelState.bind { [weak self] state in
+            if let state = state {
+                if state != .default {
+                    let isCorrect = state == .complete
+                    self?.levelTextField.checkState(state: state, isCorrect: isCorrect)
+                }
+            } else {
+                self?.levelTextField.footerLabel.isHidden = false
+            }
+            self?.viewModel.isValidButton()
+        }
+        viewModel.jobState.bind { [weak self] job in
+            self?.viewModel.isValidButton()
+        }
+        
+        viewModel.buttonState.bind { [weak self] state in
+            if let state = state {
+                if state {
+                    self?.editButton.setTitleColor(.themeColor(color: .base, value: .value_white), for: .disabled)
+                    self?.editButton.backgroundColor = .semanticColor.bg.interactive.primary
+                } else {
+                    self?.editButton.setTitleColor(.semanticColor.text.interactive.secondary, for: .disabled)
+                    self?.editButton.backgroundColor = .semanticColor.bg.disabled
+                }
+            }
+        }
+    }
+}
 // MARK: - Methods
 private extension MyPageEditViewController {
     @objc
@@ -136,6 +184,35 @@ private extension MyPageEditViewController {
 
 extension MyPageEditViewController: UITextFieldDelegate {
     
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        if textField == nickNameTextField.textField {
+            viewModel.user.nickName = text
+            viewModel.checkNickName(nickName: text)
+        } else {
+            viewModel.user.level = Int(text)
+            viewModel.checkLevel(level: text)
+        }
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if textField == nickNameTextField.textField {
+            nickNameTextField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
+        } else {
+            levelTextField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
+        }
+        return true
+    }
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        
+        if textField == nickNameTextField.textField {
+            nickNameTextField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+        } else {
+            levelTextField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+        }
+        
+        return true
+    }
 }
 
 extension MyPageEditViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -146,6 +223,19 @@ extension MyPageEditViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchJobButtonCell.identifier, for: indexPath) as? DictSearchJobButtonCell else { return UICollectionViewCell() }
         cell.bind(job: Job.allCases[indexPath.row].rawValue)
+        
+        if let job = viewModel.fetchUser().job {
+            if Job.allCases[indexPath.row] == job {
+                viewModel.jobState.value = job
+                cell.isSelected = true
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
+            }
+        }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.jobState.value = Job.allCases[indexPath.row]
+        viewModel.user.job = Job.allCases[indexPath.row]
     }
 }

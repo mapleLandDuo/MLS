@@ -9,4 +9,69 @@ import Foundation
 
 class MyPageEditViewModel {
     
+    let nickNameState: Observable<TextState> = Observable(.default)
+    let levelState: Observable<TextState> = Observable(.default)
+    let jobState: Observable<Job?> = Observable(nil)
+    let buttonState: Observable<Bool> = Observable(false)
+    var user: User
+    
+    init(user: User) {
+        self.user = user
+    }
+}
+
+extension MyPageEditViewModel {
+    
+    func fetchUser() -> User {
+        return user
+    }
+    
+    func checkNickName(nickName: String) {
+        if nickName != "" {
+            FirebaseManager.firebaseManager.checkNickNameExist(nickName: nickName) { [weak self] isExist in
+                guard let isExist = isExist else { return }
+                if isExist {
+                    self?.nickNameState.value = .nickNameExist
+                } else if !(2 ... 8).contains(nickName.count) {
+                    self?.nickNameState.value = .nickNameNotCorrect
+                } else {
+                    self?.nickNameState.value = .complete
+                }
+            }
+        } else {
+            nickNameState.value = .default
+        }
+    }
+    
+    func checkLevel(level: String) {
+        if level == "" {
+            levelState.value = .default
+        } else {
+            if let level = Int(level) {
+                if 1 ... 200 ~= level {
+                    levelState.value = .complete
+                } else {
+                    levelState.value = .lvOutOfBounds
+                }
+            } else {
+                levelState.value = .lvNotInt
+            }
+        }
+    }
+    
+    func isValidButton() {
+        if nickNameState.value != .complete {
+            buttonState.value = false
+            return
+        }
+        if levelState.value != .complete {
+            buttonState.value = false
+            return
+        }
+        if jobState.value == nil {
+            buttonState.value = false
+            return
+        }
+        buttonState.value = true
+    }
 }

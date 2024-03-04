@@ -26,15 +26,20 @@ extension FindPasswordViewModel {
     }
     
     func checkEmailExist(email: String, completion: @escaping (Bool) -> Void) {
-        completion(email == "email.com")
+        FirebaseManager.firebaseManager.checkEmailExist(email: email) { isExist in
+            guard let isExist = isExist else { return }
+            completion(isExist)
+        }
     }
     
-    func findPassword(email: String) {
+    func findPassword(email: String, completion: @escaping (Bool) -> Void) {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if error == nil {
                 print("send Email")
+                completion(true)
             } else {
                 print("Email sending failed.")
+                completion(false)
             }
         }
     }

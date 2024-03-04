@@ -34,7 +34,7 @@ extension SignUpFirstViewModel {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
         if emailTest.evaluate(with: email) {
-            Firestore.firestore().collection("users").getDocuments { [weak self] data, error in
+            Firestore.firestore().collection(CollectionName.userDatas.rawValue).getDocuments { [weak self] data, error in
                 if error != nil {
                     print(String(describing: error?.localizedDescription))
                 } else {

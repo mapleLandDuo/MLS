@@ -145,7 +145,7 @@ extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedQuest.value else { return UITableViewCell() }
-            cell.contentView.isUserInteractionEnabled = false
+            cell.delegate = self
             cell.selectionStyle = .none
             cell.bind(item: item)
             return cell
@@ -291,5 +291,11 @@ extension DictQuestViewController: DictQuestOrderCellDelegate {
             let vc = DictQuestViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
         }
+    }
+}
+
+extension DictQuestViewController: DictMainInfoCellDelegate {
+    func didTapExpandButton() {
+        dictQuestTableView.reloadData()
     }
 }

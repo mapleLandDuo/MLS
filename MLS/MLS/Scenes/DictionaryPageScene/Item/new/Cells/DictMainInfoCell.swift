@@ -148,47 +148,19 @@ extension DictMainInfoCell {
             itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
             descriptionText = itemDescription
             itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
-            
-            descriptionView.snp.remakeConstraints {
-                $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
-                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
-                $0.height.equalTo(38)
-                $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
-            }
         case is DictMap:
             guard let item = item as? DictMap else { return }
-            
             itemName = item.name
-            descriptionView.snp.remakeConstraints {
-                $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
-                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
-                $0.height.equalTo(38)
-                $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
-            }
             itemImageView.image = UIImage(named: "dictMapIcon")
         case is DictNPC:
             guard let item = item as? DictNPC else { return }
             url = "https://maplestory.io/api/gms/62/npc/\(item.code)/icon?resize=2"
             itemName = item.name
             itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
-            
-            descriptionView.snp.remakeConstraints {
-                $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
-                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
-                $0.height.equalTo(38)
-                $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
-            }
         case is DictQuest:
             guard let item = item as? DictQuest else { return }
             itemName = item.name
             itemImageView.image = UIImage(named: "dictQuestIcon")
-            
-            descriptionView.snp.remakeConstraints {
-                $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
-                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
-                $0.height.equalTo(38)
-                $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
-            }
         default:
             return
         }
@@ -199,13 +171,8 @@ extension DictMainInfoCell {
         
         nameLabel.text = itemName
         
-        if let description = itemDescription {
-            descriptionTextLabel.text = description
-            descriptionTextLabel.textAlignment = .left
-        } else {
-            descriptionTextLabel.text = "설명 없음"
-            descriptionTextLabel.textAlignment = .center
-        }
+        descriptionTextLabel.text = itemDescription ?? "설명 없음"
+        descriptionTextLabel.textAlignment = itemDescription == nil ? .center : .left
     }
 }
 
@@ -233,11 +200,9 @@ extension DictMainInfoCell {
             withAttributes: [NSAttributedString.Key.font: UIFont.customFont(fontSize: .body_sm, fontType: .medium)!]
         ).width
 
-        if width * 2 > descriptionWidth {
-        } else {
+        if !(width * 2 > descriptionWidth) {
             descriptionVerticalCount = CGFloat(Int(descriptionWidth / width) + 1)
         }
-        
         descriptionViewHeight = (22 * descriptionVerticalCount) + (descriptionVerticalCount - 1)
         completion()
     }

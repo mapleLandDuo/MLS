@@ -130,7 +130,7 @@ extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedMap.value else { return UITableViewCell() }
-            cell.contentView.isUserInteractionEnabled = false
+            cell.delegate = self
             cell.bind(item: item)
             return cell
         } else {
@@ -242,5 +242,11 @@ extension DictMapViewController: DictMapTableViewCellDelegate {
         default:
             break
         }
+    }
+}
+
+extension DictMapViewController: DictMainInfoCellDelegate {
+    func didTapExpandButton() {
+        dictMapTableView.reloadData()
     }
 }

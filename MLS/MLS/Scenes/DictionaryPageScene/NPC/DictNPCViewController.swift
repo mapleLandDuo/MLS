@@ -122,12 +122,11 @@ extension DictNPCViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print(#function)
         guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedNPC.value else { return UITableViewCell() }
-            cell.contentView.isUserInteractionEnabled = false
+            cell.delegate = self
             cell.selectionStyle = .none
             cell.bind(item: item)
             return cell
@@ -237,5 +236,11 @@ extension DictNPCViewController: DictTagTableViewCellDelegate {
         default:
             break
         }
+    }
+}
+
+extension DictNPCViewController: DictMainInfoCellDelegate {
+    func didTapExpandButton() {
+        dictNPCTableView.reloadData()
     }
 }

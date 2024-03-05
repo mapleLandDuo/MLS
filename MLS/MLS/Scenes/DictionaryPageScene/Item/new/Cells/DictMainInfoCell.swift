@@ -10,8 +10,15 @@ import UIKit
 import SnapKit
 
 class DictMainInfoCell: UITableViewCell {
-    // MARK: Components
+    // MARK: Properties
+    private var descriptionText: String?
 
+    private var isExpanded = false
+    
+    private var descriptionViewHeight: CGFloat = 0.0
+    
+    // MARK: Components
+    
     private let itemImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
@@ -43,11 +50,14 @@ class DictMainInfoCell: UITableViewCell {
         return view
     }()
 
-    private let expandButton: UIButton = {
+    lazy var expandButton: UIButton = {
         let button = UIButton()
         button.tintColor = .semanticColor.text.primary
         button.setImage(UIImage(systemName: "arrowtriangle.down.fill"), for: .normal)
         button.setImage(UIImage(systemName: "arrowtriangle.up.fill"), for: .selected)
+        button.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapExpandButton()
+        }), for: .touchUpInside)
         return button
     }()
 
@@ -97,6 +107,7 @@ private extension DictMainInfoCell {
         descriptionTextLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.spacings.sm)
             $0.leading.equalToSuperview().inset(Constants.spacings.lg)
+            $0.height.equalTo(0)
         }
         
         expandButton.snp.makeConstraints {
@@ -124,12 +135,14 @@ extension DictMainInfoCell {
             url = "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2"
             itemName = item.name
             itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
+            descriptionText = itemDescription
             itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
         case is DictMonster:
             guard let item = item as? DictMonster else { return }
             url = "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor="
             itemName = item.name
             itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
+            descriptionText = itemDescription
             itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
             
             descriptionView.snp.remakeConstraints {
@@ -140,16 +153,8 @@ extension DictMainInfoCell {
             }
         case is DictMap:
             guard let item = item as? DictMap else { return }
-//            url = "https://mapledb.kr/Assets/image/minimaps/\(item.code).png"
+            
             itemName = item.name
-            
-//            itemImageView.snp.remakeConstraints {
-//                $0.top.equalToSuperview().inset(Constants.spacings.lg)
-//                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.lg)
-//                $0.bottom.equalTo(nameLabel.snp.top).inset(-Constants.spacings.lg)
-//                $0.height.equalTo(150)
-//            }
-            
             descriptionView.snp.remakeConstraints {
                 $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
                 $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
@@ -184,6 +189,10 @@ extension DictMainInfoCell {
             return
         }
         
+        checkDescriptionLines {
+            self.expandButton.isHidden = self.descriptionViewHeight / 22 < 3 ? true : false
+        }
+        
         nameLabel.text = itemName
         
         if let description = itemDescription {
@@ -193,5 +202,46 @@ extension DictMainInfoCell {
             descriptionTextLabel.text = "설명 없음"
             descriptionTextLabel.textAlignment = .center
         }
+    }
+}
+
+extension DictMainInfoCell {
+    func didTapExpandButton() {
+        if !expandButton.isSelected {
+            descriptionTextLabel.numberOfLines = 0
+            descriptionTextLabel.snp.updateConstraints {
+                $0.height.equalTo(descriptionViewHeight)
+            }
+            descriptionView.snp.updateConstraints {
+                $0.height.equalTo(descriptionViewHeight + (Constants.spacings.sm * 2))
+            }
+        } else {
+            descriptionTextLabel.numberOfLines = 2
+            descriptionTextLabel.snp.updateConstraints {
+                $0.height.equalTo(44)
+            }
+            descriptionView.snp.updateConstraints {
+                $0.height.equalTo(60)
+            }
+        }
+        expandButton.isSelected.toggle()
+        descriptionView.layoutIfNeeded()
+        descriptionTextLabel.layoutIfNeeded()
+    }
+    
+    func checkDescriptionLines(completion: @escaping () -> Void) {
+        let width = 293.0
+        var descriptionVerticalCount: CGFloat = 2
+        let descriptionWidth = NSString(string: descriptionText ?? "").size(
+            withAttributes: [NSAttributedString.Key.font: UIFont.customFont(fontSize: .body_sm, fontType: .medium)!]
+        ).width
+
+        if width * 2 > descriptionWidth {
+        } else {
+            descriptionVerticalCount = CGFloat(Int(descriptionWidth / width) + 1)
+        }
+        
+        descriptionViewHeight = (22 * descriptionVerticalCount) + (descriptionVerticalCount - 1)
+        completion()
     }
 }

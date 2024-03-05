@@ -143,16 +143,17 @@
 		08F95DC12B8A06BA00AD79DF /* DictSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DC02B8A06BA00AD79DF /* DictSearchEmptyView.swift */; };
 		08F95DC32B8A0A5500AD79DF /* DictSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DC22B8A0A5500AD79DF /* DictSearchHeaderView.swift */; };
 		08F95DC72B8A2D6900AD79DF /* DictLandingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DC62B8A2D6900AD79DF /* DictLandingHeaderView.swift */; };
-		08F95DD52B8A56DD00AD79DF /* monsters.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F95DD02B8A56DD00AD79DF /* monsters.json */; };
-		08F95DDB2B8A58C300AD79DF /* items.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F95DDA2B8A58C300AD79DF /* items.json */; };
-		08F95DDD2B8A58FA00AD79DF /* maps.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F95DDC2B8A58FA00AD79DF /* maps.json */; };
-		08F95DDF2B8A592600AD79DF /* npcs.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F95DDE2B8A592600AD79DF /* npcs.json */; };
-		08F95DE12B8A594600AD79DF /* quests.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F95DE02B8A594600AD79DF /* quests.json */; };
 		08F95DE92B8B5ED500AD79DF /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DE82B8B5ED500AD79DF /* LoginButton.swift */; };
 		08F95DF32B8CF0DD00AD79DF /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DF22B8CF0DD00AD79DF /* Job.swift */; };
 		08F95DFB2B8DC43E00AD79DF /* DictSearchFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DFA2B8DC43E00AD79DF /* DictSearchFilterHeaderView.swift */; };
 		08F95DFD2B8E18A300AD79DF /* DictSearchFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DFC2B8E18A300AD79DF /* DictSearchFilterViewController.swift */; };
 		08F95DFF2B8E1C0A00AD79DF /* DictSearchSortedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DFE2B8E1C0A00AD79DF /* DictSearchSortedViewController.swift */; };
+		77017A622B96F38700D60411 /* monsters.json in Resources */ = {isa = PBXBuildFile; fileRef = 77017A5D2B96F38700D60411 /* monsters.json */; };
+		77017A632B96F38700D60411 /* items.json in Resources */ = {isa = PBXBuildFile; fileRef = 77017A5E2B96F38700D60411 /* items.json */; };
+		77017A642B96F38700D60411 /* npcs.json in Resources */ = {isa = PBXBuildFile; fileRef = 77017A5F2B96F38700D60411 /* npcs.json */; };
+		77017A652B96F38700D60411 /* maps.json in Resources */ = {isa = PBXBuildFile; fileRef = 77017A602B96F38700D60411 /* maps.json */; };
+		77017A662B96F38700D60411 /* quests.json in Resources */ = {isa = PBXBuildFile; fileRef = 77017A612B96F38700D60411 /* quests.json */; };
+		77017A682B96FBFC00D60411 /* mlsDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 77017A672B96FBA500D60411 /* mlsDatabase.db */; };
 		7707440E2B55511E00FCEDED /* SearchbarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */; };
 		770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */; };
 		77082A4A2B63A26200187906 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A492B63A26200187906 /* PostDetailViewModel.swift */; };
@@ -220,7 +221,6 @@
 		77C1ED0C2B615471003179B4 /* QnAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C1ED0B2B615471003179B4 /* QnAViewController.swift */; };
 		77C1ED0E2B61590E003179B4 /* QnAPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */; };
 		77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF47582B5CD63800181D35 /* FirebaseManager.swift */; };
-		77F358F92B95ED9200B0C5A2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77F358F82B95ED9200B0C5A2 /* GoogleService-Info.plist */; };
 		77F358FC2B95EF6500B0C5A2 /* PopularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */; };
 		77F358FE2B95EF7000B0C5A2 /* PopularViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */; };
 		77F359012B95F4D600B0C5A2 /* PopularTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F359002B95F4D600B0C5A2 /* PopularTableViewCell.swift */; };
@@ -343,16 +343,17 @@
 		08F95DC02B8A06BA00AD79DF /* DictSearchEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchEmptyView.swift; sourceTree = "<group>"; };
 		08F95DC22B8A0A5500AD79DF /* DictSearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchHeaderView.swift; sourceTree = "<group>"; };
 		08F95DC62B8A2D6900AD79DF /* DictLandingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictLandingHeaderView.swift; sourceTree = "<group>"; };
-		08F95DD02B8A56DD00AD79DF /* monsters.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = monsters.json; sourceTree = "<group>"; };
-		08F95DDA2B8A58C300AD79DF /* items.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = items.json; sourceTree = "<group>"; };
-		08F95DDC2B8A58FA00AD79DF /* maps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = maps.json; sourceTree = "<group>"; };
-		08F95DDE2B8A592600AD79DF /* npcs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = npcs.json; sourceTree = "<group>"; };
-		08F95DE02B8A594600AD79DF /* quests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = quests.json; sourceTree = "<group>"; };
 		08F95DE82B8B5ED500AD79DF /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		08F95DF22B8CF0DD00AD79DF /* Job.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
 		08F95DFA2B8DC43E00AD79DF /* DictSearchFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchFilterHeaderView.swift; sourceTree = "<group>"; };
 		08F95DFC2B8E18A300AD79DF /* DictSearchFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchFilterViewController.swift; sourceTree = "<group>"; };
 		08F95DFE2B8E1C0A00AD79DF /* DictSearchSortedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchSortedViewController.swift; sourceTree = "<group>"; };
+		77017A5D2B96F38700D60411 /* monsters.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = monsters.json; sourceTree = "<group>"; };
+		77017A5E2B96F38700D60411 /* items.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = items.json; sourceTree = "<group>"; };
+		77017A5F2B96F38700D60411 /* npcs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = npcs.json; sourceTree = "<group>"; };
+		77017A602B96F38700D60411 /* maps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = maps.json; sourceTree = "<group>"; };
+		77017A612B96F38700D60411 /* quests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = quests.json; sourceTree = "<group>"; };
+		77017A672B96FBA500D60411 /* mlsDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = mlsDatabase.db; path = ../../../../../Downloads/mlsDatabase.db; sourceTree = "<group>"; };
 		7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchbarTableViewCell.swift; sourceTree = "<group>"; };
 		7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSeparatorType.swift; sourceTree = "<group>"; };
 		77082A492B63A26200187906 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
@@ -419,7 +420,6 @@
 		77C1ED0B2B615471003179B4 /* QnAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnAViewController.swift; sourceTree = "<group>"; };
 		77C1ED0D2B61590E003179B4 /* QnAPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QnAPageViewModel.swift; sourceTree = "<group>"; };
 		77EF47582B5CD63800181D35 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
-		77F358F82B95ED9200B0C5A2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewController.swift; sourceTree = "<group>"; };
 		77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewModel.swift; sourceTree = "<group>"; };
 		77F359002B95F4D600B0C5A2 /* PopularTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularTableViewCell.swift; sourceTree = "<group>"; };
@@ -642,6 +642,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				77017A672B96FBA500D60411 /* mlsDatabase.db */,
 				08D2A3DC2B9645E900E236D1 /* GIF */,
 				77F3D5DF2B823FE3000DB65D /* DictJsons */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
@@ -1153,11 +1154,11 @@
 		77F3D5DF2B823FE3000DB65D /* DictJsons */ = {
 			isa = PBXGroup;
 			children = (
-				08F95DDC2B8A58FA00AD79DF /* maps.json */,
-				08F95DDA2B8A58C300AD79DF /* items.json */,
-				08F95DD02B8A56DD00AD79DF /* monsters.json */,
-				08F95DDE2B8A592600AD79DF /* npcs.json */,
-				08F95DE02B8A594600AD79DF /* quests.json */,
+				77017A5E2B96F38700D60411 /* items.json */,
+				77017A602B96F38700D60411 /* maps.json */,
+				77017A5D2B96F38700D60411 /* monsters.json */,
+				77017A5F2B96F38700D60411 /* npcs.json */,
+				77017A612B96F38700D60411 /* quests.json */,
 			);
 			path = DictJsons;
 			sourceTree = "<group>";
@@ -1258,20 +1259,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77017A682B96FBFC00D60411 /* mlsDatabase.db in Resources */,
+				77017A652B96F38700D60411 /* maps.json in Resources */,
+				77017A662B96F38700D60411 /* quests.json in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
-				08F95DDD2B8A58FA00AD79DF /* maps.json in Resources */,
 				08CEA7242B972AC00060EC82 /* launchScreen.gif in Resources */,
-				08F95DDB2B8A58C300AD79DF /* items.json in Resources */,
-				08F95DDF2B8A592600AD79DF /* npcs.json in Resources */,
 				08D5F0E62B81F3A800E56482 /* Pretendard-Bold.otf in Resources */,
+				77017A642B96F38700D60411 /* npcs.json in Resources */,
+				77017A632B96F38700D60411 /* items.json in Resources */,
 				08D5F0DF2B81F3A800E56482 /* Pretendard-Thin.otf in Resources */,
-				08F95DD52B8A56DD00AD79DF /* monsters.json in Resources */,
 				08D5F0E42B81F3A800E56482 /* Pretendard-ExtraLight.otf in Resources */,
 				08D5F0E02B81F3A800E56482 /* Pretendard-ExtraBold.otf in Resources */,
 				08F95DE12B8A594600AD79DF /* quests.json in Resources */,
-				77F358F92B95ED9200B0C5A2 /* GoogleService-Info.plist in Resources */,
 				08D5F0E22B81F3A800E56482 /* Pretendard-Medium.otf in Resources */,
+				77017A622B96F38700D60411 /* monsters.json in Resources */,
 				08D5F0E52B81F3A800E56482 /* Pretendard-Light.otf in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
 				08D2A3DF2B96462E00E236D1 /* indicator.gif in Resources */,

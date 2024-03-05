@@ -157,6 +157,8 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
             case 2:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
                 cell.delegate = self
+                cell.isUserInteractionEnabled = true
+                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.dropTableContents, type: "드롭 정보")
                 cell.selectionStyle = .none
                 return cell
@@ -240,15 +242,25 @@ extension DictMonsterViewController: UICollectionViewDelegateFlowLayout, UIColle
 
 extension DictMonsterViewController: DictTagTableViewCellDelegate {
     func didTapTagCell(title: String) {
-        print(title)
-        let vm = DictMapViewModel(selectedName: title)
-        let vc = DictMapViewController(viewModel: vm)
-        navigationController?.pushViewController(vc, animated: true)
+        let db = SqliteManager()
+        db.searchData(dataName: title) { [weak self] (item: [DictMap]) in
+            if item.isEmpty {
+                let vm = DictMapViewModel(selectedName: title)
+                let vc = DictMapViewController(viewModel: vm)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                guard let name = item.first?.name else { return }
+                let vm = DictMapViewModel(selectedName: name)
+                let vc = DictMapViewController(viewModel: vm)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
 }
 
 extension DictMonsterViewController: DictMonsterDropCellDelegate {
     func didTapDropTableCell(title: String, type: DictType?) {
+        print(title)
         let vm = DictItemViewModel(selectedName: title)
         let vc = DictItemViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)

@@ -82,7 +82,6 @@
 		08CBCB8C2B7F09E000C051F7 /* TestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB8B2B7F09E000C051F7 /* TestController.swift */; };
 		08CBCB8E2B7F340700C051F7 /* DictVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB8D2B7F340700C051F7 /* DictVersion.swift */; };
 		08CEA7242B972AC00060EC82 /* launchScreen.gif in Resources */ = {isa = PBXBuildFile; fileRef = 08CEA7232B972AC00060EC82 /* launchScreen.gif */; };
-		08CEA72A2B9740D50060EC82 /* mlsDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 08CEA7272B9740470060EC82 /* mlsDatabase.db */; };
 		08CEA7302B974E500060EC82 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CEA72F2B974E500060EC82 /* LaunchViewController.swift */; };
 		08D2A3D92B963C4E00E236D1 /* IndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D2A3D82B963C4E00E236D1 /* IndicatorManager.swift */; };
 		08D2A3DF2B96462E00E236D1 /* indicator.gif in Resources */ = {isa = PBXBuildFile; fileRef = 08D2A3DE2B96462E00E236D1 /* indicator.gif */; };
@@ -154,6 +153,7 @@
 		77017A642B96F38700D60411 /* npcs.json in Resources */ = {isa = PBXBuildFile; fileRef = 77017A5F2B96F38700D60411 /* npcs.json */; };
 		77017A652B96F38700D60411 /* maps.json in Resources */ = {isa = PBXBuildFile; fileRef = 77017A602B96F38700D60411 /* maps.json */; };
 		77017A662B96F38700D60411 /* quests.json in Resources */ = {isa = PBXBuildFile; fileRef = 77017A612B96F38700D60411 /* quests.json */; };
+		77017A7B2B97675400D60411 /* mlsDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 77017A792B97674200D60411 /* mlsDatabase.db */; };
 		7707440E2B55511E00FCEDED /* SearchbarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */; };
 		770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */; };
 		77082A4A2B63A26200187906 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A492B63A26200187906 /* PostDetailViewModel.swift */; };
@@ -282,7 +282,6 @@
 		08CBCB8B2B7F09E000C051F7 /* TestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestController.swift; sourceTree = "<group>"; };
 		08CBCB8D2B7F340700C051F7 /* DictVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictVersion.swift; sourceTree = "<group>"; };
 		08CEA7232B972AC00060EC82 /* launchScreen.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = launchScreen.gif; sourceTree = "<group>"; };
-		08CEA7272B9740470060EC82 /* mlsDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = mlsDatabase.db; path = MLS/Resource/mlsDatabase.db; sourceTree = SOURCE_ROOT; };
 		08CEA72F2B974E500060EC82 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		08D2A3D82B963C4E00E236D1 /* IndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorManager.swift; sourceTree = "<group>"; };
 		08D2A3DE2B96462E00E236D1 /* indicator.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = indicator.gif; sourceTree = "<group>"; };
@@ -354,6 +353,7 @@
 		77017A5F2B96F38700D60411 /* npcs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = npcs.json; sourceTree = "<group>"; };
 		77017A602B96F38700D60411 /* maps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = maps.json; sourceTree = "<group>"; };
 		77017A612B96F38700D60411 /* quests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = quests.json; sourceTree = "<group>"; };
+		77017A792B97674200D60411 /* mlsDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = mlsDatabase.db; sourceTree = "<group>"; };
 		7707440D2B55511E00FCEDED /* SearchbarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchbarTableViewCell.swift; sourceTree = "<group>"; };
 		7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSeparatorType.swift; sourceTree = "<group>"; };
 		77082A492B63A26200187906 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
@@ -643,12 +643,12 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				77017A792B97674200D60411 /* mlsDatabase.db */,
 				08D2A3DC2B9645E900E236D1 /* GIF */,
 				77F3D5DF2B823FE3000DB65D /* DictJsons */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
 				082D0C282B53CF4600D84CE2 /* AppDelegate.swift */,
 				082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */,
-				08CEA7272B9740470060EC82 /* mlsDatabase.db */,
 				082D0C362B53CF4800D84CE2 /* Info.plist */,
 				082D0C312B53CF4800D84CE2 /* Assets.xcassets */,
 			);
@@ -1258,7 +1258,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08CEA72A2B9740D50060EC82 /* mlsDatabase.db in Resources */,
+				77017A7B2B97675400D60411 /* mlsDatabase.db in Resources */,
 				77017A652B96F38700D60411 /* maps.json in Resources */,
 				77017A662B96F38700D60411 /* quests.json in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,

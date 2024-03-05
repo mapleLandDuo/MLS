@@ -240,10 +240,19 @@ extension DictMonsterViewController: UICollectionViewDelegateFlowLayout, UIColle
 
 extension DictMonsterViewController: DictTagTableViewCellDelegate {
     func didTapTagCell(title: String) {
-        print(title)
-        let vm = DictMapViewModel(selectedName: title)
-        let vc = DictMapViewController(viewModel: vm)
-        navigationController?.pushViewController(vc, animated: true)
+        let db = SqliteManager()
+        db.searchData(dataName: title) { [weak self] (item: [DictMap]) in
+            if item.isEmpty {
+                let vm = DictMapViewModel(selectedName: title)
+                let vc = DictMapViewController(viewModel: vm)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                guard let name = item.first?.name else { return }
+                let vm = DictMapViewModel(selectedName: name)
+                let vc = DictMapViewController(viewModel: vm)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
 }
 

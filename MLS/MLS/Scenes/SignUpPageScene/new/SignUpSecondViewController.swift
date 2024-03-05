@@ -376,13 +376,15 @@ private extension SignUpSecondViewController {
         viewModel.user.nickName = nickName
         viewModel.user.level = level
         viewModel.user.job = job
-        
-       viewModel.trySignUp(email: viewModel.user.id, password: viewModel.password, nickName: nickName) { isSuccess, errorMessage in
+       
+       IndicatorManager.showIndicator(vc: self)
+       viewModel.trySignUp(email: viewModel.user.id, password: viewModel.password, nickName: nickName) { [weak self] isSuccess, errorMessage in
+           guard let self = self else { return }
             if isSuccess {
-                AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인버튼을 누르면 메인으로 돌아갑니다.") { [weak self]  in
-                    guard let self = self else { return }
-                    Auth.auth().signIn(withEmail: self.viewModel.user.id, password: self.viewModel.password) { _, error in
-                        if error == nil {
+                Auth.auth().signIn(withEmail: self.viewModel.user.id, password: self.viewModel.password) { _, error in
+                    if error == nil {
+                        IndicatorManager.hideIndicator(vc: self)
+                        AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인버튼을 누르면 메인으로 돌아갑니다.") {
                             LoginManager.manager.email = Auth.auth().currentUser?.email
                             self.changeRootViewController()
                         }
@@ -390,6 +392,7 @@ private extension SignUpSecondViewController {
                 }
             } else {
                 AlertMaker.showAlertAction1(vc: self, title: "회원가입 실패", message: errorMessage)
+                IndicatorManager.hideIndicator(vc: self)
             }
         }
     }

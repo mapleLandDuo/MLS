@@ -140,15 +140,19 @@ extension MyPageBottomViewController {
             guard let email = LoginManager.manager.email else { return }
             switch self.type {
             case .secession:
+                IndicatorManager.showIndicator(vc: self)
                 FirebaseManager.firebaseManager.deleteUser(email: email) {
                     LoginManager.manager.deleteUser {
+                        IndicatorManager.hideIndicator(vc: self)
                         self.dismiss(animated: true, completion: {
                             self.delegate?.didTapApplyButton(type: self.type)
                         })
                     }
                 }
             case .logout:
+                IndicatorManager.showIndicator(vc: self)
                 LoginManager.manager.logOut { isLogOut in
+                    IndicatorManager.hideIndicator(vc: self)
                     self.dismiss(animated: true) {
                         self.delegate?.didTapApplyButton(type: self.type)
                     }

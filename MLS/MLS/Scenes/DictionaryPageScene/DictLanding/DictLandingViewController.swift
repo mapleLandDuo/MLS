@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 
 import FirebaseAuth
+import MessageUI
 
 class DictLandingViewController: BasicController {
     // MARK: - Properties
@@ -63,8 +64,13 @@ extension DictLandingViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+      
         self.navigationController?.navigationBar.isHidden = true
-        viewModel.fetchSectionDatas()
+        IndicatorManager.showIndicator(vc: self)
+        viewModel.fetchSectionDatas() {
+            IndicatorManager.hideIndicator(vc: self)
+        }
+
         
         if LoginManager.manager.isLogin() {
             guard let email = LoginManager.manager.email else { return }
@@ -81,13 +87,12 @@ extension DictLandingViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isHidden = false
     }
 }
 
 // MARK: - SetUp
 private extension DictLandingViewController {
-    
     func setUp() {
         setUpConstraints()
         headerView.delegate = self
@@ -98,7 +103,6 @@ private extension DictLandingViewController {
     }
     
     func setUpConstraints() {
-        
         view.addSubview(headerView)
         view.addSubview(firstSectionView)
         view.addSubview(separatorView)
@@ -138,16 +142,37 @@ private extension DictLandingViewController {
     }
 }
 
+// MARK: - Methods
+private extension DictLandingViewController {
+    func checkMail() {
+        let sendMailErrorAlert = UIAlertController(title: "메일을 전송 실패", message: "아이폰 이메일 설정을 확인하고 다시 시도해주세요.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "확인", style: .default)
+        sendMailErrorAlert.addAction(confirmAction)
+        self.present(sendMailErrorAlert, animated: true, completion: nil)
+    }
+}
+
 extension DictLandingViewController: DictLandingHeaderViewDelegate {
     func didTapSignInButton() {
         print(#function)
         let vc = LoginViewController(viewModel: LoginViewModel())
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func didTapInquireButton() {
         print(#function)
-        
+        if MFMailComposeViewController.canSendMail() {
+            let compseViewController = MFMailComposeViewController()
+            compseViewController.setToRecipients(["maplelands2024@gmail.com"])
+            compseViewController.setSubject("문의하기")
+            compseViewController.setMessageBody("문의 내용을 자세하게 입력해 주세요!", isHTML: false)
+
+            self.present(compseViewController, animated: true, completion: nil)
+
+        } else {
+            print(Error.self)
+            self.checkMail()
+        }
     }
     
     func didTapJobBadgeButton() {
@@ -162,11 +187,14 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
             self.headerView.myPageIconButton.isEnabled = true
             return
         }
+        IndicatorManager.showIndicator(vc: self)
         FirebaseManager.firebaseManager.fetchUserData(userEmail: email) { [weak self] user in
+            guard let self = self else { return }
+            IndicatorManager.hideIndicator(vc: self)
             let vc = MyPageViewController(user: user)
             vc.delegate = self
-            self?.navigationController?.pushViewController(vc, animated: true)
-            self?.headerView.myPageIconButton.isEnabled = true
+            self.navigationController?.pushViewController(vc, animated: true)
+            self.headerView.myPageIconButton.isEnabled = true
         }
     }
 }
@@ -188,7 +216,7 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
         print(#function)
         let vc = DictSearchViewController(viewModel: DictSearchViewModel())
         vc.headerView.searchTextField.becomeFirstResponder()
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func didTapShortCutButton() {
@@ -196,13 +224,17 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
         let viewModel = DictSearchViewModel()
         viewModel.fetchAllSearchData()
         let vc = DictSearchViewController(viewModel: viewModel)
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 extension DictLandingViewController: DictSectionHeaderViewDelegate {
     func didTapShowButton(title: String?) {
-        print(title)
+        guard let datas = viewModel.sectionHeaderInfos.value,
+              let title = title else { return }
+        let vm = PopularViewModel(datas: datas, title: title)
+        let vc = PopularViewController(viewModel: vm)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -235,7 +267,6 @@ extension DictLandingViewController: DictHorizontalSectionTableViewCellDelegate 
 }
 
 extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -274,10 +305,7 @@ extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource 
         return view
     }
 
-    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return Constants.spacings.xl_3
     }
 }
-
-

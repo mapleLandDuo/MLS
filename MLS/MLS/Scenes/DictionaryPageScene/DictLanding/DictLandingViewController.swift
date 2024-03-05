@@ -59,12 +59,17 @@ class DictLandingViewController: BasicController {
 extension DictLandingViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
-        setUp()
+        print(#function, "start")
+        showLaunchScreen { [weak self] in
+            guard let self = self else { return }
+            self.bind()
+            self.setUp()
+        }
+        print(#function, "stop")
     }
     
     override func viewWillAppear(_ animated: Bool) {
-      
+        print(#function, "start")
         self.navigationController?.navigationBar.isHidden = true
         IndicatorManager.showIndicator(vc: self)
         viewModel.fetchSectionDatas() {

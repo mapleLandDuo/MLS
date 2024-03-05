@@ -58,10 +58,6 @@ class PopularTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: Constants.spacings.md, right: 0))
-    }
 }
 
 // MARK: - SetUp
@@ -80,7 +76,8 @@ extension PopularTableViewCell {
         
         leadingView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(72)
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(Constants.spacings.md)
         }
         
         indexLabel.snp.makeConstraints {

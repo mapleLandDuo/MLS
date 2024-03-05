@@ -135,6 +135,7 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedMonster.value else { return UITableViewCell() }
             cell.contentView.isUserInteractionEnabled = false
+            cell.delegate = self
             cell.bind(item: item)
             cell.selectionStyle = .none
             return cell
@@ -264,5 +265,11 @@ extension DictMonsterViewController: DictMonsterDropCellDelegate {
         let vm = DictItemViewModel(selectedName: title)
         let vc = DictItemViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension DictMonsterViewController: DictMainInfoCellDelegate {
+    func didTapExpandButton() {
+        dictMonsterTableView.reloadData()
     }
 }

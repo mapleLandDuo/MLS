@@ -115,9 +115,8 @@ extension PopularTableViewCell {
 // MARK: - Bind
 extension PopularTableViewCell {
     func bind(item: DictSectionData, index: Int, rank: Int) {
-        print(item)
         nameLabel.text = item.title
-        indexLabel.text = String(index)
+        indexLabel.text = String(index + 1)
         
         if item.type == .item {
             let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.image)/icon?resize=2")

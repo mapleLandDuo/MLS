@@ -157,6 +157,8 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
             case 2:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
                 cell.delegate = self
+                cell.isUserInteractionEnabled = true
+                cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.dropTableContents, type: "드롭 정보")
                 cell.selectionStyle = .none
                 return cell
@@ -258,6 +260,7 @@ extension DictMonsterViewController: DictTagTableViewCellDelegate {
 
 extension DictMonsterViewController: DictMonsterDropCellDelegate {
     func didTapDropTableCell(title: String, type: DictType?) {
+        print(title)
         let vm = DictItemViewModel(selectedName: title)
         let vc = DictItemViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)

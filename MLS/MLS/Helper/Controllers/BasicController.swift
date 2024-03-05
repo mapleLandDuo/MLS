@@ -48,6 +48,7 @@ extension BasicController {
             number: 0,
             title: "공지사항",
             content: """
+            
             <메랜사 새단장>
             
             1. 메랜사의 전체적인 디자인에 큰 변화가 있습니다.

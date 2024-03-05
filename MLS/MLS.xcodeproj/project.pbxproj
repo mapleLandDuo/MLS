@@ -81,6 +81,7 @@
 		08CBCB862B7C9B1A00C051F7 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB852B7C9B1A00C051F7 /* DBHelper.swift */; };
 		08CBCB8C2B7F09E000C051F7 /* TestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB8B2B7F09E000C051F7 /* TestController.swift */; };
 		08CBCB8E2B7F340700C051F7 /* DictVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB8D2B7F340700C051F7 /* DictVersion.swift */; };
+		08CEA7242B972AC00060EC82 /* launchScreen.gif in Resources */ = {isa = PBXBuildFile; fileRef = 08CEA7232B972AC00060EC82 /* launchScreen.gif */; };
 		08D2A3D92B963C4E00E236D1 /* IndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D2A3D82B963C4E00E236D1 /* IndicatorManager.swift */; };
 		08D2A3DF2B96462E00E236D1 /* indicator.gif in Resources */ = {isa = PBXBuildFile; fileRef = 08D2A3DE2B96462E00E236D1 /* indicator.gif */; };
 		08D50A672B590D9100E94442 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D50A662B590D9100E94442 /* SignInViewController.swift */; };
@@ -280,6 +281,7 @@
 		08CBCB852B7C9B1A00C051F7 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		08CBCB8B2B7F09E000C051F7 /* TestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestController.swift; sourceTree = "<group>"; };
 		08CBCB8D2B7F340700C051F7 /* DictVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictVersion.swift; sourceTree = "<group>"; };
+		08CEA7232B972AC00060EC82 /* launchScreen.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = launchScreen.gif; sourceTree = "<group>"; };
 		08D2A3D82B963C4E00E236D1 /* IndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorManager.swift; sourceTree = "<group>"; };
 		08D2A3DE2B96462E00E236D1 /* indicator.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = indicator.gif; sourceTree = "<group>"; };
 		08D50A662B590D9100E94442 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -747,6 +749,7 @@
 		08D2A3DC2B9645E900E236D1 /* GIF */ = {
 			isa = PBXGroup;
 			children = (
+				08CEA7232B972AC00060EC82 /* launchScreen.gif */,
 				08D2A3DE2B96462E00E236D1 /* indicator.gif */,
 			);
 			path = GIF;
@@ -1261,6 +1264,7 @@
 				77017A662B96F38700D60411 /* quests.json in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
+				08CEA7242B972AC00060EC82 /* launchScreen.gif in Resources */,
 				08D5F0E62B81F3A800E56482 /* Pretendard-Bold.otf in Resources */,
 				77017A642B96F38700D60411 /* npcs.json in Resources */,
 				77017A632B96F38700D60411 /* items.json in Resources */,

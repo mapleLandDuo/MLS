@@ -83,6 +83,7 @@
 		08CBCB8E2B7F340700C051F7 /* DictVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CBCB8D2B7F340700C051F7 /* DictVersion.swift */; };
 		08CEA7242B972AC00060EC82 /* launchScreen.gif in Resources */ = {isa = PBXBuildFile; fileRef = 08CEA7232B972AC00060EC82 /* launchScreen.gif */; };
 		08CEA72A2B9740D50060EC82 /* mlsDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 08CEA7272B9740470060EC82 /* mlsDatabase.db */; };
+		08CEA7302B974E500060EC82 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CEA72F2B974E500060EC82 /* LaunchViewController.swift */; };
 		08D2A3D92B963C4E00E236D1 /* IndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D2A3D82B963C4E00E236D1 /* IndicatorManager.swift */; };
 		08D2A3DF2B96462E00E236D1 /* indicator.gif in Resources */ = {isa = PBXBuildFile; fileRef = 08D2A3DE2B96462E00E236D1 /* indicator.gif */; };
 		08D50A672B590D9100E94442 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D50A662B590D9100E94442 /* SignInViewController.swift */; };
@@ -118,7 +119,6 @@
 		08D5F0FB2B833F7C00E56482 /* DictHorizontalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F0FA2B833F7C00E56482 /* DictHorizontalCollectionViewCell.swift */; };
 		08D5F1052B8613A800E56482 /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F1042B8613A800E56482 /* PopUpView.swift */; };
 		08D5F1072B86156200E56482 /* PopUpMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F1062B86156200E56482 /* PopUpMaker.swift */; };
-		08D5F1092B8624E800E56482 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F1082B8624E800E56482 /* UIViewController+.swift */; };
 		08D5F10B2B8628F700E56482 /* AnnouncementData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F10A2B8628F700E56482 /* AnnouncementData.swift */; };
 		08D5F11C2B873B1400E56482 /* DictSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F11B2B873B1400E56482 /* DictSearchViewController.swift */; };
 		08D5F11E2B873B1D00E56482 /* DictSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D5F11D2B873B1D00E56482 /* DictSearchViewModel.swift */; };
@@ -283,6 +283,7 @@
 		08CBCB8D2B7F340700C051F7 /* DictVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictVersion.swift; sourceTree = "<group>"; };
 		08CEA7232B972AC00060EC82 /* launchScreen.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = launchScreen.gif; sourceTree = "<group>"; };
 		08CEA7272B9740470060EC82 /* mlsDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = mlsDatabase.db; path = MLS/Resource/mlsDatabase.db; sourceTree = SOURCE_ROOT; };
+		08CEA72F2B974E500060EC82 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		08D2A3D82B963C4E00E236D1 /* IndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorManager.swift; sourceTree = "<group>"; };
 		08D2A3DE2B96462E00E236D1 /* indicator.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = indicator.gif; sourceTree = "<group>"; };
 		08D50A662B590D9100E94442 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -318,7 +319,6 @@
 		08D5F0FA2B833F7C00E56482 /* DictHorizontalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictHorizontalCollectionViewCell.swift; sourceTree = "<group>"; };
 		08D5F1042B8613A800E56482 /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		08D5F1062B86156200E56482 /* PopUpMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpMaker.swift; sourceTree = "<group>"; };
-		08D5F1082B8624E800E56482 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		08D5F10A2B8628F700E56482 /* AnnouncementData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementData.swift; sourceTree = "<group>"; };
 		08D5F11B2B873B1400E56482 /* DictSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchViewController.swift; sourceTree = "<group>"; };
 		08D5F11D2B873B1D00E56482 /* DictSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchViewModel.swift; sourceTree = "<group>"; };
@@ -635,6 +635,7 @@
 			children = (
 				082D0C772B53D11900D84CE2 /* BasicController.swift */,
 				08CBCB8B2B7F09E000C051F7 /* TestController.swift */,
+				08CEA72F2B974E500060EC82 /* LaunchViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -865,7 +866,6 @@
 				08D50A872B5FD33B00E94442 /* UIWindow+.swift */,
 				77B6DB722B692A3E00302173 /* String+.swift */,
 				77F3D5E22B827F0A000DB65D /* Encodable+.swift */,
-				08D5F1082B8624E800E56482 /* UIViewController+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1351,6 +1351,7 @@
 				08D50A8A2B5FD46700E94442 /* AlertMaker.swift in Sources */,
 				779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */,
 				081E6FE92B66A41B00CF83F4 /* DictionaryGraySeparatorOneLineCell.swift in Sources */,
+				08CEA7302B974E500060EC82 /* LaunchViewController.swift in Sources */,
 				7719DD4F2B939579003797F4 /* DictNPCViewController.swift in Sources */,
 				08CBCB8C2B7F09E000C051F7 /* TestController.swift in Sources */,
 				081E70032B69130000CF83F4 /* AppInfoPageViewController.swift in Sources */,
@@ -1409,7 +1410,6 @@
 				08D50A8C2B5FD61E00E94442 /* UserDefaultsManager.swift in Sources */,
 				08CB4E652B8F6B9C00336FE6 /* DictSearchJobButtonCell.swift in Sources */,
 				08D50A782B5E96DA00E94442 /* MainPageProfileCell.swift in Sources */,
-				08D5F1092B8624E800E56482 /* UIViewController+.swift in Sources */,
 				08F95DFF2B8E1C0A00AD79DF /* DictSearchSortedViewController.swift in Sources */,
 				08CB4E602B8F383500336FE6 /* DictSearchFilterEnum.swift in Sources */,
 				08D50A6B2B59137B00E94442 /* SignUpViewController.swift in Sources */,

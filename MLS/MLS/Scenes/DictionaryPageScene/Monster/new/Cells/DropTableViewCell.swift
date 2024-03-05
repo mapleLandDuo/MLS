@@ -151,16 +151,23 @@ extension DropTableViewCell {
             case "정보 완료 조건":
                 print(item.name, "+", item.description)
                 if item.description.contains("전달") {
-                    print(1)
                     descriptionTitleLabel.text = "전달 개수"
                     let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2")
                     itemImageView.kf.setImage(with: url)
                     descriptionLabel.text = "\(item.description)"
                 } else {
-                    print(2)
                     descriptionTitleLabel.text = "처치 마리수"
                     let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor=")
-                    itemImageView.kf.setImage(with: url)
+                    let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.code)/icon?resize=2")
+                    itemImageView.kf.setImage(with: url) { [weak self] result in
+                        switch result {
+                        case .failure(_) :
+                            print(#function)
+                            self?.itemImageView.kf.setImage(with: secondUrl)
+                        default :
+                            print(#function)
+                        }
+                    }
                     descriptionLabel.text = "\(item.description)마리"
                 }
             case "퀘스트 보상":

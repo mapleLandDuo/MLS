@@ -143,11 +143,20 @@ extension DictMainInfoCell {
             itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
         case is DictMonster:
             guard let item = item as? DictMonster else { return }
-            url = "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor="
+            let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor=")
+            let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.code)/icon?resize=2")
+            itemImageView.kf.setImage(with: url) { [weak self] result in
+                switch result {
+                case .failure(_) :
+                    print(#function)
+                    self?.itemImageView.kf.setImage(with: secondUrl)
+                default :
+                    print(#function)
+                }
+            }
             itemName = item.name
             itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
             descriptionText = itemDescription
-            itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
         case is DictMap:
             guard let item = item as? DictMap else { return }
             itemName = item.name

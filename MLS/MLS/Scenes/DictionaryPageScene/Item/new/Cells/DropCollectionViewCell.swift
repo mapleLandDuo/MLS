@@ -157,7 +157,16 @@ extension DropCollectionViewCell {
             descriptionTitleLabel.text = "드롭률"
         case .monster:
             let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(data.code)/render/move?bgColor=")
-            imageView.kf.setImage(with: url)
+            let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(data.code)/icon?resize=2")
+            imageView.kf.setImage(with: url) { [weak self] result in
+                switch result {
+                case .failure(_) :
+                    print(#function)
+                    self?.imageView.kf.setImage(with: secondUrl)
+                default :
+                    print(#function)
+                }
+            }
             if data.description.contains("%") {
                 descriptionTitleLabel.text = "드롭률"
             } else {

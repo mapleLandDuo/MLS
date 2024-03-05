@@ -244,6 +244,10 @@ extension DictMonsterViewController: UICollectionViewDelegateFlowLayout, UIColle
 extension DictMonsterViewController: DictTagTableViewCellDelegate {
     func didTapTagCell(title: String) {
         let db = SqliteManager()
+        if title == "스폰 장소가 확인되지 않습니다." {
+            AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
+            return
+        }
         db.searchData(dataName: title) { [weak self] (item: [DictMap]) in
             if item.isEmpty {
                 let vm = DictMapViewModel(selectedName: title)

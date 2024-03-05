@@ -226,13 +226,31 @@ extension DictNPCViewController: DictTagTableViewCellDelegate {
     func didTapTagCell(title: String) {
         switch viewModel.selectedTab.value {
         case 0:
-            let vm = DictMapViewModel(selectedName: title)
-            let vc = DictMapViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
+            let db = SqliteManager()
+            db.searchData(dataName: title) { [weak self] (item: [DictMap]) in
+                guard let self = self else { return }
+                if item.isEmpty {
+                    AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
+                } else {
+                    guard let name = item.first?.name else { return }
+                    let vm = DictMapViewModel(selectedName: name)
+                    let vc = DictMapViewController(viewModel: vm)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
         case 1:
-            let vm = DictQuestViewModel(selectedName: title)
-            let vc = DictQuestViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
+            let db = SqliteManager()
+            db.searchData(dataName: title) { [weak self] (item: [DictQuest]) in
+                guard let self = self else { return }
+                if item.isEmpty {
+                    AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
+                } else {
+                    guard let name = item.first?.name else { return }
+                    let vm = DictQuestViewModel(selectedName: name)
+                    let vc = DictQuestViewController(viewModel: vm)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
         default:
             break
         }

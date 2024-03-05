@@ -111,7 +111,16 @@ extension DictHorizontalCollectionViewCell {
             subTitleLabel.text = "필요레벨"
         case .monster:
             let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(data.image)/render/move?bgColor=")
-            imageView.kf.setImage(with: url)
+            let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(data.image)/icon?resize=2")
+            imageView.kf.setImage(with: url) { [weak self] result in
+                switch result {
+                case .failure(_) :
+                    print(#function)
+                    self?.imageView.kf.setImage(with: secondUrl)
+                default :
+                    print(#function)
+                }
+            }
             subTitleLabel.text = "레벨"
         case .map:
             let url = URL(string: "https://mapledb.kr/Assets/image/minimaps/\(data.image).png")

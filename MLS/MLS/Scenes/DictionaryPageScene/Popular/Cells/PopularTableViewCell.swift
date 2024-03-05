@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Kingfisher
 
 class PopularTableViewCell: UITableViewCell {
     // MARK: - Components
@@ -120,7 +121,16 @@ extension PopularTableViewCell {
             itemImageView.kf.setImage(with: url)
         } else {
             let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.image)/render/move?bgColor=")
-            itemImageView.kf.setImage(with: url)
+            let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.image)/icon?resize=2")
+            itemImageView.kf.setImage(with: url) { [weak self] result in
+                switch result {
+                case .failure(_) :
+                    print(#function)
+                    self?.itemImageView.kf.setImage(with: secondUrl)
+                default :
+                    print(#function)
+                }
+            }
         }
         
         if rank == 0 {

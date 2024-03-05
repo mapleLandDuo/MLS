@@ -9,10 +9,16 @@ import UIKit
 
 import SnapKit
 
+protocol DictMainInfoCellDelegate: BasicController {
+    func didTapExpandButton()
+}
+
 class DictMainInfoCell: UITableViewCell {
     // MARK: Properties
     private var descriptionText: String?
 
+    weak var delegate: DictMainInfoCellDelegate?
+    
     private var isExpanded = false
     
     private var descriptionViewHeight: CGFloat = 0.0
@@ -79,45 +85,43 @@ private extension DictMainInfoCell {
     }
 
     func setUpConstraints() {
-        addSubview(itemImageView)
-        addSubview(nameLabel)
-        addSubview(descriptionView)
+        contentView.addSubview(itemImageView)
+        contentView.addSubview(nameLabel)
         descriptionView.addSubview(descriptionTextLabel)
         descriptionView.addSubview(expandButton)
+        contentView.addSubview(descriptionView)
         
         itemImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(40)
-            $0.bottom.equalTo(nameLabel.snp.top).inset(-44)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(80)
         }
         
         nameLabel.snp.makeConstraints {
+            $0.top.equalTo(itemImageView.snp.bottom).offset(44)
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
             $0.height.equalTo(32)
         }
         
-        descriptionView.snp.makeConstraints {
-            $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
-            $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
-            $0.height.equalTo(60)
-            $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
-        }
-        
-        descriptionTextLabel.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(Constants.spacings.sm)
-            $0.leading.equalToSuperview().inset(Constants.spacings.lg)
-            $0.height.equalTo(0)
-        }
-        
         expandButton.snp.makeConstraints {
-            $0.leading.equalTo(descriptionTextLabel.snp.trailing).offset(Constants.spacings.sm)
             $0.trailing.equalToSuperview().inset(Constants.spacings.lg)
             $0.width.equalTo(12)
             $0.height.equalTo(10)
             $0.centerY.equalToSuperview()
         }
         
+        descriptionTextLabel.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(Constants.spacings.sm)
+            $0.leading.equalToSuperview().inset(Constants.spacings.lg)
+            $0.trailing.equalTo(expandButton.snp.leading).inset(-Constants.spacings.sm)
+            $0.height.equalTo(44)
+        }
+        
+        descriptionView.snp.makeConstraints {
+            $0.top.equalTo(nameLabel.snp.bottom).offset(Constants.spacings.xs)
+            $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
+            $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
+        }
         expandButton.contentHuggingPriority(for: .horizontal)
     }
 }
@@ -212,25 +216,18 @@ extension DictMainInfoCell {
             descriptionTextLabel.snp.updateConstraints {
                 $0.height.equalTo(descriptionViewHeight)
             }
-            descriptionView.snp.updateConstraints {
-                $0.height.equalTo(descriptionViewHeight + (Constants.spacings.sm * 2))
-            }
         } else {
             descriptionTextLabel.numberOfLines = 2
             descriptionTextLabel.snp.updateConstraints {
                 $0.height.equalTo(44)
             }
-            descriptionView.snp.updateConstraints {
-                $0.height.equalTo(60)
-            }
         }
         expandButton.isSelected.toggle()
-        descriptionView.layoutIfNeeded()
-        descriptionTextLabel.layoutIfNeeded()
+        delegate?.didTapExpandButton()
     }
     
     func checkDescriptionLines(completion: @escaping () -> Void) {
-        let width = 293.0
+        let width = Constants.screenWidth - (Constants.spacings.xl * 2) - (Constants.spacings.lg * 2)
         var descriptionVerticalCount: CGFloat = 2
         let descriptionWidth = NSString(string: descriptionText ?? "").size(
             withAttributes: [NSAttributedString.Key.font: UIFont.customFont(fontSize: .body_sm, fontType: .medium)!]

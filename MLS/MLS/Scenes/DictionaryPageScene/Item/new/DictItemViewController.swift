@@ -129,7 +129,8 @@ extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedItem.value else { return UITableViewCell() }
-            cell.contentView.isUserInteractionEnabled = false
+//            cell.contentView.isUserInteractionEnabled = false
+            cell.delegate = self
             cell.bind(item: item)
             cell.selectionStyle = .none
             return cell
@@ -238,5 +239,11 @@ extension DictItemViewController: DictItemDropCellDelegate {
         let vm = DictMonsterViewModel(selectedName: title)
         let vc = DictMonsterViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension DictItemViewController: DictMainInfoCellDelegate {
+    func didTapExpandButton() {
+        dictItemTableView.reloadData()
     }
 }

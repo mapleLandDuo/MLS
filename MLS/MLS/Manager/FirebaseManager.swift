@@ -16,38 +16,38 @@ import FirebaseStorage
 // 진훈
 
 enum CollectionName: String {
-    case users = "users"
-    case posts = "posts"
-    case comments = "comments"
-    
-    case dictionaryItems = "dictionaryItems"
-    case dictionaryMonsters = "dictionaryMonsters"
-    case dictionaryMaps = "dictionaryMaps"
-    case dictionaryNPCs = "dictionaryNPCs"
-    case dictionaryQuests = "dictionaryQuests"
-    
-    case dictionaryItemLink = "dictionaryItemLink"
+    case users
+    case posts
+    case comments
+
+    case dictionaryItems
+    case dictionaryMonsters
+    case dictionaryMaps
+    case dictionaryNPCs
+    case dictionaryQuests
+
+    case dictionaryItemLink
     case dictionaryMonstersLink = "dictionaryMonsterLink"
-    case dictionaryMapLink = "dictionaryMapLink"
-    case dictionaryNPCLink = "dictionaryNPCLink"
-    case dictionaryQuestLink = "dictionaryQuestLink"
-    
-    case dictVersion = "dictVersion"
-    
-    case userDatas = "userDatas"
+    case dictionaryMapLink
+    case dictionaryNPCLink
+    case dictionaryQuestLink
+
+    case dictVersion
+
+    case userDatas
 }
 
 class FirebaseManager {
     static let firebaseManager = FirebaseManager()
 
     private init() {}
-    
+
     let db = Firestore.firestore()
 }
 
 extension FirebaseManager {
     // MARK: User
-    
+
     func fetchUserData(userEmail: String, completion: @escaping (User) -> Void) {
         db.collection(CollectionName.userDatas.rawValue).document(userEmail).getDocument { querySnapshot, error in
             if error == nil {
@@ -64,6 +64,23 @@ extension FirebaseManager {
         }
     }
 
+//    func updateUsersToUserDatas() {
+//        db.collection(CollectionName.users.rawValue).getDocuments { querySnapshot, error in
+//            do {
+//                guard let documents = querySnapshot?.documents else { return }
+//                var datas = try Firestore.Decoder().decode([User1].self, from: documents.map { $0.data() })
+//                datas.map { DetailContent(title: $0.id, description: $0.nickName) }.forEach { item in
+//                    let user = User(id: item.title, nickName: item.description, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [], job: nil, level: nil)
+//                    self.saveUserData(user: user) { success, _ in
+//                        print(success)
+//                    }
+//                }
+//            } catch {
+//                print(error)
+//            }
+//        }
+//    }
+
     func fetchNickname(userEmail: String, completion: @escaping (String?) -> Void) {
         db.collection(CollectionName.users.rawValue).document(userEmail).getDocument { document, error in
             if let error = error {
@@ -78,9 +95,9 @@ extension FirebaseManager {
             }
         }
     }
-    
+
     func checkNickNameExist(nickName: String, completion: @escaping (Bool?) -> Void) {
-        db.collection(CollectionName.userDatas.rawValue).whereField("nickName", isEqualTo: nickName).getDocuments { (querySnapshot, error) in
+        db.collection(CollectionName.userDatas.rawValue).whereField("nickName", isEqualTo: nickName).getDocuments { querySnapshot, error in
             if let error = error {
                 print("닉네임 가져오지 못함: \(error)")
                 completion(false)
@@ -92,7 +109,7 @@ extension FirebaseManager {
             }
         }
     }
-    
+
     func checkEmailExist(email: String, completion: @escaping (Bool?) -> Void) {
         db.collection(CollectionName.userDatas.rawValue).document(email).getDocument { document, error in
             if let error = error {
@@ -106,7 +123,7 @@ extension FirebaseManager {
             }
         }
     }
-    
+
     func saveUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
         let userData = User(id: email, nickName: nickName, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
         do {
@@ -117,7 +134,7 @@ extension FirebaseManager {
             completion(false, "FirebaseManager_EncodeFail")
         }
     }
-    
+
     func saveUserData(user: User, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(user)
@@ -127,7 +144,7 @@ extension FirebaseManager {
             print(false, "FirebaseManager_EncodeFail")
         }
     }
-    
+
     func deleteUserData(email: String, completion: @escaping () -> Void) {
         fetchUserPosts(userEmail: email) { posts in
             guard let posts = posts else { return }
@@ -140,7 +157,7 @@ extension FirebaseManager {
             }
         }
     }
-    
+
     func updateUserData(user: User, completion: @escaping () -> Void) {
         do {
             let data = try Firestore.Encoder().encode(user)
@@ -155,7 +172,7 @@ extension FirebaseManager {
             print(#function, "encoding Fail")
         }
     }
-    
+
     func deleteUser(email: String, completion: @escaping () -> Void) {
         db.collection(CollectionName.userDatas.rawValue).document(email).delete { _ in
             completion()
@@ -432,7 +449,7 @@ extension FirebaseManager {
                 let postID = postDocument.documentID
                 dispatchGroup.enter()
 
-                let commentsQuery = self.db.collection(CollectionName.posts.rawValue ).document(postID).collection(CollectionName.comments.rawValue).whereField("user", isEqualTo: userID).order(by: "date", descending: true)
+                let commentsQuery = self.db.collection(CollectionName.posts.rawValue).document(postID).collection(CollectionName.comments.rawValue).whereField("user", isEqualTo: userID).order(by: "date", descending: true)
 
                 commentsQuery.getDocuments { commentsQuerySnapshot, commentsError in
                     if let commentsError = commentsError {
@@ -566,7 +583,6 @@ extension FirebaseManager {
 
 // MARK: - Dictionary
 extension FirebaseManager {
-
     func updateDictionaryLink(collection: CollectionName, documentName: String, item: DictionaryNameLinkUpdateItem, completion: @escaping (Error?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(item)
@@ -598,7 +614,7 @@ extension FirebaseManager {
             }
         }
     }
-    
+
     func dictVersionUpdate(dictVersion: DictVersion, completion: @escaping (String) -> Void) {
         do {
             var count = 0
@@ -632,9 +648,9 @@ extension FirebaseManager {
             completion(error.localizedDescription)
         }
     }
-    
+
     func fetchDatas<T: Decodable>(colName: String, completion: @escaping ([T]?) -> Void) {
-        db.collection(CollectionName.dictVersion.rawValue).document("V1.0.2").collection(colName).getDocuments { querySnapshot, err in
+        db.collection(CollectionName.dictVersion.rawValue).document("V1.0.4").collection(colName).getDocuments { querySnapshot, err in
             if let err = err {
                 print("검색 데이터 없음: \(err)")
                 completion(nil)
@@ -658,38 +674,38 @@ extension FirebaseManager {
 // MARK: - 지울 예정
 extension FirebaseManager {
     func fetchItems(itemName: String, completion: @escaping (DictionaryItem?) -> Void) {
-         db.collection(CollectionName.dictionaryItems.rawValue).document(itemName).getDocument { querySnapshot, error in
-             if let error = error {
-                 print("데이터를 가져오지 못했습니다: \(error)")
-                 completion(nil)
-             } else {
-                 do {
-                     let post = try Firestore.Decoder().decode(DictionaryItem.self, from: querySnapshot?.data())
-                     completion(post)
-                 } catch {
-                     completion(nil)
-                     return
-                 }
-             }
-         }
-     }
+        db.collection(CollectionName.dictionaryItems.rawValue).document(itemName).getDocument { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                do {
+                    let post = try Firestore.Decoder().decode(DictionaryItem.self, from: querySnapshot?.data())
+                    completion(post)
+                } catch {
+                    completion(nil)
+                    return
+                }
+            }
+        }
+    }
 
-     func fetchMonsters(monsterName: String, completion: @escaping (DictionaryMonster?) -> Void) {
-         db.collection(CollectionName.dictionaryMonsters.rawValue).document(monsterName).getDocument { querySnapshot, error in
-             if let error = error {
-                 print("데이터를 가져오지 못했습니다: \(error)")
-                 completion(nil)
-             } else {
-                 do {
-                     let post = try Firestore.Decoder().decode(DictionaryMonster.self, from: querySnapshot?.data())
-                     completion(post)
-                 } catch {
-                     completion(nil)
-                     return
-                 }
-             }
-         }
-     }
+    func fetchMonsters(monsterName: String, completion: @escaping (DictionaryMonster?) -> Void) {
+        db.collection(CollectionName.dictionaryMonsters.rawValue).document(monsterName).getDocument { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                do {
+                    let post = try Firestore.Decoder().decode(DictionaryMonster.self, from: querySnapshot?.data())
+                    completion(post)
+                } catch {
+                    completion(nil)
+                    return
+                }
+            }
+        }
+    }
 }
 
 extension FirebaseManager {
@@ -1062,9 +1078,7 @@ extension FirebaseManager {
 
 // MARK: - DictSearchCount
 extension FirebaseManager {
-    
     func countUpDictSearch(type: DictType, name: String) {
-        
         db.collection(type.collectionName).document(name).getDocument { [weak self] querySnapshot, error in
             if error == nil {
                 if querySnapshot?.data() == nil {
@@ -1088,16 +1102,15 @@ extension FirebaseManager {
                 }
             }
         }
-        
     }
-    
-    func fetchDictSearchCount(type: DictType , completion: @escaping ([DictNameCount]) -> Void) {
+
+    func fetchDictSearchCount(type: DictType, completion: @escaping ([DictNameCount]) -> Void) {
         db.collection(type.collectionName).getDocuments { querySnapshot, error in
             do {
                 guard let documents = querySnapshot?.documents else { return }
-                var datas = try Firestore.Decoder().decode([DictNameCount].self, from: documents.map({$0.data()}))
+                var datas = try Firestore.Decoder().decode([DictNameCount].self, from: documents.map { $0.data() })
                 datas.sort { first, second in
-                    return first.count > second.count
+                    first.count > second.count
                 }
                 completion(datas)
             } catch {
@@ -1107,5 +1120,3 @@ extension FirebaseManager {
         }
     }
 }
-
-

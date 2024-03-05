@@ -35,7 +35,8 @@ class SqliteManager {
     let path = "mlsDatabase.db"
 
     init() {
-        self.db = self.createDB()
+//        self.db = self.createDB()
+        self.db = self.connectToDB()
     }
 
     // MARK: Database
@@ -50,7 +51,34 @@ class SqliteManager {
         }
         return nil
     }
-
+    
+    func connectToDB() -> Connection? {
+        let fileName = "mlsDatabase.db"
+        let fileManager = FileManager.default
+        guard let bundlePath = Bundle.main.path(forResource: "mlsDatabase", ofType: "db"),
+              let documentPath = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        let fileURL = documentPath.appendingPathComponent(fileName)
+        
+        if !fileManager.fileExists(atPath: fileURL.path) {
+            do {
+                try fileManager.copyItem(atPath: bundlePath, toPath: fileURL.path)
+                print("Database file copied from bundle to document directory")
+            } catch {
+                print("Error: \(error)")
+                return nil
+            }
+        }
+        
+        do {
+            let db = try Connection(fileURL.path)
+            print("Success connect to db")
+            return db
+        } catch {
+            print("Error: \(error)")
+        }
+        return nil
+    }
+    
     // MARK: Table
     func createTable(tableName: String, columnNames: [String]) {
         let table = Table(tableName)

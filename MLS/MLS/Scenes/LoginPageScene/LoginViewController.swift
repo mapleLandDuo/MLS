@@ -16,9 +16,8 @@ class LoginViewController: BasicController {
     // MARK: - Components
     private let logoImageView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .systemOrange
-        view.contentMode = .scaleAspectFill
-        view.image = UIImage(named: "AppLogo")
+        view.contentMode = .scaleAspectFit
+        view.image = UIImage(named: "logo")
         return view
     }()
         
@@ -107,8 +106,8 @@ private extension LoginViewController {
             
         logoImageView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).inset(Constants.spacings.lg)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(50)
+            $0.centerX.equalToSuperview()
+            $0.size.equalTo(80)
         }
             
         emailTextField.snp.makeConstraints {

@@ -557,6 +557,7 @@
 				082D0C272B53CF4600D84CE2 /* MLS */,
 				082D0C262B53CF4600D84CE2 /* Products */,
 				77C1ED072B614E74003179B4 /* Frameworks */,
+				08D2A3E22B96474200E236D1 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -748,6 +749,14 @@
 				08D2A3DE2B96462E00E236D1 /* indicator.gif */,
 			);
 			path = GIF;
+			sourceTree = "<group>";
+		};
+		08D2A3E22B96474200E236D1 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				77F358F82B95ED9200B0C5A2 /* GoogleService-Info.plist */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		08D50A622B590D0A00E94442 /* SignInPageScene */ = {

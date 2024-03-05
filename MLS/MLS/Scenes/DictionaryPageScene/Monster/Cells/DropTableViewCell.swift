@@ -149,7 +149,6 @@ extension DropTableViewCell {
                 itemImageView.kf.setImage(with: url)
                 descriptionLabel.text = item.description
             case "정보 완료 조건":
-                print(item.name, "+", item.description)
                 if item.description.contains("전달") {
                     descriptionTitleLabel.text = "전달 개수"
                     let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2")

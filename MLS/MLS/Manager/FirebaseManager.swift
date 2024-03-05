@@ -64,23 +64,6 @@ extension FirebaseManager {
         }
     }
 
-//    func updateUsersToUserDatas() {
-//        db.collection(CollectionName.users.rawValue).getDocuments { querySnapshot, error in
-//            do {
-//                guard let documents = querySnapshot?.documents else { return }
-//                var datas = try Firestore.Decoder().decode([User1].self, from: documents.map { $0.data() })
-//                datas.map { DetailContent(title: $0.id, description: $0.nickName) }.forEach { item in
-//                    let user = User(id: item.title, nickName: item.description, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [], job: nil, level: nil)
-//                    self.saveUserData(user: user) { success, _ in
-//                        print(success)
-//                    }
-//                }
-//            } catch {
-//                print(error)
-//            }
-//        }
-//    }
-
     func fetchNickname(userEmail: String, completion: @escaping (String?) -> Void) {
         db.collection(CollectionName.users.rawValue).document(userEmail).getDocument { document, error in
             if let error = error {

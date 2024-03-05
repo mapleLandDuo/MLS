@@ -259,61 +259,6 @@ private extension SignUpSecondViewController {
         setAccountButton(isExist: true)
         viewModel.isAccountExist.value = true
     }
-    
-//    func didTapCompleteButton() {
-//        viewModel.isValidSignUp { [weak self] state in
-//            switch state {
-//            case .complete:
-//                // 완료
-//                guard let account = self?.viewModel.isAccountExist.value else { return }
-//                if account {
-//                    // 계정 있음
-//                    guard let nickName = self?.nickNameTextField.textField.text,
-//                          let level = self?.accountView.levelTextField.textField.text,
-//                          let job = self?.viewModel.job.value,
-//                          let id = self?.viewModel.user.id,
-//                          let password = self?.viewModel.password else { return }
-//                    self?.viewModel.user.nickName = nickName
-//                    self?.viewModel.user.level = Int(level)
-//                    self?.viewModel.user.job = job
-//                    print("계정있음", self?.viewModel.user)
-//                    self?.viewModel.trySignUp(email: id, password: password, nickName: nickName) { isSuccess, errorMessage in
-//                        if isSuccess {
-//                            AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인버튼을 누르면 메인으로 돌아갑니다.") {
-//                                self?.changeRootViewController()
-//                            }
-//                        } else {
-//                            AlertMaker.showAlertAction1(vc: self, title: "회원가입 실패", message: errorMessage)
-//                        }
-//                    }
-//                } else {
-//                    // 계정 없음
-//                    guard let nickName = self?.nickNameTextField.textField.text,
-//                          let id = self?.viewModel.user.id,
-//                          let password = self?.viewModel.password else { return }
-//                    self?.viewModel.user.nickName = nickName
-//                    self?.viewModel.user.level = nil
-//                    self?.viewModel.user.job = nil
-//                    print("계정없음", self?.viewModel.user)
-//                    self?.viewModel.trySignUp(email: id, password: password, nickName: nickName) { isSuccess, errorMessage in
-//                        if isSuccess {
-//                            AlertMaker.showAlertAction1(vc: self, title: "회원가입 성공", message: "확인버튼을 누르면 메인으로 돌아갑니다.") {
-//                                self?.changeRootViewController()
-//                            }
-//                        } else {
-//                            AlertMaker.showAlertAction1(vc: self, title: "회원가입 실패", message: errorMessage)
-//                        }
-//                    }
-//                }
-//            case .nickNameExist, .nickNameNotCorrect:
-//                self?.nickNameTextField.checkState(state: state, isCorrect: false)
-//            case .lvNotInt, .lvOutOfBounds:
-//                self?.accountView.levelTextField.checkState(state: state, isCorrect: false)
-//            default:
-//                break
-//            }
-//        }
-//    }
 
     func didTapCompleteButton() {
         viewModel.isValidSignUp { [weak self] state in

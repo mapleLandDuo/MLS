@@ -118,8 +118,6 @@ private extension AlertView {
     func setUpConstraints() {
         self.addSubview(iconImageView)
         self.addSubview(contentStackView)
-//        self.addSubview(titleLabel)
-//        self.addSubview(descriptionLabel)
         self.addSubview(closeButton)
         
         iconImageView.snp.makeConstraints {
@@ -141,17 +139,10 @@ private extension AlertView {
         }
         
         titleLabel.snp.makeConstraints {
-//            $0.leading.equalTo(iconImageView.snp.trailing).offset(Constants.spacings.sm)
-//            $0.trailing.equalTo(closeButton.snp.leading).inset(-Constants.spacings.sm)
-//            $0.top.equalToSuperview().inset(Constants.spacings.sm)
             $0.height.equalTo(22)
         }
         
         descriptionLabel.snp.makeConstraints {
-//            $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.spacings.xs_2)
-//            $0.trailing.equalTo(closeButton.snp.leading).inset(-Constants.spacings.sm)
-//            $0.leading.equalTo(titleLabel.snp.leading)
-//            $0.bottom.equalToSuperview().inset(Constants.spacings.sm)
             $0.height.equalTo(22)
         }
     }

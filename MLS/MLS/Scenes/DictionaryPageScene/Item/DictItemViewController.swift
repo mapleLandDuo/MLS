@@ -1,27 +1,26 @@
 //
-//  DictMonsterViewController.swift
+//  DictItemViewController.swift
 //  MLS
 //
-//  Created by JINHUN CHOI on 2024/03/02.
+//  Created by JINHUN CHOI on 2024/03/01.
 //
 
 import UIKit
 
 import SnapKit
 
-class DictMonsterViewController: BasicController {
+class DictItemViewController: BasicController {
     // MARK: Properties
 
-    let viewModel: DictMonsterViewModel
+    let viewModel: DictItemViewModel
 
     // MARK: Components
 
-    private let dictMonsterTableView: UITableView = {
+    private let dictItemTableView: UITableView = {
         let view = UITableView()
         view.register(DictMainInfoCell.self, forCellReuseIdentifier: DictMainInfoCell.identifier)
         view.register(DictDetailContentsCell.self, forCellReuseIdentifier: DictDetailContentsCell.identifier)
-        view.register(DictTagTableViewCell.self, forCellReuseIdentifier: DictTagTableViewCell.identifier)
-        view.register(DictMonsterDropCell.self, forCellReuseIdentifier: DictMonsterDropCell.identifier)
+        view.register(DictItemDropCell.self, forCellReuseIdentifier: DictItemDropCell.identifier)
         view.separatorStyle = .none
         return view
     }()
@@ -37,7 +36,7 @@ class DictMonsterViewController: BasicController {
         return view
     }()
 
-    init(viewModel: DictMonsterViewModel) {
+    init(viewModel: DictItemViewModel) {
         self.viewModel = viewModel
         super.init()
     }
@@ -49,7 +48,7 @@ class DictMonsterViewController: BasicController {
 }
 
 // MARK: Life Cycle
-extension DictMonsterViewController {
+extension DictItemViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -58,50 +57,46 @@ extension DictMonsterViewController {
 }
 
 // MARK: SetUp
-private extension DictMonsterViewController {
+private extension DictItemViewController {
     func setUp() {
-        dictMonsterTableView.delegate = self
-        dictMonsterTableView.dataSource = self
+        dictItemTableView.delegate = self
+        dictItemTableView.dataSource = self
         
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchMonster()
+        viewModel.fetchItem()
 
         setUpConstraints()
         setUpNavigation()
     }
 
     func setUpConstraints() {
-        view.addSubview(dictMonsterTableView)
+        view.addSubview(dictItemTableView)
 
-        dictMonsterTableView.snp.makeConstraints {
+        dictItemTableView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
 
 // MARK: Bind
-extension DictMonsterViewController {
+extension DictItemViewController {
     func bind() {
-        viewModel.selectedMonster.bind { [weak self] _ in
+        viewModel.selectedItem.bind { [weak self] _ in
             self?.viewModel.fetchDropInfos {
-                self?.dictMonsterTableView.reloadData()
+                self?.dictItemTableView.reloadData()
             }
         }
         
         viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictMonsterTableView.reloadData()
-        }
-        
-        viewModel.totalTextSize.bind { [weak self] _ in
-            self?.dictMonsterTableView.reloadData()
+            self?.dictItemTableView.reloadData()
         }
     }
 }
 
 // MARK: Methods
-extension DictMonsterViewController {
+extension DictItemViewController {
     func setUpNavigation() {
         let spacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
@@ -124,7 +119,7 @@ extension DictMonsterViewController {
     }
 }
 
-extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource {
+extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -133,8 +128,7 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
         guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
-                  let item = viewModel.selectedMonster.value else { return UITableViewCell() }
-            cell.contentView.isUserInteractionEnabled = false
+                  let item = viewModel.selectedItem.value else { return UITableViewCell() }
             cell.delegate = self
             cell.bind(item: item)
             cell.selectionStyle = .none
@@ -143,24 +137,22 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
             switch selectedTab {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
-                      let items = viewModel.fetchDetailInfos() else { return UITableViewCell() }
-                cell.isUserInteractionEnabled = false
+                      let items = viewModel.fetchDefaultInfos() else { return UITableViewCell() }
                 cell.bind(items: items)
                 cell.selectionStyle = .none
                 return cell
             case 1:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell,
-                      let items = viewModel.selectedMonster.value?.hauntArea else { return UITableViewCell() }
-                cell.delegate = self
-                cell.bind(items: items, descriptionType: .map)
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
+                      let items = viewModel.fetchDetailInfos() else { return UITableViewCell() }
+                cell.bind(items: items)
                 cell.selectionStyle = .none
                 return cell
             case 2:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictItemDropCell.identifier) as? DictItemDropCell else { return UITableViewCell() }
                 cell.delegate = self
                 cell.isUserInteractionEnabled = true
                 cell.contentView.isUserInteractionEnabled = false
-                cell.bind(items: viewModel.dropTableContents, type: "드롭 정보")
+                cell.bind(items: viewModel.dropTableContents)
                 cell.selectionStyle = .none
                 return cell
             default:
@@ -207,7 +199,7 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
     }
 }
 
-extension DictMonsterViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension DictItemViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.tabMenus.count
     }
@@ -241,39 +233,16 @@ extension DictMonsterViewController: UICollectionViewDelegateFlowLayout, UIColle
     }
 }
 
-extension DictMonsterViewController: DictTagTableViewCellDelegate {
-    func didTapTagCell(title: String) {
-        let db = SqliteManager()
-        if title == "스폰 장소가 확인되지 않습니다." {
-            AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
-            return
-        }
-        db.searchData(dataName: title) { [weak self] (item: [DictMap]) in
-            if item.isEmpty {
-                let vm = DictMapViewModel(selectedName: title)
-                let vc = DictMapViewController(viewModel: vm)
-                self?.navigationController?.pushViewController(vc, animated: true)
-            } else {
-                guard let name = item.first?.name else { return }
-                let vm = DictMapViewModel(selectedName: name)
-                let vc = DictMapViewController(viewModel: vm)
-                self?.navigationController?.pushViewController(vc, animated: true)
-            }
-        }
-    }
-}
-
-extension DictMonsterViewController: DictMonsterDropCellDelegate {
-    func didTapDropTableCell(title: String, type: DictType?) {
-        print(title)
-        let vm = DictItemViewModel(selectedName: title)
-        let vc = DictItemViewController(viewModel: vm)
+extension DictItemViewController: DictItemDropCellDelegate {
+    func didTapItemDropCell(title: String) {
+        let vm = DictMonsterViewModel(selectedName: title)
+        let vc = DictMonsterViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
     }
 }
 
-extension DictMonsterViewController: DictMainInfoCellDelegate {
+extension DictItemViewController: DictMainInfoCellDelegate {
     func didTapExpandButton() {
-        dictMonsterTableView.reloadData()
+        dictItemTableView.reloadData()
     }
 }

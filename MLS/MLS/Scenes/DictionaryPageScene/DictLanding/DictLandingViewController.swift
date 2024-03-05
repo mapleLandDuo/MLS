@@ -154,13 +154,11 @@ private extension DictLandingViewController {
 
 extension DictLandingViewController: DictLandingHeaderViewDelegate {
     func didTapSignInButton() {
-        print(#function)
         let vc = LoginViewController(viewModel: LoginViewModel())
         navigationController?.pushViewController(vc, animated: true)
     }
     
     func didTapInquireButton() {
-        print(#function)
         if MFMailComposeViewController.canSendMail() {
             let compseViewController = MFMailComposeViewController()
             compseViewController.setToRecipients(["maplelands2024@gmail.com"])
@@ -181,7 +179,6 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     }
     
     func didTapMyPageButton() {
-        print(#function)
         self.headerView.myPageIconButton.isEnabled = false
         guard let email = LoginManager.manager.email else {
             self.headerView.myPageIconButton.isEnabled = true
@@ -213,14 +210,12 @@ extension DictLandingViewController: MyPageViewControllerDelegate {
 
 extension DictLandingViewController: DictLandingSearchViewDelegate {
     func didTapSearchButton() {
-        print(#function)
         let vc = DictSearchViewController(viewModel: DictSearchViewModel())
         vc.headerView.searchTextField.becomeFirstResponder()
         navigationController?.pushViewController(vc, animated: true)
     }
     
     func didTapShortCutButton() {
-        print(#function)
         let viewModel = DictSearchViewModel()
         viewModel.fetchAllSearchData()
         let vc = DictSearchViewController(viewModel: viewModel)

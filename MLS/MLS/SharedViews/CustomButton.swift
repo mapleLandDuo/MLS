@@ -16,7 +16,6 @@ enum CustomButtonType {
 
 class CustomButton: UIButton {
     // MARK: Properties
-//    var isClicked = false
     private var bgColor: UIColor?
     private var borderColor: UIColor?
     private var titleColor: UIColor?
@@ -30,7 +29,6 @@ class CustomButton: UIButton {
     
     init(type: CustomButtonType, text: String, borderColor: UIColor? = .semanticColor.bolder.secondary, radius: CGFloat = 12) {
         super.init(frame: .zero)
-//        self.setUp(type: type, text: text, borderColor: borderColor, radius: radius)
         self.bind(text: text, borderColor: borderColor, radius: radius)
         self.type.value = type
     }
@@ -39,26 +37,6 @@ class CustomButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    private func setUp(type: ButtonType, text: String, borderColor: UIColor?, radius: CGFloat) {
-//        self.setTitle(text, for: .normal)
-//        self.titleLabel?.textAlignment = .center
-//        self.layer.cornerRadius = radius
-//        self.layer.shadowColor = UIColor(red: 0.98, green: 0.58, blue: 0.239, alpha: 0.16).cgColor
-//        self.layer.shadowOpacity = 1
-//        self.layer.shadowRadius = 4
-//        self.layer.shadowOffset = CGSize(width: 2, height: 2)
-//        switch type {
-//        case .default:
-//            self.setButtonDefault(borderColor: borderColor)
-//        case .clickabled:
-//            self.setButtonClickabled()
-//        case .disabled:
-//            self.setButtonDisabled()
-//        case .clicked:
-//            break
-//        }
-//    }
     
     private func setButtonDefault(borderColor: UIColor?) {
         self.isUserInteractionEnabled = true

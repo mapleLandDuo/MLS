@@ -19,7 +19,6 @@ class LoginViewModel {
 // MARK: - Methods
 extension LoginViewModel {
     func trySignIn(email: String, password: String, completion: @escaping ((TextState, TextState)) -> Void) {
-        print(email, password)
         var result: (TextState, TextState) = (.default, .default)
 
         if email == "" {

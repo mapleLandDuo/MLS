@@ -31,6 +31,7 @@ class DictMapViewController: BasicController {
         layout.minimumLineSpacing = Constants.spacings.xl_3
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.showsHorizontalScrollIndicator = false
+        view.backgroundColor = .clear
         view.register(DictSearchMenuCell.self, forCellWithReuseIdentifier: DictSearchMenuCell.identifier)
         return view
     }()
@@ -164,13 +165,6 @@ extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
             let view = UIView()
-            view.addSubview(infoMenuCollectionView)
-            infoMenuCollectionView.snp.makeConstraints {
-                $0.width.equalTo(75 * 2 + Constants.spacings.xl_3 * 2)
-                $0.height.equalTo(48)
-                $0.center.equalToSuperview()
-            }
-
             let separator = UIView()
             separator.backgroundColor = .semanticColor.bolder.secondary
             view.addSubview(separator)
@@ -179,7 +173,12 @@ extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
                 $0.bottom.equalToSuperview().offset(1)
                 $0.height.equalTo(1)
             }
-            view.backgroundColor = .themeColor(color: .base, value: .value_white)
+            view.addSubview(infoMenuCollectionView)
+            infoMenuCollectionView.snp.makeConstraints {
+                $0.width.equalTo(75 * 2 + Constants.spacings.xl_3 * 2)
+                $0.height.equalTo(48)
+                $0.center.equalToSuperview()
+            }
             return view
         } else {
             return nil

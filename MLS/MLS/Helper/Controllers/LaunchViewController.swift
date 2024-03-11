@@ -61,7 +61,10 @@ private extension LaunchViewController {
     func setUp() {
         setUpConstraints()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.navigationController?.pushViewController(self.rootVC, animated: true)
+            if let window = UIApplication.shared.windows.first {
+                window.rootViewController = UINavigationController(rootViewController: self.rootVC)
+                window.makeKeyAndVisible()
+            }
         }
     }
     

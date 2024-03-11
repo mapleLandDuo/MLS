@@ -161,10 +161,9 @@ extension DropTableViewCell {
                     itemImageView.kf.setImage(with: url) { [weak self] result in
                         switch result {
                         case .failure(_) :
-                            print(#function)
                             self?.itemImageView.kf.setImage(with: secondUrl)
                         default :
-                            print(#function)
+                            break
                         }
                     }
                     descriptionLabel.text = "\(item.description)마리"

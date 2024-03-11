@@ -27,6 +27,10 @@ extension MyPageEditViewModel {
     }
     
     func checkNickName(nickName: String) {
+        if user.nickName == nickName {
+            nickNameState.value = .complete
+            return
+        }
         if nickName != "" {
             FirebaseManager.firebaseManager.checkNickNameExist(nickName: nickName) { [weak self] isExist in
                 guard let isExist = isExist else { return }

@@ -115,10 +115,9 @@ extension DictHorizontalCollectionViewCell {
             imageView.kf.setImage(with: url) { [weak self] result in
                 switch result {
                 case .failure(_) :
-                    print(#function)
                     self?.imageView.kf.setImage(with: secondUrl)
                 default :
-                    print(#function)
+                    break
                 }
             }
             subTitleLabel.text = "레벨"

@@ -14,21 +14,6 @@ struct DictionaryNameLinkUpdateItem: Codable {
     var link: String
 }
 
-struct DictionaryLinkUpdateMap: Codable {
-    var name: String
-    var code: String
-}
-
-struct DictionaryLinkUpdateNPC: Codable {
-    var name: String
-    var code: String
-}
-
-struct DictionaryLinkUpdateQuest: Codable {
-    var name: String
-    var code: String
-}
-
 class DatabaseUpdateManager {
     // MARK: - Update Links
     

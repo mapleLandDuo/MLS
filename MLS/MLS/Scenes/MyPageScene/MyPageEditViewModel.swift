@@ -14,9 +14,11 @@ class MyPageEditViewModel {
     let jobState: Observable<Job?> = Observable(nil)
     let buttonState: Observable<Bool> = Observable(false)
     var user: User
+    private var originNickName: String
     
     init(user: User) {
         self.user = user
+        originNickName = user.nickName
     }
 }
 
@@ -27,10 +29,12 @@ extension MyPageEditViewModel {
     }
     
     func checkNickName(nickName: String) {
-        if user.nickName == nickName {
+
+        if originNickName == nickName {
             nickNameState.value = .complete
             return
         }
+        
         if nickName != "" {
             FirebaseManager.firebaseManager.checkNickNameExist(nickName: nickName) { [weak self] isExist in
                 guard let isExist = isExist else { return }

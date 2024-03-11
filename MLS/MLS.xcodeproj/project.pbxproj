@@ -132,7 +132,6 @@
 		7724EF5B2B94486700C59FE6 /* DictQuestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7724EF5A2B94486700C59FE6 /* DictQuestViewModel.swift */; };
 		7724EF5E2B9448D600C59FE6 /* DictQuestOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7724EF5D2B9448D600C59FE6 /* DictQuestOrderCell.swift */; };
 		773B3FFB2B92577F008670AE /* DictDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773B3FFA2B92577F008670AE /* DictDescriptionCell.swift */; };
-		7747CAAB2B9EDA200034167C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7747CAAA2B9EDA200034167C /* GoogleService-Info.plist */; };
 		7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFC2B54129C000E5E74 /* CustomLabel.swift */; };
 		7752C25B2B9301F800C891A5 /* DictMonsterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C25A2B9301F800C891A5 /* DictMonsterViewController.swift */; };
 		7752C25D2B93023800C891A5 /* DictMonsterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C25C2B93023800C891A5 /* DictMonsterViewModel.swift */; };
@@ -269,7 +268,6 @@
 		7724EF5A2B94486700C59FE6 /* DictQuestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictQuestViewModel.swift; sourceTree = "<group>"; };
 		7724EF5D2B9448D600C59FE6 /* DictQuestOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictQuestOrderCell.swift; sourceTree = "<group>"; };
 		773B3FFA2B92577F008670AE /* DictDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictDescriptionCell.swift; sourceTree = "<group>"; };
-		7747CAAA2B9EDA200034167C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7751CEFC2B54129C000E5E74 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		7752C25A2B9301F800C891A5 /* DictMonsterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMonsterViewController.swift; sourceTree = "<group>"; };
 		7752C25C2B93023800C891A5 /* DictMonsterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMonsterViewModel.swift; sourceTree = "<group>"; };
@@ -444,7 +442,6 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				7747CAAA2B9EDA200034167C /* GoogleService-Info.plist */,
 				77017A792B97674200D60411 /* mlsDatabase.db */,
 				08D2A3DC2B9645E900E236D1 /* GIF */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
@@ -902,7 +899,6 @@
 				08D5F0E42B81F3A800E56482 /* Pretendard-ExtraLight.otf in Resources */,
 				08D5F0E02B81F3A800E56482 /* Pretendard-ExtraBold.otf in Resources */,
 				08D5F0E22B81F3A800E56482 /* Pretendard-Medium.otf in Resources */,
-				7747CAAB2B9EDA200034167C /* GoogleService-Info.plist in Resources */,
 				08D5F0E52B81F3A800E56482 /* Pretendard-Light.otf in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
 				08D2A3DF2B96462E00E236D1 /* indicator.gif in Resources */,

@@ -147,10 +147,10 @@ extension DictMainInfoCell {
             let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.code)/icon?resize=2")
             itemImageView.kf.setImage(with: url) { [weak self] result in
                 switch result {
-                case .failure(_) :
+                case .failure:
                     print(#function)
                     self?.itemImageView.kf.setImage(with: secondUrl)
-                default :
+                default:
                     print(#function)
                 }
             }
@@ -180,6 +180,13 @@ extension DictMainInfoCell {
         
         nameLabel.text = itemName
         
+        if itemDescription == nil {
+            descriptionTextLabel.snp.remakeConstraints {
+                $0.top.bottom.equalToSuperview().inset(Constants.spacings.sm)
+                $0.leading.trailing.equalToSuperview().inset(Constants.spacings.lg)
+                $0.height.equalTo(44)
+            }
+        }
         descriptionTextLabel.text = itemDescription ?? "설명 없음"
         descriptionTextLabel.textAlignment = itemDescription == nil ? .center : .left
     }

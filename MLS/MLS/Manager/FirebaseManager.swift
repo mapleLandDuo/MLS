@@ -27,7 +27,7 @@ enum CollectionName: String {
     case dictionaryQuests
 
     case dictionaryItemLink
-    case dictionaryMonstersLink = "dictionaryMonsterLink"
+    case dictionaryMonstersLink
     case dictionaryMapLink
     case dictionaryNPCLink
     case dictionaryQuestLink
@@ -107,16 +107,16 @@ extension FirebaseManager {
         }
     }
 
-    func saveUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
-        let userData = User(id: email, nickName: nickName, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
-        do {
-            let data = try Firestore.Encoder().encode(userData)
-            db.collection(CollectionName.users.rawValue).document(email).setData(data)
-            completion(true, nil)
-        } catch {
-            completion(false, "FirebaseManager_EncodeFail")
-        }
-    }
+//    func saveUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
+//        let userData = User(id: email, nickName: nickName, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
+//        do {
+//            let data = try Firestore.Encoder().encode(userData)
+//            db.collection(CollectionName.users.rawValue).document(email).setData(data)
+//            completion(true, nil)
+//        } catch {
+//            completion(false, "FirebaseManager_EncodeFail")
+//        }
+//    }
 
     func saveUserData(user: User, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
         do {
@@ -128,18 +128,18 @@ extension FirebaseManager {
         }
     }
 
-    func deleteUserData(email: String, completion: @escaping () -> Void) {
-        fetchUserPosts(userEmail: email) { posts in
-            guard let posts = posts else { return }
-            let ids = posts.map { $0.id }
-            for id in ids {
-                self.deletePost(postID: id.uuidString) { print("delete") }
-            }
-            self.db.collection(CollectionName.users.rawValue).document(email).delete { _ in
-                completion()
-            }
-        }
-    }
+//    func deleteUserData(email: String, completion: @escaping () -> Void) {
+//        fetchUserPosts(userEmail: email) { posts in
+//            guard let posts = posts else { return }
+//            let ids = posts.map { $0.id }
+//            for id in ids {
+//                self.deletePost(postID: id.uuidString) { print("delete") }
+//            }
+//            self.db.collection(CollectionName.users.rawValue).document(email).delete { _ in
+//                completion()
+//            }
+//        }
+//    }
 
     func updateUserData(user: User, completion: @escaping () -> Void) {
         do {
@@ -156,16 +156,15 @@ extension FirebaseManager {
         }
     }
 
-    func deleteUser(email: String, completion: @escaping () -> Void) {
+    func deleteUserData(email: String, completion: @escaping () -> Void) {
         db.collection(CollectionName.userDatas.rawValue).document(email).delete { _ in
             completion()
         }
     }
 }
 
+// MARK: Post
 extension FirebaseManager {
-    // MARK: Post
-
     func savePost(post: Post) {
         do {
             let data = try Firestore.Encoder().encode(post)
@@ -362,9 +361,8 @@ extension FirebaseManager {
     }
 }
 
+// MARK: Comment
 extension FirebaseManager {
-    // MARK: Comment
-
     func saveComment(postID: String, comment: Comment, completion: @escaping () -> Void) {
         do {
             let data = try Firestore.Encoder().encode(comment)
@@ -485,9 +483,8 @@ extension FirebaseManager {
     }
 }
 
+// MARK: ItemSearch/MonsterSearch
 extension FirebaseManager {
-    // MARK: ItemSearch/MonsterSearch
-
     func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping ([T]?) -> Void) {
         let collectionName = getCollectionName(for: type)
         db.collection(collectionName).order(by: "name").whereField("name", isGreaterThanOrEqualTo: name).whereField("name", isLessThanOrEqualTo: name + "\u{f8ff}").getDocuments { querySnapshot, err in

@@ -140,6 +140,7 @@ extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.delegate = self
                 cell.isUserInteractionEnabled = true
                 cell.contentView.isUserInteractionEnabled = false
+                cell.selectionStyle = .none
                 cell.bind(items: viewModel.apearMonsterContents, type: .monster)
                 return cell
             case 1:
@@ -147,6 +148,7 @@ extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.delegate = self
                 cell.isUserInteractionEnabled = true
                 cell.contentView.isUserInteractionEnabled = false
+                cell.selectionStyle = .none
                 cell.bind(items: viewModel.apearNpcContents, type: .npc)
                 return cell
             default:

@@ -168,11 +168,11 @@ private extension MyPageEditViewController {
                 if state {
                     self?.editButton.setTitleColor(.themeColor(color: .base, value: .value_white), for: .disabled)
                     self?.editButton.backgroundColor = .semanticColor.bg.interactive.primary
-                    self?.editButton.isUserInteractionEnabled = false
+                    self?.editButton.isUserInteractionEnabled = true
                 } else {
                     self?.editButton.setTitleColor(.semanticColor.text.interactive.secondary, for: .disabled)
                     self?.editButton.backgroundColor = .semanticColor.bg.disabled
-                    self?.editButton.isUserInteractionEnabled = true
+                    self?.editButton.isUserInteractionEnabled = false
                 }
             }
         }

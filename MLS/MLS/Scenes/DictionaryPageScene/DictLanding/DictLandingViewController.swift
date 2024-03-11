@@ -179,9 +179,9 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
     }
     
     func didTapMyPageButton() {
-        self.headerView.myPageIconButton.isEnabled = false
+        self.headerView.myPageIconButton.isUserInteractionEnabled = false
         guard let email = LoginManager.manager.email else {
-            self.headerView.myPageIconButton.isEnabled = true
+            self.headerView.myPageIconButton.isUserInteractionEnabled = true
             return
         }
         IndicatorManager.showIndicator(vc: self)
@@ -191,7 +191,7 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
             let vc = MyPageViewController(user: user)
             vc.delegate = self
             self.navigationController?.pushViewController(vc, animated: true)
-            self.headerView.myPageIconButton.isEnabled = true
+            self.headerView.myPageIconButton.isUserInteractionEnabled = true
         }
     }
 }

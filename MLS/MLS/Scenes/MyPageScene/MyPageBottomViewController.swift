@@ -141,7 +141,7 @@ extension MyPageBottomViewController {
             switch self.type {
             case .secession:
                 IndicatorManager.showIndicator(vc: self)
-                FirebaseManager.firebaseManager.deleteUser(email: email) {
+                FirebaseManager.firebaseManager.deleteUserData(email: email) {
                     LoginManager.manager.deleteUser {
                         IndicatorManager.hideIndicator(vc: self)
                         self.dismiss(animated: true, completion: {

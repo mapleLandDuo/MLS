@@ -89,7 +89,6 @@ private extension JobBadgeButton {
         self.addSubview(stackView)
         
         self.snp.makeConstraints {
-            $0.width.equalTo(58)
             $0.height.equalTo(24)
         }
         stackView.snp.makeConstraints {

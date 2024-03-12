@@ -41,7 +41,6 @@ class DropTableViewCell: UITableViewCell {
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
         label.textColor = .semanticColor.text.primary
         label.textAlignment = .right
-//        label.isHidden = true
         return label
     }()
     

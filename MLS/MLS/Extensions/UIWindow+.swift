@@ -12,7 +12,7 @@ public extension UIWindow {
         return self.visibleViewControllerFrom(vc: self.rootViewController)
     }
 
-    func visibleViewControllerFrom(vc: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    func visibleViewControllerFrom(vc: UIViewController?) -> UIViewController? {
         if let nc = vc as? UINavigationController {
             return self.visibleViewControllerFrom(vc: nc.visibleViewController)
         } else if let tc = vc as? UITabBarController {

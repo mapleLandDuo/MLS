@@ -366,7 +366,6 @@
 			children = (
 				778EB92E2B91A0AA00DC9B63 /* DictItemViewController.swift */,
 				778EB9302B91A0E800DC9B63 /* DictItemViewModel.swift */,
-				778EB93B2B91CE1100DC9B63 /* Model */,
 				778EB9322B91A50A00DC9B63 /* Cells */,
 			);
 			path = Item;
@@ -491,6 +490,8 @@
 				08D5F10A2B8628F700E56482 /* AnnouncementData.swift */,
 				08F95DF22B8CF0DD00AD79DF /* Job.swift */,
 				778D04A62BA0179300BF9F9E /* TextState.swift */,
+				778EB93C2B91CE3B00DC9B63 /* DetailContent.swift */,
+				778EB93E2B91D6A000DC9B63 /* DictDropContent.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -755,15 +756,6 @@
 				773B3FFA2B92577F008670AE /* DictDescriptionCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		778EB93B2B91CE1100DC9B63 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				778EB93C2B91CE3B00DC9B63 /* DetailContent.swift */,
-				778EB93E2B91D6A000DC9B63 /* DictDropContent.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		77C1ED072B614E74003179B4 /* Frameworks */ = {

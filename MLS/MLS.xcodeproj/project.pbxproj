@@ -157,6 +157,7 @@
 		77A280912B73B8BD0079D0EB /* DictionaryQuest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A280902B73B8BD0079D0EB /* DictionaryQuest.swift */; };
 		77B6DB732B692A3E00302173 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B6DB722B692A3E00302173 /* String+.swift */; };
 		77C1ED092B614E74003179B4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 77C1ED082B614E74003179B4 /* FirebaseStorage */; };
+		77C2F1B62B9F24D50007C45C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77C2F1B52B9F24D50007C45C /* GoogleService-Info.plist */; };
 		77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF47582B5CD63800181D35 /* FirebaseManager.swift */; };
 		77F358FC2B95EF6500B0C5A2 /* PopularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */; };
 		77F358FE2B95EF7000B0C5A2 /* PopularViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */; };
@@ -292,6 +293,7 @@
 		77A2808E2B73B8B40079D0EB /* DictionaryNPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryNPC.swift; sourceTree = "<group>"; };
 		77A280902B73B8BD0079D0EB /* DictionaryQuest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryQuest.swift; sourceTree = "<group>"; };
 		77B6DB722B692A3E00302173 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		77C2F1B52B9F24D50007C45C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		77EF47582B5CD63800181D35 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewController.swift; sourceTree = "<group>"; };
 		77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewModel.swift; sourceTree = "<group>"; };
@@ -442,6 +444,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				77C2F1B52B9F24D50007C45C /* GoogleService-Info.plist */,
 				77017A792B97674200D60411 /* mlsDatabase.db */,
 				08D2A3DC2B9645E900E236D1 /* GIF */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
@@ -899,6 +902,7 @@
 				08D5F0E42B81F3A800E56482 /* Pretendard-ExtraLight.otf in Resources */,
 				08D5F0E02B81F3A800E56482 /* Pretendard-ExtraBold.otf in Resources */,
 				08D5F0E22B81F3A800E56482 /* Pretendard-Medium.otf in Resources */,
+				77C2F1B62B9F24D50007C45C /* GoogleService-Info.plist in Resources */,
 				08D5F0E52B81F3A800E56482 /* Pretendard-Light.otf in Resources */,
 				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
 				08D2A3DF2B96462E00E236D1 /* indicator.gif in Resources */,

@@ -115,7 +115,6 @@
 		77082A4C2B63A2C300187906 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A4B2B63A2C300187906 /* Comment.swift */; };
 		770848952B88971B008B68E1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848942B88971B008B68E1 /* FindPasswordViewController.swift */; };
 		770848972B889A0C008B68E1 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848962B889A0C008B68E1 /* PresentationController.swift */; };
-		770848992B88CEA7008B68E1 /* FindPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848982B88CEA7008B68E1 /* FindPasswordViewModel.swift */; };
 		7709A48B2B83B784005DD264 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 7709A48A2B83B784005DD264 /* SQLite */; };
 		7717D6E92B8714AD0050BD07 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6E82B8714AD0050BD07 /* LoginViewController.swift */; };
 		7717D6EB2B871B200050BD07 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6EA2B871B200050BD07 /* LoginViewModel.swift */; };
@@ -255,7 +254,6 @@
 		77082A4B2B63A2C300187906 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		770848942B88971B008B68E1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
 		770848962B889A0C008B68E1 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
-		770848982B88CEA7008B68E1 /* FindPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewModel.swift; sourceTree = "<group>"; };
 		7709A4842B83A254005DD264 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		7717D6E82B8714AD0050BD07 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7717D6EA2B871B200050BD07 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -685,7 +683,6 @@
 				7717D6E82B8714AD0050BD07 /* LoginViewController.swift */,
 				7717D6EA2B871B200050BD07 /* LoginViewModel.swift */,
 				770848942B88971B008B68E1 /* FindPasswordViewController.swift */,
-				770848982B88CEA7008B68E1 /* FindPasswordViewModel.swift */,
 			);
 			path = LoginPageScene;
 			sourceTree = "<group>";
@@ -1013,7 +1010,6 @@
 				77F358FE2B95EF7000B0C5A2 /* PopularViewModel.swift in Sources */,
 				778EF8D92B879A84006CA0AB /* SignUpAccountView.swift in Sources */,
 				778EF8D92B879A84006CA0AB /* SignUpAccountView.swift in Sources */,
-				770848992B88CEA7008B68E1 /* FindPasswordViewModel.swift in Sources */,
 				08F95DE92B8B5ED500AD79DF /* LoginButton.swift in Sources */,
 				778EF8D32B877CE5006CA0AB /* SignUpFirstViewModel.swift in Sources */,
 				779B72BD2B56DA0F007CB6C1 /* Date+.swift in Sources */,

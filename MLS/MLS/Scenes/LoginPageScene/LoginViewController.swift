@@ -218,7 +218,7 @@ private extension LoginViewController {
     }
         
     func didTapPwFindButton() {
-        let vc = FindPasswordViewController(viewModel: FindPasswordViewModel())
+        let vc = FindPasswordViewController(viewModel: LoginViewModel())
         vc.preVC = self
         vc.modalPresentationStyle = .custom
         vc.transitioningDelegate = self

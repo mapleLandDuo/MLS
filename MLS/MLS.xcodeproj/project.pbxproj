@@ -374,9 +374,9 @@
 		081E6FD12B663B3A00CF83F4 /* Monster */ = {
 			isa = PBXGroup;
 			children = (
-				7752C25E2B9307BA00C891A5 /* Cells */,
 				7752C25A2B9301F800C891A5 /* DictMonsterViewController.swift */,
 				7752C25C2B93023800C891A5 /* DictMonsterViewModel.swift */,
+				7752C25E2B9307BA00C891A5 /* Cells */,
 			);
 			path = Monster;
 			sourceTree = "<group>";
@@ -503,8 +503,8 @@
 				08CB4E552B8F373300336FE6 /* Models */,
 				08D5F0B42B81D7B900E56482 /* DictLanding */,
 				08D5F11A2B873AFB00E56482 /* DictSearching */,
-				081E6FD12B663B3A00CF83F4 /* Monster */,
 				081E6FD02B663B3600CF83F4 /* Item */,
+				081E6FD12B663B3A00CF83F4 /* Monster */,
 				7719DD402B93564D003797F4 /* Map */,
 				7719DD4D2B93955D003797F4 /* NPC */,
 				7724EF572B94483200C59FE6 /* Quest */,
@@ -693,9 +693,9 @@
 		7719DD402B93564D003797F4 /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				7719DD452B9358DD003797F4 /* Cells */,
 				7719DD412B935664003797F4 /* DictMapViewController.swift */,
 				7719DD432B9356CA003797F4 /* DictMapViewModel.swift */,
+				7719DD452B9358DD003797F4 /* Cells */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -720,9 +720,9 @@
 		7724EF572B94483200C59FE6 /* Quest */ = {
 			isa = PBXGroup;
 			children = (
-				7724EF5C2B94487F00C59FE6 /* Cells */,
 				7724EF582B94485600C59FE6 /* DictQuestViewController.swift */,
 				7724EF5A2B94486700C59FE6 /* DictQuestViewModel.swift */,
+				7724EF5C2B94487F00C59FE6 /* Cells */,
 			);
 			path = Quest;
 			sourceTree = "<group>";

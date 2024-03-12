@@ -29,8 +29,10 @@ class LoginViewController: BasicController {
         let button = UIButton()
         button.setTitle("자동 로그인", for: .normal)
         button.setImage(UIImage(systemName: "square"), for: .normal)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
-        button.configuration?.imagePlacement = .leading
+        var config = UIButton.Configuration.plain()
+        config.imagePadding = 5
+        config.imagePlacement = .leading
+        button.configuration = config
         button.setTitleColor(.semanticColor.text.secondary, for: .normal)
         button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .medium)
         button.tintColor = .semanticColor.bolder.primary

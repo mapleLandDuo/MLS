@@ -138,6 +138,7 @@
 		7752C2602B93085000C891A5 /* DictTagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C25F2B93085000C891A5 /* DictTagTableViewCell.swift */; };
 		7752C2622B9308A100C891A5 /* DictTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C2612B9308A100C891A5 /* DictTagCell.swift */; };
 		778D04A72BA0179300BF9F9E /* TextState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778D04A62BA0179300BF9F9E /* TextState.swift */; };
+		778D04A92BA0189900BF9F9E /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778D04A82BA0189900BF9F9E /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		778EB92F2B91A0AA00DC9B63 /* DictItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB92E2B91A0AA00DC9B63 /* DictItemViewController.swift */; };
 		778EB9312B91A0E800DC9B63 /* DictItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB9302B91A0E800DC9B63 /* DictItemViewModel.swift */; };
 		778EB9342B91A52200DC9B63 /* DictMainInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB9332B91A52200DC9B63 /* DictMainInfoCell.swift */; };
@@ -276,6 +277,7 @@
 		7752C25F2B93085000C891A5 /* DictTagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictTagTableViewCell.swift; sourceTree = "<group>"; };
 		7752C2612B9308A100C891A5 /* DictTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictTagCell.swift; sourceTree = "<group>"; };
 		778D04A62BA0179300BF9F9E /* TextState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextState.swift; sourceTree = "<group>"; };
+		778D04A82BA0189900BF9F9E /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		778EB92E2B91A0AA00DC9B63 /* DictItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictItemViewController.swift; sourceTree = "<group>"; };
 		778EB9302B91A0E800DC9B63 /* DictItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictItemViewModel.swift; sourceTree = "<group>"; };
 		778EB9332B91A52200DC9B63 /* DictMainInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMainInfoCell.swift; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 				770848962B889A0C008B68E1 /* PresentationController.swift */,
 				087D25252B93955300A998E4 /* AlertView.swift */,
 				08CEA7392B976D6B0060EC82 /* AlertMaker.swift */,
+				778D04A82BA0189900BF9F9E /* LeftAlignedCollectionViewFlowLayout.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -960,6 +963,7 @@
 				770848972B889A0C008B68E1 /* PresentationController.swift in Sources */,
 				77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */,
 				087D251E2B932FDB00A998E4 /* DictNameCount.swift in Sources */,
+				778D04A92BA0189900BF9F9E /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				773B3FFB2B92577F008670AE /* DictDescriptionCell.swift in Sources */,
 				77A2808D2B73B8AB0079D0EB /* DictionaryMap.swift in Sources */,
 				779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */,

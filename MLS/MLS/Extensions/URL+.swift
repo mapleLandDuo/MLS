@@ -8,18 +8,18 @@
 import Foundation
 
 extension URL {
-    static func getImageUrl(code: String, type: Filename) -> String {
+    static func getImageUrl(code: String, type: Filename) -> URL? {
         switch type {
         case .items:
-            return "https://maplestory.io/api/gms/62/item/\(code)/icon?resize=2"
+            return URL(string: "https://maplestory.io/api/gms/62/item/\(code)/icon?resize=2")
         case .monsters:
-            return "https://maplestory.io/api/gms/62/mob/\(code)/render/move?bgColor="
+            return URL(string: "https://maplestory.io/api/gms/62/mob/\(code)/render/move?bgColor=")
         case .maps:
-            return "https://mapledb.kr/Assets/image/minimaps/\(code).png"
+            return URL(string: "https://mapledb.kr/Assets/image/minimaps/\(code).png")
         case .npcs:
-            return "https://maplestory.io/api/gms/62/npc/\(code)/icon?resize=2"
+            return URL(string: "https://maplestory.io/api/gms/62/npc/\(code)/icon?resize=2")
         case .quests:
-            return "https://maplestory.io/api/gms/62/npc/\(code)/icon"
+            return URL(string: "https://maplestory.io/api/gms/62/npc/\(code)/icon")
         }
     }
 }

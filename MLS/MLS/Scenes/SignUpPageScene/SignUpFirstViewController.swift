@@ -40,12 +40,16 @@ class SignUpFirstViewController: BasicController {
     
     lazy var privacyButton: UIButton = {
         let button = UIButton()
-        button.setTitle("[필수] 개인정보 처리 방침 동의", for: .normal)
-        button.setImage(UIImage(systemName: "square"), for: .normal)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
-        button.configuration?.imagePlacement = .leading
-        button.setTitleColor(.semanticColor.text.secondary, for: .normal)
-        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .medium)
+        var config = UIButton.Configuration.plain()
+        config.imagePadding = 5
+        config.imagePlacement = .leading
+        var title = AttributeContainer()
+        title.font = .customFont(fontSize: .body_sm, fontType: .medium)
+        title.foregroundColor = .semanticColor.text.secondary
+        config.attributedTitle = AttributedString("[필수] 개인정보 처리 방침 동의", attributes: title)
+        config.image = UIImage(systemName: "square")
+        config.baseBackgroundColor = .clear
+        button.configuration = config
         button.tintColor = .semanticColor.bolder.primary
         return button
     }()

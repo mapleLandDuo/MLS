@@ -27,14 +27,15 @@ class LoginViewController: BasicController {
 
     lazy var autoLoginButton: UIButton = {
         let button = UIButton()
-        button.setTitle("자동 로그인", for: .normal)
-        button.setImage(UIImage(systemName: "square"), for: .normal)
         var config = UIButton.Configuration.plain()
         config.imagePadding = 5
         config.imagePlacement = .leading
+        var title = AttributeContainer()
+        title.font = .customFont(fontSize: .body_sm, fontType: .medium)
+        title.foregroundColor = .semanticColor.text.secondary
+        config.attributedTitle = AttributedString("자동 로그인", attributes: title)
+        config.image = UIImage(systemName: "square")
         button.configuration = config
-        button.setTitleColor(.semanticColor.text.secondary, for: .normal)
-        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .medium)
         button.tintColor = .semanticColor.bolder.primary
         return button
     }()
@@ -267,14 +268,6 @@ extension LoginViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let currentText = textField.text ?? ""
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        return true
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {

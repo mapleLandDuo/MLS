@@ -264,10 +264,10 @@ extension DatabaseUpdateManager {
                     }
                     doc.css("div.search-page-add-content").forEach { doc2 in
                         var key = doc2.css("h4.text-bold.fs-3.search-page-add-content-box-main-title.mt-2").compactMap { $0.text }
-                        var value = doc2.css("span.text-bold-underline").compactMap { $0.text }
+                        let value = doc2.css("span.text-bold-underline").compactMap { $0.text }
                         guard let money = doc2.css("span.favorite-item-info-text.fs-4.text-bold").first?.css("div").first?.text else { return }
                         key.insert(money, at: 0)
-                        var zip = zip(key, value)
+                        let zip = zip(key, value)
                         for (key, value) in zip {
                             item.dropTable.append(DictionaryNameDescription(name: key, description: value))
                         }

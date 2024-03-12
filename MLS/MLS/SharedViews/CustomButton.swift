@@ -105,7 +105,7 @@ class CustomButton: UIButton {
                 self?.backgroundColor = self?.clickedBackgroundColor
                 self?.setTitleColor(self?.clickedTitleColor, for: .normal)
                 if let clickedBorderColor = self?.clickedBorderColor {
-                    self?.layer.borderColor = self?.clickedBorderColor?.cgColor
+                    self?.layer.borderColor = clickedBorderColor.cgColor
                 }
             }
         }

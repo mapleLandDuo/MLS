@@ -12,7 +12,6 @@
 		081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */; };
 		082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C282B53CF4600D84CE2 /* AppDelegate.swift */; };
 		082D0C2B2B53CF4600D84CE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C2A2B53CF4600D84CE2 /* SceneDelegate.swift */; };
-		082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C312B53CF4800D84CE2 /* Assets.xcassets */; };
 		082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C332B53CF4800D84CE2 /* LaunchScreen.storyboard */; };
 		082D0C3E2B53CF7500D84CE2 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C3D2B53CF7500D84CE2 /* Kingfisher */; };
 		082D0C412B53CF8A00D84CE2 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C402B53CF8A00D84CE2 /* SnapKit */; };
@@ -40,7 +39,6 @@
 		082D0C712B53CFC800D84CE2 /* FirebaseMLModelDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C702B53CFC800D84CE2 /* FirebaseMLModelDownloader */; };
 		082D0C742B53CFFE00D84CE2 /* Kanna in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C732B53CFFE00D84CE2 /* Kanna */; };
 		082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C772B53D11900D84CE2 /* BasicController.swift */; };
-		082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C7D2B53D26800D84CE2 /* Constants.swift */; };
 		082D0C832B53D45700D84CE2 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C822B53D45600D84CE2 /* Post.swift */; };
 		087D251E2B932FDB00A998E4 /* DictNameCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087D251D2B932FDB00A998E4 /* DictNameCount.swift */; };
 		087D25242B936F5700A998E4 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087D25232B936F5700A998E4 /* AlertManager.swift */; };
@@ -151,7 +149,6 @@
 		778EF8D32B877CE5006CA0AB /* SignUpFirstViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D22B877CE5006CA0AB /* SignUpFirstViewModel.swift */; };
 		778EF8D52B879554006CA0AB /* SignUpSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D42B879554006CA0AB /* SignUpSecondViewController.swift */; };
 		778EF8D72B879569006CA0AB /* SignUpSecondViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D62B879569006CA0AB /* SignUpSecondViewModel.swift */; };
-		778EF8D92B879A84006CA0AB /* SignUpAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D82B879A84006CA0AB /* SignUpAccountView.swift */; };
 		779B72BD2B56DA0F007CB6C1 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72BC2B56DA0F007CB6C1 /* Date+.swift */; };
 		779B72BF2B56DA16007CB6C1 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B72BE2B56DA16007CB6C1 /* UIImage+.swift */; };
 		77A2808D2B73B8AB0079D0EB /* DictionaryMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A2808C2B73B8AB0079D0EB /* DictionaryMap.swift */; };
@@ -160,6 +157,8 @@
 		77B6DB732B692A3E00302173 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B6DB722B692A3E00302173 /* String+.swift */; };
 		77C1ED092B614E74003179B4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 77C1ED082B614E74003179B4 /* FirebaseStorage */; };
 		77C2F1B62B9F24D50007C45C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77C2F1B52B9F24D50007C45C /* GoogleService-Info.plist */; };
+		77DBAE882BA02BCF0092E140 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C7D2B53D26800D84CE2 /* Constants.swift */; };
+		77DBAE892BA02BE00092E140 /* SignUpAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D82B879A84006CA0AB /* SignUpAccountView.swift */; };
 		77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF47582B5CD63800181D35 /* FirebaseManager.swift */; };
 		77F358FC2B95EF6500B0C5A2 /* PopularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */; };
 		77F358FE2B95EF7000B0C5A2 /* PopularViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */; };
@@ -893,7 +892,6 @@
 			files = (
 				77017A7B2B97675400D60411 /* mlsDatabase.db in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
-				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
 				08CEA7242B972AC00060EC82 /* launchScreen.gif in Resources */,
 				08D5F0E62B81F3A800E56482 /* Pretendard-Bold.otf in Resources */,
 				08D5F0DF2B81F3A800E56482 /* Pretendard-Thin.otf in Resources */,
@@ -902,7 +900,6 @@
 				08D5F0E22B81F3A800E56482 /* Pretendard-Medium.otf in Resources */,
 				77C2F1B62B9F24D50007C45C /* GoogleService-Info.plist in Resources */,
 				08D5F0E52B81F3A800E56482 /* Pretendard-Light.otf in Resources */,
-				082D0C322B53CF4800D84CE2 /* Assets.xcassets in Resources */,
 				08D2A3DF2B96462E00E236D1 /* indicator.gif in Resources */,
 				08D5F0E12B81F3A800E56482 /* Pretendard-Regular.otf in Resources */,
 				08D5F0E32B81F3A800E56482 /* Pretendard-SemiBold.otf in Resources */,
@@ -917,7 +914,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
+				77DBAE892BA02BE00092E140 /* SignUpAccountView.swift in Sources */,
+				77DBAE882BA02BCF0092E140 /* Constants.swift in Sources */,
 				08CB4E782B92101200336FE6 /* MyPageEditViewController.swift in Sources */,
 				7717D6EB2B871B200050BD07 /* LoginViewModel.swift in Sources */,
 				08D5F1272B88CE4100E56482 /* DictSearchMenuCell.swift in Sources */,
@@ -931,7 +929,6 @@
 				08D2A3D92B963C4E00E236D1 /* IndicatorManager.swift in Sources */,
 				08D5F11E2B873B1D00E56482 /* DictSearchViewModel.swift in Sources */,
 				778EF8D72B879569006CA0AB /* SignUpSecondViewModel.swift in Sources */,
-				082D0C7E2B53D26800D84CE2 /* Constants.swift in Sources */,
 				08F95DC72B8A2D6900AD79DF /* DictLandingHeaderView.swift in Sources */,
 				087D25262B93955300A998E4 /* AlertView.swift in Sources */,
 				082D0C292B53CF4600D84CE2 /* AppDelegate.swift in Sources */,
@@ -1008,8 +1005,6 @@
 				08D5F0F92B8337FA00E56482 /* DictHorizontalSectionTableViewCell.swift in Sources */,
 				08CB4E632B8F5B8A00336FE6 /* DictSearchJobFilterCell.swift in Sources */,
 				77F358FE2B95EF7000B0C5A2 /* PopularViewModel.swift in Sources */,
-				778EF8D92B879A84006CA0AB /* SignUpAccountView.swift in Sources */,
-				778EF8D92B879A84006CA0AB /* SignUpAccountView.swift in Sources */,
 				08F95DE92B8B5ED500AD79DF /* LoginButton.swift in Sources */,
 				778EF8D32B877CE5006CA0AB /* SignUpFirstViewModel.swift in Sources */,
 				779B72BD2B56DA0F007CB6C1 /* Date+.swift in Sources */,
@@ -1181,7 +1176,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W5QTRMS954;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MLS/Resource/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "메랜사";

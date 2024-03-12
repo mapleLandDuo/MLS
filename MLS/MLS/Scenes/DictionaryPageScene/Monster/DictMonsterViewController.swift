@@ -250,9 +250,6 @@ extension DictMonsterViewController: DictTagTableViewCellDelegate {
         db.searchData(dataName: title) { [weak self] (item: [DictMap]) in
             if item.isEmpty {
                 guard let self = self else { return }
-//                let vm = DictMapViewModel(selectedName: title)
-//                let vc = DictMapViewController(viewModel: vm)
-//                self?.navigationController?.pushViewController(vc, animated: true)
                 AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
                 return
             } else {

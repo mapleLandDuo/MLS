@@ -7,3 +7,7 @@
 
 import Foundation
 
+struct DetailContent {
+    var title: String
+    var description: String
+}

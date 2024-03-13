@@ -117,10 +117,10 @@ extension PopularTableViewCell {
         indexLabel.text = String(index + 1)
         
         if item.type == .item {
-            let url = URL.getImageUrl(code: item.image, type: .items)
+            let url = URL.getImageUrl(code: item.image, type: .item)
             itemImageView.kf.setImage(with: url)
         } else {
-            let url = URL.getImageUrl(code: item.image, type: .monsters)
+            let url = URL.getImageUrl(code: item.image, type: .monster)
             let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.image)/icon?resize=2")
             itemImageView.kf.setImage(with: url) { [weak self] result in
                 switch result {

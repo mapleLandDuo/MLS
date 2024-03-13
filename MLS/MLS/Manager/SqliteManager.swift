@@ -142,19 +142,19 @@ class SqliteManager {
         do {
             for row in try self.db!.prepare(table) {
                 switch T.tableName {
-                case .items:
+                case .item:
                     guard let data = decodeItem(row: row) as? T else { return }
                     result.append(data)
-                case .monsters:
+                case .monster:
                     guard let data = decodeMonster(row: row) as? T else { return }
                     result.append(data)
-                case .maps:
+                case .map:
                     guard let data = decodeMap(row: row) as? T else { return }
                     result.append(data)
-                case .npcs:
+                case .npc:
                     guard let data = decodeNPC(row: row) as? T else { return }
                     result.append(data)
-                case .quests:
+                case .quest:
                     guard let data = decodeQuest(row: row) as? T else { return }
                     result.append(data)
                 }
@@ -178,19 +178,19 @@ class SqliteManager {
 
             for row in try self.db!.prepare(query) {
                 switch T.tableName {
-                case .items:
+                case .item:
                     guard let data = decodeItem(row: row) as? T else { return }
                     result.append(data)
-                case .monsters:
+                case .monster:
                     guard let data = decodeMonster(row: row) as? T else { return }
                     result.append(data)
-                case .maps:
+                case .map:
                     guard let data = decodeMap(row: row) as? T else { return }
                     result.append(data)
-                case .npcs:
+                case .npc:
                     guard let data = decodeNPC(row: row) as? T else { return }
                     result.append(data)
-                case .quests:
+                case .quest:
                     guard let data = decodeQuest(row: row) as? T else { return }
                     result.append(data)
                 }
@@ -211,19 +211,19 @@ class SqliteManager {
 
             for row in try self.db!.prepare(query) {
                 switch T.tableName {
-                case .items:
+                case .item:
                     guard let data = decodeItem(row: row) as? T else { return }
                     completion(data)
-                case .monsters:
+                case .monster:
                     guard let data = decodeMonster(row: row) as? T else { return }
                     completion(data)
-                case .maps:
+                case .map:
                     guard let data = decodeMap(row: row) as? T else { return }
                     completion(data)
-                case .npcs:
+                case .npc:
                     guard let data = decodeNPC(row: row) as? T else { return }
                     completion(data)
-                case .quests:
+                case .quest:
                     guard let data = decodeQuest(row: row) as? T else { return }
                     completion(data)
                 }
@@ -233,7 +233,7 @@ class SqliteManager {
         }
     }
 
-    func deleteData(tableName: Filename, dataName: String, completion: @escaping () -> Void) {
+    func deleteData(tableName: DictType, dataName: String, completion: @escaping () -> Void) {
         do {
             let table = Table(tableName.tableName)
 
@@ -366,13 +366,13 @@ class SqliteManager {
         do {
             let query = "SELECT * FROM \(T.tableName.tableName) ORDER BY ( SELECT CAST(json_extract(value, '$.description') AS INTEGER) FROM json_each(\(T.tableName.tableName).\(field)) WHERE json_extract(value, '$.name') = '\(sortMenu.rawValue)') \(order)"
             switch T.tableName {
-            case .items:
+            case .item:
                 for row in try self.db!.prepare(query) {
                     if let data = decodeItem(row: row) as? T {
                         result.append(data)
                     }
                 }
-            case .monsters:
+            case .monster:
                 for row in try self.db!.prepare(query) {
                     if let data = decodeMonster(row: row) as? T {
                         result.append(data)

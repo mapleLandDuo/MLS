@@ -57,5 +57,5 @@ struct DictQuest: Sqlable {
     var reward: [DictionaryNameDescription]
     
     static let columnOrder = ["code", "name", "preQuest", "currentQuest", "laterQuest", "times", "defaultValues", "rollToStart", "toCompletion", "reward"]
-    static let tableName = Filename.quests
+    static let tableName = DictType.quest
 }

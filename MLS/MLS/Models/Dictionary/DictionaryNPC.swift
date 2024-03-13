@@ -22,5 +22,5 @@ struct DictNPC: Sqlable {
     var quests: [String]
     
     static let columnOrder = ["code", "name", "maps", "quests"]
-    static let tableName = Filename.npcs
+    static let tableName = DictType.npc
 }

@@ -23,5 +23,5 @@ struct DictMap: Sqlable {
     var npcs: [String]
     
     static let columnOrder = ["code", "name", "monsters", "npcs"]
-    static let tableName = Filename.maps
+    static let tableName = DictType.map
 }

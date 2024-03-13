@@ -152,11 +152,11 @@ extension DropCollectionViewCell {
         descriptionLabel.text = data.description
         switch type {
         case .item:
-            let url = URL.getImageUrl(code: data.code, type: .items)
+            let url = URL.getImageUrl(code: data.code, type: .item)
             imageView.kf.setImage(with: url)
             descriptionTitleLabel.text = "드롭률"
         case .monster:
-            let url = URL.getImageUrl(code: data.code, type: .monsters)
+            let url = URL.getImageUrl(code: data.code, type: .monster)
             let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(data.code)/icon?resize=2")
             imageView.kf.setImage(with: url) { [weak self] result in
                 switch result {
@@ -172,7 +172,7 @@ extension DropCollectionViewCell {
                 descriptionTitleLabel.text = "출현 몬스터 수"
             }
         case .npc:
-            let url = URL.getImageUrl(code: data.code, type: .npcs)
+            let url = URL.getImageUrl(code: data.code, type: .npc)
             imageView.kf.setImage(with: url)
             levelTitleLabel.isHidden = true
             levelLabel.isHidden = true

@@ -135,14 +135,14 @@ extension DictMainInfoCell {
         switch item.self {
         case is DictItem:
             guard let item = item as? DictItem,
-                  let url = URL.getImageUrl(code: item.code, type: .items) else { return }
+                  let url = URL.getImageUrl(code: item.code, type: .item) else { return }
             itemName = item.name
             itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
             descriptionText = itemDescription
             itemImageView.kf.setImage(with: url, placeholder: UIImage(named: "Deco-maple"))
         case is DictMonster:
             guard let item = item as? DictMonster,
-                  let url = URL.getImageUrl(code: item.code, type: .monsters) else { return }
+                  let url = URL.getImageUrl(code: item.code, type: .monster) else { return }
             let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.code)/icon?resize=2")
             itemImageView.kf.setImage(with: url) { [weak self] result in
                 switch result {
@@ -162,7 +162,7 @@ extension DictMainInfoCell {
             itemImageView.image = UIImage(named: "dictMapIcon")
         case is DictNPC:
             guard let item = item as? DictNPC,
-                  let url = URL.getImageUrl(code: item.code, type: .npcs) else { return }
+                  let url = URL.getImageUrl(code: item.code, type: .npc) else { return }
             itemName = item.name
             itemImageView.kf.setImage(with: url, placeholder: UIImage(named: "Deco-maple"))
         case is DictQuest:

@@ -69,4 +69,19 @@ enum DictType: String {
             return "questsSearchCount"
         }
     }
+    
+    var tableName: String {
+        switch self {
+        case .monster:
+            return "dictMonsterTable"
+        case .item:
+            return "dictItemTable"
+        case .map:
+            return "dictMapTable"
+        case .npc:
+            return "dictNpcTable"
+        case .quest:
+            return "dictQuestTable"
+        }
+    }
 }

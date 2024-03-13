@@ -129,6 +129,7 @@
 		7724EF5B2B94486700C59FE6 /* DictQuestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7724EF5A2B94486700C59FE6 /* DictQuestViewModel.swift */; };
 		7724EF5E2B9448D600C59FE6 /* DictQuestOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7724EF5D2B9448D600C59FE6 /* DictQuestOrderCell.swift */; };
 		773B3FFB2B92577F008670AE /* DictDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773B3FFA2B92577F008670AE /* DictDescriptionCell.swift */; };
+		774FB6B32BA1447000F8C675 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C312B53CF4800D84CE2 /* Assets.xcassets */; };
 		7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFC2B54129C000E5E74 /* CustomLabel.swift */; };
 		7752C25B2B9301F800C891A5 /* DictMonsterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C25A2B9301F800C891A5 /* DictMonsterViewController.swift */; };
 		7752C25D2B93023800C891A5 /* DictMonsterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C25C2B93023800C891A5 /* DictMonsterViewModel.swift */; };
@@ -882,6 +883,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				774FB6B32BA1447000F8C675 /* Assets.xcassets in Resources */,
 				77017A7B2B97675400D60411 /* mlsDatabase.db in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
 				08CEA7242B972AC00060EC82 /* launchScreen.gif in Resources */,

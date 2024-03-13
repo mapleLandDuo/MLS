@@ -565,7 +565,7 @@ extension DictSearchViewController: UITableViewDelegate, UITableViewDataSource {
         case self.searchTotalResultTableView:
             guard let datas = viewModel.searchData.value?.filter({!$0.datas.isEmpty}) else { return nil }
             if datas.isEmpty { return nil }
-            let view = DictSectionHeaderView(image: datas[section].iconImage, title: datas[section].description)
+            let view = DictSectionHeaderView(sectionDatas: datas[section])
             view.delegate = self
             return view
         default :

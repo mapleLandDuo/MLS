@@ -87,7 +87,7 @@ extension DictHorizontalSectionTableViewCell: UICollectionViewDelegate, UICollec
 // MARK: - Bind
 extension DictHorizontalSectionTableViewCell {
     
-    func bind() {
+    private func bind() {
         datas.bind { [weak self] _ in
             self?.collectionView.reloadData()
         }

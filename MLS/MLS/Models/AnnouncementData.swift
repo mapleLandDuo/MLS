@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct AnnouncementData {
     let number: Int
     let title: String

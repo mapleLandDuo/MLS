@@ -98,7 +98,7 @@ extension DictMapViewController {
 }
 
 // MARK: Methods
-extension DictMapViewController {
+private extension DictMapViewController {
     func setUpNavigation() {
         let spacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)

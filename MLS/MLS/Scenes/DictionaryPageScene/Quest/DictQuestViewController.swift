@@ -83,7 +83,7 @@ private extension DictQuestViewController {
 }
 
 // MARK: Bind
-extension DictQuestViewController {
+private extension DictQuestViewController {
     func bind() {
         viewModel.selectedQuest.bind { [weak self] _ in
             self?.viewModel.fetchCompleteInfos {
@@ -100,7 +100,7 @@ extension DictQuestViewController {
 }
 
 // MARK: Methods
-extension DictQuestViewController {
+private extension DictQuestViewController {
     func setUpNavigation() {
         let spacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)

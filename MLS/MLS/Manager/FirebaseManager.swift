@@ -59,7 +59,9 @@ extension FirebaseManager {
                     print(#function, "decoding Fail")
                 }
             } else {
-                print(error)
+                if let error = error {
+                    print(error)
+                }
             }
         }
     }
@@ -651,42 +653,42 @@ extension FirebaseManager {
     }
 }
 
-// MARK: - 지울 예정
-extension FirebaseManager {
-    func fetchItems(itemName: String, completion: @escaping (DictionaryItem?) -> Void) {
-        db.collection(CollectionName.dictionaryItems.rawValue).document(itemName).getDocument { querySnapshot, error in
-            if let error = error {
-                print("데이터를 가져오지 못했습니다: \(error)")
-                completion(nil)
-            } else {
-                do {
-                    let post = try Firestore.Decoder().decode(DictionaryItem.self, from: querySnapshot?.data())
-                    completion(post)
-                } catch {
-                    completion(nil)
-                    return
-                }
-            }
-        }
-    }
-
-    func fetchMonsters(monsterName: String, completion: @escaping (DictionaryMonster?) -> Void) {
-        db.collection(CollectionName.dictionaryMonsters.rawValue).document(monsterName).getDocument { querySnapshot, error in
-            if let error = error {
-                print("데이터를 가져오지 못했습니다: \(error)")
-                completion(nil)
-            } else {
-                do {
-                    let post = try Firestore.Decoder().decode(DictionaryMonster.self, from: querySnapshot?.data())
-                    completion(post)
-                } catch {
-                    completion(nil)
-                    return
-                }
-            }
-        }
-    }
-}
+//// MARK: - 지울 예정
+//extension FirebaseManager {
+//    func fetchItems(itemName: String, completion: @escaping (DictionaryItem?) -> Void) {
+//        db.collection(CollectionName.dictionaryItems.rawValue).document(itemName).getDocument { querySnapshot, error in
+//            if let error = error {
+//                print("데이터를 가져오지 못했습니다: \(error)")
+//                completion(nil)
+//            } else {
+//                do {
+//                    let post = try Firestore.Decoder().decode(DictionaryItem.self, from: querySnapshot?.data())
+//                    completion(post)
+//                } catch {
+//                    completion(nil)
+//                    return
+//                }
+//            }
+//        }
+//    }
+//
+//    func fetchMonsters(monsterName: String, completion: @escaping (DictionaryMonster?) -> Void) {
+//        db.collection(CollectionName.dictionaryMonsters.rawValue).document(monsterName).getDocument { querySnapshot, error in
+//            if let error = error {
+//                print("데이터를 가져오지 못했습니다: \(error)")
+//                completion(nil)
+//            } else {
+//                do {
+//                    let post = try Firestore.Decoder().decode(DictionaryMonster.self, from: querySnapshot?.data())
+//                    completion(post)
+//                } catch {
+//                    completion(nil)
+//                    return
+//                }
+//            }
+//        }
+//    }
+//}
 
 extension FirebaseManager {
     // MARK: Report
@@ -864,7 +866,7 @@ extension FirebaseManager {
             } else {
                 if let document = documentSnapshot, document.exists {
                     do {
-                        let user = try Firestore.Decoder().decode(User.self, from: document.data())
+                        let user = try Firestore.Decoder().decode(User.self, from: document.data() ?? Data())
                         completion(user.blockingUsers)
                     } catch {
                         print("데이터를 디코딩하는데 실패했습니다: \(error)")

@@ -41,7 +41,6 @@ class DropTableViewCell: UITableViewCell {
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
         label.textColor = .semanticColor.text.primary
         label.textAlignment = .right
-//        label.isHidden = true
         return label
     }()
     
@@ -145,18 +144,18 @@ extension DropTableViewCell {
             switch type {
             case "드롭 정보":
                 descriptionTitleLabel.text = "드롭률"
-                let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2")
+                let url = URL.getImageUrl(code: item.code, type: .items)
                 itemImageView.kf.setImage(with: url)
                 descriptionLabel.text = item.description
             case "정보 완료 조건":
                 if item.description.contains("전달") {
                     descriptionTitleLabel.text = "전달 개수"
-                    let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2")
+                    let url = URL.getImageUrl(code: item.code, type: .items)
                     itemImageView.kf.setImage(with: url)
                     descriptionLabel.text = "\(item.description)"
                 } else {
                     descriptionTitleLabel.text = "처치 마리수"
-                    let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor=")
+                    let url = URL.getImageUrl(code: item.code, type: .monsters)
                     let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.code)/icon?resize=2")
                     itemImageView.kf.setImage(with: url) { [weak self] result in
                         switch result {
@@ -170,7 +169,7 @@ extension DropTableViewCell {
                 }
             case "퀘스트 보상":
                 descriptionTitleLabel.text = "개수"
-                let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2")
+                let url = URL.getImageUrl(code: item.code, type: .items)
                 itemImageView.kf.setImage(with: url)
                 descriptionLabel.text = item.description
             default:

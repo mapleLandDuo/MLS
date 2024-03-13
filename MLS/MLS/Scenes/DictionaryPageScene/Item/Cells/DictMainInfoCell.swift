@@ -129,21 +129,20 @@ private extension DictMainInfoCell {
 // MARK: bind
 extension DictMainInfoCell {
     func bind<T>(item: T) {
-        var url: String
         var itemName: String
         var itemDescription: String?
         
         switch item.self {
         case is DictItem:
-            guard let item = item as? DictItem else { return }
-            url = "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2"
+            guard let item = item as? DictItem,
+                  let url = URL.getImageUrl(code: item.code, type: .items) else { return }
             itemName = item.name
             itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
             descriptionText = itemDescription
-            itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
+            itemImageView.kf.setImage(with: url, placeholder: UIImage(named: "Deco-maple"))
         case is DictMonster:
-            guard let item = item as? DictMonster else { return }
-            let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor=")
+            guard let item = item as? DictMonster,
+                  let url = URL.getImageUrl(code: item.code, type: .monsters) else { return }
             let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.code)/icon?resize=2")
             itemImageView.kf.setImage(with: url) { [weak self] result in
                 switch result {
@@ -162,10 +161,10 @@ extension DictMainInfoCell {
             itemName = item.name
             itemImageView.image = UIImage(named: "dictMapIcon")
         case is DictNPC:
-            guard let item = item as? DictNPC else { return }
-            url = "https://maplestory.io/api/gms/62/npc/\(item.code)/icon?resize=2"
+            guard let item = item as? DictNPC,
+                  let url = URL.getImageUrl(code: item.code, type: .npcs) else { return }
             itemName = item.name
-            itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
+            itemImageView.kf.setImage(with: url, placeholder: UIImage(named: "Deco-maple"))
         case is DictQuest:
             guard let item = item as? DictQuest else { return }
             itemName = item.name

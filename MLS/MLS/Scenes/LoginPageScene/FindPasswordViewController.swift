@@ -11,7 +11,7 @@ import SnapKit
 
 class FindPasswordViewController: BasicController {
     // MARK: - Properties
-    private let viewModel: FindPasswordViewModel
+    private let viewModel: LoginViewModel
     
     var preVC: UIViewController?
     
@@ -30,7 +30,7 @@ class FindPasswordViewController: BasicController {
     
     private let sendButton = CustomButton(type: .disabled, text: "메일 보내기")
     
-    init(viewModel: FindPasswordViewModel) {
+    init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
         super.init()
     }

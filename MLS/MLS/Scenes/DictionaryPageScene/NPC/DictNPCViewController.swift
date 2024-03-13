@@ -94,7 +94,7 @@ extension DictNPCViewController {
 }
 
 // MARK: Methods
-extension DictNPCViewController {
+private extension DictNPCViewController {
     func setUpNavigation() {
         let spacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)

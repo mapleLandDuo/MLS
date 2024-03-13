@@ -118,9 +118,9 @@ extension PopularViewController {
         searchButton.width = 60
 
         let titleLabel = UILabel()
-        let attributedString = NSMutableAttributedString(string: "인기 TOP", attributes: [NSAttributedString.Key.font: UIFont.customFont(fontSize: .heading_sm, fontType: .semiBold)])
+        let attributedString = NSMutableAttributedString(string: "인기 TOP", attributes: [NSAttributedString.Key.font: UIFont.customFont(fontSize: .heading_sm, fontType: .semiBold) ?? UIFont.systemFont(ofSize: 12)])
         attributedString.addAttributes([NSAttributedString.Key.foregroundColor: UIColor.red], range: NSRange(location: 0, length: 2))
-        attributedString.addAttributes([NSAttributedString.Key.foregroundColor: UIColor.themeColor(color: .base, value: .value_black)], range: NSRange(location: 3, length: 3))
+        attributedString.addAttributes([NSAttributedString.Key.foregroundColor: UIColor.themeColor(color: .base, value: .value_black) ?? UIColor.black], range: NSRange(location: 3, length: 3))
 
         titleLabel.attributedText = attributedString
         navigationItem.titleView = titleLabel

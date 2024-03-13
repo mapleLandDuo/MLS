@@ -82,7 +82,7 @@ private extension DictItemViewController {
 }
 
 // MARK: Bind
-extension DictItemViewController {
+private extension DictItemViewController {
     func bind() {
         viewModel.selectedItem.bind { [weak self] _ in
             self?.viewModel.fetchDropInfos {
@@ -97,7 +97,7 @@ extension DictItemViewController {
 }
 
 // MARK: Methods
-extension DictItemViewController {
+private extension DictItemViewController {
     func setUpNavigation() {
         let spacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)

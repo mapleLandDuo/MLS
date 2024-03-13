@@ -43,28 +43,9 @@ class JobBadgeButton: UIButton {
         return label
     }()
 
-    init(job: String?, level: String?) {
+    init() {
         super.init(frame: .zero)
-        guard let job = job else { return }
         setUp()
-        self.jobLabel.text = job
-        self.levelLabel.text = level
-        switch job {
-        case "전사":
-            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
-        case "법사":
-            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
-        case "도적":
-            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
-        case "궁수":
-            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
-        default:
-            self.backgroundColor = .semanticColor.bg.secondary
-            dotImage.removeFromSuperview()
-            levelLabel.removeFromSuperview()
-            jobLabel.text = "미설정"
-            jobLabel.textAlignment = .center
-        }
     }
     
     @available(*, unavailable)
@@ -102,27 +83,28 @@ private extension JobBadgeButton {
 }
 
 extension JobBadgeButton {
-    
-    func reset(job: String?, level: String?) {
-        guard let job = job else { return }
-        self.jobLabel.text = job
-        self.levelLabel.text = level
-        stackView.addArrangedSubview(dotImage)
-        stackView.addArrangedSubview(levelLabel)
-        switch job {
-        case "전사":
-            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
-        case "법사":
-            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
-        case "도적":
-            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
-        case "궁수":
-            self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
-        default:
+    func reset(user: User) {
+        if let job = user.job {
+            self.jobLabel.text = job.rawValue
+            guard let level = user.level else { return }
+            self.levelLabel.text = String(level)
+            switch job {
+            case .warrior:
+                self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
+            case .mage:
+                self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
+            case .thief:
+                self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
+            case .archer:
+                self.backgroundColor = .themeColor(color: .brand_primary, value: .value_200)
+            }
+            stackView.addArrangedSubview(dotImage)
+            stackView.addArrangedSubview(levelLabel)
+        } else {
+            self.jobLabel.text = "미설정"
             self.backgroundColor = .semanticColor.bg.secondary
             dotImage.removeFromSuperview()
             levelLabel.removeFromSuperview()
-            jobLabel.text = "미설정"
             jobLabel.textAlignment = .center
         }
     }

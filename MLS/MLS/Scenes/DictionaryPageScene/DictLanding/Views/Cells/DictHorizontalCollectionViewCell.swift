@@ -106,34 +106,17 @@ extension DictHorizontalCollectionViewCell {
         titleLabel.text = data.title
         switch data.type {
         case .item:
-            let url = URL(string: "https://maplestory.io/api/gms/62/item/\(data.image)/icon?resize=2")
-            imageView.kf.setImage(with: url)
             subTitleLabel.text = "필요레벨"
         case .monster:
-            let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(data.image)/render/move?bgColor=")
-            let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(data.image)/icon?resize=2")
-            imageView.kf.setImage(with: url) { [weak self] result in
-                switch result {
-                case .failure(_) :
-                    self?.imageView.kf.setImage(with: secondUrl)
-                default :
-                    break
-                }
-            }
             subTitleLabel.text = "레벨"
         case .map:
-            let url = URL(string: "https://mapledb.kr/Assets/image/minimaps/\(data.image).png")
-            imageView.kf.setImage(with: url)
             subTitleLabel.text = "필요레벨"
         case .npc:
-            let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(data.image)/icon?resize=2")
-            imageView.kf.setImage(with: url)
             subTitleLabel.text = "필요레벨"
         case .quest:
-            let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(data.image)/icon")
-            imageView.kf.setImage(with: url)
             subTitleLabel.text = "필요레벨"
         }
+        imageView.setImageToDictCode(code: data.image, type: data.type)
         levelLabel.text = data.level
     }
 }

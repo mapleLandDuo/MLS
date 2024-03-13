@@ -42,10 +42,10 @@ class DictSectionHeaderView: UIView {
         return button
     }()
     
-    init(image: UIImage?, title: String) {
+    init(sectionDatas: DictSectionDatas) {
         super.init(frame: .zero)
-        iconImageView.image = image
-        titleLabel.text = title
+        iconImageView.image = sectionDatas.iconImage
+        titleLabel.text = sectionDatas.description
         setUp()
     }
     

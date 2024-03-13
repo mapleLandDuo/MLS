@@ -85,28 +85,6 @@ extension DictSearchDataCell {
         let range = (fullText as NSString).range(of: keyword)
         attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.interactive.primary, range: range)
         nameLabel.attributedText = attribtuedString
-        switch data.type {
-        case .monster:
-            let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(data.image)/render/move?bgColor=")
-            let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(data.image)/icon?resize=2")
-            itemImageView.kf.setImage(with: url) { [weak self] result in
-                switch result {
-                case .failure(_) :
-                    self?.itemImageView.kf.setImage(with: secondUrl)
-                default :
-                    break
-                }
-            }
-        case .item:
-            let url = URL(string: "https://maplestory.io/api/gms/62/item/\(data.image)/icon?resize=2")
-            itemImageView.kf.setImage(with: url)
-        case .map:
-            itemImageView.image = UIImage(named: "Map-Image")
-        case .npc:
-            let url = URL(string: "https://maplestory.io/api/gms/62/npc/\(data.image)/icon?resize=2")
-            itemImageView.kf.setImage(with: url)
-        case .quest:
-            itemImageView.image = UIImage(named: "quest-Image")
-        }
+        itemImageView.setImageToDictCode(code: data.image, type: data.type)
     }
 }

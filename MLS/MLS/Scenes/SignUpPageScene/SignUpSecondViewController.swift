@@ -345,11 +345,11 @@ private extension SignUpSecondViewController {
     func changeRootViewController() {
         let vc = DictLandingViewController(viewModel: DictLandingViewModel())
         let navigationController = UINavigationController(rootViewController: vc)
-        
-        if let window = UIApplication.shared.windows.first {
-            window.rootViewController = navigationController
-            window.makeKeyAndVisible()
-        }
+        let scenes = UIApplication.shared.connectedScenes
+        let windowScene = scenes.first as? UIWindowScene
+        let window = windowScene?.windows.first
+        window?.rootViewController = navigationController
+        window?.makeKeyAndVisible()
     }
     
     @objc

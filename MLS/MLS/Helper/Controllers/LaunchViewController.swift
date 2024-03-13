@@ -16,7 +16,7 @@ class LaunchViewController: BasicController {
     private let rootVC: BasicController
     
     // MARK: - Components
-
+    
     
     private let launchImageView: UIImageView = {
         let view = UIImageView()
@@ -26,11 +26,11 @@ class LaunchViewController: BasicController {
         else { return view }
         let frameCount = CGImageSourceGetCount(source)
         var images = [UIImage]()
-
+        
         (0..<frameCount)
             .compactMap { CGImageSourceCreateImageAtIndex(source, $0, nil) }
             .forEach { images.append(UIImage(cgImage: $0)) }
-
+        
         view.animationImages = images
         view.animationDuration = 2
         view.animationRepeatCount = 1
@@ -61,10 +61,11 @@ private extension LaunchViewController {
     func setUp() {
         setUpConstraints()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            if let window = UIApplication.shared.windows.first {
-                window.rootViewController = UINavigationController(rootViewController: self.rootVC)
-                window.makeKeyAndVisible()
-            }
+            let scenes = UIApplication.shared.connectedScenes
+            let windowScene = scenes.first as? UIWindowScene
+            let window = windowScene?.windows.first
+            window?.rootViewController = UINavigationController(rootViewController: self.rootVC)
+            window?.makeKeyAndVisible()
         }
     }
     

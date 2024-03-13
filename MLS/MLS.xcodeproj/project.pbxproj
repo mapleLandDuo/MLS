@@ -345,6 +345,9 @@
 		081E6FC62B640A7900CF83F4 /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
+				08CB4E562B8F375300336FE6 /* DictSectionDatas.swift */,
+				08CB4E5A2B8F37B200336FE6 /* DictSearchSortedEnum.swift */,
+				08CB4E5F2B8F383500336FE6 /* DictSearchFilterEnum.swift */,
 				08CB4E582B8F377200336FE6 /* DictType.swift */,
 				081E6FCD2B663A9800CF83F4 /* DictionaryItem.swift */,
 				081E6FC72B640A8A00CF83F4 /* DictionaryMonster.swift */,
@@ -497,7 +500,6 @@
 			isa = PBXGroup;
 			children = (
 				77F358FA2B95EF4900B0C5A2 /* Popular */,
-				08CB4E552B8F373300336FE6 /* Models */,
 				08D5F0B42B81D7B900E56482 /* DictLanding */,
 				08D5F11A2B873AFB00E56482 /* DictSearching */,
 				081E6FD02B663B3600CF83F4 /* Item */,
@@ -507,16 +509,6 @@
 				7724EF572B94483200C59FE6 /* Quest */,
 			);
 			path = DictionaryPageScene;
-			sourceTree = "<group>";
-		};
-		08CB4E552B8F373300336FE6 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				08CB4E562B8F375300336FE6 /* DictSectionDatas.swift */,
-				08CB4E5A2B8F37B200336FE6 /* DictSearchSortedEnum.swift */,
-				08CB4E5F2B8F383500336FE6 /* DictSearchFilterEnum.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		08CB4E5E2B8F37E200336FE6 /* Controllers */ = {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0812F8982BA18EA900057696 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0812F8972BA18EA900057696 /* UIImageView+.swift */; };
 		081E6FC82B640A8A00CF83F4 /* DictionaryMonster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FC72B640A8A00CF83F4 /* DictionaryMonster.swift */; };
 		081E6FCE2B663A9800CF83F4 /* DictionaryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FCD2B663A9800CF83F4 /* DictionaryItem.swift */; };
 		081E6FF42B67C72900CF83F4 /* DatabaseUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */; };
@@ -167,6 +168,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0812F8972BA18EA900057696 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
 		081E6FC72B640A8A00CF83F4 /* DictionaryMonster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMonster.swift; sourceTree = "<group>"; };
 		081E6FCD2B663A9800CF83F4 /* DictionaryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryItem.swift; sourceTree = "<group>"; };
 		081E6FF32B67C72900CF83F4 /* DatabaseUpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUpdateManager.swift; sourceTree = "<group>"; };
@@ -651,6 +653,7 @@
 				08D50A872B5FD33B00E94442 /* UIWindow+.swift */,
 				77B6DB722B692A3E00302173 /* String+.swift */,
 				778D04AA2BA01B5A00BF9F9E /* URL+.swift */,
+				0812F8972BA18EA900057696 /* UIImageView+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -904,6 +907,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0812F8982BA18EA900057696 /* UIImageView+.swift in Sources */,
 				77DBAE892BA02BE00092E140 /* SignUpAccountView.swift in Sources */,
 				77DBAE882BA02BCF0092E140 /* Constants.swift in Sources */,
 				08CB4E782B92101200336FE6 /* MyPageEditViewController.swift in Sources */,

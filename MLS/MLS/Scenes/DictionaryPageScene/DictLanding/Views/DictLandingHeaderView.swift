@@ -37,7 +37,7 @@ class DictLandingHeaderView: UIView {
         return view
     }()
     
-    private var jobBadgeButton = JobBadgeButton(job: "", level: "")
+    private var jobBadgeButton = JobBadgeButton()
     
     var myPageIconButton = MyPageIconButton()
     
@@ -94,8 +94,8 @@ private extension DictLandingHeaderView {
 }
 
 extension DictLandingHeaderView {
-    func resetJobBadge(job: String?, level: String) {
-        jobBadgeButton.reset(job: job, level: level)
+    func resetJobBadge(user: User) {
+        jobBadgeButton.reset(user: user)
     }
     
     func isLoginButtonShow(isShow: Bool) {

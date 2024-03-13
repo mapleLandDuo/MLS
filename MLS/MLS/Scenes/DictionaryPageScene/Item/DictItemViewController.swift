@@ -169,6 +169,7 @@ extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
             let view = UIView()
+            view.backgroundColor = .white
             let separator = UIView()
             separator.backgroundColor = .semanticColor.bolder.secondary
             view.addSubview(separator)

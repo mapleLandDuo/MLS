@@ -109,17 +109,6 @@ extension FirebaseManager {
         }
     }
 
-//    func saveUser(email: String, nickName: String, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
-//        let userData = User(id: email, nickName: nickName, state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
-//        do {
-//            let data = try Firestore.Encoder().encode(userData)
-//            db.collection(CollectionName.users.rawValue).document(email).setData(data)
-//            completion(true, nil)
-//        } catch {
-//            completion(false, "FirebaseManager_EncodeFail")
-//        }
-//    }
-
     func saveUserData(user: User, completion: @escaping (_ isSuccess: Bool, _ errorMessage: String?) -> Void) {
         do {
             let data = try Firestore.Encoder().encode(user)
@@ -129,19 +118,6 @@ extension FirebaseManager {
             print(false, "FirebaseManager_EncodeFail")
         }
     }
-
-//    func deleteUserData(email: String, completion: @escaping () -> Void) {
-//        fetchUserPosts(userEmail: email) { posts in
-//            guard let posts = posts else { return }
-//            let ids = posts.map { $0.id }
-//            for id in ids {
-//                self.deletePost(postID: id.uuidString) { print("delete") }
-//            }
-//            self.db.collection(CollectionName.users.rawValue).document(email).delete { _ in
-//                completion()
-//            }
-//        }
-//    }
 
     func updateUserData(user: User, completion: @escaping () -> Void) {
         do {
@@ -360,6 +336,126 @@ extension FirebaseManager {
             "postType": BoardSeparatorType.complete.rawValue
         ])
         completion()
+    }
+    
+    func searchPosts(text: String, completion: @escaping ([Post]?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).whereField("title", isGreaterThanOrEqualTo: text).whereField("title", isLessThan: text + "\u{f8ff}").order(by: "title").order(by: "date", descending: true).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var posts: [Post] = []
+                let group = DispatchGroup()
+
+                for document in querySnapshot?.documents ?? [] {
+                    group.enter()
+                    do {
+                        let post = try Firestore.Decoder().decode(Post.self, from: document.data())
+                        if let myEmail = LoginManager.manager.email {
+                            self.fetchMyReportUsers { users in
+                                if let users = users {
+                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                        posts.append(post)
+                                    }
+                                    group.leave()
+                                }
+                            }
+                        } else {
+                            posts.append(post)
+                            group.leave()
+                        }
+                    } catch {
+                        completion(nil)
+                        group.leave()
+                        return
+                    }
+                }
+
+                group.notify(queue: .main) {
+                    completion(posts)
+                }
+            }
+        }
+    }
+    
+    func fetchNewPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var posts: [Post] = []
+                let group = DispatchGroup()
+
+                for document in querySnapshot?.documents ?? [] {
+                    group.enter()
+                    do {
+                        let post = try Firestore.Decoder().decode(Post.self, from: document.data())
+                        if let myEmail = LoginManager.manager.email {
+                            self.fetchMyReportUsers { users in
+                                if let users = users {
+                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                        posts.append(post)
+                                    }
+                                    group.leave()
+                                }
+                            }
+                        } else {
+                            posts.append(post)
+                            group.leave()
+                        }
+                    } catch {
+                        completion(nil)
+                        group.leave()
+                        return
+                    }
+                }
+
+                group.notify(queue: .main) {
+                    completion(posts)
+                }
+            }
+        }
+    }
+
+    func fetchPopularPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
+        db.collection(CollectionName.posts.rawValue).whereField("postType", in: type.map { $0.rawValue }).order(by: "viewCount", descending: true).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("데이터를 가져오지 못했습니다: \(error)")
+                completion(nil)
+            } else {
+                var posts: [Post] = []
+                let group = DispatchGroup()
+
+                for document in querySnapshot?.documents ?? [] {
+                    group.enter()
+                    do {
+                        let post = try Firestore.Decoder().decode(Post.self, from: document.data())
+                        if let myEmail = LoginManager.manager.email {
+                            self.fetchMyReportUsers { users in
+                                if let users = users {
+                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
+                                        posts.append(post)
+                                    }
+                                    group.leave()
+                                }
+                            }
+                        } else {
+                            posts.append(post)
+                            group.leave()
+                        }
+                    } catch {
+                        completion(nil)
+                        group.leave()
+                        return
+                    }
+                }
+
+                group.notify(queue: .main) {
+                    completion(posts)
+                }
+            }
+        }
     }
 }
 
@@ -653,43 +749,6 @@ extension FirebaseManager {
     }
 }
 
-//// MARK: - 지울 예정
-//extension FirebaseManager {
-//    func fetchItems(itemName: String, completion: @escaping (DictionaryItem?) -> Void) {
-//        db.collection(CollectionName.dictionaryItems.rawValue).document(itemName).getDocument { querySnapshot, error in
-//            if let error = error {
-//                print("데이터를 가져오지 못했습니다: \(error)")
-//                completion(nil)
-//            } else {
-//                do {
-//                    let post = try Firestore.Decoder().decode(DictionaryItem.self, from: querySnapshot?.data())
-//                    completion(post)
-//                } catch {
-//                    completion(nil)
-//                    return
-//                }
-//            }
-//        }
-//    }
-//
-//    func fetchMonsters(monsterName: String, completion: @escaping (DictionaryMonster?) -> Void) {
-//        db.collection(CollectionName.dictionaryMonsters.rawValue).document(monsterName).getDocument { querySnapshot, error in
-//            if let error = error {
-//                print("데이터를 가져오지 못했습니다: \(error)")
-//                completion(nil)
-//            } else {
-//                do {
-//                    let post = try Firestore.Decoder().decode(DictionaryMonster.self, from: querySnapshot?.data())
-//                    completion(post)
-//                } catch {
-//                    completion(nil)
-//                    return
-//                }
-//            }
-//        }
-//    }
-//}
-
 extension FirebaseManager {
     // MARK: Report
 
@@ -925,134 +984,6 @@ extension FirebaseManager {
         ]) { error in
             if let error = error {
                 print("뷰카운트 증가 실패: \(error)")
-            }
-        }
-    }
-}
-
-extension FirebaseManager {
-    // MARK: PostSearch
-
-    func searchPosts(text: String, completion: @escaping ([Post]?) -> Void) {
-        db.collection(CollectionName.posts.rawValue).whereField("title", isGreaterThanOrEqualTo: text).whereField("title", isLessThan: text + "\u{f8ff}").order(by: "title").order(by: "date", descending: true).getDocuments { querySnapshot, error in
-            if let error = error {
-                print("데이터를 가져오지 못했습니다: \(error)")
-                completion(nil)
-            } else {
-                var posts: [Post] = []
-                let group = DispatchGroup()
-
-                for document in querySnapshot?.documents ?? [] {
-                    group.enter()
-                    do {
-                        let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        if let myEmail = LoginManager.manager.email {
-                            self.fetchMyReportUsers { users in
-                                if let users = users {
-                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
-                                        posts.append(post)
-                                    }
-                                    group.leave()
-                                }
-                            }
-                        } else {
-                            posts.append(post)
-                            group.leave()
-                        }
-                    } catch {
-                        completion(nil)
-                        group.leave()
-                        return
-                    }
-                }
-
-                group.notify(queue: .main) {
-                    completion(posts)
-                }
-            }
-        }
-    }
-}
-
-extension FirebaseManager {
-    // MARK: SortedPost
-
-    func fetchNewPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
-        db.collection(CollectionName.posts.rawValue).whereField("postType", in: type.map { $0.rawValue }).order(by: "date", descending: true).getDocuments { querySnapshot, error in
-            if let error = error {
-                print("데이터를 가져오지 못했습니다: \(error)")
-                completion(nil)
-            } else {
-                var posts: [Post] = []
-                let group = DispatchGroup()
-
-                for document in querySnapshot?.documents ?? [] {
-                    group.enter()
-                    do {
-                        let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        if let myEmail = LoginManager.manager.email {
-                            self.fetchMyReportUsers { users in
-                                if let users = users {
-                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
-                                        posts.append(post)
-                                    }
-                                    group.leave()
-                                }
-                            }
-                        } else {
-                            posts.append(post)
-                            group.leave()
-                        }
-                    } catch {
-                        completion(nil)
-                        group.leave()
-                        return
-                    }
-                }
-
-                group.notify(queue: .main) {
-                    completion(posts)
-                }
-            }
-        }
-    }
-
-    func fetchPopularPosts(type: [BoardSeparatorType], completion: @escaping ([Post]?) -> Void) {
-        db.collection(CollectionName.posts.rawValue).whereField("postType", in: type.map { $0.rawValue }).order(by: "viewCount", descending: true).getDocuments { querySnapshot, error in
-            if let error = error {
-                print("데이터를 가져오지 못했습니다: \(error)")
-                completion(nil)
-            } else {
-                var posts: [Post] = []
-                let group = DispatchGroup()
-
-                for document in querySnapshot?.documents ?? [] {
-                    group.enter()
-                    do {
-                        let post = try Firestore.Decoder().decode(Post.self, from: document.data())
-                        if let myEmail = LoginManager.manager.email {
-                            self.fetchMyReportUsers { users in
-                                if let users = users {
-                                    if !(post.reports.contains(myEmail)), !users.contains(post.user) {
-                                        posts.append(post)
-                                    }
-                                    group.leave()
-                                }
-                            }
-                        } else {
-                            posts.append(post)
-                            group.leave()
-                        }
-                    } catch {
-                        completion(nil)
-                        group.leave()
-                        return
-                    }
-                }
-
-                group.notify(queue: .main) {
-                    completion(posts)
-                }
             }
         }
     }

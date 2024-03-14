@@ -131,44 +131,39 @@ extension DictMainInfoCell {
     func bind<T>(item: T) {
         var itemName: String
         var itemDescription: String?
+        var itemType: DictType?
+        var itemCode: String?
         
         switch item.self {
         case is DictItem:
-            guard let item = item as? DictItem,
-                  let url = URL.getImageUrl(code: item.code, type: .item) else { return }
+            guard let item = item as? DictItem else { return }
             itemName = item.name
+            itemCode = item.code
+            itemType = .item
             itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
             descriptionText = itemDescription
-            itemImageView.kf.setImage(with: url, placeholder: UIImage(named: "Deco-maple"))
         case is DictMonster:
-            guard let item = item as? DictMonster,
-                  let url = URL.getImageUrl(code: item.code, type: .monster) else { return }
-            let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.code)/icon?resize=2")
-            itemImageView.kf.setImage(with: url) { [weak self] result in
-                switch result {
-                case .failure:
-                    print(#function)
-                    self?.itemImageView.kf.setImage(with: secondUrl)
-                default:
-                    print(#function)
-                }
-            }
+            guard let item = item as? DictMonster else { return }
             itemName = item.name
+            itemCode = item.code
+            itemType = .monster
             itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
             descriptionText = itemDescription
         case is DictMap:
             guard let item = item as? DictMap else { return }
             itemName = item.name
-            itemImageView.image = UIImage(named: "dictMapIcon")
+            itemCode = item.code
+            itemType = .map
         case is DictNPC:
-            guard let item = item as? DictNPC,
-                  let url = URL.getImageUrl(code: item.code, type: .npc) else { return }
+            guard let item = item as? DictNPC else { return }
             itemName = item.name
-            itemImageView.kf.setImage(with: url, placeholder: UIImage(named: "Deco-maple"))
+            itemCode = item.code
+            itemType = .npc
         case is DictQuest:
             guard let item = item as? DictQuest else { return }
             itemName = item.name
-            itemImageView.image = UIImage(named: "dictQuestIcon")
+            itemCode = item.code
+            itemType = .quest
         default:
             return
         }
@@ -177,6 +172,9 @@ extension DictMainInfoCell {
             self.expandButton.isHidden = self.descriptionViewHeight / 22 < 3 ? true : false
         }
         
+        guard let itemCode = itemCode,
+              let itemType = itemType else { return }
+        itemImageView.setImageToDictCode(code: itemCode, type: itemType)
         nameLabel.text = itemName
         
         if itemDescription == nil {

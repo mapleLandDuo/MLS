@@ -144,33 +144,21 @@ extension DropTableViewCell {
             switch type {
             case "드롭 정보":
                 descriptionTitleLabel.text = "드롭률"
-                let url = URL.getImageUrl(code: item.code, type: .item)
-                itemImageView.kf.setImage(with: url)
+                itemImageView.setImageToDictCode(code: item.code, type: .item)
                 descriptionLabel.text = item.description
             case "정보 완료 조건":
                 if item.description.contains("전달") {
                     descriptionTitleLabel.text = "전달 개수"
-                    let url = URL.getImageUrl(code: item.code, type: .item)
-                    itemImageView.kf.setImage(with: url)
+                    itemImageView.setImageToDictCode(code: item.code, type: .item)
                     descriptionLabel.text = "\(item.description)"
                 } else {
                     descriptionTitleLabel.text = "처치 마리수"
-                    let url = URL.getImageUrl(code: item.code, type: .monster)
-                    let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.code)/icon?resize=2")
-                    itemImageView.kf.setImage(with: url) { [weak self] result in
-                        switch result {
-                        case .failure(_) :
-                            self?.itemImageView.kf.setImage(with: secondUrl)
-                        default :
-                            break
-                        }
-                    }
+                    itemImageView.setImageToDictCode(code: item.code, type: .monster)
                     descriptionLabel.text = "\(item.description)마리"
                 }
             case "퀘스트 보상":
                 descriptionTitleLabel.text = "개수"
-                let url = URL.getImageUrl(code: item.code, type: .item)
-                itemImageView.kf.setImage(with: url)
+                itemImageView.setImageToDictCode(code: item.code, type: .item)
                 descriptionLabel.text = item.description
             default:
                 break

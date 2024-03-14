@@ -152,28 +152,17 @@ extension DropCollectionViewCell {
         descriptionLabel.text = data.description
         switch type {
         case .item:
-            let url = URL.getImageUrl(code: data.code, type: .item)
-            imageView.kf.setImage(with: url)
+            imageView.setImageToDictCode(code: data.code, type: .item)
             descriptionTitleLabel.text = "드롭률"
         case .monster:
-            let url = URL.getImageUrl(code: data.code, type: .monster)
-            let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(data.code)/icon?resize=2")
-            imageView.kf.setImage(with: url) { [weak self] result in
-                switch result {
-                case .failure(_) :
-                    self?.imageView.kf.setImage(with: secondUrl)
-                default :
-                    break
-                }
-            }
+            imageView.setImageToDictCode(code: data.code, type: .monster)
             if data.description.contains("%") {
                 descriptionTitleLabel.text = "드롭률"
             } else {
                 descriptionTitleLabel.text = "출현 몬스터 수"
             }
         case .npc:
-            let url = URL.getImageUrl(code: data.code, type: .npc)
-            imageView.kf.setImage(with: url)
+            imageView.setImageToDictCode(code: data.code, type: .npc)
             levelTitleLabel.isHidden = true
             levelLabel.isHidden = true
             descriptionTitleLabel.isHidden = true

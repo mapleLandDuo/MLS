@@ -53,6 +53,7 @@ class DictMainInfoCell: UITableViewCell {
         view.textColor = .semanticColor.text.primary
         view.backgroundColor = .clear
         view.numberOfLines = 2
+        view.lineBreakMode = .byCharWrapping
         return view
     }()
 

@@ -18,29 +18,7 @@ class DictSearchViewController: BasicController {
     
     let headerView = DictSearchHeaderView()
     
-    private let searchingView: UIView = {
-        let view = UIView()
-        view.isHidden = true
-        return view
-    }()
-    
-    private let recentSearchKeywordCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = Constants.spacings.md
-        layout.sectionInset = .init(top: 0, left: Constants.spacings.xl, bottom: 0, right: 0)
-        layout.scrollDirection = .horizontal
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.showsHorizontalScrollIndicator = false
-        return view
-    }()
-    
-    private let recentSearchClearButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("모두 지우기", for: .normal)
-        button.setTitleColor(.semanticColor.text.info, for: .normal)
-        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .medium)
-        return button
-    }()
+    lazy var searchingVC = DictSearchingViewController(viewModel: self.viewModel)
     
     private let searchView: UIView = {
         let view = UIView()
@@ -119,12 +97,10 @@ extension DictSearchViewController {
 // MARK: - Bind
 private extension DictSearchViewController {
     func bind() {
-        let manager = UserDefaultsManager()
-        viewModel.recentSearchKeywords.bind { [weak self] keywords in
-            guard let keywords = keywords else { return }
-            manager.setRecentSearchKeyWord(keyWords: keywords)
-            self?.recentSearchKeywordCollectionView.reloadData()
-            self?.searchMenuTappedResultTableView.reloadData()
+        
+        viewModel.searchKeyword.bind { [weak self] keyword in
+            self?.headerView.searchTextField.text = keyword
+            self?.view.endEditing(true)
         }
         
         viewModel.searchData.bind { [weak self] datas in
@@ -192,15 +168,11 @@ private extension DictSearchViewController {
     func setUpRegister() {
         searchTotalResultTableView.register(DictSearchDataCell.self, forCellReuseIdentifier: DictSearchDataCell.identifier)
         searchMenuTappedResultTableView.register(DictSearchDataCell.self, forCellReuseIdentifier: DictSearchDataCell.identifier)
-        recentSearchKeywordCollectionView.register(RecentSearchKeywordCell.self, forCellWithReuseIdentifier: RecentSearchKeywordCell.identifier)
         searchMenuCollectionView.register(DictSearchMenuCell.self, forCellWithReuseIdentifier: DictSearchMenuCell.identifier)
     }
     
     func setUpDelegate() {
         headerView.searchTextField.delegate = self
-        
-        recentSearchKeywordCollectionView.dataSource = self
-        recentSearchKeywordCollectionView.delegate = self
         
         searchTotalResultTableView.dataSource = self
         searchTotalResultTableView.delegate = self
@@ -219,21 +191,11 @@ private extension DictSearchViewController {
         headerView.searchClearButton.addAction(UIAction(handler: { [weak self] _ in
             self?.headerView.searchTextField.text = ""
         }), for: .primaryActionTriggered)
-        recentSearchClearButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.viewModel.recentSearchKeywords.value = []
-            self.searchView.isHidden = false
-            self.searchingView.isHidden = true
-        }), for: .primaryActionTriggered)
     }
     
     func setUpConstraints() {
-        
         view.addSubview(headerView)
-        view.addSubview(searchingView)
         view.addSubview(searchView)
-        searchingView.addSubview(recentSearchKeywordCollectionView)
-        searchingView.addSubview(recentSearchClearButton)
         searchView.addSubview(searchMenuCollectionView)
         searchView.addSubview(searchTotalResultTableView)
         searchView.addSubview(searchMenuTappedResultTableView)
@@ -242,21 +204,6 @@ private extension DictSearchViewController {
         headerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
-        }
-        
-        searchingView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        recentSearchKeywordCollectionView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(Constants.spacings.xl_3)
-        }
-        
-        recentSearchClearButton.snp.makeConstraints {
-            $0.top.equalTo(recentSearchKeywordCollectionView.snp.bottom).offset(10)
-            $0.trailing.equalToSuperview().inset(Constants.spacings.xl)
         }
         
         searchView.snp.makeConstraints {
@@ -283,17 +230,28 @@ private extension DictSearchViewController {
             $0.top.equalTo(searchMenuCollectionView.snp.bottom).offset(102)
             $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
+        
+        self.addChild(searchingVC)
+        view.addSubview(searchingVC.view)
+        
+        searchingVC.view.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
     }
 }
 
 extension DictSearchViewController: DictSearchFilterHeaderViewDelegate {
+    
+    /// 필터 버튼 탭 이벤트
+    /// - Parameter type: 몬스터, 도감, npc, 퀘스트, 맵 중 하나 선택
     func didTapFilterButton(type: DictType) {
         var vc: DictSearchFilterViewController
         switch type {
         case .item:
-            vc = DictSearchFilterViewController(type: type, filter: viewModel.itemFilter, searchKeyword: viewModel.searchKeyword)
+            vc = DictSearchFilterViewController(type: type, filter: viewModel.itemFilter, searchKeyword: viewModel.fetchSearchKeyword())
         case .monster:
-            vc = DictSearchFilterViewController(type: type, filter: viewModel.monsterFilter, searchKeyword: viewModel.searchKeyword)
+            vc = DictSearchFilterViewController(type: type, filter: viewModel.monsterFilter, searchKeyword: viewModel.fetchSearchKeyword())
         default:
             return
         }
@@ -304,6 +262,8 @@ extension DictSearchViewController: DictSearchFilterHeaderViewDelegate {
         present(vc, animated: true)
     }
     
+    /// 필터 값 초기화 버튼 탭 이벤트
+    /// - Parameter type: 몬스터, 도감, npc, 퀘스트, 맵 중 하나 선택
     func didTapFilterResetButton(type: DictType) {
         viewModel.setFilterDataToOriginData()
         switch type {
@@ -316,6 +276,8 @@ extension DictSearchViewController: DictSearchFilterHeaderViewDelegate {
         }
     }
     
+    /// 정렬 버튼 탭 이벤트
+    /// - Parameter type: 몬스터, 도감, npc, 퀘스트, 맵 중 하나 선택
     func didTapSortedButton(type: DictType) {
         let sorted = viewModel.fetchSortedEnum(type: type)
         let vc =  DictSearchSortedViewController(type: type, selectSortedEnum: sorted)
@@ -327,6 +289,12 @@ extension DictSearchViewController: DictSearchFilterHeaderViewDelegate {
     }
 }
 extension DictSearchViewController: DictSearchFilterViewControllerDelegate {
+    
+    ///  바텀 모달 내부의 필터 적용 버튼 탭 이벤트
+    /// - Parameters:
+    ///   - type: 몬스터, 도감, npc, 퀘스트, 맵
+    ///   - datas:  any Type의 Dict Data
+    ///   - filter: Filter Enum
     func didTapApplyButton(type: DictType, datas: [Any], filter: DictSearchFilter) {
         viewModel.setFilterData(type: type, datas: datas)
         switch type {
@@ -339,6 +307,8 @@ extension DictSearchViewController: DictSearchFilterViewControllerDelegate {
         }
     }
     
+    /// 바텀 모달 내부의 초기화 버튼 탭 이벤트
+    /// - Parameter type: 몬스터, 도감, npc, 퀘스트, 맵
     func didTapResetButton(type: DictType) {
         viewModel.setFilterDataToOriginData()
         switch type {
@@ -352,12 +322,20 @@ extension DictSearchViewController: DictSearchFilterViewControllerDelegate {
     }
 }
 extension DictSearchViewController: DictSearchSortedViewControllerDelegate {
+    
+    /// 정렬 적용후 화면 새로 고침 메서드
+    /// - Parameters:
+    ///   - type: 몬스터, 도감, npc, 퀘스트, 맵
+    ///   - sortedEnum: 정렬 Enum
     func viewWillDisappear(type: DictType, sortedEnum: DictSearchSortedEnum) {
         viewModel.setSortedEnum(type: type, sorted: sortedEnum)
     }
 }
 
 extension DictSearchViewController: DictSectionHeaderViewDelegate {
+    
+    /// 전체 보기 페이지 Header 전체보기 탭 이벤트
+    /// - Parameter title: header Title
     func didTapShowButton(title: String?) {
         guard let title = title else { return }
         switch title {
@@ -375,20 +353,6 @@ extension DictSearchViewController: DictSectionHeaderViewDelegate {
             viewModel.setMenuIndex(index: 0)
         }
         searchMenuCollectionView.reloadData()
-    }
-}
-
-extension DictSearchViewController: RecentSearchKeywordCellDelegate {
-    func didTapDeleteButton(index: Int) {
-        viewModel.recentSearchKeywords.value?.remove(at: index)
-        guard let keywords = viewModel.recentSearchKeywords.value else { return }
-        if keywords.isEmpty {
-            searchView.isHidden = false
-            searchingView.isHidden = true
-        } else {
-            searchView.isHidden = true
-            searchingView.isHidden = false
-        }
     }
 }
 
@@ -432,7 +396,6 @@ extension DictSearchViewController: UITextFieldDelegate {
             viewModel.recentSearchKeywords.value = cleanKeywords
             viewModel.fetchSearchData(keyword: keyword)
         }
-        viewModel.searchKeyword = keyword
         view.endEditing(true)
         return true
     }
@@ -442,11 +405,9 @@ extension DictSearchViewController: UITextFieldDelegate {
         headerView.searchClearButton.isHidden = false
         guard let keywords = viewModel.recentSearchKeywords.value else { return }
         if keywords.isEmpty {
-            searchView.isHidden = false
-            searchingView.isHidden = true
+            searchingVC.view.isHidden = true
         } else {
-            searchView.isHidden = true
-            searchingView.isHidden = false
+            searchingVC.view.isHidden = false
         }
     }
     
@@ -454,73 +415,34 @@ extension DictSearchViewController: UITextFieldDelegate {
         headerView.searchTrailingView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
         headerView.searchClearButton.isHidden = true
         searchView.isHidden = false
-        searchingView.isHidden = true
+        searchingVC.view.isHidden = true
     }
 }
 
 extension DictSearchViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch collectionView {
-        case self.recentSearchKeywordCollectionView:
-            return viewModel.recentSearchKeywords.value?.count ?? 0
-        case self.searchMenuCollectionView:
-            return viewModel.searchMenus.count
-        default:
-            return 0
-        }
+        return viewModel.searchMenus.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch collectionView {
-        case self.recentSearchKeywordCollectionView:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentSearchKeywordCell.identifier, for: indexPath) as? RecentSearchKeywordCell else { return UICollectionViewCell() }
-            cell.bind(text: viewModel.recentSearchKeywords.value?[indexPath.row], index: indexPath.row)
-            cell.delegate = self
-            return cell
-        case self.searchMenuCollectionView:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchMenuCell.identifier, for: indexPath) as? DictSearchMenuCell else { return UICollectionViewCell() }
-            cell.bind(text: viewModel.searchMenus[indexPath.row])
-            if indexPath.item == viewModel.fetchMenuIndex() {
-                cell.isSelected = true
-                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
-              }
-            return cell
-        default:
-            return UICollectionViewCell()
-        }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchMenuCell.identifier, for: indexPath) as? DictSearchMenuCell else { return UICollectionViewCell() }
+        cell.bind(text: viewModel.searchMenus[indexPath.row])
+        if indexPath.item == viewModel.fetchMenuIndex() {
+            cell.isSelected = true
+            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
+          }
+        return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch collectionView {
-        case self.recentSearchKeywordCollectionView :
-            guard let keywords = viewModel.recentSearchKeywords.value else { return }
-            let keyword = keywords[indexPath.row]
-            var cleanKeywords: [String] = [keyword]
-            for keyword in keywords {
-                if !cleanKeywords.contains(keyword) { cleanKeywords.append(keyword) }
-            }
-            viewModel.recentSearchKeywords.value = cleanKeywords
-            viewModel.fetchSearchData(keyword: keyword)
-            headerView.searchTextField.text = keyword
-            viewModel.searchKeyword = keyword
-            view.endEditing(true)
-        default:
-            viewModel.setMenuIndex(index: indexPath.row)
-        }
+        viewModel.setMenuIndex(index: indexPath.row)
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch collectionView {
-        case self.recentSearchKeywordCollectionView:
-            guard let keywords = viewModel.recentSearchKeywords.value else { return .zero }
-            return .init(
-                width: keywords[indexPath.row].size(withAttributes: [NSAttributedString.Key.font : UIFont.customFont(fontSize: .body_sm, fontType: .medium) ?? 0]).width + (Constants.spacings.md * 2) + Constants.spacings.xl + Constants.spacings.xs_2 + 5,
-                height: Constants.spacings.xl_3)
-        case self.searchMenuCollectionView:
-            return .init(
-                width: viewModel.searchMenus[indexPath.row].size(withAttributes: [NSAttributedString.Key.font : UIFont.customFont(fontSize: .body_md, fontType: .semiBold) ?? 0]).width,
-                height: Constants.spacings.xl_3)
-        default:
-            return .zero
-        }
+
+        return .init(
+            width: viewModel.searchMenus[indexPath.row].size(withAttributes: [NSAttributedString.Key.font : UIFont.customFont(fontSize: .body_md, fontType: .semiBold) ?? 0]).width,
+            height: Constants.spacings.xl_3)
     }
 }
 

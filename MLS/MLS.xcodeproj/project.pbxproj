@@ -41,6 +41,7 @@
 		082D0C742B53CFFE00D84CE2 /* Kanna in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C732B53CFFE00D84CE2 /* Kanna */; };
 		082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C772B53D11900D84CE2 /* BasicController.swift */; };
 		082D0C832B53D45700D84CE2 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C822B53D45600D84CE2 /* Post.swift */; };
+		08498F032BA80C73001DFB7B /* DictSearchingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08498F022BA80C73001DFB7B /* DictSearchingViewController.swift */; };
 		087D251E2B932FDB00A998E4 /* DictNameCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087D251D2B932FDB00A998E4 /* DictNameCount.swift */; };
 		087D25242B936F5700A998E4 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087D25232B936F5700A998E4 /* AlertManager.swift */; };
 		087D25262B93955300A998E4 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087D25252B93955300A998E4 /* AlertView.swift */; };
@@ -182,6 +183,7 @@
 		082D0C772B53D11900D84CE2 /* BasicController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicController.swift; sourceTree = "<group>"; };
 		082D0C7D2B53D26800D84CE2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		082D0C822B53D45600D84CE2 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		08498F022BA80C73001DFB7B /* DictSearchingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchingViewController.swift; sourceTree = "<group>"; };
 		087D251D2B932FDB00A998E4 /* DictNameCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictNameCount.swift; sourceTree = "<group>"; };
 		087D25232B936F5700A998E4 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		087D25252B93955300A998E4 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
@@ -515,6 +517,8 @@
 		08CB4E5E2B8F37E200336FE6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				08D5F11B2B873B1400E56482 /* DictSearchViewController.swift */,
+				08498F022BA80C73001DFB7B /* DictSearchingViewController.swift */,
 				08F95DFC2B8E18A300AD79DF /* DictSearchFilterViewController.swift */,
 				08F95DFE2B8E1C0A00AD79DF /* DictSearchSortedViewController.swift */,
 			);
@@ -624,7 +628,6 @@
 			children = (
 				08F95DBF2B8A066500AD79DF /* Views */,
 				08CB4E5E2B8F37E200336FE6 /* Controllers */,
-				08D5F11B2B873B1400E56482 /* DictSearchViewController.swift */,
 				08D5F11D2B873B1D00E56482 /* DictSearchViewModel.swift */,
 			);
 			path = DictSearching;
@@ -998,6 +1001,7 @@
 				08CB4E602B8F383500336FE6 /* DictSearchFilterEnum.swift in Sources */,
 				08D5F0F92B8337FA00E56482 /* DictHorizontalSectionTableViewCell.swift in Sources */,
 				08CB4E632B8F5B8A00336FE6 /* DictSearchJobFilterCell.swift in Sources */,
+				08498F032BA80C73001DFB7B /* DictSearchingViewController.swift in Sources */,
 				77F358FE2B95EF7000B0C5A2 /* PopularViewModel.swift in Sources */,
 				08F95DE92B8B5ED500AD79DF /* LoginButton.swift in Sources */,
 				778EF8D32B877CE5006CA0AB /* SignUpFirstViewModel.swift in Sources */,

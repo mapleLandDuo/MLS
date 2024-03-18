@@ -12,7 +12,7 @@ class DictSearchViewModel {
     let manager = UserDefaultsManager()
     lazy var recentSearchKeywords: Observable<[String]> = Observable(manager.fetchRecentSearchKeyWord())
     var searchMenus = ["전체(0)","몬스터(0)","아이템(0)","맵(0)","NPC(0)","퀘스트(0)"]
-    var searchKeyword: String = ""
+    var searchKeyword: Observable<String> = Observable("")
     
     var originMonsterData: [DictMonster] = []
     var originItemData: [DictItem] = []
@@ -48,6 +48,11 @@ class DictSearchViewModel {
 }
 
 extension DictSearchViewModel {
+    
+    func fetchSearchKeyword() -> String {
+        guard let keyword = self.searchKeyword.value else { return "" }
+        return keyword
+    }
     
     func setFilterData(type: DictType, datas: [Any]) {
         switch type {

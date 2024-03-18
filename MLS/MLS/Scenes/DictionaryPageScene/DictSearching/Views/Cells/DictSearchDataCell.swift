@@ -83,7 +83,7 @@ extension DictSearchDataCell {
         let fullText = data.title
         let attribtuedString = NSMutableAttributedString(string: fullText)
         let range = (fullText as NSString).range(of: keyword)
-        attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.interactive.primary, range: range)
+        attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.interactive.primary ?? UIColor.black, range: range)
         nameLabel.attributedText = attribtuedString
         itemImageView.setImageToDictCode(code: data.image, type: data.type)
     }

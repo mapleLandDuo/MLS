@@ -190,7 +190,7 @@ extension MyPageViewController {
             let fullText = "어서오세요\n\(user.nickName) 님"
             let attribtuedString = NSMutableAttributedString(string: fullText)
             let range = (fullText as NSString).range(of: user.nickName)
-            attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.interactive.primary, range: range)
+            attribtuedString.addAttribute(.foregroundColor, value: UIColor.semanticColor.text.interactive.primary ?? UIColor.black, range: range)
             self?.titleLabel.attributedText = attribtuedString
             self?.levelValueLabel.text = String(user.level ?? 0)
             if user.job == nil {

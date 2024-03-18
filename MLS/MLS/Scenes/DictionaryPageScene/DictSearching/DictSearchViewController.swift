@@ -287,6 +287,8 @@ private extension DictSearchViewController {
 }
 
 extension DictSearchViewController: DictSearchFilterHeaderViewDelegate {
+    /// 필터 버튼 탭 이벤트
+    /// - Parameter type: 몬스터, 도감, npc, 퀘스트, 맵 중 하나 선택
     func didTapFilterButton(type: DictType) {
         var vc: DictSearchFilterViewController
         switch type {
@@ -304,6 +306,8 @@ extension DictSearchViewController: DictSearchFilterHeaderViewDelegate {
         present(vc, animated: true)
     }
     
+    /// 필터 값 초기화 버튼 탭 이벤트
+    /// - Parameter type: 몬스터, 도감, npc, 퀘스트, 맵 중 하나 선택
     func didTapFilterResetButton(type: DictType) {
         viewModel.setFilterDataToOriginData()
         switch type {
@@ -316,6 +320,8 @@ extension DictSearchViewController: DictSearchFilterHeaderViewDelegate {
         }
     }
     
+    /// 정렬 버튼 탭 이벤트
+    /// - Parameter type: 몬스터, 도감, npc, 퀘스트, 맵 중 하나 선택
     func didTapSortedButton(type: DictType) {
         let sorted = viewModel.fetchSortedEnum(type: type)
         let vc =  DictSearchSortedViewController(type: type, selectSortedEnum: sorted)

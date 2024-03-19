@@ -208,17 +208,8 @@ private extension MyPageViewController {
     
     func setUp() {
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "")
         setUpAddAction()
-    }
-    
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
     }
     
     func setUpAddAction() {
@@ -327,13 +318,6 @@ private extension MyPageViewController {
             $0.trailing.equalToSuperview().inset(Constants.spacings.xl)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(46)
         }
-    }
-}
-// MARK: - Methods
-private extension MyPageViewController {
-    @objc
-    func didTapBackButton() {
-        self.navigationController?.popViewController(animated: true)
     }
 }
 

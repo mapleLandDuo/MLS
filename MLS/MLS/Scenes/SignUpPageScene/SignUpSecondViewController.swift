@@ -114,7 +114,7 @@ private extension SignUpSecondViewController {
         accountView.delegate = self
         
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "회원가입")
         setUpActions()
     }
         
@@ -180,21 +180,6 @@ private extension SignUpSecondViewController {
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
             $0.height.equalTo(56)
         }
-    }
-    
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "회원가입"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-        
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
     }
     
     func setUpActions() {
@@ -350,11 +335,6 @@ private extension SignUpSecondViewController {
         let window = windowScene?.windows.first
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-    }
-    
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
 }
 

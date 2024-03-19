@@ -73,7 +73,7 @@ private extension PopularViewController {
         infoMenuCollectionView.dataSource = self
 
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "인기 TOP")
     }
 
     func setUpConstraints() {
@@ -109,7 +109,7 @@ extension PopularViewController {
 
 // MARK: Methods
 extension PopularViewController {
-    func setUpNavigation() {
+    override func setUpNavigation(title: String) {
         let rightSpacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
         let searchImage = UIImage(systemName: "magnifyingglass")?.withRenderingMode(.alwaysTemplate)
@@ -138,11 +138,6 @@ extension PopularViewController {
         let vm = DictSearchViewModel()
         let vc = DictSearchViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
-    }
-
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
 }
 

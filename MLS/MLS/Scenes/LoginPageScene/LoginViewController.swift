@@ -92,7 +92,7 @@ private extension LoginViewController {
         pwTextField.textField.delegate = self
         
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "로그인")
         setUpActions()
     }
         
@@ -159,21 +159,6 @@ private extension LoginViewController {
             $0.trailing.equalToSuperview().inset(87)
             $0.height.equalTo(44)
         }
-    }
-    
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "로그인"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-        
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
     }
     
     func setUpActions() {
@@ -248,11 +233,6 @@ private extension LoginViewController {
     func didTapSignUpButton() {
         let vc = SignUpFirstViewController(viewModel: SignUpFirstViewModel())
         navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
 }
 

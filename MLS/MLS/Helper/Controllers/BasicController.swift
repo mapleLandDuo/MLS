@@ -65,4 +65,24 @@ extension BasicController {
             manager.setIsCheckNotice(toggle: true, number: notice.number)
         }
     }
+    
+    @objc
+    func setUpNavigation(title: String) {
+        let spacer = UIBarButtonItem()
+        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
+        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
+        backButton.tintColor = .themeColor(color: .base, value: .value_black)
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
+        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
+        navigationItem.titleView = titleLabel
+        navigationItem.leftBarButtonItems = [spacer, backButton]
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    @objc
+    func didTapBackButton() {
+        self.navigationController?.popViewController(animated: true)
+    }
 }

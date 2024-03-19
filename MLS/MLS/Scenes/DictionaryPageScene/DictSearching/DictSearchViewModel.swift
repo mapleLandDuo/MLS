@@ -7,11 +7,43 @@
 
 import UIKit
 
+enum DictMenuTypeEnum: String {
+    case total = "전체"
+    case monster = "몬스터"
+    case item = "아이템"
+    case map = "맵"
+    case npc = "NPC"
+    case quest = "퀘스트"
+}
+
+struct DictMenuItem {
+    var type: DictMenuTypeEnum
+    var count: Int
+    
+    var getMenuString: String {
+        get {
+            return self.type.rawValue + "(\(self.count))"
+        }
+    }
+}
+
 class DictSearchViewModel {
     // MARK: - Properties
     let manager = UserDefaultsManager()
+    
     lazy var recentSearchKeywords: Observable<[String]> = Observable(manager.fetchRecentSearchKeyWord())
-    var searchMenus = ["전체(0)","몬스터(0)","아이템(0)","맵(0)","NPC(0)","퀘스트(0)"]
+    
+    var menuItems: [DictMenuItem] = [
+        DictMenuItem(type: .total, count: 0),
+        DictMenuItem(type: .monster, count: 0),
+        DictMenuItem(type: .item, count: 0),
+        DictMenuItem(type: .map, count: 0),
+        DictMenuItem(type: .npc, count: 0),
+        DictMenuItem(type: .quest, count: 0),
+    ]
+    
+    var selectedMenuType:Observable<DictMenuTypeEnum> = Observable(.total)
+    
     var searchKeyword: Observable<String> = Observable("")
     
     var originMonsterData: [DictMonster] = []
@@ -34,8 +66,6 @@ class DictSearchViewModel {
         DictSectionDatas(iconImage: UIImage(named: "questIcon"), description: "퀘스트", datas: [])
     ])
     
-    let selectedMenuIndex: Observable<Int> = Observable(0)
-    
     var itemSorted: DictSearchSortedEnum = .defaultSorted
     var monsterSorted: DictSearchSortedEnum = .defaultSorted
     var mapSorted: DictSearchSortedEnum = .defaultSorted
@@ -48,6 +78,50 @@ class DictSearchViewModel {
 }
 
 extension DictSearchViewModel {
+    
+    func fetchMenuItems() -> [DictMenuItem] {
+        return self.menuItems
+    }
+    
+    func fetchSelectedMenuTypeToIndex() -> Int {
+        guard let type = self.selectedMenuType.value,
+              let index = menuItems.firstIndex(where: { items in
+                  return items.type == type
+              }) else { return 0 }
+        return index
+    }
+    
+    func setMenuItemCount(type: DictMenuTypeEnum, count: Int) {
+        guard let index = menuItems.firstIndex(where: { item in
+            item.type == type
+        }) else { return }
+        menuItems[index].count = count
+    }
+    
+    func setSelectedMenuType(index: Int) {
+        selectedMenuType.value = menuItems[index].type
+    }
+    
+    func setSelectedMenuType(rawValue: String) {
+        selectedMenuType.value = DictMenuTypeEnum(rawValue: rawValue)
+    }
+    
+    func fetchSelectedMenuType() -> DictMenuTypeEnum {
+        guard let type = self.selectedMenuType.value else { return .total }
+        return type
+    }
+    
+    func fetchTotalSearchData() -> [DictSectionDatas] {
+        guard let datas = searchData.value?.filter({!$0.datas.isEmpty}) else { return [] }
+        return datas
+    }
+    
+    func fetchSearchData(type: DictMenuTypeEnum) -> DictSectionDatas {
+        var data = DictSectionDatas(iconImage: nil, description: "", datas: [])
+        guard let index = searchData.value?.firstIndex(where: { data in data.description == type.rawValue }),
+              let data = searchData.value?[index] else { return data }
+        return data
+    }
     
     func fetchSearchKeyword() -> String {
         guard let keyword = self.searchKeyword.value else { return "" }
@@ -75,21 +149,7 @@ extension DictSearchViewModel {
         filterDataSorted()
     }
     
-    func fetchSearchData() -> [DictSectionDatas] {
-        guard let data = searchData.value else { return [] }
-        return data
-    }
-    
-    func fetchMenuIndex() -> Int {
-        guard let index = selectedMenuIndex.value else { return 0 }
-        return index
-    }
-    
-    func setMenuIndex(index: Int) {
-        selectedMenuIndex.value = index
-    }
-    
-    func fetchSearchData(keyword: String) {
+    func setOriginData(keyword: String) {
         
         let manager = SqliteManager()
         manager.searchData(dataName: keyword) { [weak self] (monsters: [DictMonster]) in
@@ -111,7 +171,7 @@ extension DictSearchViewModel {
         setFilterDataToOriginData()
     }
     
-    func fetchAllSearchData() {
+    func setOriginDataToAllData() {
         let manager = SqliteManager()
         manager.fetchData() { [weak self] (monsters: [DictMonster]) in
             self?.originMonsterData = monsters
@@ -156,20 +216,35 @@ extension DictSearchViewModel {
               let npcCount = searchData.value?[3].datas.count,
               let questCount = searchData.value?[4].datas.count else { return }
         let totalCount = monsterCount + itemCount + mapCount + npcCount + questCount
-        
-        searchMenus = [
-            "전체(\(totalCount))",
-            "몬스터(\(monsterCount))",
-            "아이템(\(itemCount))",
-            "맵(\(mapCount))",
-            "NPC(\(npcCount))",
-            "퀘스트(\(questCount))"
-        ]
+    
+        setMenuItemCount(type: .total, count: totalCount)
+        setMenuItemCount(type: .monster, count: monsterCount)
+        setMenuItemCount(type: .item, count: itemCount)
+        setMenuItemCount(type: .map, count: mapCount)
+        setMenuItemCount(type: .npc, count: npcCount)
+        setMenuItemCount(type: .quest, count: questCount)
     }
 }
 
 // MARK: - SortedMethods
 extension DictSearchViewModel {
+    
+    func fetchSortedEnum(type: DictMenuTypeEnum) -> DictSearchSortedEnum {
+        switch type {
+        case .item:
+            return itemSorted
+        case .monster:
+            return monsterSorted
+        case .npc:
+            return mapSorted
+        case .map:
+            return npcSorted
+        case .quest:
+            return questSorted
+        case .total:
+            return .defaultSorted
+        }
+    }
     
     func fetchSortedEnum(type: DictType) -> DictSearchSortedEnum {
         switch type {

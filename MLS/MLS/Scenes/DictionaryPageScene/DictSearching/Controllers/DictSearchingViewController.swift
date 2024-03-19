@@ -49,8 +49,9 @@ class DictSearchingViewController: BasicController {
 // MARK: - LifeCycle
 extension DictSearchingViewController {
     override func viewDidLoad() {
-        setUp()
+        super.viewDidLoad()
         bind()
+        setUp()
     }
 }
 
@@ -134,7 +135,7 @@ extension DictSearchingViewController: UICollectionViewDelegateFlowLayout, UICol
             if !cleanKeywords.contains(keyword) { cleanKeywords.append(keyword) }
         }
         viewModel.recentSearchKeywords.value = cleanKeywords
-        viewModel.fetchSearchData(keyword: keyword)
+        viewModel.setOriginData(keyword: keyword)
         viewModel.searchKeyword.value = keyword
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

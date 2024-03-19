@@ -296,7 +296,7 @@ private extension SignUpFirstViewController {
     }
     
     func checkFirstPwField(state: TextState) {
-        firstPwTextField.setPasswordFooter(checkPassword: viewModel.checkPassword, state: state)
+        firstPwTextField.setPasswordFooter(checkPassword: viewModel.checkPassword)
         if state == .pwBlank {
             firstPwTextField.checkState(state: state, isCorrect: false)
         }

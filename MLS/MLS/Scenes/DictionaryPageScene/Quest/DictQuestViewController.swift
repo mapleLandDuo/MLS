@@ -266,7 +266,7 @@ extension DictQuestViewController: DictMonsterDropCellDelegate {
 extension DictQuestViewController: DictQuestOrderCellDelegate {
     func didTapQuestCell(title: String) {
         if title != viewModel.selectedQuest.value?.currentQuest {
-            let vm = DictQuestViewModel(selectedName: title)
+            let vm = DictQuestViewModel(selectedName: title.trimmingCharacters(in: .whitespaces))
             let vc = DictQuestViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
         }

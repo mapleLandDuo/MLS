@@ -233,7 +233,7 @@ private extension SignUpSecondViewController {
     }
 }
 
-// MARK: - Method
+// MARK: - Methods
 private extension SignUpSecondViewController {
     func didTapNoneAccountButton() {
         setAccountButton(isExist: false)
@@ -260,6 +260,8 @@ private extension SignUpSecondViewController {
         }
     }
     
+    /// 계정이 있으면 추가 정보를 입력하는 accountView를 보여주고 계정이 없으면 descriptionImageView를 보여줌
+    /// - Parameter isExist: 계정이 있으면 true, 없으면 false
     func setAccountButton(isExist: Bool) {
         descriptionMainImageView.isHidden = isExist
         descriptionTailImageView.isHidden = isExist
@@ -327,6 +329,7 @@ private extension SignUpSecondViewController {
         }
     }
     
+    /// 회원가입이 완료되면 rootVC를 변경
     func changeRootViewController() {
         let vc = DictLandingViewController(viewModel: DictLandingViewModel())
         let navigationController = UINavigationController(rootViewController: vc)
@@ -339,11 +342,6 @@ private extension SignUpSecondViewController {
 }
 
 extension SignUpSecondViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // 엔터
-        return true
-    }
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
         textField.superview?.layer.borderWidth = 1

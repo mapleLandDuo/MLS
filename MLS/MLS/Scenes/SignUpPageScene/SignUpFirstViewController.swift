@@ -269,6 +269,7 @@ private extension SignUpFirstViewController {
         }
     }
     
+    /// 개인정보 처리방침을 동의함에 따라 descriptionImageView를 숨기거나 드러냄
     func checkPrivacy() {
         guard let isPrivacyAgree = viewModel.isPrivacyAgree.value else { return }
         descriptionTailImageView.isHidden = isPrivacyAgree
@@ -293,8 +294,8 @@ private extension SignUpFirstViewController {
     }
     
     func checkTextField(state: TextState?, checkField: (TextState) -> Void, blankState: TextState) {
-        if let unwrappedState = state {
-            checkField(unwrappedState)
+        if let state = state {
+            checkField(state)
         } else {
             checkField(blankState)
         }

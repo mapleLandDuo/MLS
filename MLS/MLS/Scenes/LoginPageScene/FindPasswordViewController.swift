@@ -46,7 +46,6 @@ extension FindPasswordViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
-        bind()
     }
 }
 
@@ -104,16 +103,6 @@ private extension FindPasswordViewController {
             }
         }), for: .touchUpInside)
     }
-}
-
-// MARK: - Bind
-private extension FindPasswordViewController {
-    func bind() {}
-}
-
-// MARK: - Method
-private extension FindPasswordViewController {
-    func checkEmail(isCorrect: Bool) {}
 }
 
 extension FindPasswordViewController: UITextFieldDelegate {

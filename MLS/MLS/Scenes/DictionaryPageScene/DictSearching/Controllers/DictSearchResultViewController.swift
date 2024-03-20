@@ -93,6 +93,7 @@ private extension DictSearchResultViewController {
             } else {
                 self.searchResultEmptyView.isHidden = true
             }
+            self.viewModel.reloadingMenuItems()
             self.searchTotalResultTableView.reloadData()
             self.searchMenuTappedResultTableView.reloadData()
             self.searchMenuCollectionView.reloadData()

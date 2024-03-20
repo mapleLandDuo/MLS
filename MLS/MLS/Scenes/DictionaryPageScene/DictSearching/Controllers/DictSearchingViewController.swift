@@ -137,6 +137,7 @@ extension DictSearchingViewController: UICollectionViewDelegateFlowLayout, UICol
         viewModel.recentSearchKeywords.value = cleanKeywords
         viewModel.setOriginData(keyword: keyword)
         viewModel.searchKeyword.value = keyword
+        viewModel.resetFilter()
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         

@@ -123,6 +123,7 @@ extension DictSearchViewController: UITextFieldDelegate {
             viewModel.recentSearchKeywords.value = cleanKeywords
             viewModel.setOriginData(keyword: keyword)
         }
+        viewModel.resetFilter()
         view.endEditing(true)
         return true
     }

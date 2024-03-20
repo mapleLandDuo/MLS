@@ -7,44 +7,19 @@
 
 import Foundation
 
-class DictQuestViewModel {
+class DictQuestViewModel: DictBaseViewModel {
     // MARK: Properties
-    let sqliteManager = SqliteManager()
-    
-    var selectedTab: Observable<Int> = Observable(0)
     var tabMenus = ["정보 & 완료조건","퀘스트 보상","퀘스트 순서"]
-    
-    var selectedName: String?
     
     var selectedQuest: Observable<DictQuest> = Observable(nil)
     
     var completeTableContents = [DictDropContent]()
     
     var rewardTableContents = [DictDropContent]()
-    
-    init(selectedName: String) {
-        self.selectedName = selectedName
-    }
 }
 
 // MARK: Methods
 extension DictQuestViewModel {
-    func fetchMenuIndex() -> Int {
-        guard let index = selectedTab.value else { return 0 }
-        return index
-    }
-    
-    func setMenuIndex(index: Int) {
-        selectedTab.value = index
-    }
-    
-    func fetchQuest() {
-        guard let name = self.selectedName else { return }
-        sqliteManager.searchDetailData(dataName: name) { [weak self] (item: DictQuest) in
-            self?.selectedQuest.value = item
-        }
-    }
-    
     /// 퀘스트의 반복회수와 defaultValues 속성을 DetailContent 타입의 배열로 변경
     /// - Returns: 뷰에 뿌려질 DetailConetent 타입의 배열
     func fetchDefaultInfos() -> [DetailContent]? {

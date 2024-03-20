@@ -65,7 +65,9 @@ private extension DictMapViewController {
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchMap()
+        viewModel.fetchData(type: .map) { [weak self] (map: DictMap?) in
+            self?.viewModel.selectedMap.value = map
+        }
 
         setUpConstraints()
         setUpNavigation(title: "상세정보")

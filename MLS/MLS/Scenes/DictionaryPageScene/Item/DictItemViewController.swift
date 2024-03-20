@@ -66,7 +66,9 @@ private extension DictItemViewController {
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchItem()
+        viewModel.fetchData(type: .item) { [weak self] (item: DictItem?) in
+            self?.viewModel.selectedItem.value = item
+        }
 
         setUpConstraints()
         setUpNavigation(title: "상세정보")

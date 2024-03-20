@@ -67,7 +67,9 @@ private extension DictMonsterViewController {
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchMonster()
+        viewModel.fetchData(type: .monster) { [weak self] (monster: DictMonster?) in
+            self?.viewModel.selectedMonster.value = monster
+        }
 
         setUpConstraints()
         setUpNavigation(title: "상세정보")

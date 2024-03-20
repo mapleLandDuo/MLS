@@ -65,7 +65,9 @@ private extension DictNPCViewController {
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchNPC()
+        viewModel.fetchData(type: .npc) { [weak self] (npc: DictNPC?) in
+            self?.viewModel.selectedNPC.value = npc
+        }
 
         setUpConstraints()
         setUpNavigation(title: "상세정보")

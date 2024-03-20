@@ -7,42 +7,18 @@
 
 import Foundation
 
-class DictItemViewModel {
+class DictItemViewModel: DictBaseViewModel {
     // MARK: Properties
-    let sqliteManager = SqliteManager()
-    
-    var selectedTab: Observable<Int> = Observable(0)
     var tabMenus = ["아이템 정보","세부 정보","드롭 정보"]
-    
-    var selectedName: String?
-    
+
     var selectedItem: Observable<DictItem> = Observable(nil)
     
     var dropTableContents = [DictDropContent]()
-    
-    init(selectedName: String) {
-        self.selectedName = selectedName
-    }
+
 }
 
 // MARK: Methods
 extension DictItemViewModel {
-    func fetchMenuIndex() -> Int {
-        guard let index = selectedTab.value else { return 0 }
-        return index
-    }
-    
-    func setMenuIndex(index: Int) {
-        selectedTab.value = index
-    }
-    
-    func fetchItem() {
-        guard let name = self.selectedName else { return }
-        sqliteManager.searchDetailData(dataName: name) { [weak self] (item: DictItem) in
-            self?.selectedItem.value = item
-        }
-    }
-    
     /// 아이템의 defaultValues와 subCategory 속성을 DetailContent 타입의 배열로 변경
     /// - Returns: 테이블뷰에 띄워주기 위한 DetailContent의 배열
     func fetchDefaultInfos() -> [DetailContent]? {

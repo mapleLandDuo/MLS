@@ -65,10 +65,12 @@ private extension DictMapViewController {
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchMap()
+        viewModel.fetchData(type: .map) { [weak self] (map: DictMap?) in
+            self?.viewModel.selectedMap.value = map
+        }
 
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "상세정보")
     }
 
     func setUpConstraints() {
@@ -94,30 +96,6 @@ extension DictMapViewController {
         viewModel.selectedTab.bind { [weak self] _ in
             self?.dictMapTableView.reloadData()
         }
-    }
-}
-
-// MARK: Methods
-private extension DictMapViewController {
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "상세정보"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.shadowImage = nil
-    }
-
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
 }
 

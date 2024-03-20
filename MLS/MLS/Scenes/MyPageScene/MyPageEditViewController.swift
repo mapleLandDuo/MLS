@@ -77,7 +77,7 @@ private extension MyPageEditViewController {
     
     func setUp() {
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "")
         jobCollectionView.delegate = self
         jobCollectionView.dataSource = self
         jobCollectionView.register(DictSearchJobButtonCell.self, forCellWithReuseIdentifier: DictSearchJobButtonCell.identifier)
@@ -125,15 +125,6 @@ private extension MyPageEditViewController {
             $0.height.equalTo(Constants.spacings.xl_4)
         }
     }
-    
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
-    }
 }
 
 // MARK: - Bind
@@ -176,13 +167,6 @@ private extension MyPageEditViewController {
                 }
             }
         }
-    }
-}
-// MARK: - Methods
-private extension MyPageEditViewController {
-    @objc
-    func didTapBackButton() {
-        self.navigationController?.popViewController(animated: true)
     }
 }
 

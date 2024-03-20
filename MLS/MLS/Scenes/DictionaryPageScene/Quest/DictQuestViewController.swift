@@ -67,10 +67,12 @@ private extension DictQuestViewController {
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchQuest()
+        viewModel.fetchData(type: .quest) { [weak self] (quest: DictQuest?) in
+            self?.viewModel.selectedQuest.value = quest
+        }
 
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "상세정보")
     }
 
     func setUpConstraints() {
@@ -96,30 +98,6 @@ private extension DictQuestViewController {
         viewModel.selectedTab.bind { [weak self] _ in
             self?.dictQuestTableView.reloadData()
         }
-    }
-}
-
-// MARK: Methods
-private extension DictQuestViewController {
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "상세정보"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.shadowImage = nil
-    }
-
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -288,7 +266,7 @@ extension DictQuestViewController: DictMonsterDropCellDelegate {
 extension DictQuestViewController: DictQuestOrderCellDelegate {
     func didTapQuestCell(title: String) {
         if title != viewModel.selectedQuest.value?.currentQuest {
-            let vm = DictQuestViewModel(selectedName: title)
+            let vm = DictQuestViewModel(selectedName: title.trimmingCharacters(in: .whitespaces))
             let vc = DictQuestViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
         }

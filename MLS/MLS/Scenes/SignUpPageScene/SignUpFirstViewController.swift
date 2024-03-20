@@ -107,7 +107,7 @@ private extension SignUpFirstViewController {
         secondPwTextField.textField.delegate = self
         
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "회원가입")
         setUpActions()
     }
         
@@ -180,21 +180,6 @@ private extension SignUpFirstViewController {
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.xl)
             $0.height.equalTo(56)
         }
-    }
-    
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "회원가입"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-        
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
     }
     
     func setUpActions() {
@@ -284,6 +269,7 @@ private extension SignUpFirstViewController {
         }
     }
     
+    /// 개인정보 처리방침을 동의함에 따라 descriptionImageView를 숨기거나 드러냄
     func checkPrivacy() {
         guard let isPrivacyAgree = viewModel.isPrivacyAgree.value else { return }
         descriptionTailImageView.isHidden = isPrivacyAgree
@@ -296,7 +282,7 @@ private extension SignUpFirstViewController {
     }
     
     func checkFirstPwField(state: TextState) {
-        firstPwTextField.setPasswordFooter(checkPassword: viewModel.checkPassword, state: state)
+        firstPwTextField.setPasswordFooter(checkPassword: viewModel.checkPassword)
         if state == .pwBlank {
             firstPwTextField.checkState(state: state, isCorrect: false)
         }
@@ -308,8 +294,8 @@ private extension SignUpFirstViewController {
     }
     
     func checkTextField(state: TextState?, checkField: (TextState) -> Void, blankState: TextState) {
-        if let unwrappedState = state {
-            checkField(unwrappedState)
+        if let state = state {
+            checkField(state)
         } else {
             checkField(blankState)
         }
@@ -323,11 +309,6 @@ private extension SignUpFirstViewController {
             color = UIColor.semanticColor.bolder.distructive_bold
         }
         textField.superview?.layer.borderColor = color?.cgColor
-    }
-    
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
 }
 

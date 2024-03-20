@@ -114,6 +114,7 @@
 		08F95DFD2B8E18A300AD79DF /* DictSearchFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DFC2B8E18A300AD79DF /* DictSearchFilterViewController.swift */; };
 		08F95DFF2B8E1C0A00AD79DF /* DictSearchSortedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DFE2B8E1C0A00AD79DF /* DictSearchSortedViewController.swift */; };
 		77017A7B2B97675400D60411 /* mlsDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 77017A792B97674200D60411 /* mlsDatabase.db */; };
+		770411A72BAAE003007BEA18 /* DictBaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770411A62BAAE003007BEA18 /* DictBaseViewModel.swift */; };
 		770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */; };
 		77082A4C2B63A2C300187906 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A4B2B63A2C300187906 /* Comment.swift */; };
 		770848952B88971B008B68E1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848942B88971B008B68E1 /* FindPasswordViewController.swift */; };
@@ -258,6 +259,7 @@
 		08F95DFC2B8E18A300AD79DF /* DictSearchFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchFilterViewController.swift; sourceTree = "<group>"; };
 		08F95DFE2B8E1C0A00AD79DF /* DictSearchSortedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchSortedViewController.swift; sourceTree = "<group>"; };
 		77017A792B97674200D60411 /* mlsDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = mlsDatabase.db; sourceTree = "<group>"; };
+		770411A62BAAE003007BEA18 /* DictBaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictBaseViewModel.swift; sourceTree = "<group>"; };
 		7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSeparatorType.swift; sourceTree = "<group>"; };
 		77082A4B2B63A2C300187906 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		770848942B88971B008B68E1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 				7719DD402B93564D003797F4 /* Map */,
 				7719DD4D2B93955D003797F4 /* NPC */,
 				7724EF572B94483200C59FE6 /* Quest */,
+				770411A62BAAE003007BEA18 /* DictBaseViewModel.swift */,
 			);
 			path = DictionaryPageScene;
 			sourceTree = "<group>";
@@ -1030,6 +1033,7 @@
 				77A280912B73B8BD0079D0EB /* DictionaryQuest.swift in Sources */,
 				087D25242B936F5700A998E4 /* AlertManager.swift in Sources */,
 				08D5F0EE2B820F6000E56482 /* InquireButton.swift in Sources */,
+				770411A72BAAE003007BEA18 /* DictBaseViewModel.swift in Sources */,
 				08F95DFD2B8E18A300AD79DF /* DictSearchFilterViewController.swift in Sources */,
 				77F358FC2B95EF6500B0C5A2 /* PopularViewController.swift in Sources */,
 				7719DD422B935664003797F4 /* DictMapViewController.swift in Sources */,

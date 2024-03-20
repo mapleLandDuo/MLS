@@ -114,7 +114,7 @@ private extension SignUpSecondViewController {
         accountView.delegate = self
         
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "회원가입")
         setUpActions()
     }
         
@@ -182,21 +182,6 @@ private extension SignUpSecondViewController {
         }
     }
     
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "회원가입"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-        
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
-    }
-    
     func setUpActions() {
         noneAccountButton.addAction(UIAction(handler: { [weak self] _ in
             self?.didTapNoneAccountButton()
@@ -248,7 +233,7 @@ private extension SignUpSecondViewController {
     }
 }
 
-// MARK: - Method
+// MARK: - Methods
 private extension SignUpSecondViewController {
     func didTapNoneAccountButton() {
         setAccountButton(isExist: false)
@@ -275,6 +260,8 @@ private extension SignUpSecondViewController {
         }
     }
     
+    /// 계정이 있으면 추가 정보를 입력하는 accountView를 보여주고 계정이 없으면 descriptionImageView를 보여줌
+    /// - Parameter isExist: 계정이 있으면 true, 없으면 false
     func setAccountButton(isExist: Bool) {
         descriptionMainImageView.isHidden = isExist
         descriptionTailImageView.isHidden = isExist
@@ -342,6 +329,7 @@ private extension SignUpSecondViewController {
         }
     }
     
+    /// 회원가입이 완료되면 rootVC를 변경
     func changeRootViewController() {
         let vc = DictLandingViewController(viewModel: DictLandingViewModel())
         let navigationController = UINavigationController(rootViewController: vc)
@@ -351,19 +339,9 @@ private extension SignUpSecondViewController {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
-    
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
 }
 
 extension SignUpSecondViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // 엔터
-        return true
-    }
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
         textField.superview?.layer.borderWidth = 1

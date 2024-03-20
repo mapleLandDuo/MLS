@@ -73,7 +73,7 @@ private extension PopularViewController {
         infoMenuCollectionView.dataSource = self
 
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "인기 TOP")
     }
 
     func setUpConstraints() {
@@ -109,7 +109,9 @@ extension PopularViewController {
 
 // MARK: Methods
 extension PopularViewController {
-    func setUpNavigation() {
+    /// 네비게이션바의 타이틀을 attributedString으로 설정
+    /// - Parameter title: 사용하지 않지만 override를 위해 입력
+    override func setUpNavigation(title: String) {
         let rightSpacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
         let searchImage = UIImage(systemName: "magnifyingglass")?.withRenderingMode(.alwaysTemplate)
@@ -134,15 +136,11 @@ extension PopularViewController {
     }
 
     @objc
+    /// 검색버튼을 눌러서 SearchVC로 이동
     func didTapSearchButton() {
         let vm = DictSearchViewModel()
         let vc = DictSearchViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
-    }
-
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
 }
 

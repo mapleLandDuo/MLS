@@ -133,6 +133,10 @@ private extension CustomTextField {
 
 // MARK: - Methods
 extension CustomTextField {
+    /// textField의 유효성 검사에 따라 테두리 색상과 footer 유무 설정
+    /// - Parameters:
+    ///   - state: textField의 상태
+    ///   - isCorrect: footer의 유무
     func checkState(state: TextState, isCorrect: Bool) {
         self.state = state
         switch state {
@@ -151,6 +155,7 @@ extension CustomTextField {
         contentView.layer.borderColor = isCorrect ? UIColor.semanticColor.bolder.interactive.secondary?.cgColor : UIColor.semanticColor.bolder.distructive?.cgColor
     }
     
+    /// 비밀번호 textField의 비밀번호 보이기 / 안보이기 설정
     private func changeAdditionalButton() {
         switch type {
         case .normal:
@@ -168,12 +173,19 @@ extension CustomTextField {
             }
         }
     }
+    /**
     
+    */
+    /// textField가 클릭되지 않으면 additional 버튼을 hidden하기 위한 메소드
+    /// - Parameter text: 클릭된 textField의 텍스트
     private func setAdditional(text: String) {
         additionalButton.isHidden = text == "" ? true : false
     }
-
-    func setPasswordFooter(checkPassword: [Bool], state: TextState) {
+    
+    /// 비밀번호 유효성 검사에 따라 footer의 텍스트를 변경
+    /// - Parameters:
+    ///   - checkPassword: 유효성 검사의 종류
+    func setPasswordFooter(checkPassword: [Bool]) {
         footerLabel.isHidden = false
 
         let greenAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.semanticColor.text.success_bold ?? UIColor.white]
@@ -216,6 +228,7 @@ extension CustomTextField {
         footerLabel.attributedText = attributedString
     }
     
+    /// 레벨을 입력받는 textField의 footer 설정
     func setLevelField() {
         footerLabel.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
         footerLabel.textColor = .semanticColor.text.secondary

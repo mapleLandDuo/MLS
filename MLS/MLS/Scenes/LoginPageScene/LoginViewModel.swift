@@ -18,6 +18,11 @@ class LoginViewModel {
 
 // MARK: - Methods
 extension LoginViewModel {
+    /// 로그인 요청을 보내는 메소드
+    /// - Parameters:
+    ///   - email: 이메일
+    ///   - password: 비밀번호
+    ///   - completion: 이메일 textField와 비밀번호 textField의 유효성 검사 결과를 completion으로 넘겨줌
     func trySignIn(email: String, password: String, completion: @escaping ((TextState, TextState)) -> Void) {
         var result: (TextState, TextState) = (.default, .default)
 
@@ -59,6 +64,10 @@ extension LoginViewModel {
         }
     }
     
+    /// 이메일 유효성 검사이후 버튼의 활성화 상태를 리턴
+    /// - Parameters:
+    ///   - email: 이메일
+    ///   - completion: 버튼 활성화 상태를 리턴
     func checkEmailValidation(email: String, completion: @escaping (CustomButtonType) -> Void) {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)

@@ -65,10 +65,12 @@ private extension DictNPCViewController {
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchNPC()
+        viewModel.fetchData(type: .npc) { [weak self] (npc: DictNPC?) in
+            self?.viewModel.selectedNPC.value = npc
+        }
 
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "상세정보")
     }
 
     func setUpConstraints() {
@@ -90,30 +92,6 @@ extension DictNPCViewController {
         viewModel.selectedTab.bind { [weak self] _ in
             self?.dictNPCTableView.reloadData()
         }
-    }
-}
-
-// MARK: Methods
-private extension DictNPCViewController {
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "상세정보"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.shadowImage = nil
-    }
-
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
 }
 

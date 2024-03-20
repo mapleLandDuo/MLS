@@ -16,6 +16,7 @@ class DictDescriptionCell: UITableViewCell {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .regular)
         label.textColor = .semanticColor.text.primary
+        label.textAlignment = .left
         return label
     }()
 
@@ -24,6 +25,7 @@ class DictDescriptionCell: UITableViewCell {
         label.font = .customFont(fontSize: .body_md, fontType: .semiBold)
         label.textColor = .semanticColor.text.primary
         label.adjustsFontSizeToFitWidth = true
+        label.textAlignment = .right
         return label
     }()
     

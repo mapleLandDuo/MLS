@@ -123,6 +123,10 @@ extension SignUpFirstViewModel {
             firstPwState.value = .complete
     }
     
+    /// 비밀번호 재확인 메소드
+    /// - Parameters:
+    ///   - password: 비밀번호
+    ///   - checkPassword: 재확인 비밀번호
     func reCheckPassword(password: String, checkPassword: String) {
         if password == "" {
             secondPwState.value = .pwBlank
@@ -135,7 +139,9 @@ extension SignUpFirstViewModel {
             secondPwState.value = .pwNotCorrect
         }
     }
-
+    
+    /// 올바른 모든 정보를 입력받았는지를 확인하는 메소드
+    /// - Returns: 올바른 모든 정보면 true, 부족한 정보가 있으면 false
     func isValidSignUp() -> Bool {
         if emailState.value == .complete && checkPassword.allSatisfy({ $0 == true }) && isPrivacyAgree.value == true {
             return true

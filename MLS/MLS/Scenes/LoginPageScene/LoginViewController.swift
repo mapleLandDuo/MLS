@@ -197,7 +197,7 @@ private extension LoginViewController {
     }
 }
 
-// MARK: - Method
+// MARK: - Methods
 private extension LoginViewController {
     func didTapAutoLoginButton() {
         viewModel.isAutoLogin.value?.toggle()

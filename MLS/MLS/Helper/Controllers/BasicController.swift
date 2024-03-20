@@ -67,6 +67,8 @@ extension BasicController {
     }
     
     @objc
+    /// 네비게이션바 뒤로가기버튼, 타이틀 설정
+    /// - Parameter title: 타이틀에 들어갈 문자열
     func setUpNavigation(title: String) {
         let spacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)

@@ -371,13 +371,12 @@ extension DictSearchResultViewController: UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        switch tableView {
-        case self.searchTotalResultTableView:
+        if viewModel.fetchSelectedMenuType() == .total {
             let datas = viewModel.fetchTotalSearchData()
             let view = DictSectionHeaderView(sectionDatas: datas[section])
             view.delegate = self
             return view
-        default :
+        } else {
             let view = DictSearchFilterHeaderView(
                 selectedMenuIndex: viewModel.fetchSelectedMenuTypeToIndex(),
                 sorted: viewModel.fetchSortedEnum(type: viewModel.fetchSelectedMenuType())

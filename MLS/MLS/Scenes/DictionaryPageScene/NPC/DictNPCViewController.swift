@@ -101,7 +101,7 @@ extension DictNPCViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
+//        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedNPC.value else { return UITableViewCell() }
@@ -110,7 +110,7 @@ extension DictNPCViewController: UITableViewDelegate, UITableViewDataSource {
             cell.bind(item: item)
             return cell
         } else {
-            switch selectedTab {
+            switch viewModel.selectedTab.value {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
                 cell.delegate = self

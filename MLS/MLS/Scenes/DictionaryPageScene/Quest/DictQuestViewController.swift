@@ -120,7 +120,7 @@ extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
+//        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedQuest.value else { return UITableViewCell() }
@@ -129,7 +129,7 @@ extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
             cell.bind(item: item)
             return cell
         } else if indexPath.section == 1 {
-            switch selectedTab {
+            switch viewModel.selectedTab.value {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
                       let items = viewModel.fetchDefaultInfos() else { return UITableViewCell() }
@@ -152,7 +152,7 @@ extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
         } else {
-            switch selectedTab {
+            switch viewModel.selectedTab.value {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
                 cell.delegate = self

@@ -11,5 +11,5 @@ class DictNPCViewModel: DictBaseViewModel {
     // MARK: Properties
     var tabMenus = ["출현 장소","수락 퀘스트"]
     
-    var selectedNPC: Observable<DictNPC> = Observable(nil)
+    var selectedNPC: TempObservable<DictNPC> = TempObservable(nil)
 }

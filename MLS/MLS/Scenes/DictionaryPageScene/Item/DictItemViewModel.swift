@@ -11,7 +11,7 @@ class DictItemViewModel: DictBaseViewModel {
     // MARK: Properties
     var tabMenus = ["아이템 정보","세부 정보","드롭 정보"]
 
-    var selectedItem: Observable<DictItem> = Observable(nil)
+    var selectedItem: TempObservable<DictItem> = TempObservable(nil)
     
     var dropTableContents = [DictDropContent]()
 

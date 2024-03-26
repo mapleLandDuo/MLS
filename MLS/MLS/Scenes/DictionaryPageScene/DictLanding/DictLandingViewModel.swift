@@ -10,7 +10,7 @@ import UIKit
 class DictLandingViewModel {
     // MARK: - Properties
 
-    let sectionHeaderInfos: Observable<[DictSectionDatas]> = Observable([
+    let sectionHeaderInfos: TempObservable<[DictSectionDatas]> = TempObservable([
         DictSectionDatas(iconImage: UIImage(named: "fireIcon"), description: "사람들이 많이 찾는 아이템", datas: []),
         DictSectionDatas(iconImage: UIImage(named: "monsterIcon"), description: "사람들이 많이 찾는 몬스터", datas: []),
     ])

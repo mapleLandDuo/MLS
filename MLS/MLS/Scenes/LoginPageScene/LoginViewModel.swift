@@ -13,7 +13,7 @@ class LoginViewModel {
     // MARK: - Properties
     var userDefaultManager = UserDefaultsManager()
 
-    var isAutoLogin: Observable<Bool> = Observable(false)
+    var isAutoLogin: TempObservable<Bool> = TempObservable(false)
 }
 
 // MARK: - Methods

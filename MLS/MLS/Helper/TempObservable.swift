@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Observable<T> {
+class TempObservable<T> {
     var value: T? {
         didSet {
             listener?(value)

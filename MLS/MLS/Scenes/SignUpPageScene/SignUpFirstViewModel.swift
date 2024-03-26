@@ -11,12 +11,12 @@ import Firebase
 
 class SignUpFirstViewModel {
     // MARK: Properties
-    var emailState: Observable<TextState> = Observable(nil)
-    var firstPwState: Observable<TextState> = Observable(nil)
-    var secondPwState: Observable<TextState> = Observable(nil)
+    var emailState: TempObservable<TextState> = TempObservable(nil)
+    var firstPwState: TempObservable<TextState> = TempObservable(nil)
+    var secondPwState: TempObservable<TextState> = TempObservable(nil)
     
     var isCorrect = false
-    var isPrivacyAgree: Observable<Bool> = Observable(false)
+    var isPrivacyAgree: TempObservable<Bool> = TempObservable(false)
     
     var checkPassword = [false, false, false, false]
     var rePassword: String?

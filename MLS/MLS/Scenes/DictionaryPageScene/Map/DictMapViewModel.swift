@@ -11,7 +11,7 @@ class DictMapViewModel: DictBaseViewModel {
     // MARK: Properties
     var tabMenus = ["출현 몬스터","NPC"]
     
-    var selectedMap: Observable<DictMap> = Observable(nil)
+    var selectedMap: TempObservable<DictMap> = TempObservable(nil)
     
     var apearMonsterContents = [DictDropContent]()
     

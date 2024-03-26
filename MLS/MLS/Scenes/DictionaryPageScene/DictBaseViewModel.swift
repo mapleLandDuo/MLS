@@ -10,7 +10,7 @@ import Foundation
 class DictBaseViewModel {
     let sqliteManager = SqliteManager()
     var selectedName: String?
-    var selectedTab: Observable<Int> = Observable(0)
+    var selectedTab: TempObservable<Int> = TempObservable(0)
     
     init(selectedName: String) {
         self.selectedName = selectedName

@@ -11,10 +11,10 @@ import FirebaseAuth
 
 class SignUpSecondViewModel {
     // MARK: Properties
-    var nickNameState: Observable<TextState> = Observable(.default)
-    var levelState: Observable<TextState> = Observable(.default)
-    var isAccountExist: Observable<Bool> = Observable(nil)
-    var job: Observable<Job> = Observable(nil)
+    var nickNameState: TempObservable<TextState> = TempObservable(.default)
+    var levelState: TempObservable<TextState> = TempObservable(.default)
+    var isAccountExist: TempObservable<Bool> = TempObservable(nil)
+    var job: TempObservable<Job> = TempObservable(nil)
 
     var user = User(id: "", nickName: "", state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
     var password = ""

@@ -11,11 +11,11 @@ class DictMonsterViewModel: DictBaseViewModel {
     // MARK: Properties
     var tabMenus = ["몬스터 정보","출현 장소","드롭 정보"]
 
-    var selectedMonster: Observable<DictMonster> = Observable(nil)
+    var selectedMonster: TempObservable<DictMonster> = TempObservable(nil)
     
     var dropTableContents = [DictDropContent]()
     
-    var totalTextSize: Observable<CGFloat> = Observable(0.0)
+    var totalTextSize: TempObservable<CGFloat> = TempObservable(0.0)
 }
 
 // MARK: Methods

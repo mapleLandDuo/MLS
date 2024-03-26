@@ -22,7 +22,7 @@ class DictDBViewModel {
     var filterNpcData: [DictNPC] = []
     var filterQuestData: [DictQuest] = []
     
-    let searchData: Observable<[DictSectionDatas]> = Observable([
+    let searchData: TempObservable<[DictSectionDatas]> = TempObservable([
         DictSectionDatas(iconImage: UIImage(named: "monsterIcon"), description: "몬스터", datas: []),
         DictSectionDatas(iconImage: UIImage(named: "itemIcon"), description: "아이템", datas: []),
         DictSectionDatas(iconImage: UIImage(named: "mapIcon"), description: "맵", datas: []),

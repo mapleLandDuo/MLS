@@ -9,12 +9,12 @@ import Foundation
 
 class PopularViewModel {
     // MARK: Properties
-    var selectedTab: Observable<Int> = Observable(0)
+    var selectedTab: TempObservable<Int> = TempObservable(0)
     var tabMenus = ["인기 아이템", "인기 몬스터"]
     
-    let datas: Observable<[DictSectionDatas]> = Observable(nil)
+    let datas: TempObservable<[DictSectionDatas]> = TempObservable(nil)
     
-    let title: Observable<String> = Observable(nil)
+    let title: TempObservable<String> = TempObservable(nil)
     
     init(datas: [DictSectionDatas], title: String?) {
         self.datas.value = datas

@@ -16,7 +16,7 @@ protocol DictHorizontalSectionTableViewCellDelegate: BasicController {
 class DictHorizontalSectionTableViewCell: UITableViewCell {
     // MARK: - Properties
     
-    private var datas: Observable<[DictSectionData]> = Observable([])
+    private var datas: TempObservable<[DictSectionData]> = TempObservable([])
 
     weak var delegate: DictHorizontalSectionTableViewCellDelegate?
     

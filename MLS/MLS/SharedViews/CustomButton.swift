@@ -23,9 +23,9 @@ class CustomButton: UIButton {
     private var clickedBorderColor: UIColor?
     private var clickedTitleColor: UIColor?
     
-    var isClicked: Observable<Bool> = Observable(false)
+    var isClicked: TempObservable<Bool> = TempObservable(false)
     
-    var type: Observable<CustomButtonType> = Observable(.default)
+    var type: TempObservable<CustomButtonType> = TempObservable(.default)
     
     init(type: CustomButtonType, text: String, borderColor: UIColor? = .semanticColor.bolder.secondary, radius: CGFloat = 12) {
         super.init(frame: .zero)

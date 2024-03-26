@@ -9,10 +9,10 @@ import Foundation
 
 class MyPageEditViewModel {
     
-    let nickNameState: Observable<TextState> = Observable(.default)
-    let levelState: Observable<TextState> = Observable(.default)
-    let jobState: Observable<Job?> = Observable(nil)
-    let buttonState: Observable<Bool> = Observable(false)
+    let nickNameState: TempObservable<TextState> = TempObservable(.default)
+    let levelState: TempObservable<TextState> = TempObservable(.default)
+    let jobState: TempObservable<Job?> = TempObservable(nil)
+    let buttonState: TempObservable<Bool> = TempObservable(false)
     var user: User
     private var originNickName: String
     

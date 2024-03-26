@@ -102,7 +102,7 @@
 		08EF650A2B540A4A004CC842 /* FontsSizeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65092B540A4A004CC842 /* FontsSizeEnum.swift */; };
 		08EF65122B554710004CC842 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65112B554710004CC842 /* UILabel+.swift */; };
 		08EF65142B554722004CC842 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65132B554722004CC842 /* UIColor+.swift */; };
-		08EF65242B5572E3004CC842 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65232B5572E3004CC842 /* Observable.swift */; };
+		08EF65242B5572E3004CC842 /* TempObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65232B5572E3004CC842 /* TempObservable.swift */; };
 		08F95DBC2B89E50900AD79DF /* DictSearchDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DBB2B89E50900AD79DF /* DictSearchDataCell.swift */; };
 		08F95DBE2B89F0BD00AD79DF /* DictSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DBD2B89F0BD00AD79DF /* DictSectionHeaderView.swift */; };
 		08F95DC12B8A06BA00AD79DF /* DictSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DC02B8A06BA00AD79DF /* DictSearchEmptyView.swift */; };
@@ -165,6 +165,10 @@
 		77DBAE882BA02BCF0092E140 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C7D2B53D26800D84CE2 /* Constants.swift */; };
 		77DBAE892BA02BE00092E140 /* SignUpAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EF8D82B879A84006CA0AB /* SignUpAccountView.swift */; };
 		77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF47582B5CD63800181D35 /* FirebaseManager.swift */; };
+		77F221002BB263F700335EDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77F220FF2BB263F700335EDD /* GoogleService-Info.plist */; };
+		77F221032BB264F400335EDD /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 77F221022BB264F400335EDD /* RxCocoa */; };
+		77F221052BB264F400335EDD /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 77F221042BB264F400335EDD /* RxRelay */; };
+		77F221072BB264F400335EDD /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 77F221062BB264F400335EDD /* RxSwift */; };
 		77F358FC2B95EF6500B0C5A2 /* PopularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */; };
 		77F358FE2B95EF7000B0C5A2 /* PopularViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */; };
 		77F359012B95F4D600B0C5A2 /* PopularTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F359002B95F4D600B0C5A2 /* PopularTableViewCell.swift */; };
@@ -247,7 +251,7 @@
 		08EF65092B540A4A004CC842 /* FontsSizeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsSizeEnum.swift; sourceTree = "<group>"; };
 		08EF65112B554710004CC842 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		08EF65132B554722004CC842 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
-		08EF65232B5572E3004CC842 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		08EF65232B5572E3004CC842 /* TempObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempObservable.swift; sourceTree = "<group>"; };
 		08F95DBB2B89E50900AD79DF /* DictSearchDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchDataCell.swift; sourceTree = "<group>"; };
 		08F95DBD2B89F0BD00AD79DF /* DictSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSectionHeaderView.swift; sourceTree = "<group>"; };
 		08F95DC02B8A06BA00AD79DF /* DictSearchEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchEmptyView.swift; sourceTree = "<group>"; };
@@ -307,6 +311,7 @@
 		77A280902B73B8BD0079D0EB /* DictionaryQuest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryQuest.swift; sourceTree = "<group>"; };
 		77B6DB722B692A3E00302173 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		77EF47582B5CD63800181D35 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		77F220FF2BB263F700335EDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewController.swift; sourceTree = "<group>"; };
 		77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewModel.swift; sourceTree = "<group>"; };
 		77F359002B95F4D600B0C5A2 /* PopularTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularTableViewCell.swift; sourceTree = "<group>"; };
@@ -319,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				082D0C742B53CFFE00D84CE2 /* Kanna in Frameworks */,
+				77F221052BB264F400335EDD /* RxRelay in Frameworks */,
 				082D0C5D2B53CFC800D84CE2 /* FirebaseDatabaseSwift in Frameworks */,
 				082D0C3E2B53CF7500D84CE2 /* Kingfisher in Frameworks */,
 				082D0C4B2B53CFC800D84CE2 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
@@ -328,6 +334,8 @@
 				082D0C462B53CF9B00D84CE2 /* IQKeyboardManagerSwift in Frameworks */,
 				082D0C712B53CFC800D84CE2 /* FirebaseMLModelDownloader in Frameworks */,
 				082D0C652B53CFC800D84CE2 /* FirebaseFirestoreSwift in Frameworks */,
+				77F221032BB264F400335EDD /* RxCocoa in Frameworks */,
+				77F221072BB264F400335EDD /* RxSwift in Frameworks */,
 				082D0C612B53CFC800D84CE2 /* FirebaseFirestore in Frameworks */,
 				082D0C672B53CFC800D84CE2 /* FirebaseFunctions in Frameworks */,
 				082D0C412B53CF8A00D84CE2 /* SnapKit in Frameworks */,
@@ -440,7 +448,7 @@
 				082D0C7C2B53D24400D84CE2 /* Controllers */,
 				082D0C7D2B53D26800D84CE2 /* Constants.swift */,
 				08EF65092B540A4A004CC842 /* FontsSizeEnum.swift */,
-				08EF65232B5572E3004CC842 /* Observable.swift */,
+				08EF65232B5572E3004CC842 /* TempObservable.swift */,
 				08D5F1062B86156200E56482 /* PopUpMaker.swift */,
 				08B72F3F2BAAA5AE00CA11C0 /* DictDBViewModel.swift */,
 			);
@@ -460,6 +468,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				77F220FF2BB263F700335EDD /* GoogleService-Info.plist */,
 				77017A792B97674200D60411 /* mlsDatabase.db */,
 				08D2A3DC2B9645E900E236D1 /* GIF */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
@@ -843,6 +852,9 @@
 				082D0C732B53CFFE00D84CE2 /* Kanna */,
 				77C1ED082B614E74003179B4 /* FirebaseStorage */,
 				7709A48A2B83B784005DD264 /* SQLite */,
+				77F221022BB264F400335EDD /* RxCocoa */,
+				77F221042BB264F400335EDD /* RxRelay */,
+				77F221062BB264F400335EDD /* RxSwift */,
 			);
 			productName = MLS;
 			productReference = 082D0C252B53CF4600D84CE2 /* MLS.app */;
@@ -880,6 +892,7 @@
 				082D0C472B53CFC800D84CE2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				082D0C722B53CFFE00D84CE2 /* XCRemoteSwiftPackageReference "Kanna" */,
 				7709A4892B83B784005DD264 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+				77F221012BB264F400335EDD /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 082D0C262B53CF4600D84CE2 /* Products */;
 			projectDirPath = "";
@@ -897,6 +910,7 @@
 			files = (
 				774FB6B32BA1447000F8C675 /* Assets.xcassets in Resources */,
 				77017A7B2B97675400D60411 /* mlsDatabase.db in Resources */,
+				77F221002BB263F700335EDD /* GoogleService-Info.plist in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
 				08CEA7242B972AC00060EC82 /* launchScreen.gif in Resources */,
 				08D5F0E62B81F3A800E56482 /* Pretendard-Bold.otf in Resources */,
@@ -978,7 +992,7 @@
 				7724EF592B94485600C59FE6 /* DictQuestViewController.swift in Sources */,
 				77F359012B95F4D600B0C5A2 /* PopularTableViewCell.swift in Sources */,
 				7719DD442B9356CA003797F4 /* DictMapViewModel.swift in Sources */,
-				08EF65242B5572E3004CC842 /* Observable.swift in Sources */,
+				08EF65242B5572E3004CC842 /* TempObservable.swift in Sources */,
 				08CB4E572B8F375300336FE6 /* DictSectionDatas.swift in Sources */,
 				08D50A802B5EB56E00E94442 /* User.swift in Sources */,
 				77A2808F2B73B8B40079D0EB /* DictionaryNPC.swift in Sources */,
@@ -1317,6 +1331,14 @@
 				kind = branch;
 			};
 		};
+		77F221012BB264F400335EDD /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1454,6 +1476,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 082D0C472B53CFC800D84CE2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		77F221022BB264F400335EDD /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77F221012BB264F400335EDD /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		77F221042BB264F400335EDD /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77F221012BB264F400335EDD /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		77F221062BB264F400335EDD /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77F221012BB264F400335EDD /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

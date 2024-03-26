@@ -11,7 +11,7 @@ class DictSearchViewModel: DictDBViewModel {
     // MARK: - Properties
     let manager = UserDefaultsManager()
     
-    lazy var recentSearchKeywords: Observable<[String]> = Observable(manager.fetchRecentSearchKeyWord())
+    lazy var recentSearchKeywords: TempObservable<[String]> = TempObservable(manager.fetchRecentSearchKeyWord())
     
     var menuItems: [DictMenuItem] = [
         DictMenuItem(type: .total, count: 0),
@@ -22,9 +22,9 @@ class DictSearchViewModel: DictDBViewModel {
         DictMenuItem(type: .quest, count: 0),
     ]
     
-    var selectedMenuType:Observable<DictMenuTypeEnum> = Observable(.total)
+    var selectedMenuType:TempObservable<DictMenuTypeEnum> = TempObservable(.total)
     
-    var searchKeyword: Observable<String> = Observable("")
+    var searchKeyword: TempObservable<String> = TempObservable("")
 }
 
 extension DictSearchViewModel {

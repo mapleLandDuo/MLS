@@ -8,15 +8,23 @@
 import Foundation
 
 import Firebase
+import RxCocoa
+import RxSwift
 
 class SignUpFirstViewModel {
     // MARK: Properties
-    var emailState: TempObservable<TextState> = TempObservable(nil)
-    var firstPwState: TempObservable<TextState> = TempObservable(nil)
-    var secondPwState: TempObservable<TextState> = TempObservable(nil)
+//    var emailState: TempObservable<TextState> = TempObservable(nil)
+//    var firstPwState: TempObservable<TextState> = TempObservable(nil)
+//    var secondPwState: TempObservable<TextState> = TempObservable(nil)
+    var emailState = BehaviorRelay<TextState?>(value: nil)
+    var firstPwState = BehaviorRelay<TextState?>(value: nil)
+    var secondPwState = BehaviorRelay<TextState?>(value: nil)
+    
+    let disposeBag = DisposeBag()
     
     var isCorrect = false
-    var isPrivacyAgree: TempObservable<Bool> = TempObservable(false)
+//    var isPrivacyAgree: TempObservable<Bool> = TempObservable(false)
+    var isPrivacyAgree = BehaviorRelay<Bool>(value: false)
     
     var checkPassword = [false, false, false, false]
     var rePassword: String?
@@ -26,7 +34,7 @@ class SignUpFirstViewModel {
 extension SignUpFirstViewModel {
     func checkEmail(email: String) {
         if email == "" {
-            emailState.value = .emailBlank
+            emailState.accept(.emailBlank)
             isCorrect = false
             return
         }
@@ -41,25 +49,25 @@ extension SignUpFirstViewModel {
                     guard let safeData = data else { return }
                     if safeData.documents.map({ $0.documentID }).contains(email) {
                         self?.isCorrect = false
-                        self?.emailState.value = .emailExist
+                        self?.emailState.accept(.emailExist)
                         return
                     } else {
                         self?.isCorrect = true
-                        self?.emailState.value = .complete
+                        self?.emailState.accept(.complete)
                         return
                     }
                 }
             }
         } else {
             isCorrect = false
-            emailState.value = .emailCheck
+            emailState.accept(.emailCheck)
             return
         }
     }
 
     func checkPassword(password: String) {
             if password == "" {
-                firstPwState.value = .pwBlank
+                firstPwState.accept(.pwBlank)
                 rePassword = password
                 return
             }
@@ -69,11 +77,11 @@ extension SignUpFirstViewModel {
             if lengthtesting.evaluate(with: password) == false {
                 checkPassword[0] = false
                 rePassword = password
-                firstPwState.value = .pwOutOfBounds
+                firstPwState.accept(.pwOutOfBounds)
             } else {
                 checkPassword[0] = true
                 rePassword = password
-                firstPwState.value = .pwOutOfBounds
+                firstPwState.accept(.pwOutOfBounds)
             }
 
             let specialCharactersPattern = ".*[$@$!%#?&].*"
@@ -83,11 +91,11 @@ extension SignUpFirstViewModel {
                 if regex.firstMatch(in: password, options: [], range: range) != nil {
                     checkPassword[1] = true
                     rePassword = password
-                    firstPwState.value = .pwNotSymbol
+                    firstPwState.accept(.pwNotSymbol)
                 } else {
                     checkPassword[1] = false
                     rePassword = password
-                    firstPwState.value = .pwNotSymbol
+                    firstPwState.accept(.pwNotSymbol)
                 }
             } catch {
                 print("Invalid regex: \(error.localizedDescription)")
@@ -97,30 +105,30 @@ extension SignUpFirstViewModel {
             if password.rangeOfCharacter(from: numbers) == nil {
                 checkPassword[2] = false
                 rePassword = password
-                firstPwState.value = .pwNotInt
+                firstPwState.accept(.pwNotInt)
             } else {
                 checkPassword[2] = true
                 rePassword = password
-                firstPwState.value = .pwNotInt
+                firstPwState.accept(.pwNotInt)
             }
 
             let letters = CharacterSet.letters
             if password.rangeOfCharacter(from: letters) == nil {
                 checkPassword[3] = false
                 rePassword = password
-                firstPwState.value = .pwNotENG
+                firstPwState.accept(.pwNotENG)
             } else {
                 checkPassword[3] = true
                 rePassword = password
-                firstPwState.value = .pwNotENG
+                firstPwState.accept(.pwNotENG)
             }
 
             if checkPassword.allSatisfy({ $0 == true }) {
                 rePassword = password
-                firstPwState.value = .complete
+                firstPwState.accept(.complete)
             }
 
-            firstPwState.value = .complete
+            firstPwState.accept(.complete)
     }
     
     /// 비밀번호 재확인 메소드
@@ -129,14 +137,14 @@ extension SignUpFirstViewModel {
     ///   - checkPassword: 재확인 비밀번호
     func reCheckPassword(password: String, checkPassword: String) {
         if password == "" {
-            secondPwState.value = .pwBlank
+            secondPwState.accept(.pwBlank)
             return
         }
 
         if password == checkPassword {
-            secondPwState.value = .complete
+            secondPwState.accept(.complete)
         } else {
-            secondPwState.value = .pwNotCorrect
+            secondPwState.accept(.pwNotCorrect)
         }
     }
     

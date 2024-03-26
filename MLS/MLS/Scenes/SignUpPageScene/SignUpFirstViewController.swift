@@ -219,6 +219,7 @@ private extension SignUpFirstViewController {
             guard let state = self?.viewModel.emailState.value else { return }
             self?.checkEmailField(state: state)
         }
+        .disposed(by: viewModel.disposeBag)
         
         viewModel.firstPwState.bind { [weak self] _ in
             guard let firstState = self?.viewModel.firstPwState.value,
@@ -226,6 +227,7 @@ private extension SignUpFirstViewController {
             self?.checkFirstPwField(state: firstState)
             self?.checkSecondPwField(state: secondState)
         }
+        .disposed(by: viewModel.disposeBag)
         
         viewModel.secondPwState.bind { [weak self] _ in
             guard let firstState = self?.viewModel.firstPwState.value,
@@ -233,6 +235,7 @@ private extension SignUpFirstViewController {
             self?.checkFirstPwField(state: firstState)
             self?.checkSecondPwField(state: secondState)
         }
+        .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -242,7 +245,8 @@ private extension SignUpFirstViewController {
         privacyButton.isSelected = !privacyButton.isSelected
         privacyButton.setImage(privacyButton.isSelected ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "square"), for: .normal)
         privacyButton.tintColor = privacyButton.isSelected ? .semanticColor.bg.brand : .semanticColor.bolder.primary
-        viewModel.isPrivacyAgree.value?.toggle()
+//        viewModel.isPrivacyAgree.value?.toggle()
+        viewModel.isPrivacyAgree.accept(!viewModel.isPrivacyAgree.value)
         
         checkPrivacy()
     }
@@ -274,9 +278,9 @@ private extension SignUpFirstViewController {
     
     /// 개인정보 처리방침을 동의함에 따라 descriptionImageView를 숨기거나 드러냄
     func checkPrivacy() {
-        guard let isPrivacyAgree = viewModel.isPrivacyAgree.value else { return }
-        descriptionTailImageView.isHidden = isPrivacyAgree
-        descriptionMainImageView.isHidden = isPrivacyAgree
+//        guard let isPrivacyAgree = viewModel.isPrivacyAgree.value else { return }
+        descriptionTailImageView.isHidden = viewModel.isPrivacyAgree.value
+        descriptionMainImageView.isHidden = viewModel.isPrivacyAgree.value
     }
     
     func checkEmailField(state: TextState) {

@@ -91,8 +91,8 @@ private extension DictSearchFilterViewController {
     func setUp() {
         setUpConstraints()
         setUpAddAction()
-        filterTableView.delegate = self
-        filterTableView.dataSource = self
+//        filterTableView.delegate = self
+//        filterTableView.dataSource = self
         filterTableView.register(DictSearchJobFilterCell.self, forCellReuseIdentifier: DictSearchJobFilterCell.identifier)
         filterTableView.register(DictSearchLevelRangeCell.self, forCellReuseIdentifier: DictSearchLevelRangeCell.identifier)
     }
@@ -157,42 +157,42 @@ private extension DictSearchFilterViewController {
     }
 }
 
-extension DictSearchFilterViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return type.filterArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let filterType = type.filterArray[indexPath.row]
-        switch filterType {
-        case .job:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictSearchJobFilterCell.identifier) as? DictSearchJobFilterCell else { return UITableViewCell() }
-            cell.selectionStyle = .none
-            if let choiceJob = filter.job {
-                cell.choiceJob = choiceJob
-            }
-            cell.delegate = self
-            return cell
-        case .levelRange:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictSearchLevelRangeCell.identifier) as? DictSearchLevelRangeCell else { return UITableViewCell() }
-            cell.delegate = self
-            cell.selectionStyle = .none
-            if let firstNum = filter.levelRange?.0, let secondNum = filter.levelRange?.1 {
-                cell.bind(firstNum: String(firstNum), secondNum: String(secondNum))
-            }
-            return cell
-        }
-    }
-}
-
-extension DictSearchFilterViewController: DictSearchJobFilterCellDelegate {
-    func didTapJobButton(job: String) {
-        self.filter.job = job
-    }
-}
-
-extension DictSearchFilterViewController: DictSearchLevelRangeCellDelegate {
-    func availableRange(firstNum: Int, secondNum: Int) {
-        self.filter.levelRange = (firstNum, secondNum)
-    }
-}
+//extension DictSearchFilterViewController: UITableViewDelegate, UITableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return type.filterArray.count
+//    }
+//    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let filterType = type.filterArray[indexPath.row]
+//        switch filterType {
+//        case .job:
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictSearchJobFilterCell.identifier) as? DictSearchJobFilterCell else { return UITableViewCell() }
+//            cell.selectionStyle = .none
+//            if let choiceJob = filter.job {
+//                cell.choiceJob = choiceJob
+//            }
+//            cell.delegate = self
+//            return cell
+//        case .levelRange:
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictSearchLevelRangeCell.identifier) as? DictSearchLevelRangeCell else { return UITableViewCell() }
+//            cell.delegate = self
+//            cell.selectionStyle = .none
+//            if let firstNum = filter.levelRange?.0, let secondNum = filter.levelRange?.1 {
+//                cell.bind(firstNum: String(firstNum), secondNum: String(secondNum))
+//            }
+//            return cell
+//        }
+//    }
+//}
+//
+//extension DictSearchFilterViewController: DictSearchJobFilterCellDelegate {
+//    func didTapJobButton(job: String) {
+//        self.filter.job = job
+//    }
+//}
+//
+//extension DictSearchFilterViewController: DictSearchLevelRangeCellDelegate {
+//    func availableRange(firstNum: Int, secondNum: Int) {
+//        self.filter.levelRange = (firstNum, secondNum)
+//    }
+//}

@@ -9,11 +9,16 @@ import UIKit
 
 import SnapKit
 
+import RxSwift
+import RxCocoa
+
 class DictSearchingViewController: BasicController {
     
     // MARK: - Properties
     
     private let viewModel: DictSearchViewModel
+    
+    private var disposeBag = DisposeBag()
     
     // MARK: - Components
     
@@ -58,17 +63,18 @@ extension DictSearchingViewController {
 // MARK: - Bind
 private extension DictSearchingViewController {
     func bind() {
-        let manager = UserDefaultsManager()
-        viewModel.recentSearchKeywords.bind { [weak self] keywords in
-            guard let keywords = keywords else { return }
-            manager.setRecentSearchKeyWord(keyWords: keywords)
-            self?.recentSearchKeywordCollectionView.reloadData()
-            if keywords.isEmpty {
-                self?.view.isHidden = true
-            } else {
-                self?.view.isHidden = false
-            }
-        }
+        viewModel.recentSearchKeywords.map({$0.isEmpty}).subscribe { [weak self] isEmpty in
+            guard let self = self else { return }
+            self.viewModel.setRecentSearchKeywordToUserDefault()
+            self.view.isHidden = isEmpty
+        }.disposed(by: disposeBag)
+        
+        viewModel.recentSearchKeywords.bind(to: recentSearchKeywordCollectionView.rx
+            .items(cellIdentifier: RecentSearchKeywordCell.identifier, cellType: RecentSearchKeywordCell.self)) { [weak self] index, item, cell in
+                guard let self = self else { return }
+                cell.bind(text: item, index: index)
+                cell.delegate = self
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -81,12 +87,11 @@ private extension DictSearchingViewController {
         view.backgroundColor = .themeColor(color: .base, value: .value_white)
         recentSearchClearButton.addAction(UIAction(handler: { [weak self] _ in
             guard let self = self else { return }
-            self.viewModel.recentSearchKeywords.value = []
+            self.viewModel.didTapRecentSearchKeywordClearButton()
         }), for: .primaryActionTriggered)
     }
     
     func setUpCollectionView() {
-        recentSearchKeywordCollectionView.dataSource = self
         recentSearchKeywordCollectionView.delegate = self
         recentSearchKeywordCollectionView.register(RecentSearchKeywordCell.self, forCellWithReuseIdentifier: RecentSearchKeywordCell.identifier)
     }
@@ -110,41 +115,22 @@ private extension DictSearchingViewController {
 
 extension DictSearchingViewController: RecentSearchKeywordCellDelegate {
     func didTapDeleteButton(index: Int) {
-        viewModel.recentSearchKeywords.value?.remove(at: index)
+        viewModel.removeRecentSearchKeyword(index: index)
     }
 }
 
-extension DictSearchingViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.recentSearchKeywords.value?.count ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentSearchKeywordCell.identifier, for: indexPath) as? RecentSearchKeywordCell else { return UICollectionViewCell() }
-        cell.bind(text: viewModel.recentSearchKeywords.value?[indexPath.row], index: indexPath.row)
-        cell.delegate = self
-        return cell
-    }
+extension DictSearchingViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        guard let keywords = viewModel.recentSearchKeywords.value else { return }
-        let keyword = keywords[indexPath.row]
-        var cleanKeywords: [String] = [keyword]
-        for keyword in keywords {
-            if !cleanKeywords.contains(keyword) { cleanKeywords.append(keyword) }
-        }
-        viewModel.recentSearchKeywords.value = cleanKeywords
-        viewModel.setOriginData(keyword: keyword)
-        viewModel.searchKeyword.value = keyword
-        viewModel.resetFilter()
+        viewModel.selectedRecentSearchKeyword(index: indexPath.row)
+        view.endEditing(true)
+        viewModel.setIsSearching(isSearching: false)
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        guard let keywords = viewModel.recentSearchKeywords.value else { return .zero }
+        let keywords = viewModel.fetchRecentSearchKeywords()
         return .init(
             width: keywords[indexPath.row].size(withAttributes: [NSAttributedString.Key.font : UIFont.customFont(fontSize: .body_sm, fontType: .medium) ?? 0]).width + (Constants.spacings.md * 2) + Constants.spacings.xl + Constants.spacings.xs_2 + 5,
             height: Constants.spacings.xl_3)
-        
     }
 }

@@ -108,3 +108,17 @@ extension DictSearchHeaderView {
         }
     }
 }
+
+// MARK: - Methods
+
+extension DictSearchHeaderView {
+    func activateTextField(isActive: Bool) {
+        if isActive {
+            searchTrailingView.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
+        } else {
+            searchTrailingView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+        }
+        searchClearButton.isHidden = !isActive
+    }
+}
+

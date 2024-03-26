@@ -213,7 +213,7 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
     // 도감 바로가기 버튼 탭
     func didTapShortCutButton() {
         let viewModel = DictSearchViewModel()
-        viewModel.setOriginDataToAllData()
+//        viewModel.setOriginDataToAllData()
         let vc = DictSearchViewController(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }

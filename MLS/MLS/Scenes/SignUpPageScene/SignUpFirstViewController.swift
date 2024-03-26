@@ -184,15 +184,18 @@ private extension SignUpFirstViewController {
     
     func setUpActions() {
         emailTextField.textField.addAction(UIAction(handler: { [weak self] _ in
-            self?.nextButton.type.value = .clickabled
+//            self?.nextButton.type.value = .clickabled
+            self?.nextButton.type.accept(.clickabled)
         }), for: .editingChanged)
         
         firstPwTextField.textField.addAction(UIAction(handler: { [weak self] _ in
-            self?.nextButton.type.value = .clickabled
+//            self?.nextButton.type.value = .clickabled
+            self?.nextButton.type.accept(.clickabled)
         }), for: .editingChanged)
         
         secondPwTextField.textField.addAction(UIAction(handler: { [weak self] _ in
-            self?.nextButton.type.value = .clickabled
+//            self?.nextButton.type.value = .clickabled
+            self?.nextButton.type.accept(.clickabled)
         }), for: .editingChanged)
         
         privacyButton.addAction(UIAction(handler: { [weak self] _ in

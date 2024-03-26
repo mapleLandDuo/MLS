@@ -267,8 +267,10 @@ private extension SignUpSecondViewController {
         descriptionTailImageView.isHidden = isExist
         accountView.isHidden = !isExist
 
-        noneAccountButton.isClicked.value = !isExist
-        accountButton.isClicked.value = isExist
+//        noneAccountButton.isClicked.value = !isExist
+//        accountButton.isClicked.value = isExist
+        noneAccountButton.isClicked.accept(!isExist)
+        accountButton.isClicked.accept(isExist)
     }
     
     func updateBorderColor(for textField: UITextField, state: TextState) {
@@ -284,9 +286,11 @@ private extension SignUpSecondViewController {
     func activeCompleteButton() {
         viewModel.isComplete { [weak self] isComplete in
             if isComplete {
-                self?.completeButton.type.value = .clickabled
+//                self?.completeButton.type.value = .clickabled
+                self?.completeButton.type.accept(.clickabled)
             } else {
-                self?.completeButton.type.value = .disabled
+//                self?.completeButton.type.value = .disabled
+                self?.completeButton.type.accept(.disabled)
             }
         }
     }

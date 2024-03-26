@@ -7,6 +7,9 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
+
 enum CustomButtonType {
     case `default`
     case clickabled
@@ -23,14 +26,19 @@ class CustomButton: UIButton {
     private var clickedBorderColor: UIColor?
     private var clickedTitleColor: UIColor?
     
-    var isClicked: TempObservable<Bool> = TempObservable(false)
+    private let disposeBag = DisposeBag()
     
-    var type: TempObservable<CustomButtonType> = TempObservable(.default)
+//    var isClicked: TempObservable<Bool> = TempObservable(false)
+    var isClicked = BehaviorRelay<Bool>(value: false)
+    
+    var type = BehaviorRelay<CustomButtonType>(value: .default)
+//    var type: TempObservable<CustomButtonType> = TempObservable(.default)
     
     init(type: CustomButtonType, text: String, borderColor: UIColor? = .semanticColor.bolder.secondary, radius: CGFloat = 12) {
         super.init(frame: .zero)
         self.bind(text: text, borderColor: borderColor, radius: radius)
-        self.type.value = type
+//        self.type.value = type
+        self.type.accept(type)
     }
     
     @available(*, unavailable)
@@ -71,43 +79,87 @@ class CustomButton: UIButton {
     }
     
     func bind(text: String, borderColor: UIColor?, radius: CGFloat) {
-        type.bind { [weak self] _ in
-            self?.setTitle(text, for: .normal)
-            self?.titleLabel?.textAlignment = .center
-            self?.layer.cornerRadius = radius
-            self?.layer.shadowColor = UIColor(red: 0.98, green: 0.58, blue: 0.239, alpha: 0.16).cgColor
-            self?.layer.shadowOpacity = 1
-            self?.layer.shadowRadius = 4
-            self?.layer.shadowOffset = CGSize(width: 2, height: 2)
-            switch self?.type.value {
-            case .default:
-                self?.setButtonDefault(borderColor: borderColor)
-            case .clickabled:
-                self?.setButtonClickabled()
-            case .disabled:
-                self?.setButtonDisabled()
-            case .clicked:
-                break
-            case .none:
-                break
-            }
-        }
+//        type.bind { [weak self] _ in
+//            self?.setTitle(text, for: .normal)
+//            self?.titleLabel?.textAlignment = .center
+//            self?.layer.cornerRadius = radius
+//            self?.layer.shadowColor = UIColor(red: 0.98, green: 0.58, blue: 0.239, alpha: 0.16).cgColor
+//            self?.layer.shadowOpacity = 1
+//            self?.layer.shadowRadius = 4
+//            self?.layer.shadowOffset = CGSize(width: 2, height: 2)
+//            switch self?.type.value {
+//            case .default:
+//                self?.setButtonDefault(borderColor: borderColor)
+//            case .clickabled:
+//                self?.setButtonClickabled()
+//            case .disabled:
+//                self?.setButtonDisabled()
+//            case .clicked:
+//                break
+//            case .none:
+//                break
+//            }
+//        }
         
-        isClicked.bind { [weak self] _ in
-            self?.layer.borderWidth = 1
-            if self?.isClicked.value == false {
-                self?.backgroundColor = self?.bgColor
-                self?.setTitleColor(self?.titleColor, for: .normal)
-                if let borderColor = self?.borderColor {
-                    self?.layer.borderColor = borderColor.cgColor
+        type
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.setTitle(text, for: .normal)
+                self?.titleLabel?.textAlignment = .center
+                self?.layer.cornerRadius = radius
+                self?.layer.shadowColor = UIColor(red: 0.98, green: 0.58, blue: 0.239, alpha: 0.16).cgColor
+                self?.layer.shadowOpacity = 1
+                self?.layer.shadowRadius = 4
+                self?.layer.shadowOffset = CGSize(width: 2, height: 2)
+                switch self?.type.value {
+                case .default:
+                    self?.setButtonDefault(borderColor: borderColor)
+                case .clickabled:
+                    self?.setButtonClickabled()
+                case .disabled:
+                    self?.setButtonDisabled()
+                case .clicked:
+                    break
+                case .none:
+                    break
                 }
-            } else {
-                self?.backgroundColor = self?.clickedBackgroundColor
-                self?.setTitleColor(self?.clickedTitleColor, for: .normal)
-                if let clickedBorderColor = self?.clickedBorderColor {
-                    self?.layer.borderColor = clickedBorderColor.cgColor
+            })
+            .disposed(by: disposeBag)
+        
+//        isClicked.bind { [weak self] _ in
+//            self?.layer.borderWidth = 1
+//            if self?.isClicked.value == false {
+//                self?.backgroundColor = self?.bgColor
+//                self?.setTitleColor(self?.titleColor, for: .normal)
+//                if let borderColor = self?.borderColor {
+//                    self?.layer.borderColor = borderColor.cgColor
+//                }
+//            } else {
+//                self?.backgroundColor = self?.clickedBackgroundColor
+//                self?.setTitleColor(self?.clickedTitleColor, for: .normal)
+//                if let clickedBorderColor = self?.clickedBorderColor {
+//                    self?.layer.borderColor = clickedBorderColor.cgColor
+//                }
+//            }
+//        }
+        
+        isClicked
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                if self?.isClicked.value == false {
+                    self?.backgroundColor = self?.bgColor
+                    self?.setTitleColor(self?.titleColor, for: .normal)
+                    if let borderColor = self?.borderColor {
+                        self?.layer.borderColor = borderColor.cgColor
+                    }
+                } else {
+                    self?.backgroundColor = self?.clickedBackgroundColor
+                    self?.setTitleColor(self?.clickedTitleColor, for: .normal)
+                    if let clickedBorderColor = self?.clickedBorderColor {
+                        self?.layer.borderColor = clickedBorderColor.cgColor
+                    }
                 }
-            }
-        }
+            })
+            .disposed(by: disposeBag)
     }
 }

@@ -116,7 +116,8 @@ extension FindPasswordViewController: UITextFieldDelegate {
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
         viewModel.checkEmailValidation(email: updatedText) { [weak self] type in
-            self?.sendButton.type.value = type
+//            self?.sendButton.type.value = type
+            self?.sendButton.type.accept(type)
         }
         return true
     }

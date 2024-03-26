@@ -7,49 +7,51 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 class DictLandingViewModel {
     // MARK: - Properties
-
-    let sectionHeaderInfos: TempObservable<[DictSectionDatas]> = TempObservable([
+    
+    let sectionDatas = BehaviorRelay<[DictSectionDatas]>(value: [
         DictSectionDatas(iconImage: UIImage(named: "fireIcon"), description: "사람들이 많이 찾는 아이템", datas: []),
-        DictSectionDatas(iconImage: UIImage(named: "monsterIcon"), description: "사람들이 많이 찾는 몬스터", datas: []),
+        DictSectionDatas(iconImage: UIImage(named: "monsterIcon"), description: "사람들이 많이 찾는 몬스터", datas: [])
     ])
 }
 
 // MARK: - Methods
 extension DictLandingViewModel {
     
-    func fetchSectionHeaderInfos() -> [DictSectionDatas] {
-        guard let data = sectionHeaderInfos.value else { return [] }
-        return data
+    func fetchSectionDatas() -> [DictSectionDatas] {
+        return sectionDatas.value
     }
     
-    func fetchSectionDatas(completion: @escaping () -> Void) {
-        
+    func setSectionDatasToPopularSearch() {
         let dbManager = SqliteManager()
-        
-        FirebaseManager.firebaseManager.fetchDictSearchCount(type: .item) { [weak self] searchCountDatas in
-            var temp: [DictSectionData] = []
-            for data in searchCountDatas {
-                dbManager.searchData(dataName: data.name) { (items:[DictItem]) in
-                    guard let item = items.first else { return }
-                    let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "-", type: .item)
-                    temp.append(dictData)
-                }
-            }
-            self?.sectionHeaderInfos.value?[0].datas = temp
-            FirebaseManager.firebaseManager.fetchDictSearchCount(type: .monster) { [weak self] searchCountDatas in
-                var temp: [DictSectionData] = []
-                for data in searchCountDatas {
-                    dbManager.searchData(dataName: data.name) { (items:[DictMonster]) in
+        FirebaseManager.firebaseManager.fetchDictSearchCount(type: .item) { [weak self] itemSearchCountDatas in
+            guard let self = self else { return }
+            FirebaseManager.firebaseManager.fetchDictSearchCount(type: .monster) { monsterSearchCountDatas in
+                var temp = self.sectionDatas.value
+                var itemDatas: [DictSectionData] = []
+                var monsterDatas: [DictSectionData] = []
+                itemSearchCountDatas.forEach { itemData in
+                    dbManager.searchData(dataName: itemData.name) { (items: [DictItem]) in
                         guard let item = items.first else { return }
-                        let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "-", type: .monster)
-                        temp.append(dictData)
+                        let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "-", type: .item)
+                        itemDatas.append(dictData)
                     }
                 }
-                self?.sectionHeaderInfos.value?[1].datas = temp
+                monsterSearchCountDatas.forEach { monsterData in
+                    dbManager.searchData(dataName: monsterData.name) { (items: [DictMonster]) in
+                        guard let item = items.first else { return }
+                        let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "-", type: .monster)
+                        monsterDatas.append(dictData)
+                    }
+                }
+                temp[0].datas = itemDatas
+                temp[1].datas = monsterDatas
+                self.sectionDatas.accept(temp)
             }
-            completion()
         }
     }
 }

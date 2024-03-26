@@ -97,13 +97,24 @@ private extension PopularViewController {
 // MARK: Bind
 extension PopularViewController {
     func bind() {
-        viewModel.datas.bind { [weak self] _ in
-            self?.popularTableView.reloadData()
-        }
+//        viewModel.datas.bind { [weak self] _ in
+//            self?.popularTableView.reloadData()
+//        }
+//
+//        viewModel.selectedTab.bind { [weak self] _ in
+//            self?.popularTableView.reloadData()
+//        }
+        viewModel.datas
+            .subscribe(onNext: { [weak self] _ in
+                self?.popularTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
         
-        viewModel.selectedTab.bind { [weak self] _ in
-            self?.popularTableView.reloadData()
-        }
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] _ in
+                self?.popularTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 

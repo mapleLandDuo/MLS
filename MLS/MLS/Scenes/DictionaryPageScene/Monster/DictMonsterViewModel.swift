@@ -7,15 +7,19 @@
 
 import Foundation
 
+import RxCocoa
+
 class DictMonsterViewModel: DictBaseViewModel {
     // MARK: Properties
     var tabMenus = ["몬스터 정보","출현 장소","드롭 정보"]
 
-    var selectedMonster: TempObservable<DictMonster> = TempObservable(nil)
+//    var selectedMonster: TempObservable<DictMonster> = TempObservable(nil)
+    var selectedMonster = BehaviorRelay<DictMonster?>(value: nil)
     
     var dropTableContents = [DictDropContent]()
     
-    var totalTextSize: TempObservable<CGFloat> = TempObservable(0.0)
+//    var totalTextSize: TempObservable<CGFloat> = TempObservable(0.0)
+    var totalTextSize = BehaviorRelay<CGFloat>(value: 0.0)
 }
 
 // MARK: Methods

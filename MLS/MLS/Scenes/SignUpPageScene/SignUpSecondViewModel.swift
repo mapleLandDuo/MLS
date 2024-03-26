@@ -8,14 +8,22 @@
 import Foundation
 
 import FirebaseAuth
+import RxCocoa
+import RxSwift
 
 class SignUpSecondViewModel {
     // MARK: Properties
-    var nickNameState: TempObservable<TextState> = TempObservable(.default)
-    var levelState: TempObservable<TextState> = TempObservable(.default)
-    var isAccountExist: TempObservable<Bool> = TempObservable(nil)
-    var job: TempObservable<Job> = TempObservable(nil)
+//    var nickNameState: TempObservable<TextState> = TempObservable(.default)
+//    var levelState: TempObservable<TextState> = TempObservable(.default)
+//    var isAccountExist: TempObservable<Bool> = TempObservable(nil)
+//    var job: TempObservable<Job> = TempObservable(nil)
 
+    var nickNameState = BehaviorRelay<TextState>(value: .default)
+    var levelState = BehaviorRelay<TextState>(value: .default)
+    var isAccountExist = BehaviorRelay<Bool?>(value: nil)
+    var job = BehaviorRelay<Job?>(value: nil)
+    let disposeBag = DisposeBag()
+    
     var user = User(id: "", nickName: "", state: .normal, blockingPosts: [], blockingComments: [], blockingUsers: [], blockedUsers: [])
     var password = ""
 }
@@ -27,30 +35,30 @@ extension SignUpSecondViewModel {
             FirebaseManager.firebaseManager.checkNickNameExist(nickName: nickName) { [weak self] isExist in
                 guard let isExist = isExist else { return }
                 if isExist {
-                    self?.nickNameState.value = .nickNameExist
+                    self?.nickNameState.accept(.nickNameExist)
                 } else if !(2 ... 8).contains(nickName.count) {
-                    self?.nickNameState.value = .nickNameNotCorrect
+                    self?.nickNameState.accept(.nickNameNotCorrect)
                 } else {
-                    self?.nickNameState.value = .complete
+                    self?.nickNameState.accept(.complete)
                 }
             }
         } else {
-            nickNameState.value = .default
+            nickNameState.accept(.default)
         }
     }
 
     func checkLevel(level: String) {
         if level == "" {
-            levelState.value = .default
+            levelState.accept(.default)
         } else {
             if let level = Int(level) {
                 if 1 ... 200 ~= level {
-                    levelState.value = .complete
+                    levelState.accept(.complete)
                 } else {
-                    levelState.value = .lvOutOfBounds
+                    levelState.accept(.lvOutOfBounds)
                 }
             } else {
-                levelState.value = .lvNotInt
+                levelState.accept(.lvNotInt)
             }
         }
     }

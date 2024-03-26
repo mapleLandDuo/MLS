@@ -7,9 +7,9 @@
 
 import UIKit
 
-import SnapKit
-
 import FirebaseAuth
+import SnapKit
+import RxCocoa
 
 class SignUpSecondViewController: BasicController {
     // MARK: - Properties
@@ -208,6 +208,7 @@ private extension SignUpSecondViewController {
                 self?.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
             }
         }
+        .disposed(by: viewModel.disposeBag)
         
         viewModel.levelState.bind { [weak self] _ in
             self?.activeCompleteButton()
@@ -222,14 +223,17 @@ private extension SignUpSecondViewController {
                 self?.accountView.levelTextField.footerLabel.isHidden = false
             }
         }
+        .disposed(by: viewModel.disposeBag)
         
         viewModel.isAccountExist.bind { [weak self] _ in
             self?.activeCompleteButton()
         }
+        .disposed(by: viewModel.disposeBag)
         
         viewModel.job.bind { [weak self] _ in
             self?.activeCompleteButton()
         }
+        .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -237,12 +241,12 @@ private extension SignUpSecondViewController {
 private extension SignUpSecondViewController {
     func didTapNoneAccountButton() {
         setAccountButton(isExist: false)
-        viewModel.isAccountExist.value = false
+        viewModel.isAccountExist.accept(false)
     }
     
     func didTapAccountButton() {
         setAccountButton(isExist: true)
-        viewModel.isAccountExist.value = true
+        viewModel.isAccountExist.accept(true)
     }
 
     func didTapCompleteButton() {
@@ -354,15 +358,15 @@ extension SignUpSecondViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
         case nickNameTextField.textField:
-            guard let state = viewModel.nickNameState.value else { return }
-            if state == .default {
+//            guard let state = viewModel.nickNameState.value else { return }
+            if viewModel.nickNameState.value == .default {
                 updateBorderColor(for: textField, state: .nickNameNotCorrect)
             } else {
-                updateBorderColor(for: textField, state: state)
+                updateBorderColor(for: textField, state: viewModel.nickNameState.value)
             }
         case accountView.levelTextField.textField:
-            guard let state = viewModel.levelState.value else { return }
-            updateBorderColor(for: textField, state: state)
+//            guard let state = viewModel.levelState.value else { return }
+            updateBorderColor(for: textField, state: viewModel.levelState.value)
         default:
             break
         }
@@ -383,13 +387,13 @@ extension SignUpSecondViewController: SignUpAccountViewDelegate {
     func didtapJobButton(job: String) {
         switch job {
         case "전사":
-            viewModel.job.value = .warrior
+            viewModel.job.accept(.warrior)
         case "궁수":
-            viewModel.job.value = .archer
+            viewModel.job.accept(.archer)
         case "도적":
-            viewModel.job.value = .thief
+            viewModel.job.accept(.thief)
         case "법사":
-            viewModel.job.value = .mage
+            viewModel.job.accept(.mage)
         default:
             break
         }

@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import RxCocoa
 
 class DictNPCViewController: BasicController {
     // MARK: Properties
@@ -66,7 +67,7 @@ private extension DictNPCViewController {
         infoMenuCollectionView.dataSource = self
 
         viewModel.fetchData(type: .npc) { [weak self] (npc: DictNPC?) in
-            self?.viewModel.selectedNPC.value = npc
+            self?.viewModel.selectedNPC.accept(npc)
         }
 
         setUpConstraints()
@@ -85,13 +86,25 @@ private extension DictNPCViewController {
 // MARK: Bind
 extension DictNPCViewController {
     func bind() {
-        viewModel.selectedNPC.bind { [weak self] _ in
-            self?.dictNPCTableView.reloadData()
-        }
-
-        viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictNPCTableView.reloadData()
-        }
+//        viewModel.selectedNPC.bind { [weak self] _ in
+//            self?.dictNPCTableView.reloadData()
+//        }
+//
+//        viewModel.selectedTab.bind { [weak self] _ in
+//            self?.dictNPCTableView.reloadData()
+//        }
+        
+        viewModel.selectedNPC
+            .subscribe(onNext: { [weak self] _ in
+                self?.dictNPCTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] _ in
+                self?.dictNPCTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -186,7 +199,7 @@ extension DictNPCViewController: UICollectionViewDelegateFlowLayout, UICollectio
     
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         let contents = indexPath.row == 0 ? viewModel.selectedNPC.value?.maps : viewModel.selectedNPC.value?.quests
-        if contents == nil || ((contents?.isEmpty) != nil) {
+        if contents == nil || contents == [] {
             AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
             return false
         }
@@ -202,6 +215,7 @@ extension DictNPCViewController: UICollectionViewDelegateFlowLayout, UICollectio
 
 extension DictNPCViewController: DictTagTableViewCellDelegate {
     func didTapTagCell(title: String) {
+        print(viewModel.selectedTab.value)
         switch viewModel.selectedTab.value {
         case 0:
             let db = SqliteManager()

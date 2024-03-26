@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import RxCocoa
 
 class DictQuestViewController: BasicController {
     // MARK: Properties
@@ -68,7 +69,7 @@ private extension DictQuestViewController {
         infoMenuCollectionView.dataSource = self
 
         viewModel.fetchData(type: .quest) { [weak self] (quest: DictQuest?) in
-            self?.viewModel.selectedQuest.value = quest
+            self?.viewModel.selectedQuest.accept(quest)
         }
 
         setUpConstraints()
@@ -87,17 +88,33 @@ private extension DictQuestViewController {
 // MARK: Bind
 private extension DictQuestViewController {
     func bind() {
-        viewModel.selectedQuest.bind { [weak self] _ in
-            self?.viewModel.fetchCompleteInfos {
-                self?.viewModel.fetchRewardInfos {
-                    self?.dictQuestTableView.reloadData()
+//        viewModel.selectedQuest.bind { [weak self] _ in
+//            self?.viewModel.fetchCompleteInfos {
+//                self?.viewModel.fetchRewardInfos {
+//                    self?.dictQuestTableView.reloadData()
+//                }
+//            }
+//        }
+//
+//        viewModel.selectedTab.bind { [weak self] _ in
+//            self?.dictQuestTableView.reloadData()
+//        }
+        
+        viewModel.selectedQuest
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.fetchCompleteInfos {
+                    self?.viewModel.fetchRewardInfos {
+                        self?.dictQuestTableView.reloadData()
+                    }
                 }
-            }
-        }
+            })
+            .disposed(by: viewModel.disposeBag)
 
-        viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictQuestTableView.reloadData()
-        }
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] _ in
+                self?.dictQuestTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 

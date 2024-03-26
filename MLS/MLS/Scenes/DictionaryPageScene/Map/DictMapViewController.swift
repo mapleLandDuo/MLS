@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import RxCocoa
 
 class DictMapViewController: BasicController {
     // MARK: Properties
@@ -66,7 +67,7 @@ private extension DictMapViewController {
         infoMenuCollectionView.dataSource = self
 
         viewModel.fetchData(type: .map) { [weak self] (map: DictMap?) in
-            self?.viewModel.selectedMap.value = map
+            self?.viewModel.selectedMap.accept(map)
         }
 
         setUpConstraints()
@@ -85,17 +86,33 @@ private extension DictMapViewController {
 // MARK: Bind
 extension DictMapViewController {
     func bind() {
-        viewModel.selectedMap.bind { [weak self] _ in
-            self?.viewModel.fetchApearMonsters {
-                self?.viewModel.fetchApearNPCs {
-                    self?.dictMapTableView.reloadData()
+//        viewModel.selectedMap.bind { [weak self] _ in
+//            self?.viewModel.fetchApearMonsters {
+//                self?.viewModel.fetchApearNPCs {
+//                    self?.dictMapTableView.reloadData()
+//                }
+//            }
+//        }
+//
+//        viewModel.selectedTab.bind { [weak self] _ in
+//            self?.dictMapTableView.reloadData()
+//        }
+        
+        viewModel.selectedMap
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.fetchApearMonsters {
+                    self?.viewModel.fetchApearNPCs {
+                        self?.dictMapTableView.reloadData()
+                    }
                 }
-            }
-        }
+            })
+            .disposed(by: viewModel.disposeBag)
 
-        viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictMapTableView.reloadData()
-        }
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] _ in
+                self?.dictMapTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 

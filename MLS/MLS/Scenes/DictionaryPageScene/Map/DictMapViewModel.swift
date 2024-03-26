@@ -7,11 +7,14 @@
 
 import Foundation
 
+import RxCocoa
+
 class DictMapViewModel: DictBaseViewModel {
     // MARK: Properties
     var tabMenus = ["출현 몬스터","NPC"]
     
-    var selectedMap: TempObservable<DictMap> = TempObservable(nil)
+//    var selectedMap: TempObservable<DictMap> = TempObservable(nil)
+    var selectedMap = BehaviorRelay<DictMap?>(value: nil)
     
     var apearMonsterContents = [DictDropContent]()
     

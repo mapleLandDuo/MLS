@@ -124,6 +124,7 @@ extension DictSearchingViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.selectedRecentSearchKeyword(index: indexPath.row)
         view.endEditing(true)
+        viewModel.setDictDatasToSearchKeyword()
         viewModel.setIsSearching(isSearching: false)
     }
     

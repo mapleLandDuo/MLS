@@ -58,16 +58,28 @@ extension DictSearchViewController {
 // MARK: - Bind
 private extension DictSearchViewController {
     func bind() {
-        viewModel.isSearching.map({ [weak self] in
-            guard let self = self else { return !$0 }
-            return self.viewModel.fetchRecentSearchKeywords().isEmpty ? true : !$0}
-        ).bind(to: searchingVC.view.rx.isHidden).disposed(by: disposeBag)
+//        viewModel.isSearching.map({ [weak self] in
+//            guard let self = self else { return !$0 }
+//            return self.viewModel.fetchRecentSearchKeywords().isEmpty ? true : !$0}
+//        ).bind(to: searchingVC.view.rx.isHidden).disposed(by: disposeBag)
+        
         viewModel.isSearching.subscribe { [weak self] isSearching in
             guard let self = self else { return }
             self.headerView.activateTextField(isActive: isSearching)
         }.disposed(by: disposeBag)
+        
         headerView.searchTextField.rx.text.orEmpty.bind(to: viewModel.searchKeyword).disposed(by: disposeBag)
+        
         viewModel.searchKeyword.bind(to: headerView.searchTextField.rx.text).disposed(by: disposeBag)
+        
+        viewModel.isLoading.subscribe { [weak self] isLoading in
+            guard let self = self else { return }
+            if isLoading {
+                IndicatorManager.showIndicator(vc: self)
+            } else {
+                IndicatorManager.hideIndicator(vc: self)
+            }
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -88,6 +100,7 @@ private extension DictSearchViewController {
         headerView.backButton.addAction(UIAction(handler: { [weak self] _ in
             self?.navigationController?.popViewController(animated: true)
         }), for: .primaryActionTriggered)
+        
         headerView.searchClearButton.addAction(UIAction(handler: { [weak self] _ in
             self?.headerView.searchTextField.text = ""
         }), for: .primaryActionTriggered)
@@ -124,6 +137,7 @@ extension DictSearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         viewModel.appendRecentSearchKeyword()
         viewModel.setIsSearching(isSearching: false)
+        viewModel.setDictDatasToSearchKeyword()
         return true
     }
     

@@ -14,6 +14,40 @@ enum DictMenuTypeEnum: String {
     case map = "맵"
     case npc = "NPC"
     case quest = "퀘스트"
+    
+    func convertToInt() -> Int {
+        switch self {
+        case .total:
+            return 0
+        case .monster:
+            return 1
+        case .item:
+            return 2
+        case .map:
+            return 3
+        case .npc:
+            return 4
+        case .quest:
+            return 5
+        }
+    }
+    
+    func convertToDictType() -> DictType {
+        switch self {
+        case .total:
+            return .item
+        case .monster:
+            return .monster
+        case .item:
+            return .item
+        case .map:
+            return .map
+        case .npc:
+            return .npc
+        case .quest:
+            return .quest
+        }
+    }
 }
 
 struct DictMenuItem {

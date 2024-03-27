@@ -12,10 +12,15 @@ import SnapKit
 import FirebaseAuth
 import MessageUI
 
+import RxCocoa
+import RxSwift
+
 class DictLandingViewController: BasicController {
     // MARK: - Properties
 
     private let viewModel: DictLandingViewModel
+    
+    private var disposeBag = DisposeBag()
     
     // MARK: - Components
     
@@ -56,9 +61,7 @@ extension DictLandingViewController {
         
         //인기 몬스터, 아이템 데이터 패치
         IndicatorManager.showIndicator(vc: self)
-        viewModel.fetchSectionDatas() {
-            IndicatorManager.hideIndicator(vc: self)
-        }
+        viewModel.setSectionDatasToPopularSearch()
         
         //로그인 한 경우 직업 뱃지 데이터 패치
         if LoginManager.manager.isLogin() {
@@ -119,9 +122,11 @@ private extension DictLandingViewController {
 // MARK: - Bind
 private extension DictLandingViewController {
     func bind() {
-        viewModel.sectionHeaderInfos.bind { [weak self] _ in
-            self?.tableView.reloadData()
-        }
+        viewModel.sectionDatas.subscribe { [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+            IndicatorManager.hideIndicator(vc: self)
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -208,7 +213,7 @@ extension DictLandingViewController: DictLandingSearchViewDelegate {
     // 도감 바로가기 버튼 탭
     func didTapShortCutButton() {
         let viewModel = DictSearchViewModel()
-        viewModel.setOriginDataToAllData()
+//        viewModel.setOriginDataToAllData()
         let vc = DictSearchViewController(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -218,8 +223,8 @@ extension DictLandingViewController: DictSectionHeaderViewDelegate {
     
     // 사람들이 많이 찾는 @@@ 탭
     func didTapShowButton(title: String?) {
-        guard let datas = viewModel.sectionHeaderInfos.value,
-              let title = title else { return }
+        let datas = viewModel.fetchSectionDatas()
+        guard let title = title else { return }
         let vm = PopularViewModel(datas: datas, title: title)
         let vc = PopularViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
@@ -259,20 +264,20 @@ extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.fetchSectionHeaderInfos().count
+        return viewModel.fetchSectionDatas().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DictHorizontalSectionTableViewCell.identifier, for: indexPath) as? DictHorizontalSectionTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
-        let datas = viewModel.fetchSectionHeaderInfos()
+        let datas = viewModel.fetchSectionDatas()
         cell.bind(data: datas[indexPath.section])
         cell.delegate = self
         return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let datas = viewModel.fetchSectionHeaderInfos()
+        let datas = viewModel.fetchSectionDatas()
         let view = DictSectionHeaderView(sectionDatas: datas[section])
         view.delegate = self
         return view

@@ -41,6 +41,8 @@
 		082D0C742B53CFFE00D84CE2 /* Kanna in Frameworks */ = {isa = PBXBuildFile; productRef = 082D0C732B53CFFE00D84CE2 /* Kanna */; };
 		082D0C782B53D11900D84CE2 /* BasicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C772B53D11900D84CE2 /* BasicController.swift */; };
 		082D0C832B53D45700D84CE2 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D0C822B53D45600D84CE2 /* Post.swift */; };
+		0848DE832BB2C7BC009E3BC3 /* BehaviorRelay+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0848DE822BB2C7BC009E3BC3 /* BehaviorRelay+.swift */; };
+		0848DE872BB2D86C009E3BC3 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0848DE862BB2D86C009E3BC3 /* Int+.swift */; };
 		08498F032BA80C73001DFB7B /* DictSearchingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08498F022BA80C73001DFB7B /* DictSearchingViewController.swift */; };
 		08498F092BA96D7F001DFB7B /* DictSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08498F082BA96D7F001DFB7B /* DictSearchResultViewController.swift */; };
 		087D251E2B932FDB00A998E4 /* DictNameCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087D251D2B932FDB00A998E4 /* DictNameCount.swift */; };
@@ -189,6 +191,8 @@
 		082D0C772B53D11900D84CE2 /* BasicController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicController.swift; sourceTree = "<group>"; };
 		082D0C7D2B53D26800D84CE2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		082D0C822B53D45600D84CE2 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		0848DE822BB2C7BC009E3BC3 /* BehaviorRelay+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BehaviorRelay+.swift"; sourceTree = "<group>"; };
+		0848DE862BB2D86C009E3BC3 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		08498F022BA80C73001DFB7B /* DictSearchingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchingViewController.swift; sourceTree = "<group>"; };
 		08498F082BA96D7F001DFB7B /* DictSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchResultViewController.swift; sourceTree = "<group>"; };
 		087D251D2B932FDB00A998E4 /* DictNameCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictNameCount.swift; sourceTree = "<group>"; };
@@ -672,6 +676,8 @@
 				08D50A872B5FD33B00E94442 /* UIWindow+.swift */,
 				77B6DB722B692A3E00302173 /* String+.swift */,
 				0812F8972BA18EA900057696 /* UIImageView+.swift */,
+				0848DE822BB2C7BC009E3BC3 /* BehaviorRelay+.swift */,
+				0848DE862BB2D86C009E3BC3 /* Int+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -967,6 +973,7 @@
 				08971A772B70C1AA00FE46BE /* DictionaryNameDescription.swift in Sources */,
 				08D5F1072B86156200E56482 /* PopUpMaker.swift in Sources */,
 				770848972B889A0C008B68E1 /* PresentationController.swift in Sources */,
+				0848DE872BB2D86C009E3BC3 /* Int+.swift in Sources */,
 				77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */,
 				087D251E2B932FDB00A998E4 /* DictNameCount.swift in Sources */,
 				778D04A92BA0189900BF9F9E /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
@@ -980,6 +987,7 @@
 				08EF65122B554710004CC842 /* UILabel+.swift in Sources */,
 				7752C25D2B93023800C891A5 /* DictMonsterViewModel.swift in Sources */,
 				7717D6EF2B8731610050BD07 /* CustomButton.swift in Sources */,
+				0848DE832BB2C7BC009E3BC3 /* BehaviorRelay+.swift in Sources */,
 				7719DD3F2B93424F003797F4 /* DropTableViewCell.swift in Sources */,
 				778EB93F2B91D6A000DC9B63 /* DictDropContent.swift in Sources */,
 				08D5F0B82B81D88C00E56482 /* DictLandingViewModel.swift in Sources */,

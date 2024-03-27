@@ -9,10 +9,15 @@ import UIKit
 
 import SnapKit
 
+import RxCocoa
+import RxSwift
+
 class DictSearchViewController: BasicController {
     // MARK: - Properties
     
     private let viewModel: DictSearchViewModel
+    
+    private var disposeBag = DisposeBag()
     
     // MARK: - Components
     
@@ -53,10 +58,28 @@ extension DictSearchViewController {
 // MARK: - Bind
 private extension DictSearchViewController {
     func bind() {
-        viewModel.searchKeyword.bind { [weak self] keyword in
-            self?.headerView.searchTextField.text = keyword
-            self?.view.endEditing(true)
-        }
+        viewModel.isSearching.map({ [weak self] in
+            guard let self = self else { return !$0 }
+            return self.viewModel.fetchRecentSearchKeywords().isEmpty ? true : !$0}
+        ).bind(to: searchingVC.view.rx.isHidden).disposed(by: disposeBag)
+        
+        viewModel.isSearching.subscribe { [weak self] isSearching in
+            guard let self = self else { return }
+            self.headerView.activateTextField(isActive: isSearching)
+        }.disposed(by: disposeBag)
+        
+        headerView.searchTextField.rx.text.orEmpty.bind(to: viewModel.searchKeyword).disposed(by: disposeBag)
+        
+        viewModel.searchKeyword.bind(to: headerView.searchTextField.rx.text).disposed(by: disposeBag)
+        
+        viewModel.isLoading.subscribe { [weak self] isLoading in
+            guard let self = self else { return }
+            if isLoading {
+                IndicatorManager.showIndicator(vc: self)
+            } else {
+                IndicatorManager.hideIndicator(vc: self)
+            }
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -77,6 +100,7 @@ private extension DictSearchViewController {
         headerView.backButton.addAction(UIAction(handler: { [weak self] _ in
             self?.navigationController?.popViewController(animated: true)
         }), for: .primaryActionTriggered)
+        
         headerView.searchClearButton.addAction(UIAction(handler: { [weak self] _ in
             self?.headerView.searchTextField.text = ""
         }), for: .primaryActionTriggered)
@@ -111,38 +135,18 @@ private extension DictSearchViewController {
 extension DictSearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard let keyword = textField.text else { return true }
-        if keyword.replacingOccurrences(of: " ", with: "").count == 0 {
-            viewModel.setOriginDataToAllData()
-        } else {
-            guard let keywords = viewModel.recentSearchKeywords.value else { return true }
-            var cleanKeywords: [String] = [keyword]
-            for keyword in keywords {
-                if !cleanKeywords.contains(keyword) { cleanKeywords.append(keyword) }
-            }
-            viewModel.recentSearchKeywords.value = cleanKeywords
-            viewModel.setOriginData(keyword: keyword)
-        }
-        viewModel.resetFilter()
-        view.endEditing(true)
+        viewModel.appendRecentSearchKeyword()
+        viewModel.setIsSearching(isSearching: false)
+        viewModel.setDictDatasToSearchKeyword()
         return true
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        headerView.searchTrailingView.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
-        headerView.searchClearButton.isHidden = false
-        guard let keywords = viewModel.recentSearchKeywords.value else { return }
-        if keywords.isEmpty {
-            searchingVC.view.isHidden = true
-        } else {
-            searchingVC.view.isHidden = false
-        }
+        viewModel.setIsSearching(isSearching: true)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        headerView.searchTrailingView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
-        headerView.searchClearButton.isHidden = true
-        searchingVC.view.isHidden = true
+        viewModel.setIsSearching(isSearching: false)
     }
 }
 

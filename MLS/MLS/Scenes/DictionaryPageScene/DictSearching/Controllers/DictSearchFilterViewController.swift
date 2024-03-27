@@ -11,7 +11,7 @@ import SnapKit
 
 protocol DictSearchFilterViewControllerDelegate: BasicController {
     func didTapResetButton(type: DictType)
-    func didTapApplyButton(type: DictType, datas: [Any], filter: DictSearchFilter)
+    func didTapApplyButton(type: DictType, filter: DictSearchFilter)
 }
 
 class DictSearchFilterViewController: BasicController {
@@ -20,8 +20,6 @@ class DictSearchFilterViewController: BasicController {
     private let type: DictType
     
     private var filter: DictSearchFilter
-    
-    private var searchKeyword: String
     
     weak var delegate: DictSearchFilterViewControllerDelegate?
     
@@ -66,10 +64,9 @@ class DictSearchFilterViewController: BasicController {
         return button
     }()
     
-    init(type: DictType, filter: DictSearchFilter, searchKeyword: String) {
+    init(type: DictType, filter: DictSearchFilter) {
         self.type = type
         self.filter = filter
-        self.searchKeyword = searchKeyword
         super.init()
     }
     
@@ -100,9 +97,7 @@ private extension DictSearchFilterViewController {
     func setUpAddAction() {
         applyButton.addAction(UIAction(handler: { [weak self] _ in
             guard let self = self else { return }
-            self.filterDatas() { datas in
-                self.delegate?.didTapApplyButton(type: self.type, datas: datas, filter: self.filter)
-            }
+            self.delegate?.didTapApplyButton(type: self.type, filter: self.filter)
             self.dismiss(animated: true)
         }), for: .primaryActionTriggered)
         
@@ -129,31 +124,6 @@ private extension DictSearchFilterViewController {
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.bottom.equalTo(buttonStackView.snp.top)
         }
-    }
-}
-
-// MARK: - Methods
-private extension DictSearchFilterViewController {
-    func filterDatas(completion: @escaping ([Any]) -> Void) {
-        let manager = SqliteManager()
-        switch type {
-        case .monster:
-            let minLevel = filter.levelRange?.0 ?? nil
-            let maxLevel = filter.levelRange?.1 ?? nil
-            manager.filterMonster(searchKeyword: searchKeyword, minLv: minLevel, maxLv: maxLevel) { monsters in
-                completion(monsters)
-            }
-        case .item:
-            let jobName = filter.job ?? nil
-            let minLevel = filter.levelRange?.0 ?? nil
-            let maxLevel = filter.levelRange?.1 ?? nil
-            manager.filterItem(searchKeyword: searchKeyword, divisionName: nil, rollName: jobName, minLv: minLevel, maxLv: maxLevel) { items in
-                completion(items)
-            }
-        default:
-            print(#function, "switch default")
-        }
-        
     }
 }
 

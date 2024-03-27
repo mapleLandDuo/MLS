@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import RxCocoa
 
 class DictMonsterViewController: BasicController {
     // MARK: Properties
@@ -68,7 +69,7 @@ private extension DictMonsterViewController {
         infoMenuCollectionView.dataSource = self
 
         viewModel.fetchData(type: .monster) { [weak self] (monster: DictMonster?) in
-            self?.viewModel.selectedMonster.value = monster
+            self?.viewModel.selectedMonster.accept(monster)
         }
 
         setUpConstraints()
@@ -87,19 +88,39 @@ private extension DictMonsterViewController {
 // MARK: Bind
 private extension DictMonsterViewController {
     func bind() {
-        viewModel.selectedMonster.bind { [weak self] _ in
-            self?.viewModel.fetchDropInfos {
+//        viewModel.selectedMonster.bind { [weak self] _ in
+//            self?.viewModel.fetchDropInfos {
+//                self?.dictMonsterTableView.reloadData()
+//            }
+//        }
+//
+//        viewModel.selectedTab.bind { [weak self] _ in
+//            self?.dictMonsterTableView.reloadData()
+//        }
+//
+//        viewModel.totalTextSize.bind { [weak self] _ in
+//            self?.dictMonsterTableView.reloadData()
+//        }
+        
+        viewModel.selectedMonster
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.fetchDropInfos {
+                    self?.dictMonsterTableView.reloadData()
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] _ in
                 self?.dictMonsterTableView.reloadData()
-            }
-        }
+            })
+            .disposed(by: viewModel.disposeBag)
         
-        viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictMonsterTableView.reloadData()
-        }
-        
-        viewModel.totalTextSize.bind { [weak self] _ in
-            self?.dictMonsterTableView.reloadData()
-        }
+        viewModel.totalTextSize
+            .subscribe(onNext: { [weak self] _ in
+                self?.dictMonsterTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -109,7 +130,7 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
+//        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedMonster.value else { return UITableViewCell() }
@@ -119,7 +140,7 @@ extension DictMonsterViewController: UITableViewDelegate, UITableViewDataSource 
             cell.selectionStyle = .none
             return cell
         } else {
-            switch selectedTab {
+            switch viewModel.selectedTab.value {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
                       let items = viewModel.fetchDetailInfos() else { return UITableViewCell() }

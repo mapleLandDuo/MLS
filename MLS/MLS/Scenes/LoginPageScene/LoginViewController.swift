@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import RxCocoa
 
 class LoginViewController: BasicController {
     // MARK: - Properties
@@ -183,24 +184,37 @@ private extension LoginViewController {
 // MARK: - Bind
 private extension LoginViewController {
     func bind() {
-        viewModel.isAutoLogin.bind { [weak self] state in
-            guard let state = state else { return }
-            self?.viewModel.userDefaultManager.setAutoLogin(toggle: state)
-            if state {
-                self?.autoLoginButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-                self?.autoLoginButton.tintColor = .semanticColor.bg.brand
-            } else {
-                self?.autoLoginButton.setImage(UIImage(systemName: "square"), for: .normal)
-                self?.autoLoginButton.tintColor = .semanticColor.bolder.primary
-            }
-        }
+//        viewModel.isAutoLogin.bind { [weak self] state in
+//            guard let state = state else { return }
+//            self?.viewModel.userDefaultManager.setAutoLogin(toggle: state)
+//            if state {
+//                self?.autoLoginButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+//                self?.autoLoginButton.tintColor = .semanticColor.bg.brand
+//            } else {
+//                self?.autoLoginButton.setImage(UIImage(systemName: "square"), for: .normal)
+//                self?.autoLoginButton.tintColor = .semanticColor.bolder.primary
+//            }
+//        }
+        
+        viewModel.isAutoLogin
+            .subscribe(onNext: { [weak self] state in
+                self?.viewModel.userDefaultManager.setAutoLogin(toggle: state)
+                if state {
+                    self?.autoLoginButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+                    self?.autoLoginButton.tintColor = .semanticColor.bg.brand
+                } else {
+                    self?.autoLoginButton.setImage(UIImage(systemName: "square"), for: .normal)
+                    self?.autoLoginButton.tintColor = .semanticColor.bolder.primary
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
 // MARK: - Methods
 private extension LoginViewController {
     func didTapAutoLoginButton() {
-        viewModel.isAutoLogin.value?.toggle()
+        viewModel.isAutoLogin.accept(!viewModel.isAutoLogin.value)
     }
         
     func didTapPwFindButton() {

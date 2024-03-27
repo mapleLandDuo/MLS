@@ -7,6 +7,7 @@
 
 import UIKit
 
+import RxSwift
 import SnapKit
 
 class DictItemViewController: BasicController {
@@ -62,12 +63,13 @@ private extension DictItemViewController {
     func setUp() {
         dictItemTableView.delegate = self
         dictItemTableView.dataSource = self
-        
+
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
         viewModel.fetchData(type: .item) { [weak self] (item: DictItem?) in
-            self?.viewModel.selectedItem.value = item
+//            self?.viewModel.selectedItem.value = item
+            self?.viewModel.selectedItem.accept(item)
         }
 
         setUpConstraints()
@@ -86,15 +88,29 @@ private extension DictItemViewController {
 // MARK: Bind
 private extension DictItemViewController {
     func bind() {
-        viewModel.selectedItem.bind { [weak self] _ in
-            self?.viewModel.fetchDropInfos {
+//        viewModel.selectedItem.bind { [weak self] _ in
+//            self?.viewModel.fetchDropInfos {
+//                self?.dictItemTableView.reloadData()
+//            }
+//        }
+//
+//        viewModel.selectedTab.bind { [weak self] _ in
+//            self?.dictItemTableView.reloadData()
+//        }
+
+        viewModel.selectedItem
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.fetchDropInfos {
+                    self?.dictItemTableView.reloadData()
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] _ in
                 self?.dictItemTableView.reloadData()
-            }
-        }
-        
-        viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictItemTableView.reloadData()
-        }
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -104,7 +120,7 @@ extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
+//        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedItem.value else { return UITableViewCell() }
@@ -113,7 +129,7 @@ extension DictItemViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
         } else {
-            switch selectedTab {
+            switch viewModel.selectedTab.value {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
                       let items = viewModel.fetchDefaultInfos() else { return UITableViewCell() }
@@ -191,11 +207,11 @@ extension DictItemViewController: UICollectionViewDelegateFlowLayout, UICollecti
         }
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.setMenuIndex(index: indexPath.row)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         if indexPath.row == 2 && viewModel.dropTableContents.isEmpty {
             AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
@@ -203,7 +219,7 @@ extension DictItemViewController: UICollectionViewDelegateFlowLayout, UICollecti
         }
         return true
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = Double((Constants.screenWidth - Constants.spacings.xl_3 * 2 - Constants.spacings.xl * 2) / 3)
         let height = 40.0

@@ -8,12 +8,16 @@
 import Foundation
 
 import FirebaseAuth
+import RxCocoa
+import RxSwift
 
 class LoginViewModel {
     // MARK: - Properties
     var userDefaultManager = UserDefaultsManager()
 
-    var isAutoLogin: TempObservable<Bool> = TempObservable(false)
+//    var isAutoLogin: TempObservable<Bool> = TempObservable(false)
+    var isAutoLogin = BehaviorRelay<Bool>(value: false)
+    let disposeBag = DisposeBag()
 }
 
 // MARK: - Methods

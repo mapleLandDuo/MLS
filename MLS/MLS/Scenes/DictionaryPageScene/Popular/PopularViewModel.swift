@@ -7,29 +7,51 @@
 
 import Foundation
 
+import RxCocoa
+import RxSwift
+
 class PopularViewModel {
     // MARK: Properties
-    var selectedTab: TempObservable<Int> = TempObservable(0)
-    var tabMenus = ["인기 아이템", "인기 몬스터"]
+    var tabMenus = BehaviorRelay<[String]>(value: ["인기 아이템", "인기 몬스터"])
     
-    let datas: TempObservable<[DictSectionDatas]> = TempObservable(nil)
+    var selectedTab = BehaviorRelay<Int>(value: 0)
+    let datas = BehaviorRelay<[DictSectionDatas]?>(value: nil)
+    let title = BehaviorRelay<String?>(value: nil)
+    let disposeBag = DisposeBag()
     
-    let title: TempObservable<String> = TempObservable(nil)
+    let selectedData = BehaviorSubject<[DictSectionData]>(value: [])
     
     init(datas: [DictSectionDatas], title: String?) {
-        self.datas.value = datas
-        self.title.value = title
+        self.datas.accept(datas)
+        self.title.accept(title)
+        bind()
     }
 }
 
 // MARK: Methods
 extension PopularViewModel {
     func fetchMenuIndex() -> Int {
-        guard let index = selectedTab.value else { return 0 }
-        return index
+        return selectedTab.value
     }
     
     func setMenuIndex(index: Int) {
-        selectedTab.value = index
+        selectedTab.accept(index)
+    }
+    
+    func bind() {
+        selectedTab
+            .withUnretained(self)
+            .subscribe(onNext: { owner, selectedTab in
+                if selectedTab == 0 {
+                    if let datas = owner.datas.value?[0].datas {
+                        owner.selectedData.onNext(datas)
+                    }
+                } else {
+                    if let datas = owner.datas.value?[1].datas {
+                        owner.selectedData.onNext(datas)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

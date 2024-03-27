@@ -7,11 +7,14 @@
 
 import Foundation
 
+import RxCocoa
+
 class DictItemViewModel: DictBaseViewModel {
     // MARK: Properties
     var tabMenus = ["아이템 정보","세부 정보","드롭 정보"]
 
-    var selectedItem: TempObservable<DictItem> = TempObservable(nil)
+//    var selectedItem: TempObservable<DictItem> = TempObservable(nil)
+    var selectedItem = BehaviorRelay<DictItem?>(value: nil)
     
     var dropTableContents = [DictDropContent]()
 

@@ -7,11 +7,14 @@
 
 import Foundation
 
+import RxCocoa
+
 class DictQuestViewModel: DictBaseViewModel {
     // MARK: Properties
     var tabMenus = ["정보 & 완료조건","퀘스트 보상","퀘스트 순서"]
     
-    var selectedQuest: TempObservable<DictQuest> = TempObservable(nil)
+//    var selectedQuest: TempObservable<DictQuest> = TempObservable(nil)
+    var selectedQuest = BehaviorRelay<DictQuest?>(value: nil)
     
     var completeTableContents = [DictDropContent]()
     

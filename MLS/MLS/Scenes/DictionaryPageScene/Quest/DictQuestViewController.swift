@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import RxCocoa
 
 class DictQuestViewController: BasicController {
     // MARK: Properties
@@ -68,7 +69,7 @@ private extension DictQuestViewController {
         infoMenuCollectionView.dataSource = self
 
         viewModel.fetchData(type: .quest) { [weak self] (quest: DictQuest?) in
-            self?.viewModel.selectedQuest.value = quest
+            self?.viewModel.selectedQuest.accept(quest)
         }
 
         setUpConstraints()
@@ -87,17 +88,33 @@ private extension DictQuestViewController {
 // MARK: Bind
 private extension DictQuestViewController {
     func bind() {
-        viewModel.selectedQuest.bind { [weak self] _ in
-            self?.viewModel.fetchCompleteInfos {
-                self?.viewModel.fetchRewardInfos {
-                    self?.dictQuestTableView.reloadData()
+//        viewModel.selectedQuest.bind { [weak self] _ in
+//            self?.viewModel.fetchCompleteInfos {
+//                self?.viewModel.fetchRewardInfos {
+//                    self?.dictQuestTableView.reloadData()
+//                }
+//            }
+//        }
+//
+//        viewModel.selectedTab.bind { [weak self] _ in
+//            self?.dictQuestTableView.reloadData()
+//        }
+        
+        viewModel.selectedQuest
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.fetchCompleteInfos {
+                    self?.viewModel.fetchRewardInfos {
+                        self?.dictQuestTableView.reloadData()
+                    }
                 }
-            }
-        }
+            })
+            .disposed(by: viewModel.disposeBag)
 
-        viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictQuestTableView.reloadData()
-        }
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] _ in
+                self?.dictQuestTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -120,7 +137,7 @@ extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
+//        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
                   let item = viewModel.selectedQuest.value else { return UITableViewCell() }
@@ -129,7 +146,7 @@ extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
             cell.bind(item: item)
             return cell
         } else if indexPath.section == 1 {
-            switch selectedTab {
+            switch viewModel.selectedTab.value {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
                       let items = viewModel.fetchDefaultInfos() else { return UITableViewCell() }
@@ -152,7 +169,7 @@ extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
         } else {
-            switch selectedTab {
+            switch viewModel.selectedTab.value {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
                 cell.delegate = self

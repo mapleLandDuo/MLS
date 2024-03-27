@@ -7,9 +7,12 @@
 
 import Foundation
 
+import RxCocoa
+
 class DictNPCViewModel: DictBaseViewModel {
     // MARK: Properties
-    var tabMenus = ["출현 장소","수락 퀘스트"]
-    
-    var selectedNPC: TempObservable<DictNPC> = TempObservable(nil)
+    var tabMenus = ["출현 장소", "수락 퀘스트"]
+
+//    var selectedNPC: TempObservable<DictNPC> = TempObservable(nil)
+    var selectedNPC = BehaviorRelay<DictNPC?>(value: nil)
 }

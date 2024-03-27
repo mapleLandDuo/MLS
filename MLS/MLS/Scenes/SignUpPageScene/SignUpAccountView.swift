@@ -42,7 +42,14 @@ class SignUpAccountView: UIView {
         let button = CustomButton(type: .default, text: text)
         button.setButtonClicked(backgroundColor: .themeColor(color: .base, value: .value_white), borderColor: .semanticColor.bolder.secondary, titleColor: .semanticColor.text.secondary, clickedBackgroundColor: nil, clickedBorderColor: .semanticColor.bolder.interactive.secondary_pressed, clickedTitleColor: .semanticColor.text.primary)
         button.addAction(UIAction(handler: { [weak self] _ in
-            self?.rollButtonStackView.arrangedSubviews.forEach { ($0 as? CustomButton)?.isClicked.value = $0 == button }
+            self?.rollButtonStackView.arrangedSubviews.forEach {
+                if $0 == button {
+                    ($0 as? CustomButton)?.isClicked.accept(true)
+                } else {
+                    ($0 as? CustomButton)?.isClicked.accept(false)
+                }
+                
+            }
             self?.delegate?.didtapJobButton(job: text)
         }), for: .touchUpInside)
         return button

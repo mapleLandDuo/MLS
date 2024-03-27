@@ -58,10 +58,10 @@ extension DictSearchViewController {
 // MARK: - Bind
 private extension DictSearchViewController {
     func bind() {
-//        viewModel.isSearching.map({ [weak self] in
-//            guard let self = self else { return !$0 }
-//            return self.viewModel.fetchRecentSearchKeywords().isEmpty ? true : !$0}
-//        ).bind(to: searchingVC.view.rx.isHidden).disposed(by: disposeBag)
+        viewModel.isSearching.map({ [weak self] in
+            guard let self = self else { return !$0 }
+            return self.viewModel.fetchRecentSearchKeywords().isEmpty ? true : !$0}
+        ).bind(to: searchingVC.view.rx.isHidden).disposed(by: disposeBag)
         
         viewModel.isSearching.subscribe { [weak self] isSearching in
             guard let self = self else { return }

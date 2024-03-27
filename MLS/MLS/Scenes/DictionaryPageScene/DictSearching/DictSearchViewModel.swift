@@ -262,10 +262,10 @@ extension DictSearchViewModel {
         
         let keyword = fetchSearchKeyword()
         var originDictDatas = dictDatas.value
-        var monsterFilter = fetchFilter(type: .monster)
+        let monsterFilter = fetchFilter(type: .monster)
         let monsterMinLevel = monsterFilter.levelRange?.0 ?? nil
         let monsterMaxLevel = monsterFilter.levelRange?.1 ?? nil
-        var itemFilter = fetchFilter(type: .item)
+        let itemFilter = fetchFilter(type: .item)
         let itemJobName = itemFilter.job ?? nil
         let itemMinLevel = itemFilter.levelRange?.0 ?? nil
         let itemMaxLevel = itemFilter.levelRange?.1 ?? nil

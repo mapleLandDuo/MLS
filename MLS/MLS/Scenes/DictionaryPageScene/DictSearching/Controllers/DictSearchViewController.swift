@@ -135,6 +135,7 @@ private extension DictSearchViewController {
 extension DictSearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
         viewModel.appendRecentSearchKeyword()
         viewModel.setIsSearching(isSearching: false)
         viewModel.setDictDatasToSearchKeyword()

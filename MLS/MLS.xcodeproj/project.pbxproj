@@ -52,7 +52,6 @@
 		08971A792B70C1EF00FE46BE /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08971A782B70C1EF00FE46BE /* State.swift */; };
 		08A139B12B8E29E9008D6E5E /* DictSearchSortedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A139B02B8E29E9008D6E5E /* DictSearchSortedCell.swift */; };
 		08B72F3E2BAAA57500CA11C0 /* DictMenuTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B72F3D2BAAA57500CA11C0 /* DictMenuTypeEnum.swift */; };
-		08B72F402BAAA5AE00CA11C0 /* DictDBViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B72F3F2BAAA5AE00CA11C0 /* DictDBViewModel.swift */; };
 		08CB4E572B8F375300336FE6 /* DictSectionDatas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E562B8F375300336FE6 /* DictSectionDatas.swift */; };
 		08CB4E592B8F377200336FE6 /* DictType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E582B8F377200336FE6 /* DictType.swift */; };
 		08CB4E5B2B8F37B200336FE6 /* DictSearchSortedEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CB4E5A2B8F37B200336FE6 /* DictSearchSortedEnum.swift */; };
@@ -170,7 +169,6 @@
 		77F221032BB264F400335EDD /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 77F221022BB264F400335EDD /* RxCocoa */; };
 		77F221052BB264F400335EDD /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 77F221042BB264F400335EDD /* RxRelay */; };
 		77F221072BB264F400335EDD /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 77F221062BB264F400335EDD /* RxSwift */; };
-		77F221092BB29BB300335EDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77F221082BB29BB300335EDD /* GoogleService-Info.plist */; };
 		77F358FC2B95EF6500B0C5A2 /* PopularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */; };
 		77F358FE2B95EF7000B0C5A2 /* PopularViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */; };
 		77F359012B95F4D600B0C5A2 /* PopularTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F359002B95F4D600B0C5A2 /* PopularTableViewCell.swift */; };
@@ -203,7 +201,6 @@
 		08971A782B70C1EF00FE46BE /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		08A139B02B8E29E9008D6E5E /* DictSearchSortedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchSortedCell.swift; sourceTree = "<group>"; };
 		08B72F3D2BAAA57500CA11C0 /* DictMenuTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMenuTypeEnum.swift; sourceTree = "<group>"; };
-		08B72F3F2BAAA5AE00CA11C0 /* DictDBViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictDBViewModel.swift; sourceTree = "<group>"; };
 		08CB4E562B8F375300336FE6 /* DictSectionDatas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSectionDatas.swift; sourceTree = "<group>"; };
 		08CB4E582B8F377200336FE6 /* DictType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictType.swift; sourceTree = "<group>"; };
 		08CB4E5A2B8F37B200336FE6 /* DictSearchSortedEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchSortedEnum.swift; sourceTree = "<group>"; };
@@ -315,7 +312,6 @@
 		77A280902B73B8BD0079D0EB /* DictionaryQuest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryQuest.swift; sourceTree = "<group>"; };
 		77B6DB722B692A3E00302173 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		77EF47582B5CD63800181D35 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
-		77F221082BB29BB300335EDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		77F358FB2B95EF6500B0C5A2 /* PopularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewController.swift; sourceTree = "<group>"; };
 		77F358FD2B95EF7000B0C5A2 /* PopularViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewModel.swift; sourceTree = "<group>"; };
 		77F359002B95F4D600B0C5A2 /* PopularTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularTableViewCell.swift; sourceTree = "<group>"; };
@@ -454,7 +450,6 @@
 				08EF65092B540A4A004CC842 /* FontsSizeEnum.swift */,
 				08EF65232B5572E3004CC842 /* TempObservable.swift */,
 				08D5F1062B86156200E56482 /* PopUpMaker.swift */,
-				08B72F3F2BAAA5AE00CA11C0 /* DictDBViewModel.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -465,6 +460,7 @@
 				082D0C772B53D11900D84CE2 /* BasicController.swift */,
 				08CBCB8B2B7F09E000C051F7 /* TestController.swift */,
 				08CEA72F2B974E500060EC82 /* LaunchViewController.swift */,
+				770848962B889A0C008B68E1 /* PresentationController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -472,7 +468,6 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				77F221082BB29BB300335EDD /* GoogleService-Info.plist */,
 				77017A792B97674200D60411 /* mlsDatabase.db */,
 				08D2A3DC2B9645E900E236D1 /* GIF */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
@@ -493,7 +488,6 @@
 				7717D6EC2B871CD00050BD07 /* CustomTextField.swift */,
 				7717D6EE2B8731610050BD07 /* CustomButton.swift */,
 				08F95DBD2B89F0BD00AD79DF /* DictSectionHeaderView.swift */,
-				770848962B889A0C008B68E1 /* PresentationController.swift */,
 				087D25252B93955300A998E4 /* AlertView.swift */,
 				08CEA7392B976D6B0060EC82 /* AlertMaker.swift */,
 				778D04A82BA0189900BF9F9E /* LeftAlignedCollectionViewFlowLayout.swift */,
@@ -916,7 +910,6 @@
 			files = (
 				774FB6B32BA1447000F8C675 /* Assets.xcassets in Resources */,
 				77017A7B2B97675400D60411 /* mlsDatabase.db in Resources */,
-				77F221092BB29BB300335EDD /* GoogleService-Info.plist in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
 				08CEA7242B972AC00060EC82 /* launchScreen.gif in Resources */,
 				08D5F0E62B81F3A800E56482 /* Pretendard-Bold.otf in Resources */,
@@ -1011,7 +1004,6 @@
 				082D0C832B53D45700D84CE2 /* Post.swift in Sources */,
 				7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */,
 				7724EF5E2B9448D600C59FE6 /* DictQuestOrderCell.swift in Sources */,
-				08B72F402BAAA5AE00CA11C0 /* DictDBViewModel.swift in Sources */,
 				08F95DC32B8A0A5500AD79DF /* DictSearchHeaderView.swift in Sources */,
 				7724EF5B2B94486700C59FE6 /* DictQuestViewModel.swift in Sources */,
 				778EB9312B91A0E800DC9B63 /* DictItemViewModel.swift in Sources */,

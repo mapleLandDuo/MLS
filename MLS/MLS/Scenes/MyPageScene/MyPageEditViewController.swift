@@ -140,7 +140,6 @@ private extension MyPageEditViewController {
 private extension MyPageEditViewController {
     func bind() {
         viewModel.nickNameState.subscribe { [weak self] state in
-            print("nickNameStateSubscribe")
             if state != .default {
                 let isCorrect = state == .complete
                 self?.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
@@ -149,7 +148,6 @@ private extension MyPageEditViewController {
         }.disposed(by: disposeBag)
         
         viewModel.levelState.subscribe { [weak self] state in
-            print("levelStateSubscribe")
             if state != .default {
                 let isCorrect = state == .complete
                 self?.levelTextField.checkState(state: state, isCorrect: isCorrect)
@@ -158,12 +156,10 @@ private extension MyPageEditViewController {
         }.disposed(by: disposeBag)
         
         viewModel.jobState.subscribe { [weak self] job in
-            print("jobStateSubscribe")
             self?.viewModel.isValidButton()
         }.disposed(by: disposeBag)
         
         viewModel.buttonState.subscribe { [weak self] state in
-            print("buttonStateSubscribe")
             if state {
                 self?.editButton.setTitleColor(.themeColor(color: .base, value: .value_white), for: .disabled)
                 self?.editButton.backgroundColor = .semanticColor.bg.interactive.primary

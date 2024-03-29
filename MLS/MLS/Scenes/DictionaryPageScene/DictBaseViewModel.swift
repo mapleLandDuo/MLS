@@ -12,9 +12,13 @@ import RxSwift
 
 class DictBaseViewModel {
     let sqliteManager = SqliteManager()
+    
     var selectedName: String?
+    
     var selectedTab = BehaviorRelay<Int>(value: 0)
     var mainInfo = BehaviorRelay<Sqlable?>(value: nil)
+    var sectionData = BehaviorRelay<[Section]>(value: [])
+    
     let disposeBag = DisposeBag()
     
     init(selectedName: String) {

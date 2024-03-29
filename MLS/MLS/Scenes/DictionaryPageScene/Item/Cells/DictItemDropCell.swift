@@ -11,8 +11,9 @@ import SnapKit
 
 class DictItemDropCell: UITableViewCell {
     // MARK: Properties
-    var didTapCell: ((String) -> Void)?
     private var items: [DictDropContent]?
+    
+    var didTapCell: ((String) -> Void)?
 
     // MARK: Components
     private let dropCollectionView: UICollectionView = {

@@ -172,7 +172,7 @@ extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
             switch viewModel.selectedTab.value {
             case 0:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
-                cell.delegate = self
+//                cell.delegate = self
                 cell.isUserInteractionEnabled = true
                 cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.completeTableContents, type: "정보 완료 조건")
@@ -180,7 +180,7 @@ extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
                 return cell
             case 1:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
-                cell.delegate = self
+//                cell.delegate = self
                 cell.isUserInteractionEnabled = true
                 cell.contentView.isUserInteractionEnabled = false
                 cell.bind(items: viewModel.rewardTableContents, type: "퀘스트 보상")
@@ -256,29 +256,29 @@ extension DictQuestViewController: UICollectionViewDelegateFlowLayout, UICollect
     }
 }
 
-extension DictQuestViewController: DictMonsterDropCellDelegate {
-    func didTapDropTableCell(title: String, type: DictType?) {
-        switch viewModel.selectedTab.value {
-        case 0:
-            if type == .item {
-                let vm = DictItemViewModel(selectedName: title)
-                let vc = DictItemViewController(viewModel: vm)
-                navigationController?.pushViewController(vc, animated: true)
-            } else {
-                let vm = DictMonsterViewModel(selectedName: title)
-                let vc = DictMonsterViewController(viewModel: vm)
-                navigationController?.pushViewController(vc, animated: true)
-            }
-        case 1:
-            let vm = DictItemViewModel(selectedName: title)
-            let vc = DictItemViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
-            
-        default:
-            break
-        }
-    }
-}
+//extension DictQuestViewController: DictMonsterDropCellDelegate {
+//    func didTapDropTableCell(title: String, type: DictType?) {
+//        switch viewModel.selectedTab.value {
+//        case 0:
+//            if type == .item {
+//                let vm = DictItemViewModel(selectedName: title)
+//                let vc = DictItemViewController(viewModel: vm)
+//                navigationController?.pushViewController(vc, animated: true)
+//            } else {
+//                let vm = DictMonsterViewModel(selectedName: title)
+//                let vc = DictMonsterViewController(viewModel: vm)
+//                navigationController?.pushViewController(vc, animated: true)
+//            }
+//        case 1:
+//            let vm = DictItemViewModel(selectedName: title)
+//            let vc = DictItemViewController(viewModel: vm)
+//            navigationController?.pushViewController(vc, animated: true)
+//            
+//        default:
+//            break
+//        }
+//    }
+//}
 
 extension DictQuestViewController: DictQuestOrderCellDelegate {
     func didTapQuestCell(title: String) {

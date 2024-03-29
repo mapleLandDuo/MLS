@@ -64,15 +64,9 @@ extension DictItemViewController {
 private extension DictItemViewController {
     func setUp() {
         dictItemTableView.delegate = self
-//        dictItemTableView.dataSource = self
 
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
-
-//        viewModel.fetchData(type: .item) { [weak self] (item: DictItem?) in
-        ////            self?.viewModel.selectedItem.value = item
-//            self?.viewModel.selectedItem.accept(item)
-//        }
 
         setUpConstraints()
         setUpNavigation(title: "상세정보")
@@ -94,22 +88,29 @@ private extension DictItemViewController {
             configureCell: { _, tableView, indexPath, item in
                 var cell = UITableViewCell()
                 if indexPath.section == 0 {
-                    let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as! DictMainInfoCell
-                    tempCell.bind(item: self.viewModel.selectedItem.value)
-                    cell = tempCell
+                    switch item {
+                    case .mainInfo(let mainItem):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
+                        tempCell.contentView.isUserInteractionEnabled = false
+                        tempCell.bind(item: mainItem)
+                        tempCell.delegate = self
+                        cell = tempCell
+                    default:
+                        break
+                    }
                 } else {
                     switch item {
                     case .detailInfo(let detailItem):
-                        let tempCell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier, for: indexPath) as! DictDetailContentsCell
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier, for: indexPath) as? DictDetailContentsCell else { return UITableViewCell() }
                         tempCell.bind(items: detailItem)
                         cell = tempCell
                     case .dropItem(let dictDropItem):
-                        let tempCell = tableView.dequeueReusableCell(withIdentifier: DictItemDropCell.identifier, for: indexPath) as! DictItemDropCell
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictItemDropCell.identifier, for: indexPath) as? DictItemDropCell else { return UITableViewCell() }
+                        tempCell.contentView.isUserInteractionEnabled = false
                         tempCell.bind(items: dictDropItem)
                         tempCell.didTapCell = { [weak self] name in
                             self?.viewModel.tappedCellName.accept(name)
                         }
-                        tempCell.contentView.isUserInteractionEnabled = false
                         cell = tempCell
                     default:
                         break
@@ -130,12 +131,6 @@ private extension DictItemViewController {
                 let vm = DictMonsterViewModel(selectedName: name)
                 let vc = DictMonsterViewController(viewModel: vm)
                 owner.navigationController?.pushViewController(vc, animated: true)
-            })
-            .disposed(by: viewModel.disposeBag)
-
-        viewModel.selectedItem
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.fetchDefaultInfos()
             })
             .disposed(by: viewModel.disposeBag)
 

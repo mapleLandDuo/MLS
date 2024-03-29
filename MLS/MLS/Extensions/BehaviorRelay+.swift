@@ -22,3 +22,16 @@ extension BehaviorRelay where Element: RangeReplaceableCollection {
     }
 }
 
+extension BehaviorRelay where Element == [Section] {
+    func updateSection(newSection: Section) {
+        var currentSections = self.value
+        let index = newSection.index
+
+        if let newIndex = currentSections.firstIndex(where: { $0.index == index }) {
+            currentSections[newIndex] = newSection
+        } else {
+            currentSections.append(newSection)
+        }
+        self.accept(currentSections)
+    }
+}

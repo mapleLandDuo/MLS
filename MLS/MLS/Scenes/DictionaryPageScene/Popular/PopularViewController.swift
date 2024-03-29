@@ -94,34 +94,6 @@ private extension PopularViewController {
 // MARK: Bind
 extension PopularViewController {
     func bind() {
-        viewModel.datas
-            .bind(to: Binder(popularTableView) { tableView, _ in
-                tableView.reloadData()
-            })
-            .disposed(by: viewModel.disposeBag)
-
-//        viewModel.selectedTab
-//            .map { [weak self] selectedTab in
-//                var data = [DictSectionData]()
-//                if selectedTab == 0 {
-//                    if let datas = self?.viewModel.datas.value?[0].datas {
-//                        data = datas
-//                    }
-//
-//                } else {
-//                    if let datas = self?.viewModel.datas.value?[1].datas {
-//                        data = datas
-//                    }
-//                }
-//                return data
-//            }
-//            .bind(to: popularTableView.rx.items(cellIdentifier: PopularTableViewCell.identifier, cellType: PopularTableViewCell.self)) { index, item, cell in
-//                let rank = (0 ... 2).contains(index) ? 0 : 1
-//                cell.selectionStyle = .none
-//                cell.bind(item: item, index: index, rank: rank)
-//            }
-//            .disposed(by: viewModel.disposeBag)
-        
         viewModel.selectedData
             .bind(to: popularTableView.rx.items(cellIdentifier: PopularTableViewCell.identifier, cellType: PopularTableViewCell.self)) { index, item, cell in
                 let rank = (0 ... 2).contains(index) ? 0 : 1

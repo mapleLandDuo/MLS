@@ -13,8 +13,8 @@ import RxSwift
 class DictBaseViewModel {
     let sqliteManager = SqliteManager()
     var selectedName: String?
-//    var selectedTab: TempObservable<Int> = TempObservable(0)
     var selectedTab = BehaviorRelay<Int>(value: 0)
+    var mainInfo = BehaviorRelay<Sqlable?>(value: nil)
     let disposeBag = DisposeBag()
     
     init(selectedName: String) {
@@ -24,7 +24,6 @@ class DictBaseViewModel {
 
 extension DictBaseViewModel {
     func fetchMenuIndex() -> Int {
-//        guard let index = selectedTab.value else { return 0 }
         return selectedTab.value
     }
 

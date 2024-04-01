@@ -7,8 +7,9 @@
 
 import UIKit
 
-import SnapKit
 import RxCocoa
+import RxDataSources
+import SnapKit
 
 class DictMapViewController: BasicController {
     // MARK: Properties
@@ -61,14 +62,9 @@ extension DictMapViewController {
 private extension DictMapViewController {
     func setUp() {
         dictMapTableView.delegate = self
-        dictMapTableView.dataSource = self
 
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
-
-        viewModel.fetchData(type: .map) { [weak self] (map: DictMap?) in
-            self?.viewModel.selectedMap.accept(map)
-        }
 
         setUpConstraints()
         setUpNavigation(title: "상세정보")
@@ -86,77 +82,80 @@ private extension DictMapViewController {
 // MARK: Bind
 extension DictMapViewController {
     func bind() {
-//        viewModel.selectedMap.bind { [weak self] _ in
-//            self?.viewModel.fetchApearMonsters {
-//                self?.viewModel.fetchApearNPCs {
-//                    self?.dictMapTableView.reloadData()
-//                }
-//            }
-//        }
-//
-//        viewModel.selectedTab.bind { [weak self] _ in
-//            self?.dictMapTableView.reloadData()
-//        }
-        
-        viewModel.selectedMap
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.fetchApearMonsters {
-                    self?.viewModel.fetchApearNPCs {
-                        self?.dictMapTableView.reloadData()
+        let dataSource = RxTableViewSectionedReloadDataSource<Section>(
+            configureCell: { [weak self] _, tableView, indexPath, item in
+                var cell = UITableViewCell()
+                if indexPath.section == 0 {
+                    switch item {
+                    case .mainInfo(let mainItem):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
+                        tempCell.delegate = self
+                        tempCell.bind(item: mainItem)
+                        cell = tempCell
+                    default:
+                        break
                     }
+                } else {
+                    switch item {
+                    case .dropItem(let dropItem):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
+                        tempCell.didTapCell = { [weak self] name in
+                            self?.viewModel.tappedCellName
+                                .accept(name)
+                        }
+                        let type = self?.viewModel.selectedTab.value == 0 ? DictType.monster : DictType.npc
+                        tempCell.bind(items: dropItem, type: type)
+                        cell = tempCell
+                    default:
+                        return UITableViewCell()
+                    }
+                }
+                cell.isUserInteractionEnabled = true
+                cell.contentView.isUserInteractionEnabled = false
+                cell.selectionStyle = .none
+                return cell
+            }
+        )
+        
+        viewModel.sectionData
+            .bind(to: dictMapTableView.rx.items(dataSource: dataSource))
+            .disposed(by: viewModel.disposeBag)
+
+        viewModel.tappedCellName
+            .withUnretained(self)
+            .subscribe(onNext: { owner, name in
+                switch owner.viewModel.selectedTab.value {
+                case 0:
+                    let vm = DictMonsterViewModel(selectedName: name)
+                    let vc = DictMonsterViewController(viewModel: vm)
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                case 1:
+                    let vm = DictNPCViewModel(selectedName: name)
+                    let vc = DictNPCViewController(viewModel: vm)
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                default:
+                    break
                 }
             })
             .disposed(by: viewModel.disposeBag)
-
+        
         viewModel.selectedTab
-            .subscribe(onNext: { [weak self] _ in
-                self?.dictMapTableView.reloadData()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, selectedTab in
+                switch selectedTab {
+                case 0:
+                    owner.viewModel.fetchApearMonsters()
+                case 1:
+                    owner.viewModel.fetchApearNPCs()
+                default:
+                    break
+                }
             })
             .disposed(by: viewModel.disposeBag)
     }
 }
 
-extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
-        if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
-                  let item = viewModel.selectedMap.value else { return UITableViewCell() }
-            cell.delegate = self
-            cell.bind(item: item)
-            return cell
-        } else {
-            switch viewModel.selectedTab.value {
-            case 0:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
-                cell.delegate = self
-                cell.isUserInteractionEnabled = true
-                cell.contentView.isUserInteractionEnabled = false
-                cell.selectionStyle = .none
-                cell.bind(items: viewModel.apearMonsterContents, type: .monster)
-                return cell
-            case 1:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
-                cell.delegate = self
-                cell.isUserInteractionEnabled = true
-                cell.contentView.isUserInteractionEnabled = false
-                cell.selectionStyle = .none
-                cell.bind(items: viewModel.apearNpcContents, type: .npc)
-                return cell
-            default:
-                return UITableViewCell()
-            }
-        }
-    }
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-
+extension DictMapViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
             let view = UIView()
@@ -208,10 +207,9 @@ extension DictMapViewController: UICollectionViewDelegateFlowLayout, UICollectio
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.setMenuIndex(index: indexPath.row)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        let contents = indexPath.row == 0 ? viewModel.apearMonsterContents : viewModel.apearNpcContents
-        if contents.isEmpty {
+        if viewModel.sectionData.value[1].items.isEmpty {
             AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
             return false
         }
@@ -222,23 +220,6 @@ extension DictMapViewController: UICollectionViewDelegateFlowLayout, UICollectio
         let width = 75.0
         let height = 40.0
         return CGSize(width: width, height: height)
-    }
-}
-
-extension DictMapViewController: DictMapTableViewCellDelegate {
-    func didTapMapTableCell(title: String) {
-        switch viewModel.selectedTab.value {
-        case 0:
-            let vm = DictMonsterViewModel(selectedName: title)
-            let vc = DictMonsterViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
-        case 1:
-            let vm = DictNPCViewModel(selectedName: title)
-            let vc = DictNPCViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
-        default:
-            break
-        }
     }
 }
 

@@ -17,13 +17,10 @@ class DictItemViewModel: DictBaseViewModel {
     var selectedItem = BehaviorRelay<DictItem?>(value: nil)
 
     var tappedCellName = PublishRelay<String>()
-    
+
     override init(selectedName: String) {
         super.init(selectedName: selectedName)
-        fetchData(type: .item) { [weak self] (item: DictItem?) in
-            self?.selectedItem.accept(item)
-            self?.bind()
-        }
+        fetchData(type: .item, data: selectedItem)
     }
 }
 
@@ -69,15 +66,15 @@ extension DictItemViewModel {
         sectionData.updateSection(newSection: section)
     }
 
-    func bind() {
-        selectedItem
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                guard let item = owner.selectedItem.value else { return }
-                owner.sectionData.updateSection(newSection: Section(index: 0, items: [.mainInfo(item)]))
-            })
-            .disposed(by: disposeBag)
-    }
+//    func bind() {
+//        selectedItem
+//            .withUnretained(self)
+//            .subscribe(onNext: { owner, _ in
+//                guard let item = owner.selectedItem.value else { return }
+//                owner.sectionData.updateSection(newSection: Section(index: 0, items: [.mainInfo(item)]))
+//            })
+//            .disposed(by: disposeBag)
+//    }
 }
 
 struct Section {

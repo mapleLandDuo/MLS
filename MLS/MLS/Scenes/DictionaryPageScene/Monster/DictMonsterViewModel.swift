@@ -20,10 +20,7 @@ class DictMonsterViewModel: DictBaseViewModel {
     
     override init(selectedName: String) {
         super.init(selectedName: selectedName)
-        fetchData(type: .monster) { [weak self] (monster: DictMonster?) in
-            self?.selectedMonster.accept(monster)
-            self?.bind()
-        }
+        fetchData(type: .monster, data: selectedMonster)
     }
 }
 

@@ -9,17 +9,13 @@ import UIKit
 
 import SnapKit
 
-protocol DictMapTableViewCellDelegate: AnyObject {
-    func didTapMapTableCell(title: String)
-}
-
 class DictMapTableViewCell: UITableViewCell {
     // MARK: Properties
-    weak var delegate: DictMapTableViewCellDelegate?
-    
     private var items: [DictDropContent]?
 
     private var type: DictType?
+    
+    var didTapCell: ((String) -> Void)?
 
     // MARK: Components
     private let dropCollectionView: UICollectionView = {
@@ -98,6 +94,6 @@ extension DictMapTableViewCell: UICollectionViewDelegateFlowLayout, UICollection
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = items?[indexPath.row] else { return }
-        delegate?.didTapMapTableCell(title: item.name)
+        didTapCell?(item.name)
     }
 }

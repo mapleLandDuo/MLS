@@ -13,34 +13,40 @@ class DictMapViewModel: DictBaseViewModel {
     // MARK: Properties
     var tabMenus = ["출현 몬스터","NPC"]
     
-//    var selectedMap: TempObservable<DictMap> = TempObservable(nil)
     var selectedMap = BehaviorRelay<DictMap?>(value: nil)
     
-    var apearMonsterContents = [DictDropContent]()
+    var tappedCellName = PublishRelay<String>()
     
-    var apearNpcContents = [DictDropContent]()
+    override init(selectedName: String) {
+        super.init(selectedName: selectedName)
+        fetchData(type: .map, data: selectedMap)
+    }
 }
 
 // MARK: Methods
 extension DictMapViewModel {
-    func fetchApearMonsters(completion: @escaping () -> Void) {
+    func fetchApearMonsters() {
+        var apearMonsterInfos = [DictDropContent]()
         guard let monsters = selectedMap.value?.monsters else { return }
         for monster in monsters {
-            self.sqliteManager.searchDetailData(dataName: monster.name) { [weak self] (item: DictMonster) in
+            self.sqliteManager.searchDetailData(dataName: monster.name) { (item: DictMonster) in
                 guard let level = item.defaultValues.filter({ $0.name == "LEVEL" }).first?.description else { return}
-                self?.apearMonsterContents.append(DictDropContent(name: item.name, code: item.code, level: level, description: monster.description))
+                apearMonsterInfos.append(DictDropContent(name: item.name, code: item.code, level: level, description: monster.description))
             }
         }
-        completion()
+        let section = Section(index: 1, items: [.dropItem(apearMonsterInfos)])
+        sectionData.updateSection(newSection: section)
     }
     
-    func fetchApearNPCs(completion: @escaping () -> Void) {
+    func fetchApearNPCs() {
+        var apearNPCInfo = [DictDropContent]()
         guard let npcs = selectedMap.value?.npcs else { return }
         for npc in npcs {
-            self.sqliteManager.searchDetailData(dataName: npc) { [weak self] (item: DictNPC) in
-                self?.apearNpcContents.append(DictDropContent(name: item.name, code: item.code, level: "", description: ""))
+            self.sqliteManager.searchDetailData(dataName: npc) { (item: DictNPC) in
+                apearNPCInfo.append(DictDropContent(name: item.name, code: item.code, level: "", description: ""))
             }
         }
-        completion()
+        let section = Section(index: 1, items: [.dropItem(apearNPCInfo)])
+        sectionData.updateSection(newSection: section)
     }
 }

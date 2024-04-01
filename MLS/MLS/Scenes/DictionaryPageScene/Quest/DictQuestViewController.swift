@@ -68,9 +68,9 @@ private extension DictQuestViewController {
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
 
-        viewModel.fetchData(type: .quest) { [weak self] (quest: DictQuest?) in
-            self?.viewModel.selectedQuest.accept(quest)
-        }
+//        viewModel.fetchData(type: .quest) { [weak self] (quest: DictQuest?) in
+//            self?.viewModel.selectedQuest.accept(quest)
+//        }
 
         setUpConstraints()
         setUpNavigation(title: "상세정보")

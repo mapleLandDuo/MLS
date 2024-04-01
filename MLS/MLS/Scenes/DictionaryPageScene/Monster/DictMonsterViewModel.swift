@@ -16,7 +16,8 @@ class DictMonsterViewModel: DictBaseViewModel {
     var selectedMonster = BehaviorRelay<DictMonster?>(value: nil)
     var totalTextSize = BehaviorRelay<CGFloat>(value: 0.0)
     
-    var tappedCellName = PublishRelay<String>()
+    var didTapTagName = PublishRelay<String>()
+    var didTapDropName = PublishRelay<String>()
     
     override init(selectedName: String) {
         super.init(selectedName: selectedName)

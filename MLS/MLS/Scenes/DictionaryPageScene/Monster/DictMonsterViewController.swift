@@ -107,7 +107,10 @@ private extension DictMonsterViewController {
                         cell = tempCell
                     case .tagInfo(let tagItem):
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier, for: indexPath) as? DictTagTableViewCell else { return UITableViewCell() }
-                        tempCell.delegate = self
+                        tempCell.didTapCell = { [weak self] name in
+                            self?.viewModel.didTapTagName.accept(name)
+                        }
+                        
                         tempCell.bind(items: tagItem, descriptionType: .map)
                         cell = tempCell
                     case .dropItem(let dictDropItem):
@@ -116,7 +119,7 @@ private extension DictMonsterViewController {
                         tempCell.contentView.isUserInteractionEnabled = false
                         tempCell.bind(items: dictDropItem, type: "드롭 정보")
                         tempCell.didTapCell = { [weak self] name, _ in
-                            self?.viewModel.tappedCellName.accept(name)
+                            self?.viewModel.didTapDropName.accept(name)
                         }
                         cell = tempCell
                     default:
@@ -132,7 +135,29 @@ private extension DictMonsterViewController {
             .bind(to: dictMonsterTableView.rx.items(dataSource: dataSource))
             .disposed(by: viewModel.disposeBag)
         
-        viewModel.tappedCellName
+        viewModel.didTapTagName
+            .withUnretained(self)
+            .subscribe(onNext: { owner, name in
+                let db = SqliteManager()
+                if name == "스폰 장소가 확인되지 않습니다." {
+                    AlertManager.showAlert(vc: owner, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
+                    return
+                }
+                db.searchData(dataName: name) { (item: [DictMap]) in
+                    if item.isEmpty {
+                        AlertManager.showAlert(vc: owner, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
+                        return
+                    } else {
+                        guard let name = item.first?.name else { return }
+                        let vm = DictMapViewModel(selectedName: name)
+                        let vc = DictMapViewController(viewModel: vm)
+                        owner.navigationController?.pushViewController(vc, animated: true)
+                    }
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.didTapDropName
             .withUnretained(self)
             .subscribe(onNext: { owner, name in
                 let vm = DictItemViewModel(selectedName: name)
@@ -230,28 +255,6 @@ extension DictMonsterViewController: UICollectionViewDelegateFlowLayout, UIColle
         let width = Double((Constants.screenWidth - Constants.spacings.xl_3 * 2 - Constants.spacings.xl * 2) / 3)
         let height = 40.0
         return CGSize(width: width, height: height)
-    }
-}
-
-extension DictMonsterViewController: DictTagTableViewCellDelegate {
-    func didTapTagCell(title: String) {
-        let db = SqliteManager()
-        if title == "스폰 장소가 확인되지 않습니다." {
-            AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
-            return
-        }
-        db.searchData(dataName: title) { [weak self] (item: [DictMap]) in
-            if item.isEmpty {
-                guard let self = self else { return }
-                AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
-                return
-            } else {
-                guard let name = item.first?.name else { return }
-                let vm = DictMapViewModel(selectedName: name)
-                let vc = DictMapViewController(viewModel: vm)
-                self?.navigationController?.pushViewController(vc, animated: true)
-            }
-        }
     }
 }
 

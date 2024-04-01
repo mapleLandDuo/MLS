@@ -7,8 +7,9 @@
 
 import UIKit
 
-import SnapKit
 import RxCocoa
+import RxDataSources
+import SnapKit
 
 class DictQuestViewController: BasicController {
     // MARK: Properties
@@ -63,14 +64,9 @@ extension DictQuestViewController {
 private extension DictQuestViewController {
     func setUp() {
         dictQuestTableView.delegate = self
-        dictQuestTableView.dataSource = self
 
         infoMenuCollectionView.delegate = self
         infoMenuCollectionView.dataSource = self
-
-//        viewModel.fetchData(type: .quest) { [weak self] (quest: DictQuest?) in
-//            self?.viewModel.selectedQuest.accept(quest)
-//        }
 
         setUpConstraints()
         setUpNavigation(title: "상세정보")
@@ -88,114 +84,124 @@ private extension DictQuestViewController {
 // MARK: Bind
 private extension DictQuestViewController {
     func bind() {
-//        viewModel.selectedQuest.bind { [weak self] _ in
-//            self?.viewModel.fetchCompleteInfos {
-//                self?.viewModel.fetchRewardInfos {
-//                    self?.dictQuestTableView.reloadData()
-//                }
-//            }
-//        }
-//
-//        viewModel.selectedTab.bind { [weak self] _ in
-//            self?.dictQuestTableView.reloadData()
-//        }
-        
-        viewModel.selectedQuest
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.fetchCompleteInfos {
-                    self?.viewModel.fetchRewardInfos {
-                        self?.dictQuestTableView.reloadData()
+        let dataSource = RxTableViewSectionedReloadDataSource<Section>(
+            configureCell: { [weak self] _, tableView, indexPath, item in
+                var cell = UITableViewCell()
+                if indexPath.section == 0 {
+                    switch item {
+                    case .mainInfo(let mainItem):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
+                        tempCell.delegate = self
+                        tempCell.bind(item: mainItem)
+                        cell = tempCell
+                    default:
+                        break
                     }
+                } else if indexPath.section == 1 {
+                    switch item {
+                    case .detailInfo(let detailInfo):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier, for: indexPath) as? DictDetailContentsCell else { return UITableViewCell() }
+                        tempCell.bind(items: detailInfo)
+                        cell = tempCell
+                    case .mainInfo(let questInfo):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictQuestOrderCell.identifier, for: indexPath) as? DictQuestOrderCell,
+                              let quest = questInfo as? DictQuest else { return UITableViewCell() }
+                        tempCell.didTapCell = { [weak self] name in
+                            self?.viewModel.tappedCellQuest.accept(name)
+                        }
+                        tempCell.bind(quest: quest)
+                        cell = tempCell
+                    default:
+                        break
+                    }
+                } else {
+                    switch item {
+                    case .dropItem(let dropInfo):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier, for: indexPath) as? DictMonsterDropCell else { return UITableViewCell() }
+                        tempCell.isUserInteractionEnabled = true
+                        tempCell.contentView.isUserInteractionEnabled = false
+                        switch self?.viewModel.selectedTab.value {
+                        case 0:
+                            tempCell.bind(items: dropInfo, type: "정보 완료 조건")
+                        default:
+                            tempCell.bind(items: dropInfo, type: "퀘스트 보상")
+                        }
+                        tempCell.didTapCell = { [weak self] name, type in
+                            self?.viewModel.tappedCellData.accept((name, type))
+                        }
+                        cell = tempCell
+                    default:
+                        break
+                    }
+                }
+                cell.selectionStyle = .none
+                return cell
+            }
+        )
+
+        viewModel.sectionData
+            .bind(to: dictQuestTableView.rx.items(dataSource: dataSource))
+            .disposed(by: viewModel.disposeBag)
+
+        viewModel.tappedCellData
+            .withUnretained(self)
+            .subscribe(onNext: { owner, data in
+                let name = data.0
+                let type = data.1
+                switch owner.viewModel.selectedTab.value {
+                case 0:
+                    if type == .item {
+                        let vm = DictItemViewModel(selectedName: name)
+                        let vc = DictItemViewController(viewModel: vm)
+                        owner.navigationController?.pushViewController(vc, animated: true)
+                    } else {
+                        let vm = DictMonsterViewModel(selectedName: name)
+                        let vc = DictMonsterViewController(viewModel: vm)
+                        owner.navigationController?.pushViewController(vc, animated: true)
+                    }
+                case 1:
+                    let vm = DictItemViewModel(selectedName: name)
+                    let vc = DictItemViewController(viewModel: vm)
+                    owner.navigationController?.pushViewController(vc, animated: true)
+
+                default:
+                    break
                 }
             })
             .disposed(by: viewModel.disposeBag)
 
+        viewModel.tappedCellQuest
+            .withUnretained(self)
+            .subscribe(onNext: { owner, name in
+                if name != owner.viewModel.selectedQuest.value?.currentQuest {
+                    let vm = DictQuestViewModel(selectedName: name.trimmingCharacters(in: .whitespaces))
+                    let vc = DictQuestViewController(viewModel: vm)
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+        
         viewModel.selectedTab
-            .subscribe(onNext: { [weak self] _ in
-                self?.dictQuestTableView.reloadData()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, selectedTab in
+                switch selectedTab {
+                case 0:
+                    owner.viewModel.fetchDefaultInfos()
+                    owner.viewModel.fetchCompleteInfos()
+                case 1:
+                    owner.viewModel.fetchRewardInfos()
+                    owner.viewModel.fetchRewardTableContents()
+                case 2:
+                    owner.viewModel.fetchQuestInfos()
+                default:
+                    break
+                }
             })
             .disposed(by: viewModel.disposeBag)
     }
 }
 
-extension DictQuestViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        case 1:
-            return 1
-        case 2:
-            if viewModel.selectedTab.value != 2 {
-                return 1
-            } else {
-                return 0
-            }
-        default:
-            return 0
-        }
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
-        if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
-                  let item = viewModel.selectedQuest.value else { return UITableViewCell() }
-            cell.delegate = self
-            cell.selectionStyle = .none
-            cell.bind(item: item)
-            return cell
-        } else if indexPath.section == 1 {
-            switch viewModel.selectedTab.value {
-            case 0:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell,
-                      let items = viewModel.fetchDefaultInfos() else { return UITableViewCell() }
-                cell.bind(items: items)
-                cell.selectionStyle = .none
-                return cell
-            case 1:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictDetailContentsCell.identifier) as? DictDetailContentsCell else { return UITableViewCell() }
-                cell.bind(items: viewModel.fetchRewardTableContents())
-                cell.selectionStyle = .none
-                return cell
-            case 2:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictQuestOrderCell.identifier) as? DictQuestOrderCell,
-                      let currentQuest = viewModel.selectedQuest.value?.currentQuest else { return UITableViewCell() }
-                cell.delegate = self
-                cell.bind(preQuest: viewModel.selectedQuest.value?.preQuest, currentQuest: currentQuest, laterQuest: viewModel.selectedQuest.value?.laterQuest)
-                cell.selectionStyle = .none
-                return cell
-            default:
-                return UITableViewCell()
-            }
-        } else {
-            switch viewModel.selectedTab.value {
-            case 0:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
-//                cell.delegate = self
-                cell.isUserInteractionEnabled = true
-                cell.contentView.isUserInteractionEnabled = false
-                cell.bind(items: viewModel.completeTableContents, type: "정보 완료 조건")
-                cell.selectionStyle = .none
-                return cell
-            case 1:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMonsterDropCell.identifier) as? DictMonsterDropCell else { return UITableViewCell() }
-//                cell.delegate = self
-                cell.isUserInteractionEnabled = true
-                cell.contentView.isUserInteractionEnabled = false
-                cell.bind(items: viewModel.rewardTableContents, type: "퀘스트 보상")
-                cell.selectionStyle = .none
-                return cell
-            default:
-                return UITableViewCell()
-            }
-        }
-    }
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
-    }
-
+extension DictQuestViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
             let view = UIView()
@@ -253,40 +259,6 @@ extension DictQuestViewController: UICollectionViewDelegateFlowLayout, UICollect
         let width = Double((Constants.screenWidth - Constants.spacings.xl_2 * 2 - Constants.spacings.xl * 2) / 3)
         let height = 40.0
         return CGSize(width: width, height: height)
-    }
-}
-
-//extension DictQuestViewController: DictMonsterDropCellDelegate {
-//    func didTapDropTableCell(title: String, type: DictType?) {
-//        switch viewModel.selectedTab.value {
-//        case 0:
-//            if type == .item {
-//                let vm = DictItemViewModel(selectedName: title)
-//                let vc = DictItemViewController(viewModel: vm)
-//                navigationController?.pushViewController(vc, animated: true)
-//            } else {
-//                let vm = DictMonsterViewModel(selectedName: title)
-//                let vc = DictMonsterViewController(viewModel: vm)
-//                navigationController?.pushViewController(vc, animated: true)
-//            }
-//        case 1:
-//            let vm = DictItemViewModel(selectedName: title)
-//            let vc = DictItemViewController(viewModel: vm)
-//            navigationController?.pushViewController(vc, animated: true)
-//            
-//        default:
-//            break
-//        }
-//    }
-//}
-
-extension DictQuestViewController: DictQuestOrderCellDelegate {
-    func didTapQuestCell(title: String) {
-        if title != viewModel.selectedQuest.value?.currentQuest {
-            let vm = DictQuestViewModel(selectedName: title.trimmingCharacters(in: .whitespaces))
-            let vc = DictQuestViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
-        }
     }
 }
 

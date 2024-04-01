@@ -18,9 +18,12 @@ class DictItemViewModel: DictBaseViewModel {
 
     var tappedCellName = PublishRelay<String>()
 
+    var emptyData = [Int]()
+
     override init(selectedName: String) {
         super.init(selectedName: selectedName)
         fetchData(type: .item, data: selectedItem)
+        checkEmptyData()
     }
 }
 
@@ -30,7 +33,7 @@ extension DictItemViewModel {
     /// - Returns: 테이블뷰에 띄워주기 위한 DetailContent의 배열
     func fetchDefaultInfos() {
         var defaultInfos = [DetailContent]()
-        selectedItem.value?.defaultValues.forEach { value in defaultInfos.append((DetailContent(title: value.name, description: value.description))) }
+        selectedItem.value?.defaultValues.forEach { value in defaultInfos.append(DetailContent(title: value.name, description: value.description)) }
         if let mainCategoty = selectedItem.value?.mainCategory {
             defaultInfos.append(DetailContent(title: "주카테고리", description: mainCategoty))
         }
@@ -46,7 +49,8 @@ extension DictItemViewModel {
     func fetchDetailInfos() {
         var detailInfos = [DetailContent]()
         selectedItem.value?.detailValues.filter { $0.name != "설명" }.forEach {
-            detailInfos.append(DetailContent(title: $0.name, description: $0.description)) }
+            detailInfos.append(DetailContent(title: $0.name, description: $0.description))
+        }
         let section = Section(index: 1, items: [.detailInfo(detailInfos)])
         sectionData.updateSection(newSection: section)
     }
@@ -66,15 +70,19 @@ extension DictItemViewModel {
         sectionData.updateSection(newSection: section)
     }
 
-//    func bind() {
-//        selectedItem
-//            .withUnretained(self)
-//            .subscribe(onNext: { owner, _ in
-//                guard let item = owner.selectedItem.value else { return }
-//                owner.sectionData.updateSection(newSection: Section(index: 0, items: [.mainInfo(item)]))
-//            })
-//            .disposed(by: disposeBag)
-//    }
+    func checkEmptyData() {
+        if let value = selectedItem.value {
+            if value.defaultValues.isEmpty {
+                emptyData.append(0)
+            }
+            if value.detailValues.isEmpty {
+                emptyData.append(1)
+            }
+            if value.dropTable.isEmpty {
+                emptyData.append(2)
+            }
+        }
+    }
 }
 
 struct Section {

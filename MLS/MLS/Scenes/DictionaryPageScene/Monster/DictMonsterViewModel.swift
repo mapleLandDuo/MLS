@@ -22,6 +22,7 @@ class DictMonsterViewModel: DictBaseViewModel {
     override init(selectedName: String) {
         super.init(selectedName: selectedName)
         fetchData(type: .monster, data: selectedMonster)
+        checkEmptyData()
     }
 }
 
@@ -58,13 +59,17 @@ extension DictMonsterViewModel {
         sectionData.updateSection(newSection: section)
     }
     
-    func bind() {
-        selectedMonster
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                guard let monster = owner.selectedMonster.value else { return }
-                owner.sectionData.updateSection(newSection: Section(index: 0, items: [.mainInfo(monster)]))
-            })
-            .disposed(by: disposeBag)
+    func checkEmptyData() {
+        if let value = selectedMonster.value {
+            if value.defaultValues.isEmpty {
+                emptyData.append(0)
+            }
+            if value.hauntArea.isEmpty {
+                emptyData.append(1)
+            }
+            if value.dropTable.isEmpty {
+                emptyData.append(2)
+            }
+        }
     }
 }

@@ -20,6 +20,7 @@ class DictMapViewModel: DictBaseViewModel {
     override init(selectedName: String) {
         super.init(selectedName: selectedName)
         fetchData(type: .map, data: selectedMap)
+        checkEmptyData()
     }
 }
 
@@ -48,5 +49,16 @@ extension DictMapViewModel {
         }
         let section = Section(index: 1, items: [.dropItem(apearNPCInfo)])
         sectionData.updateSection(newSection: section)
+    }
+    
+    func checkEmptyData() {
+        if let value = selectedMap.value {
+            if value.monsters.isEmpty {
+                emptyData.append(0)
+            }
+            if value.npcs.isEmpty {
+                emptyData.append(1)
+            }
+        }
     }
 }

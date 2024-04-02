@@ -18,8 +18,6 @@ class DictItemViewModel: DictBaseViewModel {
 
     var tappedCellName = PublishRelay<String>()
 
-    var emptyData = [Int]()
-
     override init(selectedName: String) {
         super.init(selectedName: selectedName)
         fetchData(type: .item, data: selectedItem)

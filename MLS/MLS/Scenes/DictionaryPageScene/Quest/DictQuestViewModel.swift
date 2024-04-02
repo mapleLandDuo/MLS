@@ -21,6 +21,7 @@ class DictQuestViewModel: DictBaseViewModel {
     override init(selectedName: String) {
         super.init(selectedName: selectedName)
         fetchData(type: .quest, data: selectedQuest)
+        checkEmptyData()
     }
 }
 
@@ -99,5 +100,19 @@ extension DictQuestViewModel {
         let section = Section(index: 1, items: [.mainInfo(selectedQuest)])
         sectionData.updateSection(newSection: section)
         sectionData.updateSection(newSection: Section(index: 2, items: []))
+    }
+    
+    func checkEmptyData() {
+        if let value = selectedQuest.value {
+            if value.defaultValues.isEmpty {
+                emptyData.append(0)
+            }
+            if value.reward.isEmpty {
+                emptyData.append(1)
+            }
+            if value.currentQuest == "" {
+                emptyData.append(2)
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ class DictBaseViewModel {
     let sqliteManager = SqliteManager()
     
     var selectedName: String?
+    var emptyData = [Int]()
     
     var selectedTab = BehaviorRelay<Int>(value: 0)
     var mainInfo = BehaviorRelay<Sqlable?>(value: nil)

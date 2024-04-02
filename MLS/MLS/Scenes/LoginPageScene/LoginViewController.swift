@@ -7,8 +7,10 @@
 
 import UIKit
 
-import SnapKit
 import RxCocoa
+import RxSwift
+import SnapKit
+
 
 class LoginViewController: BasicController {
     // MARK: - Properties
@@ -89,9 +91,6 @@ extension LoginViewController {
 // MARK: - SetUp
 private extension LoginViewController {
     func setUp() {
-        emailTextField.textField.delegate = self
-        pwTextField.textField.delegate = self
-        
         setUpConstraints()
         setUpNavigation(title: "로그인")
         setUpActions()
@@ -184,28 +183,50 @@ private extension LoginViewController {
 // MARK: - Bind
 private extension LoginViewController {
     func bind() {
-//        viewModel.isAutoLogin.bind { [weak self] state in
-//            guard let state = state else { return }
-//            self?.viewModel.userDefaultManager.setAutoLogin(toggle: state)
-//            if state {
-//                self?.autoLoginButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-//                self?.autoLoginButton.tintColor = .semanticColor.bg.brand
-//            } else {
-//                self?.autoLoginButton.setImage(UIImage(systemName: "square"), for: .normal)
-//                self?.autoLoginButton.tintColor = .semanticColor.bolder.primary
-//            }
-//        }
-        
         viewModel.isAutoLogin
-            .subscribe(onNext: { [weak self] state in
-                self?.viewModel.userDefaultManager.setAutoLogin(toggle: state)
-                if state {
-                    self?.autoLoginButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-                    self?.autoLoginButton.tintColor = .semanticColor.bg.brand
-                } else {
-                    self?.autoLoginButton.setImage(UIImage(systemName: "square"), for: .normal)
-                    self?.autoLoginButton.tintColor = .semanticColor.bolder.primary
-                }
+            .asDriver()
+            .drive(onNext: { [weak self] state in
+                let image = state ? "checkmark.square.fill" : "square"
+                let tintColor = state ? UIColor.semanticColor.bg.brand : UIColor.semanticColor.bolder.primary
+                    
+                self?.autoLoginButton.setImage(UIImage(systemName: image), for: .normal)
+                self?.autoLoginButton.tintColor = tintColor
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        let emailBegin = emailTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.emailTextField }
+        let emailEnd = emailTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.emailTextField }
+                
+        let pwBegin = pwTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.pwTextField }
+        let pwEnd = pwTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.pwTextField }
+        
+        let emailCheck =
+        emailTextField.textField.rx.text
+            .orEmpty
+            .map { text in !text.isEmpty }
+        
+        let pwCheck =
+        pwTextField.textField.rx.text
+            .orEmpty
+            .map { text in !text.isEmpty }
+        
+        Observable.merge(emailCheck, pwCheck)
+            .subscribe(onNext: { [weak self] isEmpty in
+                self?.logInButton.type.accept(isEmpty ? .clickabled : .disabled)
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        Observable.merge(emailBegin, pwBegin)
+            .withUnretained(self)
+            .subscribe(onNext: { _, textField in
+                textField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
+            })
+            .disposed(by: viewModel.disposeBag)
+                
+        Observable.merge(emailEnd, pwEnd)
+            .withUnretained(self)
+            .subscribe(onNext: { _, textField in
+                textField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
             })
             .disposed(by: viewModel.disposeBag)
     }
@@ -247,27 +268,6 @@ private extension LoginViewController {
     func didTapSignUpButton() {
         let vc = SignUpFirstViewController(viewModel: SignUpFirstViewModel())
         navigationController?.pushViewController(vc, animated: true)
-    }
-}
-
-extension LoginViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // 엔터
-        return true
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
-    }
-    
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        guard let text = textField.text else { return }
-        logInButton.backgroundColor = !text.isEmpty ? .semanticColor.bg.interactive.primary : .semanticColor.bg.disabled
-        logInButton.isUserInteractionEnabled = !text.isEmpty
     }
 }
 

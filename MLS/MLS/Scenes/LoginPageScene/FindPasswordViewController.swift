@@ -7,6 +7,7 @@
 
 import UIKit
 
+import RxCocoa
 import SnapKit
 
 class FindPasswordViewController: BasicController {
@@ -46,14 +47,13 @@ extension FindPasswordViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        bind()
     }
 }
 
 // MARK: - SetUp
 private extension FindPasswordViewController {
     func setUp() {
-        emailTextField.textField.delegate = self
-        
         setUpConstraints()
         setUpActions()
     }
@@ -105,20 +105,17 @@ private extension FindPasswordViewController {
     }
 }
 
-extension FindPasswordViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return true
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let currentText = textField.text ?? ""
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        viewModel.checkEmailValidation(email: updatedText) { [weak self] type in
-//            self?.sendButton.type.value = type
-            self?.sendButton.type.accept(type)
-        }
-        return true
+// MARK: Bind
+extension FindPasswordViewController {
+    func bind() {
+        emailTextField.textField.rx.text
+            .orEmpty
+            .withUnretained(self)
+            .subscribe(onNext: { owner, text in
+                owner.viewModel.checkEmailValidation(email: text) { type in
+                    owner.sendButton.type.accept(type)
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }

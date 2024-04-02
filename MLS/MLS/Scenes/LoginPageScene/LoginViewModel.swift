@@ -15,7 +15,6 @@ class LoginViewModel {
     // MARK: - Properties
     var userDefaultManager = UserDefaultsManager()
 
-//    var isAutoLogin: TempObservable<Bool> = TempObservable(false)
     var isAutoLogin = BehaviorRelay<Bool>(value: false)
     let disposeBag = DisposeBag()
 }

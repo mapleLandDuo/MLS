@@ -11,7 +11,7 @@ import SnapKit
 
 class DictQuestOrderCell: UITableViewCell {
     // MARK: Properties
-    var didTapCell: ((String) -> Void)?
+    var tappedCell: ((String) -> Void)?
     
     // MARK: Components
     lazy var preQuestButton: UIButton = {
@@ -21,7 +21,7 @@ class DictQuestOrderCell: UITableViewCell {
         button.layer.cornerRadius = 12
         button.addAction(UIAction(handler: { [weak self] _ in
             guard let text = self?.preContentLabel.text else { return }
-            self?.didTapCell?(text)
+            self?.tappedCell?(text)
         }), for: .touchUpInside)
         return button
     }()
@@ -46,7 +46,7 @@ class DictQuestOrderCell: UITableViewCell {
         button.backgroundColor = .themeColor(color: .brand_primary, value: .value_50)
         button.addAction(UIAction(handler: { [weak self] _ in
             guard let text = self?.currentContentLabel.text else { return }
-            self?.didTapCell?(text)
+            self?.tappedCell?(text)
         }), for: .touchUpInside)
         return button
     }()
@@ -72,7 +72,7 @@ class DictQuestOrderCell: UITableViewCell {
         button.layer.cornerRadius = 12
         button.addAction(UIAction(handler: { [weak self] _ in
             guard let text = self?.laterContentLabel.text else { return }
-            self?.didTapCell?(text)
+            self?.tappedCell?(text)
         }), for: .touchUpInside)
         return button
     }()

@@ -99,7 +99,7 @@ extension DictMapViewController {
                     switch item {
                     case .dropItem(let dropItem):
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
-                        tempCell.didTapCell = { [weak self] name in
+                        tempCell.tappedCell = { [weak self] name in
                             self?.viewModel.tappedCellName
                                 .accept(name)
                         }

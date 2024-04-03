@@ -126,7 +126,7 @@ private extension DictQuestViewController {
                         default:
                             tempCell.bind(items: dropInfo, type: "퀘스트 보상")
                         }
-                        tempCell.didTapCell = { [weak self] name, type in
+                        tempCell.tappedCell = { [weak self] name, type in
                             self?.viewModel.tappedCellData.accept((name, type))
                         }
                         cell = tempCell

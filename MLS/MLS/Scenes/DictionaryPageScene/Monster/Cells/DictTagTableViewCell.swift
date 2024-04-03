@@ -13,7 +13,7 @@ class DictTagTableViewCell: UITableViewCell {
     // MARK: Properties
     private var items: [String]?
     
-    var didTapCell: ((String) -> Void)?
+    var tappedCell: ((String) -> Void)?
 
     // MARK: Components
     let leadingView: UIView = {
@@ -155,6 +155,6 @@ extension DictTagTableViewCell: UICollectionViewDelegateFlowLayout, UICollection
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = items?[indexPath.row] else { return }
-        didTapCell?(item)
+        tappedCell?(item)
     }
 }

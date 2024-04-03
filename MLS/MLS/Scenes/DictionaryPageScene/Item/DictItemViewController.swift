@@ -93,7 +93,9 @@ private extension DictItemViewController {
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
                         tempCell.contentView.isUserInteractionEnabled = false
                         tempCell.bind(item: mainItem)
-                        tempCell.delegate = self
+                        tempCell.tappedExpandButton = { [weak self] isTapped in
+                            self?.viewModel.tappedExpandButton.accept(isTapped)
+                        }
                         cell = tempCell
                     default:
                         break
@@ -108,7 +110,7 @@ private extension DictItemViewController {
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictItemDropCell.identifier, for: indexPath) as? DictItemDropCell else { return UITableViewCell() }
                         tempCell.contentView.isUserInteractionEnabled = false
                         tempCell.bind(items: dictDropItem)
-                        tempCell.didTapCell = { [weak self] name in
+                        tempCell.tappedCell = { [weak self] name in
                             self?.viewModel.tappedCellName.accept(name)
                         }
                         cell = tempCell
@@ -147,6 +149,13 @@ private extension DictItemViewController {
                 default:
                     break
                 }
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.tappedExpandButton
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.dictItemTableView.reloadData()
             })
             .disposed(by: viewModel.disposeBag)
     }
@@ -219,11 +228,5 @@ extension DictItemViewController: UICollectionViewDelegateFlowLayout, UICollecti
         let width = Double((Constants.screenWidth - Constants.spacings.xl_3 * 2 - Constants.spacings.xl * 2) / 3)
         let height = 40.0
         return CGSize(width: width, height: height)
-    }
-}
-
-extension DictItemViewController: DictMainInfoCellDelegate {
-    func didTapExpandButton() {
-        dictItemTableView.reloadData()
     }
 }

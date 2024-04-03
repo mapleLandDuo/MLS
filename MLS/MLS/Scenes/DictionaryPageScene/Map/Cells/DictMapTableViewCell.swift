@@ -15,7 +15,7 @@ class DictMapTableViewCell: UITableViewCell {
 
     private var type: DictType?
     
-    var didTapCell: ((String) -> Void)?
+    var tappedCell: ((String) -> Void)?
 
     // MARK: Components
     private let dropCollectionView: UICollectionView = {
@@ -94,6 +94,6 @@ extension DictMapTableViewCell: UICollectionViewDelegateFlowLayout, UICollection
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = items?[indexPath.row] else { return }
-        didTapCell?(item.name)
+        tappedCell?(item.name)
     }
 }

@@ -15,7 +15,7 @@ class DictMonsterDropCell: UITableViewCell {
 
     private var type: String?
 
-    var didTapCell: ((String, DictType) -> Void)?
+    var tappedCell: ((String, DictType) -> Void)?
     
     // MARK: Components
 
@@ -89,9 +89,9 @@ extension DictMonsterDropCell: UITableViewDelegate, UITableViewDataSource {
         guard let item = items?[indexPath.row] else { return }
         if item.name != "메소" {
             if item.description.contains("전달") {
-                didTapCell?(item.name, .item)
+                tappedCell?(item.name, .item)
             } else {
-                didTapCell?(item.name, .monster)
+                tappedCell?(item.name, .monster)
             }
         }
     }

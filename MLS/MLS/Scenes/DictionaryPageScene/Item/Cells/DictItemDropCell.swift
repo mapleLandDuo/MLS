@@ -13,7 +13,7 @@ class DictItemDropCell: UITableViewCell {
     // MARK: Properties
     private var items: [DictDropContent]?
     
-    var didTapCell: ((String) -> Void)?
+    var tappedCell: ((String) -> Void)?
 
     // MARK: Components
     private let dropCollectionView: UICollectionView = {
@@ -87,6 +87,6 @@ extension DictItemDropCell: UICollectionViewDelegateFlowLayout, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = items?[indexPath.row] else { return }
-        didTapCell?(item.name)
+        tappedCell?(item.name)
     }
 }

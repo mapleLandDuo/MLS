@@ -92,7 +92,9 @@ private extension DictMonsterViewController {
                     case .mainInfo(let mainItem):
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
                         tempCell.contentView.isUserInteractionEnabled = false
-                        tempCell.delegate = self
+                        tempCell.tappedExpandButton = { [weak self] isTapped in
+                            self?.viewModel.tappedExpandButton.accept(isTapped)
+                        }
                         tempCell.bind(item: mainItem)
                         cell = tempCell
                     default:
@@ -107,8 +109,8 @@ private extension DictMonsterViewController {
                         cell = tempCell
                     case .tagInfo(let tagItem):
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier, for: indexPath) as? DictTagTableViewCell else { return UITableViewCell() }
-                        tempCell.didTapCell = { [weak self] name in
-                            self?.viewModel.didTapTagName.accept(name)
+                        tempCell.tappedCell = { [weak self] name in
+                            self?.viewModel.tappedTagName.accept(name)
                         }
                         
                         tempCell.bind(items: tagItem, descriptionType: .map)
@@ -118,8 +120,8 @@ private extension DictMonsterViewController {
                         tempCell.isUserInteractionEnabled = true
                         tempCell.contentView.isUserInteractionEnabled = false
                         tempCell.bind(items: dictDropItem, type: "드롭 정보")
-                        tempCell.didTapCell = { [weak self] name, _ in
-                            self?.viewModel.didTapDropName.accept(name)
+                        tempCell.tappedCell = { [weak self] name, _ in
+                            self?.viewModel.tappedDropName.accept(name)
                         }
                         cell = tempCell
                     default:
@@ -135,7 +137,7 @@ private extension DictMonsterViewController {
             .bind(to: dictMonsterTableView.rx.items(dataSource: dataSource))
             .disposed(by: viewModel.disposeBag)
         
-        viewModel.didTapTagName
+        viewModel.tappedTagName
             .withUnretained(self)
             .subscribe(onNext: { owner, name in
                 let db = SqliteManager()
@@ -157,7 +159,7 @@ private extension DictMonsterViewController {
             })
             .disposed(by: viewModel.disposeBag)
         
-        viewModel.didTapDropName
+        viewModel.tappedDropName
             .withUnretained(self)
             .subscribe(onNext: { owner, name in
                 let vm = DictItemViewModel(selectedName: name)
@@ -185,6 +187,13 @@ private extension DictMonsterViewController {
         viewModel.totalTextSize
             .subscribe(onNext: { [weak self] _ in
                 self?.dictMonsterTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.tappedExpandButton
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.dictMonsterTableView.reloadData()
             })
             .disposed(by: viewModel.disposeBag)
     }
@@ -257,11 +266,5 @@ extension DictMonsterViewController: UICollectionViewDelegateFlowLayout, UIColle
         let width = Double((Constants.screenWidth - Constants.spacings.xl_3 * 2 - Constants.spacings.xl * 2) / 3)
         let height = 40.0
         return CGSize(width: width, height: height)
-    }
-}
-
-extension DictMonsterViewController: DictMainInfoCellDelegate {
-    func didTapExpandButton() {
-        dictMonsterTableView.reloadData()
     }
 }

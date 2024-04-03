@@ -99,7 +99,7 @@ extension DictNPCViewController {
                     switch item {
                     case .tagInfo(let tagItem):
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
-                        tempCell.didTapCell = { [weak self] name in
+                        tempCell.tappedCell = { [weak self] name in
                             self?.viewModel.tappedCellName
                                 .accept(name)
                             

@@ -11,7 +11,6 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-
 class LoginViewController: BasicController {
     // MARK: - Properties
     private let viewModel: LoginViewModel
@@ -194,36 +193,33 @@ private extension LoginViewController {
             })
             .disposed(by: viewModel.disposeBag)
         
-        let emailBegin = emailTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.emailTextField }
-        let emailEnd = emailTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.emailTextField }
-                
-        let pwBegin = pwTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.pwTextField }
-        let pwEnd = pwTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.pwTextField }
-        
-        let emailCheck =
-        emailTextField.textField.rx.text
+        Observable
+            .of(emailTextField.textField.rx.text
             .orEmpty
-            .map { text in !text.isEmpty }
-        
-        let pwCheck =
-        pwTextField.textField.rx.text
-            .orEmpty
-            .map { text in !text.isEmpty }
-        
-        Observable.merge(emailCheck, pwCheck)
+            .map { text in !text.isEmpty },
+            pwTextField.textField.rx.text
+                .orEmpty
+                .map { text in !text.isEmpty })
+            .merge()
             .subscribe(onNext: { [weak self] isEmpty in
                 self?.logInButton.type.accept(isEmpty ? .clickabled : .disabled)
             })
             .disposed(by: viewModel.disposeBag)
         
-        Observable.merge(emailBegin, pwBegin)
+        Observable
+            .of(pwTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.pwTextField },
+                      emailTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.emailTextField })
+            .merge()
             .withUnretained(self)
             .subscribe(onNext: { _, textField in
                 textField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
             })
             .disposed(by: viewModel.disposeBag)
-                
-        Observable.merge(emailEnd, pwEnd)
+        
+        Observable
+            .of(emailTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.emailTextField },
+                      pwTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.pwTextField })
+            .merge()
             .withUnretained(self)
             .subscribe(onNext: { _, textField in
                 textField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor

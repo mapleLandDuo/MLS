@@ -8,8 +8,9 @@
 import UIKit
 
 import FirebaseAuth
-import SnapKit
 import RxCocoa
+import RxSwift
+import SnapKit
 
 class SignUpSecondViewController: BasicController {
     // MARK: - Properties
@@ -108,9 +109,6 @@ extension SignUpSecondViewController {
 private extension SignUpSecondViewController {
     func setUp() {
         accountView.levelTextField.isHidden = false
-        
-        nickNameTextField.textField.delegate = self
-        accountView.levelTextField.textField.delegate = self
         accountView.delegate = self
         
         setUpConstraints()
@@ -200,40 +198,79 @@ private extension SignUpSecondViewController {
 // MARK: - Bind
 private extension SignUpSecondViewController {
     func bind() {
-        viewModel.nickNameState.bind { [weak self] _ in
-            self?.activeCompleteButton()
-            guard let state = self?.viewModel.nickNameState.value else { return }
-            if state != .default {
+        viewModel.nickNameState
+            .withUnretained(self)
+            .subscribe(onNext: { owner, state in
+                owner.activeCompleteButton()
+                guard state != .default else { return }
                 let isCorrect = state == .complete
-                self?.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
-            }
-        }
-        .disposed(by: viewModel.disposeBag)
+                owner.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
+            })
+            .disposed(by: viewModel.disposeBag)
         
-        viewModel.levelState.bind { [weak self] _ in
-            self?.activeCompleteButton()
-            if let state = self?.viewModel.levelState.value {
+        viewModel.levelState
+            .withUnretained(self)
+            .subscribe(onNext: { owner, state in
+                owner.activeCompleteButton()
                 if state == .default {
-                    self?.accountView.levelTextField.setLevelField()
+                    owner.accountView.levelTextField.setLevelField()
                 } else {
                     let isCorrect = state == .complete
-                    self?.accountView.levelTextField.checkState(state: state, isCorrect: isCorrect)
+                    owner.accountView.levelTextField.checkState(state: state, isCorrect: isCorrect)
                 }
-            } else {
-                self?.accountView.levelTextField.footerLabel.isHidden = false
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.isAccountExist
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.activeCompleteButton()
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.job
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.activeCompleteButton()
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        nickNameTextField.textField.rx.controlEvent([.editingDidBegin])
+            .asObservable()
+            .subscribe(onNext: { [weak self] _ in
+                self?.nickNameTextField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
+                self?.nickNameTextField.superview?.layer.borderWidth = 1
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        Observable.merge(
+            nickNameTextField.textField.rx.controlEvent([.editingDidEnd]).map { self.nickNameTextField },
+            accountView.levelTextField.textField.rx.controlEvent([.editingDidEnd]).map { self.accountView.levelTextField }
+        )
+        .withUnretained(self)
+        .subscribe(onNext: { owner, textField in
+            if textField == owner.nickNameTextField.textField {
+                let state = owner.viewModel.nickNameState.value == .default ? .nickNameNotCorrect : owner.viewModel.nickNameState.value
+                owner.updateBorderColor(for: textField.textField, state: state)
+            } else if textField == owner.accountView.levelTextField.textField {
+                owner.updateBorderColor(for: textField.textField, state: owner.viewModel.levelState.value)
             }
-        }
+        })
         .disposed(by: viewModel.disposeBag)
-        
-        viewModel.isAccountExist.bind { [weak self] _ in
-            self?.activeCompleteButton()
-        }
-        .disposed(by: viewModel.disposeBag)
-        
-        viewModel.job.bind { [weak self] _ in
-            self?.activeCompleteButton()
-        }
-        .disposed(by: viewModel.disposeBag)
+
+        nickNameTextField.textField.rx.text.orEmpty
+            .withUnretained(self)
+            .subscribe(onNext: { owner, text in
+                owner.viewModel.checkNickName(nickName: text)
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        accountView.levelTextField.textField.rx.text.orEmpty
+            .withUnretained(self)
+            .subscribe(onNext: { owner, text in
+                owner.viewModel.checkLevel(level: text)
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -250,18 +287,21 @@ private extension SignUpSecondViewController {
     }
 
     func didTapCompleteButton() {
-        viewModel.isValidSignUp { [weak self] state in
-            switch state {
-            case .complete:
-                self?.trySignUp()
-            case .nickNameExist, .nickNameNotCorrect:
-                self?.nickNameTextField.checkState(state: state, isCorrect: false)
-            case .lvNotInt, .lvOutOfBounds:
-                self?.accountView.levelTextField.checkState(state: state, isCorrect: false)
-            default:
-                break
-            }
-        }
+        viewModel.isValidSignUp()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, state in
+                switch state {
+                case .complete:
+                    owner.trySignUp()
+                case .nickNameExist, .nickNameNotCorrect:
+                    owner.nickNameTextField.checkState(state: state, isCorrect: false)
+                case .lvNotInt, .lvOutOfBounds:
+                    owner.accountView.levelTextField.checkState(state: state, isCorrect: false)
+                default:
+                    break
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
     }
     
     /// 계정이 있으면 추가 정보를 입력하는 accountView를 보여주고 계정이 없으면 descriptionImageView를 보여줌
@@ -271,8 +311,6 @@ private extension SignUpSecondViewController {
         descriptionTailImageView.isHidden = isExist
         accountView.isHidden = !isExist
 
-//        noneAccountButton.isClicked.value = !isExist
-//        accountButton.isClicked.value = isExist
         noneAccountButton.isClicked.accept(!isExist)
         accountButton.isClicked.accept(isExist)
     }
@@ -288,23 +326,24 @@ private extension SignUpSecondViewController {
     }
     
     func activeCompleteButton() {
-        viewModel.isComplete { [weak self] isComplete in
-            if isComplete {
-//                self?.completeButton.type.value = .clickabled
-                self?.completeButton.type.accept(.clickabled)
-            } else {
-//                self?.completeButton.type.value = .disabled
-                self?.completeButton.type.accept(.disabled)
-            }
-        }
+        viewModel.isComplete()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isComplete in
+                if isComplete {
+                    owner.completeButton.type.accept(.clickabled)
+                } else {
+                    owner.completeButton.type.accept(.disabled)
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
     }
     
-   func trySignUp() {
+    func trySignUp() {
         guard let nickName = nickNameTextField.textField.text,
-       let isAccountExist = viewModel.isAccountExist.value else { return }
+              let isAccountExist = viewModel.isAccountExist.value else { return }
 
-        var level: Int? = nil
-        var job: Job? = nil
+        var level: Int?
+        var job: Job?
 
         if isAccountExist {
             guard let levelText = accountView.levelTextField.textField.text,
@@ -317,9 +356,9 @@ private extension SignUpSecondViewController {
         viewModel.user.level = level
         viewModel.user.job = job
        
-       IndicatorManager.showIndicator(vc: self)
-       viewModel.trySignUp(email: viewModel.user.id, password: viewModel.password, nickName: nickName) { [weak self] isSuccess, errorMessage in
-           guard let self = self else { return }
+        IndicatorManager.showIndicator(vc: self)
+        viewModel.trySignUp(email: viewModel.user.id, password: viewModel.password, nickName: nickName) { [weak self] isSuccess, errorMessage in
+            guard let self = self else { return }
             if isSuccess {
                 Auth.auth().signIn(withEmail: self.viewModel.user.id, password: self.viewModel.password) { _, error in
                     if error == nil {
@@ -346,40 +385,6 @@ private extension SignUpSecondViewController {
         let window = windowScene?.windows.first
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-    }
-}
-
-extension SignUpSecondViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
-        textField.superview?.layer.borderWidth = 1
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        switch textField {
-        case nickNameTextField.textField:
-//            guard let state = viewModel.nickNameState.value else { return }
-            if viewModel.nickNameState.value == .default {
-                updateBorderColor(for: textField, state: .nickNameNotCorrect)
-            } else {
-                updateBorderColor(for: textField, state: viewModel.nickNameState.value)
-            }
-        case accountView.levelTextField.textField:
-//            guard let state = viewModel.levelState.value else { return }
-            updateBorderColor(for: textField, state: viewModel.levelState.value)
-        default:
-            break
-        }
-    }
-    
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        if textField == nickNameTextField.textField {
-            guard let text = textField.text else { return }
-            viewModel.checkNickName(nickName: text)
-        } else {
-            guard let text = textField.text else { return }
-            viewModel.checkLevel(level: text)
-        }
     }
 }
 

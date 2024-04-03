@@ -16,6 +16,7 @@ class DictMapViewModel: DictBaseViewModel {
     var selectedMap = BehaviorRelay<DictMap?>(value: nil)
     
     var tappedCellName = PublishRelay<String>()
+    var tappedExpandButton = PublishRelay<Bool>()
     
     override init(selectedName: String) {
         super.init(selectedName: selectedName)

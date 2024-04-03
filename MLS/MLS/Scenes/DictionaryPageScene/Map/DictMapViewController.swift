@@ -89,7 +89,9 @@ extension DictMapViewController {
                     switch item {
                     case .mainInfo(let mainItem):
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
-                        tempCell.delegate = self
+                        tempCell.tappedExpandButton = { [weak self] isTapped in
+                            self?.viewModel.tappedExpandButton.accept(isTapped)
+                        }
                         tempCell.bind(item: mainItem)
                         cell = tempCell
                     default:
@@ -150,6 +152,13 @@ extension DictMapViewController {
                 default:
                     break
                 }
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.tappedExpandButton
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.dictMapTableView.reloadData()
             })
             .disposed(by: viewModel.disposeBag)
     }
@@ -221,11 +230,5 @@ extension DictMapViewController: UICollectionViewDelegateFlowLayout, UICollectio
         let width = 75.0
         let height = 40.0
         return CGSize(width: width, height: height)
-    }
-}
-
-extension DictMapViewController: DictMainInfoCellDelegate {
-    func didTapExpandButton() {
-        dictMapTableView.reloadData()
     }
 }

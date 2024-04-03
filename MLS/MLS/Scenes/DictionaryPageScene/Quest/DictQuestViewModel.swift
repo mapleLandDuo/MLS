@@ -17,6 +17,7 @@ class DictQuestViewModel: DictBaseViewModel {
     
     var tappedCellData = PublishRelay<(String, DictType)>()
     var tappedCellQuest = PublishRelay<String>()
+    var tappedExpandButton = PublishRelay<Bool>()
     
     override init(selectedName: String) {
         super.init(selectedName: selectedName)

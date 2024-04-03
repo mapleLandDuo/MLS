@@ -91,7 +91,9 @@ private extension DictQuestViewController {
                     switch item {
                     case .mainInfo(let mainItem):
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
-                        tempCell.delegate = self
+                        tempCell.tappedExpandButton = { [weak self] isTapped in
+                            self?.viewModel.tappedExpandButton.accept(isTapped)
+                        }
                         tempCell.bind(item: mainItem)
                         cell = tempCell
                     default:
@@ -106,7 +108,7 @@ private extension DictQuestViewController {
                     case .mainInfo(let questInfo):
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictQuestOrderCell.identifier, for: indexPath) as? DictQuestOrderCell,
                               let quest = questInfo as? DictQuest else { return UITableViewCell() }
-                        tempCell.didTapCell = { [weak self] name in
+                        tempCell.tappedCell = { [weak self] name in
                             self?.viewModel.tappedCellQuest.accept(name)
                         }
                         tempCell.bind(quest: quest)
@@ -198,6 +200,13 @@ private extension DictQuestViewController {
                 }
             })
             .disposed(by: viewModel.disposeBag)
+        
+        viewModel.tappedExpandButton
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.dictQuestTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -269,11 +278,5 @@ extension DictQuestViewController: UICollectionViewDelegateFlowLayout, UICollect
         let width = Double((Constants.screenWidth - Constants.spacings.xl_2 * 2 - Constants.spacings.xl * 2) / 3)
         let height = 40.0
         return CGSize(width: width, height: height)
-    }
-}
-
-extension DictQuestViewController: DictMainInfoCellDelegate {
-    func didTapExpandButton() {
-        dictQuestTableView.reloadData()
     }
 }

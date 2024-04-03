@@ -91,7 +91,6 @@ private extension DictMonsterViewController {
                     switch item {
                     case .mainInfo(let mainItem):
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
-                        tempCell.contentView.isUserInteractionEnabled = false
                         tempCell.tappedExpandButton = { [weak self] isTapped in
                             self?.viewModel.tappedExpandButton.accept(isTapped)
                         }

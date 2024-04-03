@@ -89,7 +89,9 @@ extension DictNPCViewController {
                     switch item {
                     case .mainInfo(let mainInfo):
                         guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
-                        tempCell.delegate = self
+                        tempCell.tappedExpandButton = { [weak self] isTapped in
+                            self?.viewModel.tappedExpandButton.accept(isTapped)
+                        }
                         tempCell.bind(item: mainInfo)
                         cell = tempCell
                     default:
@@ -167,6 +169,13 @@ extension DictNPCViewController {
                 }
             })
             .disposed(by: viewModel.disposeBag)
+        
+        viewModel.tappedExpandButton
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.dictNPCTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -237,11 +246,5 @@ extension DictNPCViewController: UICollectionViewDelegateFlowLayout, UICollectio
         let width = 75.0
         let height = 40.0
         return CGSize(width: width, height: height)
-    }
-}
-
-extension DictNPCViewController: DictMainInfoCellDelegate {
-    func didTapExpandButton() {
-        dictNPCTableView.reloadData()
     }
 }

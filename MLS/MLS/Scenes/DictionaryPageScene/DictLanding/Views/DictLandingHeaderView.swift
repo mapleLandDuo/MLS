@@ -37,7 +37,7 @@ class DictLandingHeaderView: UIView {
         return view
     }()
     
-    private var jobBadgeButton = JobBadgeButton(job: "", level: "")
+    private var jobBadgeButton = JobBadgeButton()
     
     var myPageIconButton = MyPageIconButton()
     
@@ -94,10 +94,14 @@ private extension DictLandingHeaderView {
 }
 
 extension DictLandingHeaderView {
-    func resetJobBadge(job: String?, level: String) {
-        jobBadgeButton.reset(job: job, level: level)
+    /// 직업 뱃지 초기화
+    /// - Parameter user: 로그인한 유저 User Model
+    func resetJobBadge(user: User) {
+        jobBadgeButton.reset(user: user)
     }
     
+    /// 로그인, 회원가입 버튼 isShow
+    /// - Parameter isShow: 히든 여부 Boolean
     func isLoginButtonShow(isShow: Bool) {
         if isShow {
             rightStackView.removeFromSuperview()

@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxCocoa
+import RxDataSources
 import SnapKit
 
 class DictNPCViewController: BasicController {
@@ -60,15 +62,10 @@ extension DictNPCViewController {
 private extension DictNPCViewController {
     func setUp() {
         dictNPCTableView.delegate = self
-        dictNPCTableView.dataSource = self
-
         infoMenuCollectionView.delegate = self
-        infoMenuCollectionView.dataSource = self
-
-        viewModel.fetchNPC()
 
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "상세정보")
     }
 
     func setUpConstraints() {
@@ -83,80 +80,130 @@ private extension DictNPCViewController {
 // MARK: Bind
 extension DictNPCViewController {
     func bind() {
-        viewModel.selectedNPC.bind { [weak self] _ in
-            self?.dictNPCTableView.reloadData()
-        }
-
-        viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictNPCTableView.reloadData()
-        }
-    }
-}
-
-// MARK: Methods
-extension DictNPCViewController {
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "상세정보"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.shadowImage = nil
-    }
-
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
-}
-
-extension DictNPCViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
-        if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
-                  let item = viewModel.selectedNPC.value else { return UITableViewCell() }
-            cell.delegate = self
-            cell.selectionStyle = .none
-            cell.bind(item: item)
-            return cell
-        } else {
-            switch selectedTab {
-            case 0:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
-                cell.delegate = self
+        // MARK: Bind tableView
+        let dataSource = RxTableViewSectionedReloadDataSource<Section>(
+            configureCell: { [weak self] _, tableView, indexPath, item in
+                var cell = UITableViewCell()
+                if indexPath.section == 0 {
+                    switch item {
+                    case .mainInfo(let mainInfo):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
+                        tempCell.tappedExpandButton = { [weak self] isTapped in
+                            self?.viewModel.tappedExpandButton.accept(isTapped)
+                        }
+                        tempCell.bind(item: mainInfo)
+                        cell = tempCell
+                    default:
+                        break
+                    }
+                } else {
+                    switch item {
+                    case .tagInfo(let tagItem):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
+                        tempCell.tappedCell = { [weak self] name in
+                            self?.viewModel.tappedCellName
+                                .accept(name)
+                        }
+                        let type = self?.viewModel.selectedTab.value == 0 ? DictType.map : DictType.quest
+                        tempCell.bind(items: tagItem, descriptionType: type)
+                        cell = tempCell
+                    default:
+                        return UITableViewCell()
+                    }
+                }
                 cell.selectionStyle = .none
-                cell.bind(items: viewModel.selectedNPC.value?.maps, descriptionType: .map)
                 return cell
-            case 1:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictTagTableViewCell.identifier) as? DictTagTableViewCell else { return UITableViewCell() }
-                cell.delegate = self
-                cell.bind(items: viewModel.selectedNPC.value?.quests, descriptionType: .quest)
-                return cell
-            default:
-                return UITableViewCell()
             }
-        }
-    }
+        )
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
+        viewModel.sectionData
+            .bind(to: dictNPCTableView.rx.items(dataSource: dataSource))
+            .disposed(by: viewModel.disposeBag)
 
+        viewModel.tappedCellName
+            .withUnretained(self)
+            .subscribe(onNext: { owner, name in
+                switch owner.viewModel.selectedTab.value {
+                case 0:
+                    let db = SqliteManager()
+                    db.searchData(dataName: name) { (item: [DictMap]) in
+                        if item.isEmpty {
+                            AlertManager.showAlert(vc: owner, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
+                        } else {
+                            guard let name = item.first?.name else { return }
+                            let vm = DictMapViewModel(selectedName: name)
+                            let vc = DictMapViewController(viewModel: vm)
+                            owner.navigationController?.pushViewController(vc, animated: true)
+                        }
+                    }
+                case 1:
+                    let db = SqliteManager()
+                    db.searchData(dataName: name) { (item: [DictQuest]) in
+                        if item.isEmpty {
+                            AlertManager.showAlert(vc: owner, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
+                        } else {
+                            guard let name = item.first?.name else { return }
+                            let vm = DictQuestViewModel(selectedName: name)
+                            let vc = DictQuestViewController(viewModel: vm)
+                            owner.navigationController?.pushViewController(vc, animated: true)
+                        }
+                    }
+                default:
+                    break
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        viewModel.selectedTab
+            .withUnretained(self)
+            .subscribe(onNext: { owner, selectedTab in
+                switch selectedTab {
+                case 0:
+                    owner.viewModel.fetchTagMaps()
+                case 1:
+                    owner.viewModel.fetchTagQuests()
+                default:
+                    break
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        viewModel.tappedExpandButton
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.dictNPCTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        // MARK: Bind collectionView
+        viewModel.tabMenus
+            .bind(to: infoMenuCollectionView.rx.items(cellIdentifier: DictSearchMenuCell.identifier, cellType: DictSearchMenuCell.self)) { _, text, cell in
+                cell.bind(text: text)
+            }
+            .disposed(by: viewModel.disposeBag)
+
+        infoMenuCollectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                self?.viewModel.setMenuIndex(index: indexPath.row)
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] index in
+                guard let self = self else { return }
+
+                let indexPath = IndexPath(item: index, section: 0)
+                self.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+            })
+            .disposed(by: viewModel.disposeBag)
+    }
+}
+
+extension DictNPCViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
             let view = UIView()
+            view.backgroundColor = .white
             let separator = UIView()
             separator.backgroundColor = .semanticColor.bolder.secondary
             view.addSubview(separator)
@@ -186,30 +233,13 @@ extension DictNPCViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension DictNPCViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.tabMenus.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchMenuCell.identifier, for: indexPath) as? DictSearchMenuCell else { return UICollectionViewCell() }
-        cell.bind(text: viewModel.tabMenus[indexPath.row])
-        if indexPath.item == viewModel.fetchMenuIndex() {
-            cell.isSelected = true
-            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
-        }
-        return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.setMenuIndex(index: indexPath.row)
-    }
-    
+extension DictNPCViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        let contents = indexPath.row == 0 ? viewModel.selectedNPC.value?.maps : viewModel.selectedNPC.value?.quests
-        if contents == nil || ((contents?.isEmpty) != nil) {
-            AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
-            return false
+        for index in viewModel.emptyData {
+            if indexPath.row == index {
+                AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
+                return false
+            }
         }
         return true
     }
@@ -218,46 +248,5 @@ extension DictNPCViewController: UICollectionViewDelegateFlowLayout, UICollectio
         let width = 75.0
         let height = 40.0
         return CGSize(width: width, height: height)
-    }
-}
-
-extension DictNPCViewController: DictTagTableViewCellDelegate {
-    func didTapTagCell(title: String) {
-        switch viewModel.selectedTab.value {
-        case 0:
-            let db = SqliteManager()
-            db.searchData(dataName: title) { [weak self] (item: [DictMap]) in
-                guard let self = self else { return }
-                if item.isEmpty {
-                    AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
-                } else {
-                    guard let name = item.first?.name else { return }
-                    let vm = DictMapViewModel(selectedName: name)
-                    let vc = DictMapViewController(viewModel: vm)
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-        case 1:
-            let db = SqliteManager()
-            db.searchData(dataName: title) { [weak self] (item: [DictQuest]) in
-                guard let self = self else { return }
-                if item.isEmpty {
-                    AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
-                } else {
-                    guard let name = item.first?.name else { return }
-                    let vm = DictQuestViewModel(selectedName: name)
-                    let vc = DictQuestViewController(viewModel: vm)
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-        default:
-            break
-        }
-    }
-}
-
-extension DictNPCViewController: DictMainInfoCellDelegate {
-    func didTapExpandButton() {
-        dictNPCTableView.reloadData()
     }
 }

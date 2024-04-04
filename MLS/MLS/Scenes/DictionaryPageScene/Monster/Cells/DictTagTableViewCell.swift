@@ -9,15 +9,11 @@ import UIKit
 
 import SnapKit
 
-protocol DictTagTableViewCellDelegate: AnyObject {
-    func didTapTagCell(title: String)
-}
-
 class DictTagTableViewCell: UITableViewCell {
     // MARK: Properties
-    weak var delegate: DictTagTableViewCellDelegate?
-    
     private var items: [String]?
+    
+    var tappedCell: ((String) -> Void)?
 
     // MARK: Components
     let leadingView: UIView = {
@@ -159,28 +155,6 @@ extension DictTagTableViewCell: UICollectionViewDelegateFlowLayout, UICollection
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = items?[indexPath.row] else { return }
-        delegate?.didTapTagCell(title: item)
-    }
-}
-
-class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        let attributes = super.layoutAttributesForElements(in: rect)
-
-        var leftMargin = sectionInset.left
-        var maxY: CGFloat = -1.0
-        attributes?.forEach { layoutAttribute in
-            if layoutAttribute.frame.origin.y >= maxY {
-                leftMargin = sectionInset.left
-            }
-
-            layoutAttribute.frame.origin.x = leftMargin
-
-            leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
-            maxY = max(layoutAttribute.frame.maxY, maxY)
-        }
-
-        estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        return attributes
+        tappedCell?(item)
     }
 }

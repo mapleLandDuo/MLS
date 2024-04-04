@@ -12,30 +12,21 @@ import SnapKit
 import FirebaseAuth
 import MessageUI
 
+import RxCocoa
+import RxSwift
+
 class DictLandingViewController: BasicController {
     // MARK: - Properties
 
     private let viewModel: DictLandingViewModel
+    
+    private var disposeBag = DisposeBag()
     
     // MARK: - Components
     
     private let headerView = DictLandingHeaderView()
     
     private let firstSectionView = DictLandingSearchView()
-    
-    private let separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .semanticColor.bg.primary
-        let separator = UIView()
-        separator.backgroundColor = .semanticColor.bolder.secondary
-        
-        view.addSubview(separator)
-        separator.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(1)
-        }
-        return view
-    }()
     
     private let tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
@@ -65,25 +56,26 @@ extension DictLandingViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
-        IndicatorManager.showIndicator(vc: self)
-        viewModel.fetchSectionDatas() {
-            IndicatorManager.hideIndicator(vc: self)
-        }
-
         
+        self.navigationController?.navigationBar.isHidden = true
+        
+        //인기 몬스터, 아이템 데이터 패치
+        IndicatorManager.showIndicator(vc: self)
+        viewModel.setSectionDatasToPopularSearch()
+        
+        //로그인 한 경우 직업 뱃지 데이터 패치
         if LoginManager.manager.isLogin() {
+            IndicatorManager.showIndicator(vc: self)
             guard let email = LoginManager.manager.email else { return }
             FirebaseManager.firebaseManager.fetchUserData(userEmail: email) { [weak self] user in
-                self?.headerView.isLoginButtonShow(isShow: false)
-                DispatchQueue.main.async {
-                    self?.headerView.resetJobBadge(job: user.job?.rawValue, level: String(user.level ?? 0))
-                }
+                guard let self = self else { return }
+                self.headerView.resetJobBadge(user: user)
+                self.headerView.isLoginButtonShow(isShow: false)
+                IndicatorManager.hideIndicator(vc: self)
             }
         } else {
             headerView.isLoginButtonShow(isShow: true)
         }
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -99,13 +91,13 @@ private extension DictLandingViewController {
         firstSectionView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
+        headerView.isLoginButtonShow(isShow: true)
         tableView.register(DictHorizontalSectionTableViewCell.self, forCellReuseIdentifier: DictHorizontalSectionTableViewCell.identifier)
     }
     
     func setUpConstraints() {
         view.addSubview(headerView)
         view.addSubview(firstSectionView)
-        view.addSubview(separatorView)
         view.addSubview(tableView)
         
         headerView.snp.makeConstraints {
@@ -119,14 +111,8 @@ private extension DictLandingViewController {
             $0.height.equalTo(200)
         }
         
-        separatorView.snp.makeConstraints {
-            $0.top.equalTo(firstSectionView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(4)
-        }
-        
         tableView.snp.makeConstraints {
-            $0.top.equalTo(separatorView.snp.bottom)
+            $0.top.equalTo(firstSectionView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
@@ -136,9 +122,11 @@ private extension DictLandingViewController {
 // MARK: - Bind
 private extension DictLandingViewController {
     func bind() {
-        viewModel.sectionHeaderInfos.bind { [weak self] _ in
-            self?.tableView.reloadData()
-        }
+        viewModel.sectionDatas.subscribe { [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+            IndicatorManager.hideIndicator(vc: self)
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -153,31 +141,34 @@ private extension DictLandingViewController {
 }
 
 extension DictLandingViewController: DictLandingHeaderViewDelegate {
+    
+    // 로그인, 회원가입 버튼 탭
     func didTapSignInButton() {
         let vc = LoginViewController(viewModel: LoginViewModel())
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    // 문의하기 버튼 탭
     func didTapInquireButton() {
         if MFMailComposeViewController.canSendMail() {
             let compseViewController = MFMailComposeViewController()
             compseViewController.setToRecipients(["maplelands2024@gmail.com"])
             compseViewController.setSubject("문의하기")
             compseViewController.setMessageBody("문의 내용을 자세하게 입력해 주세요!", isHTML: false)
-
             self.present(compseViewController, animated: true, completion: nil)
-
         } else {
             print(Error.self)
             self.checkMail()
         }
     }
     
+    // 직업 뱃지 버튼 탭
     func didTapJobBadgeButton() {
         print(#function)
 
     }
     
+    // 마이페이지 버튼 탭
     func didTapMyPageButton() {
         self.headerView.myPageIconButton.isUserInteractionEnabled = false
         guard let email = LoginManager.manager.email else {
@@ -197,6 +188,8 @@ extension DictLandingViewController: DictLandingHeaderViewDelegate {
 }
 
 extension DictLandingViewController: MyPageViewControllerDelegate {
+    
+    // 마이페이지 회원탈퇴 버튼 탭
     func didTapSecessionButton() {
         AlertManager.showAlert(
             vc: self,
@@ -209,24 +202,29 @@ extension DictLandingViewController: MyPageViewControllerDelegate {
 }
 
 extension DictLandingViewController: DictLandingSearchViewDelegate {
+    
+    // 서치바 탭
     func didTapSearchButton() {
         let vc = DictSearchViewController(viewModel: DictSearchViewModel())
         vc.headerView.searchTextField.becomeFirstResponder()
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    // 도감 바로가기 버튼 탭
     func didTapShortCutButton() {
         let viewModel = DictSearchViewModel()
-        viewModel.fetchAllSearchData()
+//        viewModel.setOriginDataToAllData()
         let vc = DictSearchViewController(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 extension DictLandingViewController: DictSectionHeaderViewDelegate {
+    
+    // 사람들이 많이 찾는 @@@ 탭
     func didTapShowButton(title: String?) {
-        guard let datas = viewModel.sectionHeaderInfos.value,
-              let title = title else { return }
+        let datas = viewModel.fetchSectionDatas()
+        guard let title = title else { return }
         let vm = PopularViewModel(datas: datas, title: title)
         let vc = PopularViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
@@ -234,30 +232,29 @@ extension DictLandingViewController: DictSectionHeaderViewDelegate {
 }
 
 extension DictLandingViewController: DictHorizontalSectionTableViewCellDelegate {
+    
+    // 사람들이 많이 찾는 Cell 탭
     func didSelectItemAt(itemTitle: String, type: DictType) {
         FirebaseManager.firebaseManager.countUpDictSearch(type: type, name: itemTitle)
+        var vc: BasicController
         switch type {
         case .monster:
             let vm = DictMonsterViewModel(selectedName: itemTitle)
-            let vc = DictMonsterViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
+            vc = DictMonsterViewController(viewModel: vm)
         case .item:
             let vm = DictItemViewModel(selectedName: itemTitle)
-            let vc = DictItemViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
+            vc = DictItemViewController(viewModel: vm)
         case .map:
             let vm = DictMapViewModel(selectedName: itemTitle)
-            let vc = DictMapViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
+            vc = DictMapViewController(viewModel: vm)
         case .npc:
             let vm = DictNPCViewModel(selectedName: itemTitle)
-            let vc = DictNPCViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
+            vc = DictNPCViewController(viewModel: vm)
         case .quest:
             let vm = DictQuestViewModel(selectedName: itemTitle)
-            let vc = DictQuestViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
+            vc = DictQuestViewController(viewModel: vm)
         }
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -267,21 +264,21 @@ extension DictLandingViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.fetchSectionHeaderInfos().count
+        return viewModel.fetchSectionDatas().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DictHorizontalSectionTableViewCell.identifier, for: indexPath) as? DictHorizontalSectionTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
-        let datas = viewModel.fetchSectionHeaderInfos()
+        let datas = viewModel.fetchSectionDatas()
         cell.bind(data: datas[indexPath.section])
         cell.delegate = self
         return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let datas = viewModel.fetchSectionHeaderInfos()
-        let view = DictSectionHeaderView(image: datas[section].iconImage, title: datas[section].description)
+        let datas = viewModel.fetchSectionDatas()
+        let view = DictSectionHeaderView(sectionDatas: datas[section])
         view.delegate = self
         return view
     }

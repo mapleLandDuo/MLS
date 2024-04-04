@@ -9,6 +9,9 @@ import UIKit
 
 import SnapKit
 
+import RxSwift
+import RxCocoa
+
 protocol DictHorizontalSectionTableViewCellDelegate: BasicController {
     func didSelectItemAt(itemTitle: String, type: DictType)
 }
@@ -16,7 +19,9 @@ protocol DictHorizontalSectionTableViewCellDelegate: BasicController {
 class DictHorizontalSectionTableViewCell: UITableViewCell {
     // MARK: - Properties
     
-    private var datas: Observable<[DictSectionData]> = Observable([])
+    private var disposeBag = DisposeBag()
+    
+    private var datas = BehaviorRelay<[DictSectionData]>(value: [])
 
     weak var delegate: DictHorizontalSectionTableViewCellDelegate?
     
@@ -36,7 +41,7 @@ class DictHorizontalSectionTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUp()
-        bind()
+        setUpBind()
     }
 
     @available(*, unavailable)
@@ -51,8 +56,6 @@ private extension DictHorizontalSectionTableViewCell {
     
     func setUp() {
         setUpConstraints()
-        collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.register(DictHorizontalCollectionViewCell.self, forCellWithReuseIdentifier: DictHorizontalCollectionViewCell.identifier)
     }
     
@@ -64,36 +67,28 @@ private extension DictHorizontalSectionTableViewCell {
             $0.height.equalTo(170)
         }
     }
-}
-
-extension DictHorizontalSectionTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return datas.value?.count ?? 0
-    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictHorizontalCollectionViewCell.identifier, for: indexPath) as? DictHorizontalCollectionViewCell else { return UICollectionViewCell() }
-        guard let datas = datas.value else { return UICollectionViewCell() }
-        cell.bind(data: datas[indexPath.row])
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let datas = datas.value else { return }
-        self.delegate?.didSelectItemAt(itemTitle: datas[indexPath.row].title, type: datas[indexPath.row].type)
+    func setUpBind() {
+        datas.bind(to: collectionView.rx.items(cellIdentifier: DictHorizontalCollectionViewCell.identifier)) 
+            { (index: Int, element: DictSectionData, cell: DictHorizontalCollectionViewCell) in
+                cell.bind(data: element)
+            }
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .withUnretained(self)
+            .subscribe { (owner, indexPath) in
+                let datas = owner.datas.value
+                owner.delegate?.didSelectItemAt(itemTitle: datas[indexPath.row].title, type: datas[indexPath.row].type)
+            }
+            .disposed(by: disposeBag)
     }
 }
 
 // MARK: - Bind
 extension DictHorizontalSectionTableViewCell {
     
-    func bind() {
-        datas.bind { [weak self] _ in
-            self?.collectionView.reloadData()
-        }
-    }
-    
     func bind(data: DictSectionDatas) {
-        datas.value = data.datas
+        datas.accept(data.datas)
     }
 }

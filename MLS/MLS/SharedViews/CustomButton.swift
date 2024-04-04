@@ -7,6 +7,9 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
+
 enum CustomButtonType {
     case `default`
     case clickabled
@@ -18,19 +21,19 @@ class CustomButton: UIButton {
     // MARK: Properties
     private var bgColor: UIColor?
     private var borderColor: UIColor?
-    private var titleColor: UIColor?
+    private var titleColor: UIColor = .semanticColor.text.secondary ?? .black
     private var clickedBackgroundColor: UIColor?
     private var clickedBorderColor: UIColor?
     private var clickedTitleColor: UIColor?
     
-    var isClicked: Observable<Bool> = Observable(false)
-    
-    var type: Observable<CustomButtonType> = Observable(.default)
+    private let disposeBag = DisposeBag()
+    var isClicked = BehaviorRelay<Bool>(value: false)
+    var type = BehaviorRelay<CustomButtonType>(value: .default)
     
     init(type: CustomButtonType, text: String, borderColor: UIColor? = .semanticColor.bolder.secondary, radius: CGFloat = 12) {
         super.init(frame: .zero)
         self.bind(text: text, borderColor: borderColor, radius: radius)
-        self.type.value = type
+        self.type.accept(type)
     }
     
     @available(*, unavailable)
@@ -64,50 +67,55 @@ class CustomButton: UIButton {
     func setButtonClicked(backgroundColor: UIColor?, borderColor: UIColor?, titleColor: UIColor?, clickedBackgroundColor: UIColor?, clickedBorderColor: UIColor?, clickedTitleColor: UIColor?) {
         self.bgColor = backgroundColor
         self.borderColor = borderColor
-        self.titleColor = titleColor
+        self.titleColor = titleColor ?? .black
         self.clickedBackgroundColor = clickedBackgroundColor
         self.clickedBorderColor = clickedBorderColor
         self.clickedTitleColor = clickedTitleColor
     }
     
     func bind(text: String, borderColor: UIColor?, radius: CGFloat) {
-        type.bind { [weak self] _ in
-            self?.setTitle(text, for: .normal)
-            self?.titleLabel?.textAlignment = .center
-            self?.layer.cornerRadius = radius
-            self?.layer.shadowColor = UIColor(red: 0.98, green: 0.58, blue: 0.239, alpha: 0.16).cgColor
-            self?.layer.shadowOpacity = 1
-            self?.layer.shadowRadius = 4
-            self?.layer.shadowOffset = CGSize(width: 2, height: 2)
-            switch self?.type.value {
-            case .default:
-                self?.setButtonDefault(borderColor: borderColor)
-            case .clickabled:
-                self?.setButtonClickabled()
-            case .disabled:
-                self?.setButtonDisabled()
-            case .clicked:
-                break
-            case .none:
-                break
-            }
-        }
+        type
+            .distinctUntilChanged()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, type in
+                owner.setTitle(text, for: .normal)
+                owner.titleLabel?.textAlignment = .center
+                owner.layer.cornerRadius = radius
+                owner.layer.shadowColor = UIColor(red: 0.98, green: 0.58, blue: 0.239, alpha: 0.16).cgColor
+                owner.layer.shadowOpacity = 1
+                owner.layer.shadowRadius = 4
+                owner.layer.shadowOffset = CGSize(width: 2, height: 2)
+                switch type {
+                case .default:
+                    owner.setButtonDefault(borderColor: borderColor)
+                case .clickabled:
+                    owner.setButtonClickabled()
+                case .disabled:
+                    owner.setButtonDisabled()
+                case .clicked:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
         
-        isClicked.bind { [weak self] _ in
-            self?.layer.borderWidth = 1
-            if self?.isClicked.value == false {
-                self?.backgroundColor = self?.bgColor
-                self?.setTitleColor(self?.titleColor, for: .normal)
-                if let borderColor = self?.borderColor {
-                    self?.layer.borderColor = borderColor.cgColor
+        isClicked
+            .distinctUntilChanged()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isClicked in
+                if isClicked == false {
+                    owner.backgroundColor = owner.bgColor
+                    owner.setTitleColor(owner.titleColor, for: .normal)
+                    if let borderColor = owner.borderColor {
+                        owner.layer.borderColor = borderColor.cgColor
+                    }
+                } else {
+                    owner.backgroundColor = owner.clickedBackgroundColor
+                    owner.setTitleColor(owner.clickedTitleColor, for: .normal)
+                    if let clickedBorderColor = owner.clickedBorderColor {
+                        owner.layer.borderColor = clickedBorderColor.cgColor
+                    }
                 }
-            } else {
-                self?.backgroundColor = self?.clickedBackgroundColor
-                self?.setTitleColor(self?.clickedTitleColor, for: .normal)
-                if let clickedBorderColor = self?.clickedBorderColor {
-                    self?.layer.borderColor = self?.clickedBorderColor?.cgColor
-                }
-            }
-        }
+            })
+            .disposed(by: disposeBag)
     }
 }

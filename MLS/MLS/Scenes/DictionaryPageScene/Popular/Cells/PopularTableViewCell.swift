@@ -117,19 +117,9 @@ extension PopularTableViewCell {
         indexLabel.text = String(index + 1)
         
         if item.type == .item {
-            let url = URL(string: "https://maplestory.io/api/gms/62/item/\(item.image)/icon?resize=2")
-            itemImageView.kf.setImage(with: url)
+            itemImageView.setImageToDictCode(code: item.image, type: .item)
         } else {
-            let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.image)/render/move?bgColor=")
-            let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.image)/icon?resize=2")
-            itemImageView.kf.setImage(with: url) { [weak self] result in
-                switch result {
-                case .failure(_) :
-                    self?.itemImageView.kf.setImage(with: secondUrl)
-                default :
-                    break
-                }
-            }
+            itemImageView.setImageToDictCode(code: item.image, type: .monster)
         }
         
         if rank == 0 {

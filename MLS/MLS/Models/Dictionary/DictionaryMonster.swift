@@ -54,5 +54,5 @@ struct DictMonster: Sqlable {
     var dropTable: [DictionaryNameDescription]
     
     static let columnOrder = ["code", "name", "defaultValues", "detailValues", "hauntArea", "dropTable"]
-    static let tableName = Filename.monsters
+    static let tableName = DictType.monster
 }

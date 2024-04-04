@@ -7,12 +7,13 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
 import SnapKit
 
 class PopularViewController: BasicController {
     // MARK: Properties
-
-    let viewModel: PopularViewModel
+    private let viewModel: PopularViewModel
 
     // MARK: Components
     private let infoMenuCollectionView: UICollectionView = {
@@ -66,14 +67,10 @@ extension PopularViewController {
 // MARK: SetUp
 private extension PopularViewController {
     func setUp() {
-        popularTableView.delegate = self
-        popularTableView.dataSource = self
-
         infoMenuCollectionView.delegate = self
-        infoMenuCollectionView.dataSource = self
 
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "인기 TOP")
     }
 
     func setUpConstraints() {
@@ -97,19 +94,59 @@ private extension PopularViewController {
 // MARK: Bind
 extension PopularViewController {
     func bind() {
-        viewModel.datas.bind { [weak self] _ in
-            self?.popularTableView.reloadData()
-        }
-        
-        viewModel.selectedTab.bind { [weak self] _ in
-            self?.popularTableView.reloadData()
-        }
+        viewModel.selectedData
+            .bind(to: popularTableView.rx.items(cellIdentifier: PopularTableViewCell.identifier, cellType: PopularTableViewCell.self)) { index, item, cell in
+                let rank = (0 ... 2).contains(index) ? 0 : 1
+                cell.selectionStyle = .none
+                cell.bind(item: item, index: index, rank: rank)
+            }
+            .disposed(by: viewModel.disposeBag)
+
+        popularTableView.rx.modelSelected(DictSectionData.self)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                if item.type == .item {
+                    let vm = DictItemViewModel(selectedName: item.title)
+                    let vc = DictItemViewController(viewModel: vm)
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    let vm = DictMonsterViewModel(selectedName: item.title)
+                    let vc = DictMonsterViewController(viewModel: vm)
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        viewModel.tabMenus
+            .bind(to: infoMenuCollectionView.rx.items(cellIdentifier: DictSearchMenuCell.identifier, cellType: DictSearchMenuCell.self)) { _, item, cell in
+                cell.bind(text: item)
+            }
+            .disposed(by: viewModel.disposeBag)
+
+        viewModel.selectedTab
+            .withUnretained(self)
+            .subscribe(onNext: { owner, selectedTab in
+                let indexPath = IndexPath(item: selectedTab, section: 0)
+                owner.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        infoMenuCollectionView.rx.itemSelected
+            .distinctUntilChanged()
+            .map { $0.row }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, index in
+                owner.viewModel.setMenuIndex(index: index)
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
 // MARK: Methods
 extension PopularViewController {
-    func setUpNavigation() {
+    /// 네비게이션바의 타이틀을 attributedString으로 설정
+    /// - Parameter title: 사용하지 않지만 override를 위해 입력
+    override func setUpNavigation(title: String) {
         let rightSpacer = UIBarButtonItem()
         let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
         let searchImage = UIImage(systemName: "magnifyingglass")?.withRenderingMode(.alwaysTemplate)
@@ -118,9 +155,9 @@ extension PopularViewController {
         searchButton.width = 60
 
         let titleLabel = UILabel()
-        let attributedString = NSMutableAttributedString(string: "인기 TOP", attributes: [NSAttributedString.Key.font: UIFont.customFont(fontSize: .heading_sm, fontType: .semiBold)])
+        let attributedString = NSMutableAttributedString(string: "인기 TOP", attributes: [NSAttributedString.Key.font: UIFont.customFont(fontSize: .heading_sm, fontType: .semiBold) ?? UIFont.systemFont(ofSize: 12)])
         attributedString.addAttributes([NSAttributedString.Key.foregroundColor: UIColor.red], range: NSRange(location: 0, length: 2))
-        attributedString.addAttributes([NSAttributedString.Key.foregroundColor: UIColor.themeColor(color: .base, value: .value_black)], range: NSRange(location: 3, length: 3))
+        attributedString.addAttributes([NSAttributedString.Key.foregroundColor: UIColor.themeColor(color: .base, value: .value_black) ?? UIColor.black], range: NSRange(location: 3, length: 3))
 
         titleLabel.attributedText = attributedString
         navigationItem.titleView = titleLabel
@@ -134,97 +171,15 @@ extension PopularViewController {
     }
 
     @objc
+    /// 검색버튼을 눌러서 SearchVC로 이동
     func didTapSearchButton() {
         let vm = DictSearchViewModel()
         let vc = DictSearchViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
     }
-
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
 }
 
-extension PopularViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch viewModel.selectedTab.value {
-        case 0:
-            guard let count = viewModel.datas.value?[0].datas.count else { return 0 }
-            return count
-        case 1:
-            guard let count = viewModel.datas.value?[1].datas.count else { return 0 }
-            return count
-        default:
-            return 0
-        }
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: PopularTableViewCell.identifier) as? PopularTableViewCell else { return UITableViewCell() }
-        switch viewModel.selectedTab.value {
-        case 0:
-            guard let item = viewModel.datas.value?[0].datas[indexPath.row] else { return UITableViewCell() }
-            if (0 ... 2).contains(indexPath.row) {
-                cell.bind(item: item, index: indexPath.row, rank: 0)
-            } else {
-                cell.bind(item: item, index: indexPath.row, rank: 1)
-            }
-        case 1:
-            guard let item = viewModel.datas.value?[1].datas[indexPath.row] else { return UITableViewCell() }
-            if (0 ... 2).contains(indexPath.row) {
-                cell.bind(item: item, index: indexPath.row, rank: 0)
-            } else {
-                cell.bind(item: item, index: indexPath.row, rank: 1)
-            }
-        default:
-            break
-        }
-        cell.selectionStyle = .none
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch viewModel.selectedTab.value {
-        case 0:
-            guard let item = viewModel.datas.value?[0].datas[indexPath.row] else { return }
-            let vm = DictItemViewModel(selectedName: item.title)
-            let vc = DictItemViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
-        case 1:
-            guard let item = viewModel.datas.value?[1].datas[indexPath.row] else { return }
-            let vm = DictMonsterViewModel(selectedName: item.title)
-            let vc = DictMonsterViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
-        default:
-            break
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 72
-    }
-}
-
-extension PopularViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.tabMenus.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchMenuCell.identifier, for: indexPath) as? DictSearchMenuCell else { return UICollectionViewCell() }
-        cell.bind(text: viewModel.tabMenus[indexPath.row])
-        if indexPath.item == viewModel.fetchMenuIndex() {
-            cell.isSelected = true
-            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
-        }
-        return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.setMenuIndex(index: indexPath.row)
-    }
-
+extension PopularViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = Double((Constants.screenWidth - Constants.spacings.xl_3 * 2) / 2)
         let height = 40.0

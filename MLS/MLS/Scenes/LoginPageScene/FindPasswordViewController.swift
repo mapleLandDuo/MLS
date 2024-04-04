@@ -7,11 +7,12 @@
 
 import UIKit
 
+import RxCocoa
 import SnapKit
 
 class FindPasswordViewController: BasicController {
     // MARK: - Properties
-    private let viewModel: FindPasswordViewModel
+    private let viewModel: LoginViewModel
     
     var preVC: UIViewController?
     
@@ -30,7 +31,7 @@ class FindPasswordViewController: BasicController {
     
     private let sendButton = CustomButton(type: .disabled, text: "메일 보내기")
     
-    init(viewModel: FindPasswordViewModel) {
+    init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
         super.init()
     }
@@ -53,8 +54,6 @@ extension FindPasswordViewController {
 // MARK: - SetUp
 private extension FindPasswordViewController {
     func setUp() {
-        emailTextField.textField.delegate = self
-        
         setUpConstraints()
         setUpActions()
     }
@@ -106,29 +105,17 @@ private extension FindPasswordViewController {
     }
 }
 
-// MARK: - Bind
-private extension FindPasswordViewController {
-    func bind() {}
-}
-
-// MARK: - Method
-private extension FindPasswordViewController {
-    func checkEmail(isCorrect: Bool) {}
-}
-
-extension FindPasswordViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return true
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let currentText = textField.text ?? ""
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        viewModel.checkEmailValidation(email: updatedText) { [weak self] type in
-            self?.sendButton.type.value = type
-        }
-        return true
+// MARK: Bind
+extension FindPasswordViewController {
+    func bind() {
+        emailTextField.textField.rx.text
+            .orEmpty
+            .withUnretained(self)
+            .subscribe(onNext: { owner, text in
+                owner.viewModel.checkEmailValidation(email: text) { type in
+                    owner.sendButton.type.accept(type)
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }

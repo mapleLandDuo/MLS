@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxCocoa
+import RxDataSources
 import SnapKit
 
 class DictMapViewController: BasicController {
@@ -60,15 +62,10 @@ extension DictMapViewController {
 private extension DictMapViewController {
     func setUp() {
         dictMapTableView.delegate = self
-        dictMapTableView.dataSource = self
-
         infoMenuCollectionView.delegate = self
-        infoMenuCollectionView.dataSource = self
-
-        viewModel.fetchMap()
 
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "상세정보")
     }
 
     func setUpConstraints() {
@@ -83,88 +80,116 @@ private extension DictMapViewController {
 // MARK: Bind
 extension DictMapViewController {
     func bind() {
-        viewModel.selectedMap.bind { [weak self] _ in
-            self?.viewModel.fetchApearMonsters {
-                self?.viewModel.fetchApearNPCs {
-                    self?.dictMapTableView.reloadData()
+        // MARK: Bind tableView
+        let dataSource = RxTableViewSectionedReloadDataSource<Section>(
+            configureCell: { [weak self] _, tableView, indexPath, item in
+                var cell = UITableViewCell()
+                if indexPath.section == 0 {
+                    switch item {
+                    case .mainInfo(let mainItem):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier, for: indexPath) as? DictMainInfoCell else { return UITableViewCell() }
+                        tempCell.tappedExpandButton = { [weak self] isTapped in
+                            self?.viewModel.tappedExpandButton.accept(isTapped)
+                        }
+                        tempCell.bind(item: mainItem)
+                        cell = tempCell
+                    default:
+                        break
+                    }
+                } else {
+                    switch item {
+                    case .dropItem(let dropItem):
+                        guard let tempCell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
+                        tempCell.tappedCell = { [weak self] name in
+                            self?.viewModel.tappedCellName
+                                .accept(name)
+                        }
+                        let type = self?.viewModel.selectedTab.value == 0 ? DictType.monster : DictType.npc
+                        tempCell.bind(items: dropItem, type: type)
+                        cell = tempCell
+                    default:
+                        return UITableViewCell()
+                    }
                 }
-            }
-        }
-
-        viewModel.selectedTab.bind { [weak self] _ in
-            self?.dictMapTableView.reloadData()
-        }
-    }
-}
-
-// MARK: Methods
-extension DictMapViewController {
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "상세정보"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.shadowImage = nil
-    }
-
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
-}
-
-extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let selectedTab = viewModel.selectedTab.value else { return UITableViewCell() }
-        if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMainInfoCell.identifier) as? DictMainInfoCell,
-                  let item = viewModel.selectedMap.value else { return UITableViewCell() }
-            cell.delegate = self
-            cell.bind(item: item)
-            return cell
-        } else {
-            switch selectedTab {
-            case 0:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
-                cell.delegate = self
                 cell.isUserInteractionEnabled = true
                 cell.contentView.isUserInteractionEnabled = false
                 cell.selectionStyle = .none
-                cell.bind(items: viewModel.apearMonsterContents, type: .monster)
                 return cell
-            case 1:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DictMapTableViewCell.identifier) as? DictMapTableViewCell else { return UITableViewCell() }
-                cell.delegate = self
-                cell.isUserInteractionEnabled = true
-                cell.contentView.isUserInteractionEnabled = false
-                cell.selectionStyle = .none
-                cell.bind(items: viewModel.apearNpcContents, type: .npc)
-                return cell
-            default:
-                return UITableViewCell()
             }
-        }
-    }
+        )
+        
+        viewModel.sectionData
+            .bind(to: dictMapTableView.rx.items(dataSource: dataSource))
+            .disposed(by: viewModel.disposeBag)
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
+        viewModel.tappedCellName
+            .withUnretained(self)
+            .subscribe(onNext: { owner, name in
+                switch owner.viewModel.selectedTab.value {
+                case 0:
+                    let vm = DictMonsterViewModel(selectedName: name)
+                    let vc = DictMonsterViewController(viewModel: vm)
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                case 1:
+                    let vm = DictNPCViewModel(selectedName: name)
+                    let vc = DictNPCViewController(viewModel: vm)
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                default:
+                    break
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.selectedTab
+            .withUnretained(self)
+            .subscribe(onNext: { owner, selectedTab in
+                switch selectedTab {
+                case 0:
+                    owner.viewModel.fetchApearMonsters()
+                case 1:
+                    owner.viewModel.fetchApearNPCs()
+                default:
+                    break
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.tappedExpandButton
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.dictMapTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        // MARK: Bind collectionView
+        viewModel.tabMenus
+            .bind(to: infoMenuCollectionView.rx.items(cellIdentifier: DictSearchMenuCell.identifier, cellType: DictSearchMenuCell.self)) { _, text, cell in
+                cell.bind(text: text)
+            }
+            .disposed(by: viewModel.disposeBag)
 
+        infoMenuCollectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                self?.viewModel.setMenuIndex(index: indexPath.row)
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] index in
+                guard let self = self else { return }
+
+                let indexPath = IndexPath(item: index, section: 0)
+                self.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+            })
+            .disposed(by: viewModel.disposeBag)
+    }
+}
+
+extension DictMapViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
             let view = UIView()
+            view.backgroundColor = .white
             let separator = UIView()
             separator.backgroundColor = .semanticColor.bolder.secondary
             view.addSubview(separator)
@@ -194,60 +219,20 @@ extension DictMapViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension DictMapViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.tabMenus.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchMenuCell.identifier, for: indexPath) as? DictSearchMenuCell else { return UICollectionViewCell() }
-        cell.bind(text: viewModel.tabMenus[indexPath.row])
-        if indexPath.item == viewModel.fetchMenuIndex() {
-            cell.isSelected = true
-            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
-        }
-        return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.setMenuIndex(index: indexPath.row)
-    }
-    
+extension DictMapViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        let contents = indexPath.row == 0 ? viewModel.apearMonsterContents : viewModel.apearNpcContents
-        if contents.isEmpty {
-            AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
-            return false
+        for index in viewModel.emptyData {
+            if indexPath.row == index {
+                AlertManager.showAlert(vc: self, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
+                return false
+            }
         }
         return true
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = 75.0
         let height = 40.0
         return CGSize(width: width, height: height)
-    }
-}
-
-extension DictMapViewController: DictMapTableViewCellDelegate {
-    func didTapMapTableCell(title: String) {
-        switch viewModel.selectedTab.value {
-        case 0:
-            let vm = DictMonsterViewModel(selectedName: title)
-            let vc = DictMonsterViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
-        case 1:
-            let vm = DictNPCViewModel(selectedName: title)
-            let vc = DictNPCViewController(viewModel: vm)
-            navigationController?.pushViewController(vc, animated: true)
-        default:
-            break
-        }
-    }
-}
-
-extension DictMapViewController: DictMainInfoCellDelegate {
-    func didTapExpandButton() {
-        dictMapTableView.reloadData()
     }
 }

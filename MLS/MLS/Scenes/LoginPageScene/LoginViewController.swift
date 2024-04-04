@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
 import SnapKit
 
 class LoginViewController: BasicController {
@@ -27,12 +29,15 @@ class LoginViewController: BasicController {
 
     lazy var autoLoginButton: UIButton = {
         let button = UIButton()
-        button.setTitle("자동 로그인", for: .normal)
-        button.setImage(UIImage(systemName: "square"), for: .normal)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
-        button.configuration?.imagePlacement = .leading
-        button.setTitleColor(.semanticColor.text.secondary, for: .normal)
-        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .medium)
+        var config = UIButton.Configuration.plain()
+        config.imagePadding = 5
+        config.imagePlacement = .leading
+        var title = AttributeContainer()
+        title.font = .customFont(fontSize: .body_sm, fontType: .medium)
+        title.foregroundColor = .semanticColor.text.secondary
+        config.attributedTitle = AttributedString("자동 로그인", attributes: title)
+        config.image = UIImage(systemName: "square")
+        button.configuration = config
         button.tintColor = .semanticColor.bolder.primary
         return button
     }()
@@ -85,11 +90,8 @@ extension LoginViewController {
 // MARK: - SetUp
 private extension LoginViewController {
     func setUp() {
-        emailTextField.textField.delegate = self
-        pwTextField.textField.delegate = self
-        
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "로그인")
         setUpActions()
     }
         
@@ -158,21 +160,6 @@ private extension LoginViewController {
         }
     }
     
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "로그인"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-        
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
-    }
-    
     func setUpActions() {
         autoLoginButton.addAction(UIAction(handler: { [weak self] _ in
             self?.didTapAutoLoginButton()
@@ -195,28 +182,60 @@ private extension LoginViewController {
 // MARK: - Bind
 private extension LoginViewController {
     func bind() {
-        viewModel.isAutoLogin.bind { [weak self] state in
-            guard let state = state else { return }
-            self?.viewModel.userDefaultManager.setAutoLogin(toggle: state)
-            if state {
-                self?.autoLoginButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-                self?.autoLoginButton.tintColor = .semanticColor.bg.brand
-            } else {
-                self?.autoLoginButton.setImage(UIImage(systemName: "square"), for: .normal)
-                self?.autoLoginButton.tintColor = .semanticColor.bolder.primary
-            }
-        }
+        viewModel.isAutoLogin
+            .asDriver()
+            .drive(onNext: { [weak self] state in
+                let image = state ? "checkmark.square.fill" : "square"
+                let tintColor = state ? UIColor.semanticColor.bg.brand : UIColor.semanticColor.bolder.primary
+                    
+                self?.autoLoginButton.setImage(UIImage(systemName: image), for: .normal)
+                self?.autoLoginButton.tintColor = tintColor
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        Observable
+            .of(emailTextField.textField.rx.text
+            .orEmpty
+            .map { text in !text.isEmpty },
+            pwTextField.textField.rx.text
+                .orEmpty
+                .map { text in !text.isEmpty })
+            .merge()
+            .subscribe(onNext: { [weak self] isEmpty in
+                self?.logInButton.type.accept(isEmpty ? .clickabled : .disabled)
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        Observable
+            .of(pwTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.pwTextField },
+                      emailTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.emailTextField })
+            .merge()
+            .withUnretained(self)
+            .subscribe(onNext: { _, textField in
+                textField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        Observable
+            .of(emailTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.emailTextField },
+                      pwTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.pwTextField })
+            .merge()
+            .withUnretained(self)
+            .subscribe(onNext: { _, textField in
+                textField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
-// MARK: - Method
+// MARK: - Methods
 private extension LoginViewController {
     func didTapAutoLoginButton() {
-        viewModel.isAutoLogin.value?.toggle()
+        viewModel.isAutoLogin.accept(!viewModel.isAutoLogin.value)
     }
         
     func didTapPwFindButton() {
-        let vc = FindPasswordViewController(viewModel: FindPasswordViewModel())
+        let vc = FindPasswordViewController(viewModel: LoginViewModel())
         vc.preVC = self
         vc.modalPresentationStyle = .custom
         vc.transitioningDelegate = self
@@ -245,40 +264,6 @@ private extension LoginViewController {
     func didTapSignUpButton() {
         let vc = SignUpFirstViewController(viewModel: SignUpFirstViewModel())
         navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
-}
-
-extension LoginViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // 엔터
-        return true
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let currentText = textField.text ?? ""
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        return true
-    }
-    
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        guard let text = textField.text else { return }
-        logInButton.backgroundColor = !text.isEmpty ? .semanticColor.bg.interactive.primary : .semanticColor.bg.disabled
-        logInButton.isUserInteractionEnabled = !text.isEmpty
     }
 }
 

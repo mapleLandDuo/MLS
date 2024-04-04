@@ -9,27 +9,6 @@ import Foundation
 
 import SQLite
 
-enum SortMenu: String {
-    // common
-    case LEVEL
-
-    // item
-    case price = "상점 판매가"
-
-    // monster
-    case EXP
-}
-
-enum OrderMenu {
-    case ASC
-    case DESC
-}
-
-enum FieldMenu {
-    case defaultValues
-    case detailValues
-}
-
 class SqliteManager {
     var db: Connection?
     let path = "mlsDatabase.db"
@@ -40,25 +19,25 @@ class SqliteManager {
     }
 
     // MARK: Database
-    func createDB() -> Connection? {
-        do {
-            let filePath = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(self.path)
-            let db = try Connection(filePath.path)
-            print("Success create db Path")
-            return db
-        } catch {
-            print("error in createDB - \(error)")
-        }
-        return nil
-    }
-    
+//    func createDB() -> Connection? {
+//        do {
+//            let filePath = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(self.path)
+//            let db = try Connection(filePath.path)
+//            print("Success create db Path")
+//            return db
+//        } catch {
+//            print("error in createDB - \(error)")
+//        }
+//        return nil
+//    }
+
     func connectToDB() -> Connection? {
         let fileName = "mlsDatabase.db"
         let fileManager = FileManager.default
         guard let bundlePath = Bundle.main.path(forResource: "mlsDatabase", ofType: "db"),
               let documentPath = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
         let fileURL = documentPath.appendingPathComponent(fileName)
-        
+
         if !fileManager.fileExists(atPath: fileURL.path) {
             do {
                 try fileManager.copyItem(atPath: bundlePath, toPath: fileURL.path)
@@ -68,7 +47,7 @@ class SqliteManager {
                 return nil
             }
         }
-        
+
         do {
             let db = try Connection(fileURL.path)
             print("Success connect to db")
@@ -78,7 +57,7 @@ class SqliteManager {
         }
         return nil
     }
-    
+
     // MARK: Table
     func createTable(tableName: String, columnNames: [String]) {
         let table = Table(tableName)
@@ -111,26 +90,26 @@ class SqliteManager {
         }
     }
 
-    func fetchTables() {
-        do {
-            let tableNames = try db!.prepare("SELECT name FROM sqlite_master WHERE type='table'")
-
-            for tableName in tableNames {
-                print("Table: \(tableName[0]!)")
-                let table = Table(tableName[0]! as! String)
-                let rows = try db!.prepare(table.select(*))
-
-                for row in rows {
-                    print("Row: \(row)")
-                }
-            }
-        } catch {
-            print("fetch tables fail: \(error)")
-        }
-    }
+//    func fetchTables() {
+//        do {
+//            let tableNames = try db!.prepare("SELECT name FROM sqlite_master WHERE type='table'")
+//
+//            for tableName in tableNames {
+//                print("Table: \(tableName[0]!)")
+//                let table = Table(tableName[0]! as! String)
+//                let rows = try db!.prepare(table.select(*))
+//
+//                for row in rows {
+//                    print("Row: \(row)")
+//                }
+//            }
+//        } catch {
+//            print("fetch tables fail: \(error)")
+//        }
+//    }
 
     // MARK: Record
-    
+
     func saveData<T: Sqlable>(data: [T], completion: @escaping () -> Void) {
         let columns = T.columnOrder.joined(separator: ", ")
         let placeholders = String(repeating: "?, ", count: T.columnOrder.count).dropLast(2)
@@ -155,7 +134,7 @@ class SqliteManager {
         }
         completion()
     }
-    
+
     func fetchData<T: Sqlable>(completion: @escaping ([T]) -> Void) {
         var result: [T] = []
         let table = Table(T.tableName.tableName)
@@ -163,19 +142,19 @@ class SqliteManager {
         do {
             for row in try self.db!.prepare(table) {
                 switch T.tableName {
-                case .items:
+                case .item:
                     guard let data = decodeItem(row: row) as? T else { return }
                     result.append(data)
-                case .monsters:
+                case .monster:
                     guard let data = decodeMonster(row: row) as? T else { return }
                     result.append(data)
-                case .maps:
+                case .map:
                     guard let data = decodeMap(row: row) as? T else { return }
                     result.append(data)
-                case .npcs:
+                case .npc:
                     guard let data = decodeNPC(row: row) as? T else { return }
                     result.append(data)
-                case .quests:
+                case .quest:
                     guard let data = decodeQuest(row: row) as? T else { return }
                     result.append(data)
                 }
@@ -199,19 +178,19 @@ class SqliteManager {
 
             for row in try self.db!.prepare(query) {
                 switch T.tableName {
-                case .items:
+                case .item:
                     guard let data = decodeItem(row: row) as? T else { return }
                     result.append(data)
-                case .monsters:
+                case .monster:
                     guard let data = decodeMonster(row: row) as? T else { return }
                     result.append(data)
-                case .maps:
+                case .map:
                     guard let data = decodeMap(row: row) as? T else { return }
                     result.append(data)
-                case .npcs:
+                case .npc:
                     guard let data = decodeNPC(row: row) as? T else { return }
                     result.append(data)
-                case .quests:
+                case .quest:
                     guard let data = decodeQuest(row: row) as? T else { return }
                     result.append(data)
                 }
@@ -232,19 +211,19 @@ class SqliteManager {
 
             for row in try self.db!.prepare(query) {
                 switch T.tableName {
-                case .items:
+                case .item:
                     guard let data = decodeItem(row: row) as? T else { return }
                     completion(data)
-                case .monsters:
+                case .monster:
                     guard let data = decodeMonster(row: row) as? T else { return }
                     completion(data)
-                case .maps:
+                case .map:
                     guard let data = decodeMap(row: row) as? T else { return }
                     completion(data)
-                case .npcs:
+                case .npc:
                     guard let data = decodeNPC(row: row) as? T else { return }
                     completion(data)
-                case .quests:
+                case .quest:
                     guard let data = decodeQuest(row: row) as? T else { return }
                     completion(data)
                 }
@@ -254,7 +233,7 @@ class SqliteManager {
         }
     }
 
-    func deleteData(tableName: Filename, dataName: String, completion: @escaping () -> Void) {
+    func deleteData(tableName: DictType, dataName: String, completion: @escaping () -> Void) {
         do {
             let table = Table(tableName.tableName)
 
@@ -271,55 +250,55 @@ class SqliteManager {
         completion()
     }
 
-    func updateData(tableName: Filename, itemName: String, fieldName: String, newValue: String, completion: @escaping () -> Void) {
-        do {
-            let table = Table(tableName.tableName)
-
-            let name = Expression<String>("name")
-            let field = Expression<String>(fieldName)
-
-            if try self.db!.run(table.filter(name == itemName).update(field <- newValue)) > 0 {
-                print("success updateData")
-            } else {
-                print("updateData not found")
-            }
-        } catch {
-            print("failure preparing update: \(error)")
-        }
-        completion()
-    }
+//    func updateData(tableName: Filename, itemName: String, fieldName: String, newValue: String, completion: @escaping () -> Void) {
+//        do {
+//            let table = Table(tableName.tableName)
+//
+//            let name = Expression<String>("name")
+//            let field = Expression<String>(fieldName)
+//
+//            if try self.db!.run(table.filter(name == itemName).update(field <- newValue)) > 0 {
+//                print("success updateData")
+//            } else {
+//                print("updateData not found")
+//            }
+//        } catch {
+//            print("failure preparing update: \(error)")
+//        }
+//        completion()
+//    }
 
     // 필터링 아이템
-    
+
     func filterItem(searchKeyword: String?, divisionName: String?, rollName: String?, minLv: Int?, maxLv: Int?, completion: @escaping ([DictItem]) -> Void) {
         var result: [DictItem] = []
         var index = 0
         var query = "SELECT * FROM dictItemTable"
-        
+
         if let searchKeyword = searchKeyword {
             query += " WHERE name LIKE '%\(searchKeyword)%'"
             index += 1
         }
-        
+
         if let divisionName = divisionName {
             let divisionString = divisionName.replacingOccurrences(of: "'", with: "''")
             query = index == 0 ? query + " WHERE " : query + " AND "
             query += "division = '\(divisionString)'"
             index += 1
         }
-        
+
         if let rollName = rollName {
             query = index == 0 ? query + " WHERE " : query + " AND "
             query += "EXISTS (SELECT * FROM json_each(dictItemTable.\(FieldMenu.detailValues)) WHERE json_extract(value, '$.name') = '직업' AND json_extract(value, '$.description') = '\(rollName)')"
             index += 1
         }
-        
+
         if let minLv = minLv, let maxLv = maxLv {
             query = index == 0 ? query + " WHERE " : query + "AND "
             query += "EXISTS (SELECT * FROM json_each(dictItemTable.\(FieldMenu.defaultValues)) WHERE json_extract(value, '$.name') = 'LEVEL' AND CAST(json_extract(value, '$.description') AS INTEGER) BETWEEN \(minLv) AND \(maxLv))"
             index += 1
         }
-        
+
         do {
             for row in try self.db!.prepare(query) {
                 if let item = decodeItem(row: row) {
@@ -333,23 +312,23 @@ class SqliteManager {
     }
 
     // 필터링 몬스터
-    
+
     func filterMonster(searchKeyword: String?, minLv: Int?, maxLv: Int?, completion: @escaping ([DictMonster]) -> Void) {
         var result: [DictMonster] = []
         var index = 0
         var query = "SELECT * FROM dictMonsterTable"
-        
+
         if let searchKeyword = searchKeyword {
             query += " WHERE name LIKE '%\(searchKeyword)%'"
             index += 1
         }
-        
+
         if let minLv = minLv, let maxLv = maxLv {
             query = index == 0 ? query + " WHERE " : query + "AND "
             query += "EXISTS (SELECT * FROM json_each(dictMonsterTable.\(FieldMenu.defaultValues)) WHERE json_extract(value, '$.name') = 'LEVEL' AND CAST(json_extract(value, '$.description') AS INTEGER) BETWEEN \(minLv) AND \(maxLv))"
             index += 1
         }
-        
+
         do {
             for row in try self.db!.prepare(query) {
                 if let item = decodeMonster(row: row) {
@@ -359,27 +338,27 @@ class SqliteManager {
         } catch {
             print("Fetch failed: \(error)")
         }
-        
+
         completion(result)
     }
-    
-    func filterMonster(minLv: Int, maxLv: Int, completion: @escaping ([DictMonster]) -> Void) {
-        var result: [DictMonster] = []
-        let query = "SELECT * FROM (SELECT *, CAST(json_extract(value, '$.description') AS INTEGER) as level FROM dictMonsterTable, json_each(dictMonsterTable.defaultValues) WHERE json_extract(value, '$.name') = 'LEVEL') WHERE level BETWEEN \(minLv) AND \(maxLv) ORDER BY level ASC"
-        
-        do {
-            for row in try self.db!.prepare(query) {
-                if let item = decodeMonster(row: row) {
-                    result.append(item)
-                }
-            }
-        } catch {
-            print("Fetch failed: \(error)")
-        }
-        
-        completion(result)
-    }
-    
+
+//    func filterMonster(minLv: Int, maxLv: Int, completion: @escaping ([DictMonster]) -> Void) {
+//        var result: [DictMonster] = []
+//        let query = "SELECT * FROM (SELECT *, CAST(json_extract(value, '$.description') AS INTEGER) as level FROM dictMonsterTable, json_each(dictMonsterTable.defaultValues) WHERE json_extract(value, '$.name') = 'LEVEL') WHERE level BETWEEN \(minLv) AND \(maxLv) ORDER BY level ASC"
+//
+//        do {
+//            for row in try self.db!.prepare(query) {
+//                if let item = decodeMonster(row: row) {
+//                    result.append(item)
+//                }
+//            }
+//        } catch {
+//            print("Fetch failed: \(error)")
+//        }
+//
+//        completion(result)
+//    }
+
     // 정렬 아이템
     func sortItem<T: Sqlable>(field: FieldMenu, sortMenu: SortMenu, order: OrderMenu, completion: @escaping ([T]) -> Void) {
         var result: [T] = []
@@ -387,13 +366,13 @@ class SqliteManager {
         do {
             let query = "SELECT * FROM \(T.tableName.tableName) ORDER BY ( SELECT CAST(json_extract(value, '$.description') AS INTEGER) FROM json_each(\(T.tableName.tableName).\(field)) WHERE json_extract(value, '$.name') = '\(sortMenu.rawValue)') \(order)"
             switch T.tableName {
-            case .items:
+            case .item:
                 for row in try self.db!.prepare(query) {
                     if let data = decodeItem(row: row) as? T {
                         result.append(data)
                     }
                 }
-            case .monsters:
+            case .monster:
                 for row in try self.db!.prepare(query) {
                     if let data = decodeMonster(row: row) as? T {
                         result.append(data)
@@ -600,5 +579,26 @@ extension SqliteManager {
         default:
             return []
         }
+    }
+}
+
+extension SqliteManager {
+    enum SortMenu: String {
+        // common
+        case LEVEL
+        // item
+        case price = "상점 판매가"
+        // monster
+        case EXP
+    }
+
+    enum OrderMenu {
+        case ASC
+        case DESC
+    }
+
+    enum FieldMenu {
+        case defaultValues
+        case detailValues
     }
 }

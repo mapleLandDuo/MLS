@@ -7,62 +7,59 @@
 
 import Foundation
 
-class DictMapViewModel {
+import RxCocoa
+
+class DictMapViewModel: DictBaseViewModel {
     // MARK: Properties
-    let sqliteManager = SqliteManager()
+    var tabMenus = BehaviorRelay<[String]>(value: ["출현 몬스터","NPC"])
     
-    var selectedTab: Observable<Int> = Observable(0)
-    var tabMenus = ["출현 몬스터","NPC"]
+    var selectedMap = BehaviorRelay<DictMap?>(value: nil)
     
-    var selectedName: String?
+    var tappedCellName = PublishRelay<String>()
+    var tappedExpandButton = PublishRelay<Bool>()
     
-    var selectedMap: Observable<DictMap> = Observable(nil)
-    
-    var apearMonsterContents = [DictDropContent]()
-    
-    var apearNpcContents = [DictDropContent]()
-    
-    init(selectedName: String) {
-        self.selectedName = selectedName
+    override init(selectedName: String) {
+        super.init(selectedName: selectedName)
+        fetchData(type: .map, data: selectedMap)
+        checkEmptyData()
     }
 }
 
 // MARK: Methods
 extension DictMapViewModel {
-    func fetchMenuIndex() -> Int {
-        guard let index = selectedTab.value else { return 0 }
-        return index
-    }
-    
-    func setMenuIndex(index: Int) {
-        selectedTab.value = index
-    }
-    
-    func fetchMap() {
-        guard let name = self.selectedName else { return }
-        sqliteManager.searchDetailData(dataName: name) { [weak self] (item: DictMap) in
-            self?.selectedMap.value = item
-        }
-    }
-    
-    func fetchApearMonsters(completion: @escaping () -> Void) {
+    func fetchApearMonsters() {
+        var apearMonsterInfos = [DictDropContent]()
         guard let monsters = selectedMap.value?.monsters else { return }
         for monster in monsters {
-            self.sqliteManager.searchDetailData(dataName: monster.name) { [weak self] (item: DictMonster) in
+            self.sqliteManager.searchDetailData(dataName: monster.name) { (item: DictMonster) in
                 guard let level = item.defaultValues.filter({ $0.name == "LEVEL" }).first?.description else { return}
-                self?.apearMonsterContents.append(DictDropContent(name: item.name, code: item.code, level: level, description: monster.description))
+                apearMonsterInfos.append(DictDropContent(name: item.name, code: item.code, level: level, description: monster.description))
             }
         }
-        completion()
+        let section = Section(index: 1, items: [.dropItem(apearMonsterInfos)])
+        sectionData.updateSection(newSection: section)
     }
     
-    func fetchApearNPCs(completion: @escaping () -> Void) {
+    func fetchApearNPCs() {
+        var apearNPCInfo = [DictDropContent]()
         guard let npcs = selectedMap.value?.npcs else { return }
         for npc in npcs {
-            self.sqliteManager.searchDetailData(dataName: npc) { [weak self] (item: DictNPC) in
-                self?.apearNpcContents.append(DictDropContent(name: item.name, code: item.code, level: "", description: ""))
+            self.sqliteManager.searchDetailData(dataName: npc) { (item: DictNPC) in
+                apearNPCInfo.append(DictDropContent(name: item.name, code: item.code, level: "", description: ""))
             }
         }
-        completion()
+        let section = Section(index: 1, items: [.dropItem(apearNPCInfo)])
+        sectionData.updateSection(newSection: section)
+    }
+    
+    func checkEmptyData() {
+        if let value = selectedMap.value {
+            if value.monsters.isEmpty {
+                emptyData.append(0)
+            }
+            if value.npcs.isEmpty {
+                emptyData.append(1)
+            }
+        }
     }
 }

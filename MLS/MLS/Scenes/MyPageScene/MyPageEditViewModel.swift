@@ -7,12 +7,14 @@
 
 import Foundation
 
+import RxSwift
+import RxCocoa
+
 class MyPageEditViewModel {
-    
-    let nickNameState: Observable<TextState> = Observable(.default)
-    let levelState: Observable<TextState> = Observable(.default)
-    let jobState: Observable<Job?> = Observable(nil)
-    let buttonState: Observable<Bool> = Observable(false)
+    let nickNameState = BehaviorRelay<TextState>(value: .default)
+    let levelState = BehaviorRelay<TextState>(value: .default)
+    let jobState =  BehaviorRelay<Job?>(value: nil)
+    let buttonState = BehaviorRelay<Bool>(value: false)
     var user: User
     private var originNickName: String
     
@@ -31,7 +33,7 @@ extension MyPageEditViewModel {
     func checkNickName(nickName: String) {
 
         if originNickName == nickName {
-            nickNameState.value = .complete
+            nickNameState.accept(.complete)
             return
         }
         
@@ -39,47 +41,47 @@ extension MyPageEditViewModel {
             FirebaseManager.firebaseManager.checkNickNameExist(nickName: nickName) { [weak self] isExist in
                 guard let isExist = isExist else { return }
                 if isExist {
-                    self?.nickNameState.value = .nickNameExist
+                    self?.nickNameState.accept(.nickNameExist)
                 } else if !(2 ... 8).contains(nickName.count) {
-                    self?.nickNameState.value = .nickNameNotCorrect
+                    self?.nickNameState.accept(.nickNameNotCorrect)
                 } else {
-                    self?.nickNameState.value = .complete
+                    self?.nickNameState.accept(.complete)
                 }
             }
         } else {
-            nickNameState.value = .default
+            nickNameState.accept(.default)
         }
     }
     
     func checkLevel(level: String) {
         if level == "" {
-            levelState.value = .default
+            levelState.accept(.default)
         } else {
             if let level = Int(level) {
                 if 1 ... 200 ~= level {
-                    levelState.value = .complete
+                    levelState.accept(.complete)
                 } else {
-                    levelState.value = .lvOutOfBounds
+                    levelState.accept(.lvOutOfBounds)
                 }
             } else {
-                levelState.value = .lvNotInt
+                levelState.accept(.lvNotInt)
             }
         }
     }
     
     func isValidButton() {
         if nickNameState.value != .complete {
-            buttonState.value = false
+            buttonState.accept(false)
             return
         }
         if levelState.value != .complete {
-            buttonState.value = false
+            buttonState.accept(false)
             return
         }
         if jobState.value == nil {
-            buttonState.value = false
+            buttonState.accept(false)
             return
         }
-        buttonState.value = true
+        buttonState.accept(true)
     }
 }

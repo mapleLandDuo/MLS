@@ -18,10 +18,6 @@ class LoginManager {
     
     private init() {}
     
-    private let users: String = "users"
-    
-    private let PostBooks: String = "PostBooks"
-    
     var email = Auth.auth().currentUser?.email
 }
 

@@ -35,7 +35,7 @@ struct DictionaryItem: Codable {
 // MARK: - Dev 1.0.1
 protocol Sqlable: Codable {
     static var columnOrder: [String] { get }
-    static var tableName: Filename { get }
+    static var tableName: DictType { get }
 }
 
 struct DictItem: Sqlable {
@@ -57,5 +57,5 @@ struct DictItem: Sqlable {
     var dropTable: [DictionaryNameDescription]
     
     static let columnOrder = ["name", "code", "division", "mainCategory", "subCategory", "defaultValues", "detailValues", "dropTable"]
-    static let tableName = Filename.items
+    static let tableName = DictType.item
 }

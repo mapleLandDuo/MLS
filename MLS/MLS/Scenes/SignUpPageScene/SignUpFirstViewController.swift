@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
 import SafariServices
 import SnapKit
 
@@ -40,12 +42,16 @@ class SignUpFirstViewController: BasicController {
     
     lazy var privacyButton: UIButton = {
         let button = UIButton()
-        button.setTitle("[필수] 개인정보 처리 방침 동의", for: .normal)
-        button.setImage(UIImage(systemName: "square"), for: .normal)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
-        button.configuration?.imagePlacement = .leading
-        button.setTitleColor(.semanticColor.text.secondary, for: .normal)
-        button.titleLabel?.font = .customFont(fontSize: .body_sm, fontType: .medium)
+        var config = UIButton.Configuration.plain()
+        config.imagePadding = 5
+        config.imagePlacement = .leading
+        var title = AttributeContainer()
+        title.font = .customFont(fontSize: .body_sm, fontType: .medium)
+        title.foregroundColor = .semanticColor.text.secondary
+        config.attributedTitle = AttributedString("[필수] 개인정보 처리 방침 동의", attributes: title)
+        config.image = UIImage(systemName: "square")
+        config.baseBackgroundColor = .clear
+        button.configuration = config
         button.tintColor = .semanticColor.bolder.primary
         return button
     }()
@@ -98,12 +104,8 @@ extension SignUpFirstViewController {
 // MARK: - SetUp
 private extension SignUpFirstViewController {
     func setUp() {
-        emailTextField.textField.delegate = self
-        firstPwTextField.textField.delegate = self
-        secondPwTextField.textField.delegate = self
-        
         setUpConstraints()
-        setUpNavigation()
+        setUpNavigation(title: "회원가입")
         setUpActions()
     }
         
@@ -178,32 +180,17 @@ private extension SignUpFirstViewController {
         }
     }
     
-    func setUpNavigation() {
-        let spacer = UIBarButtonItem()
-        let image = UIImage(systemName: "chevron.backward")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapBackButton))
-        let titleLabel = UILabel()
-        titleLabel.text = "회원가입"
-        titleLabel.font = .customFont(fontSize: .heading_sm, fontType: .semiBold)
-        titleLabel.textColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.titleView = titleLabel
-        
-        backButton.tintColor = .themeColor(color: .base, value: .value_black)
-        navigationItem.leftBarButtonItems = [spacer, backButton]
-        navigationController?.navigationBar.isHidden = false
-    }
-    
     func setUpActions() {
         emailTextField.textField.addAction(UIAction(handler: { [weak self] _ in
-            self?.nextButton.type.value = .clickabled
+            self?.nextButton.type.accept(.clickabled)
         }), for: .editingChanged)
         
         firstPwTextField.textField.addAction(UIAction(handler: { [weak self] _ in
-            self?.nextButton.type.value = .clickabled
+            self?.nextButton.type.accept(.clickabled)
         }), for: .editingChanged)
         
         secondPwTextField.textField.addAction(UIAction(handler: { [weak self] _ in
-            self?.nextButton.type.value = .clickabled
+            self?.nextButton.type.accept(.clickabled)
         }), for: .editingChanged)
         
         privacyButton.addAction(UIAction(handler: { [weak self] _ in
@@ -223,24 +210,61 @@ private extension SignUpFirstViewController {
 // MARK: - Bind
 private extension SignUpFirstViewController {
     func bind() {
-        viewModel.emailState.bind { [weak self] _ in
-            guard let state = self?.viewModel.emailState.value else { return }
-            self?.checkEmailField(state: state)
-        }
+        viewModel.emailState
+            .compactMap { $0 != nil ? $0 : nil }
+            .subscribe(onNext: { [weak self] state in
+                self?.checkEmailField(state: state!)
+            })
+        .disposed(by: viewModel.disposeBag)
         
-        viewModel.firstPwState.bind { [weak self] _ in
-            guard let firstState = self?.viewModel.firstPwState.value,
-                  let secondState = self?.viewModel.secondPwState.value else { return }
-            self?.checkFirstPwField(state: firstState)
-            self?.checkSecondPwField(state: secondState)
-        }
+        Observable
+            .combineLatest(viewModel.firstPwState, viewModel.secondPwState)
+            .compactMap { $0.0 != nil && $0.1 != nil ? ($0.0!, $0.1!) : nil }
+            .subscribe(onNext: { [weak self] firstState, secondState in
+                self?.checkFirstPwField(state: firstState)
+                self?.checkSecondPwField(state: secondState)
+            })
+            .disposed(by: viewModel.disposeBag)
         
-        viewModel.secondPwState.bind { [weak self] _ in
-            guard let firstState = self?.viewModel.firstPwState.value,
-                  let secondState = self?.viewModel.secondPwState.value else { return }
-            self?.checkFirstPwField(state: firstState)
-            self?.checkSecondPwField(state: secondState)
-        }
+        Observable
+            .of(emailTextField.textField.rx.controlEvent(.editingDidBegin).map { self.emailTextField },
+                firstPwTextField.textField.rx.controlEvent(.editingDidBegin).map { self.firstPwTextField },
+                secondPwTextField.textField.rx.controlEvent(.editingDidBegin).map { self.secondPwTextField })
+            .merge()
+            .subscribe(onNext: { textField in
+                textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
+                textField.superview?.layer.borderWidth = 1
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        setupTextFieldDidEndEditing(emailTextField.textField, state: viewModel.emailState)
+        setupTextFieldDidEndEditing(firstPwTextField.textField, state: viewModel.firstPwState)
+        setupTextFieldDidEndEditing(secondPwTextField.textField, state: viewModel.secondPwState)
+
+        emailTextField.textField.rx.text.orEmpty
+            .withUnretained(self)
+            .subscribe(onNext: { owner, email in
+                owner.viewModel.checkEmail(email: email)
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        Observable
+            .combineLatest(firstPwTextField.textField.rx.text, secondPwTextField.textField.rx.text)
+            .subscribe(onNext: { [weak viewModel] password, checkPassword in
+                viewModel?.checkPassword(password: password ?? "")
+                viewModel?.reCheckPassword(password: password ?? "", checkPassword: checkPassword ?? "")
+            })
+            .disposed(by: viewModel.disposeBag)
+    }
+    
+    func setupTextFieldDidEndEditing(_ textField: UITextField, state: PublishRelay<TextState?>) {
+        textField.rx.controlEvent(.editingDidEnd)
+            .withLatestFrom(state)
+            .subscribe(onNext: { [weak self] state in
+                guard let state = state else { return }
+                self?.updateBorderColor(for: textField, state: state)
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -250,7 +274,7 @@ private extension SignUpFirstViewController {
         privacyButton.isSelected = !privacyButton.isSelected
         privacyButton.setImage(privacyButton.isSelected ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "square"), for: .normal)
         privacyButton.tintColor = privacyButton.isSelected ? .semanticColor.bg.brand : .semanticColor.bolder.primary
-        viewModel.isPrivacyAgree.value?.toggle()
+        viewModel.isPrivacyAgree.accept(!viewModel.isPrivacyAgree.value)
         
         checkPrivacy()
     }
@@ -264,9 +288,9 @@ private extension SignUpFirstViewController {
     func didTapNextButton() {
         checkPrivacy()
         
-        checkTextField(state: viewModel.emailState.value, checkField: checkEmailField, blankState: .emailBlank)
-        checkTextField(state: viewModel.firstPwState.value, checkField: checkFirstPwField, blankState: .pwBlank)
-        checkTextField(state: viewModel.secondPwState.value, checkField: checkSecondPwField, blankState: .pwBlank)
+        checkTextField(state: viewModel.emailState, checkField: checkEmailField, blankState: .emailBlank)
+        checkTextField(state: viewModel.firstPwState, checkField: checkFirstPwField, blankState: .pwBlank)
+        checkTextField(state: viewModel.secondPwState, checkField: checkSecondPwField, blankState: .pwBlank)
         
         if viewModel.isValidSignUp() {
             guard let email = emailTextField.textField.text,
@@ -280,10 +304,10 @@ private extension SignUpFirstViewController {
         }
     }
     
+    /// 개인정보 처리방침을 동의함에 따라 descriptionImageView를 숨기거나 드러냄
     func checkPrivacy() {
-        guard let isPrivacyAgree = viewModel.isPrivacyAgree.value else { return }
-        descriptionTailImageView.isHidden = isPrivacyAgree
-        descriptionMainImageView.isHidden = isPrivacyAgree
+        descriptionTailImageView.isHidden = viewModel.isPrivacyAgree.value
+        descriptionMainImageView.isHidden = viewModel.isPrivacyAgree.value
     }
     
     func checkEmailField(state: TextState) {
@@ -292,7 +316,7 @@ private extension SignUpFirstViewController {
     }
     
     func checkFirstPwField(state: TextState) {
-        firstPwTextField.setPasswordFooter(checkPassword: viewModel.checkPassword, state: state)
+        firstPwTextField.setPasswordFooter(checkPassword: viewModel.checkPassword)
         if state == .pwBlank {
             firstPwTextField.checkState(state: state, isCorrect: false)
         }
@@ -303,12 +327,17 @@ private extension SignUpFirstViewController {
         secondPwTextField.checkState(state: state, isCorrect: isCorrect)
     }
     
-    func checkTextField(state: TextState?, checkField: (TextState) -> Void, blankState: TextState) {
-        if let unwrappedState = state {
-            checkField(unwrappedState)
-        } else {
-            checkField(blankState)
-        }
+    func checkTextField(state: PublishRelay<TextState?>, checkField: @escaping (TextState) -> Void, blankState: TextState) {
+        state
+            .withUnretained(self)
+            .subscribe(onNext: { owner, state in
+                if let state = state {
+                    checkField(state)
+                } else {
+                    checkField(blankState)
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
     }
     
     func updateBorderColor(for textField: UITextField, state: TextState) {
@@ -319,56 +348,5 @@ private extension SignUpFirstViewController {
             color = UIColor.semanticColor.bolder.distructive_bold
         }
         textField.superview?.layer.borderColor = color?.cgColor
-    }
-    
-    @objc
-    func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
-}
-
-extension SignUpFirstViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return true
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.superview?.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
-        textField.superview?.layer.borderWidth = 1
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        switch textField {
-        case emailTextField.textField:
-            guard let state = viewModel.emailState.value else { return }
-            updateBorderColor(for: textField, state: state)
-        case firstPwTextField.textField:
-            guard let state = viewModel.firstPwState.value else { return }
-            updateBorderColor(for: textField, state: state)
-        case secondPwTextField.textField:
-            guard let state = viewModel.secondPwState.value else { return }
-            updateBorderColor(for: textField, state: state)
-        default:
-            break
-        }
-    }
-    
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        switch textField {
-        case emailTextField.textField:
-            guard let email = emailTextField.textField.text else { return }
-            viewModel.checkEmail(email: email)
-        case firstPwTextField.textField:
-            guard let password = firstPwTextField.textField.text,
-                  let checkPassword = secondPwTextField.textField.text else { return }
-            viewModel.checkPassword(password: password)
-            viewModel.reCheckPassword(password: password, checkPassword: checkPassword)
-        case secondPwTextField.textField:
-            guard let password = firstPwTextField.textField.text,
-                  let checkPassword = secondPwTextField.textField.text else { return }
-            viewModel.reCheckPassword(password: password, checkPassword: checkPassword)
-        default:
-            break
-        }
     }
 }

@@ -31,9 +31,10 @@ class DictLandingSearchView: UIView {
         return button
     }()
     
-    private let searchIcon: UIView = {
+    private let searchIcon: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "search")
+        view.contentMode = .scaleAspectFit
         return view
     }()
     
@@ -98,6 +99,20 @@ class DictLandingSearchView: UIView {
         return label
     }()
     
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .semanticColor.bg.primary
+        let separator = UIView()
+        separator.backgroundColor = .semanticColor.bolder.secondary
+        
+        view.addSubview(separator)
+        separator.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        return view
+    }()
+    
     init() {
         super.init(frame: .zero)
         setUp()
@@ -129,6 +144,7 @@ private extension DictLandingSearchView {
         self.addSubview(orangeLabel)
         self.addSubview(defaultLabel)
         self.addSubview(shortCutButton)
+        self.addSubview(separatorView)
         shortCutButton.addSubview(buttonLabel)
         searchStackView.addArrangedSubview(searchIcon)
         searchStackView.addArrangedSubview(searchLabel)
@@ -149,19 +165,19 @@ private extension DictLandingSearchView {
         
         orangeLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(Constants.spacings.xl)
-            $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
+            $0.bottom.equalTo(shortCutButton.snp.bottom)
         }
         
         defaultLabel.snp.makeConstraints {
             $0.leading.equalTo(orangeLabel.snp.trailing)
-            $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
+            $0.bottom.equalTo(shortCutButton.snp.bottom)
         }
         
         shortCutButton.snp.makeConstraints {
             $0.width.equalTo(108)
             $0.height.equalTo(48)
             $0.trailing.equalToSuperview().inset(Constants.spacings.xl)
-            $0.bottom.equalToSuperview().inset(Constants.spacings.xl_2)
+            $0.top.equalTo(searchButton.snp.bottom).offset(Constants.spacings.xl_2)
         }
         
         buttonLabel.snp.makeConstraints {
@@ -175,6 +191,13 @@ private extension DictLandingSearchView {
         searchStackView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.spacings.lg)
             $0.leading.trailing.equalToSuperview().inset(Constants.spacings.sm)
+        }
+        
+        separatorView.snp.makeConstraints {
+            $0.top.equalTo(shortCutButton.snp.bottom).offset(Constants.spacings.xl_2)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(4)
+            $0.bottom.equalToSuperview()
         }
     }
 }

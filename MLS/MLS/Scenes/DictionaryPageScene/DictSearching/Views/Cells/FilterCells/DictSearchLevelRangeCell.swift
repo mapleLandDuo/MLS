@@ -153,18 +153,21 @@ extension DictSearchLevelRangeCell: UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textField.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
-        guard let firstString = leftTextField.text else { return true }
-        guard let firstNum = Int(firstString) else { return true }
-        guard let secondString = rightTextField.text else { return true }
-        guard let secondNum = Int(secondString) else { return true }
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let firstString = leftTextField.text else { return  }
+        guard let firstNum = Int(firstString) else { return  }
+        guard let secondString = rightTextField.text else { return  }
+        guard let secondNum = Int(secondString) else { return  }
         
         if (firstNum...150).contains(secondNum) {
             delegate?.availableRange(firstNum: firstNum, secondNum: secondNum)
         } else {
             rightTextField.text = nil
         }
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        textField.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
         return true
     }
 }

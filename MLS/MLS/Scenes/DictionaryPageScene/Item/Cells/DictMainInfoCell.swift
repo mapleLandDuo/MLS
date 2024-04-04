@@ -9,19 +9,13 @@ import UIKit
 
 import SnapKit
 
-protocol DictMainInfoCellDelegate: BasicController {
-    func didTapExpandButton()
-}
-
 class DictMainInfoCell: UITableViewCell {
     // MARK: Properties
     private var descriptionText: String?
-
-    weak var delegate: DictMainInfoCellDelegate?
-    
-    private var isExpanded = false
     
     private var descriptionViewHeight: CGFloat = 0.0
+    
+    var tappedExpandButton: ((Bool) -> Void)?
     
     // MARK: Components
     
@@ -53,6 +47,7 @@ class DictMainInfoCell: UITableViewCell {
         view.textColor = .semanticColor.text.primary
         view.backgroundColor = .clear
         view.numberOfLines = 2
+        view.lineBreakMode = .byCharWrapping
         return view
     }()
 
@@ -129,47 +124,41 @@ private extension DictMainInfoCell {
 // MARK: bind
 extension DictMainInfoCell {
     func bind<T>(item: T) {
-        var url: String
         var itemName: String
         var itemDescription: String?
+        var itemType: DictType?
+        var itemCode: String?
         
         switch item.self {
         case is DictItem:
             guard let item = item as? DictItem else { return }
-            url = "https://maplestory.io/api/gms/62/item/\(item.code)/icon?resize=2"
             itemName = item.name
+            itemCode = item.code
+            itemType = .item
             itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
             descriptionText = itemDescription
-            itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
         case is DictMonster:
             guard let item = item as? DictMonster else { return }
-            let url = URL(string: "https://maplestory.io/api/gms/62/mob/\(item.code)/render/move?bgColor=")
-            let secondUrl = URL(string: "https://maplestory.io/api/kms/284/mob/\(item.code)/icon?resize=2")
-            itemImageView.kf.setImage(with: url) { [weak self] result in
-                switch result {
-                case .failure:
-                    print(#function)
-                    self?.itemImageView.kf.setImage(with: secondUrl)
-                default:
-                    print(#function)
-                }
-            }
             itemName = item.name
+            itemCode = item.code
+            itemType = .monster
             itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
             descriptionText = itemDescription
         case is DictMap:
             guard let item = item as? DictMap else { return }
             itemName = item.name
-            itemImageView.image = UIImage(named: "dictMapIcon")
+            itemCode = item.code
+            itemType = .map
         case is DictNPC:
             guard let item = item as? DictNPC else { return }
-            url = "https://maplestory.io/api/gms/62/npc/\(item.code)/icon?resize=2"
             itemName = item.name
-            itemImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(named: "Deco-maple"))
+            itemCode = item.code
+            itemType = .npc
         case is DictQuest:
             guard let item = item as? DictQuest else { return }
             itemName = item.name
-            itemImageView.image = UIImage(named: "dictQuestIcon")
+            itemCode = item.code
+            itemType = .quest
         default:
             return
         }
@@ -178,6 +167,9 @@ extension DictMainInfoCell {
             self.expandButton.isHidden = self.descriptionViewHeight / 22 < 3 ? true : false
         }
         
+        guard let itemCode = itemCode,
+              let itemType = itemType else { return }
+        itemImageView.setImageToDictCode(code: itemCode, type: itemType)
         nameLabel.text = itemName
         
         if itemDescription == nil {
@@ -206,7 +198,7 @@ extension DictMainInfoCell {
             }
         }
         expandButton.isSelected.toggle()
-        delegate?.didTapExpandButton()
+        tappedExpandButton?(expandButton.isSelected)
     }
     
     func checkDescriptionLines(completion: @escaping () -> Void) {

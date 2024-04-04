@@ -7,61 +7,70 @@
 
 import Foundation
 
-class DictMonsterViewModel {
+import RxCocoa
+
+class DictMonsterViewModel: DictBaseViewModel {
     // MARK: Properties
-    let sqliteManager = SqliteManager()
+    var tabMenus = BehaviorRelay<[String]>(value: ["몬스터 정보","출현 장소","드롭 정보"])
+
+    var selectedMonster = BehaviorRelay<DictMonster?>(value: nil)
+    var totalTextSize = BehaviorRelay<CGFloat>(value: 0.0)
     
-    var selectedTab: Observable<Int> = Observable(0)
-    var tabMenus = ["몬스터 정보","출현 장소","드롭 정보"]
+    var tappedTagName = PublishRelay<String>()
+    var tappedDropName = PublishRelay<String>()
+    var tappedExpandButton = PublishRelay<Bool>()
     
-    var selectedName: String?
-    
-    var selectedMonster: Observable<DictMonster> = Observable(nil)
-    
-    var dropTableContents = [DictDropContent]()
-    
-    var totalTextSize: Observable<CGFloat> = Observable(0.0)
-    
-    init(selectedName: String) {
-        self.selectedName = selectedName
+    override init(selectedName: String) {
+        super.init(selectedName: selectedName)
+        fetchData(type: .monster, data: selectedMonster)
+        checkEmptyData()
     }
 }
 
 // MARK: Methods
 extension DictMonsterViewModel {
-    func fetchMenuIndex() -> Int {
-        guard let index = selectedTab.value else { return 0 }
-        return index
+    func fetchDetailInfos() {
+        var detailInfos = [DetailContent]()
+        selectedMonster.value?.defaultValues.forEach { value in
+            detailInfos.append(DetailContent(title: value.name, description: value.description)) }
+        selectedMonster.value?.detailValues.forEach { value in
+            detailInfos.append(DetailContent(title: value.name, description: value.description)) }
+        let section = Section(index: 1, items: [.detailInfo(detailInfos)])
+        sectionData.updateSection(newSection: section)
     }
     
-    func setMenuIndex(index: Int) {
-        selectedTab.value = index
+    func fetchTagInfos() {
+        guard let tagInfos = selectedMonster.value?.hauntArea else { return }
+        let section = Section(index: 1, items: [.tagInfo(tagInfos)])
+        sectionData.updateSection(newSection: section)
     }
     
-    func fetchMonster() {
-        guard let name = self.selectedName else { return }
-        sqliteManager.searchDetailData(dataName: name) { [weak self] (item: DictMonster) in
-            self?.selectedMonster.value = item
-        }
-    }
-    
-    func fetchDetailInfos() -> [DetailContent]? {
-        var result = [DetailContent]()
-        result = selectedMonster.value?.defaultValues.map { DetailContent(title: $0.name, description: $0.description) } ?? []
-        result += selectedMonster.value?.detailValues.map { DetailContent(title: $0.name, description: $0.description) } ?? []
-        return result
-    }
-    
-    func fetchDropInfos(completion: @escaping () -> Void) {
+    func fetchDropInfos() {
+        var dropInfos = [DictDropContent]()
         guard let dropTable = selectedMonster.value?.dropTable else { return }
         for dropContent in dropTable {
             if dropContent.name.contains("메소 드랍") {
-                self.dropTableContents.append(DictDropContent(name: "메소", code: "", level: dropContent.name.replacingOccurrences(of: " 드랍", with: ""), description: dropContent.description))
+                dropInfos.append(DictDropContent(name: "메소", code: "", level: dropContent.name.replacingOccurrences(of: " 드랍", with: ""), description: dropContent.description))
             }
-            self.sqliteManager.searchDetailData(dataName: dropContent.name) { [weak self] (item: DictItem) in
-                self?.dropTableContents.append(DictDropContent(name: item.name, code: item.code, level: dropContent.name, description: dropContent.description))
+            self.sqliteManager.searchDetailData(dataName: dropContent.name) { (item: DictItem) in
+                dropInfos.append(DictDropContent(name: item.name, code: item.code, level: dropContent.name, description: dropContent.description))
             }
         }
-        completion()
+        let section = Section(index: 1, items: [.dropItem(dropInfos)])
+        sectionData.updateSection(newSection: section)
+    }
+    
+    func checkEmptyData() {
+        if let value = selectedMonster.value {
+            if value.defaultValues.isEmpty {
+                emptyData.append(0)
+            }
+            if value.hauntArea.isEmpty {
+                emptyData.append(1)
+            }
+            if value.dropTable.isEmpty {
+                emptyData.append(2)
+            }
+        }
     }
 }

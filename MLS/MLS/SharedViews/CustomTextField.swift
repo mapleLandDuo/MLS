@@ -9,30 +9,6 @@ import UIKit
 
 import SnapKit
 
-enum TextState: String {
-    case `default`
-    case complete
-    case emailCheck = "이메일을 다시 확인해주세요."
-    case emailBlank = "이메일을 입력해주세요."
-    case pwCheck = "비밀번호를 다시 확인해주세요."
-    case pwBlank = "비밀번호를 입력해주세요."
-    case pwOutOfBounds
-    case pwNotENG
-    case pwNotInt
-    case pwNotSymbol
-    case pwNotCorrect = "비밀번호가 일치하지 않아요"
-    case emailExist = "이미 가입된 이메일이에요."
-    case nickNameExist = "중복된 닉네임이에요."
-    case nickNameNotCorrect = "닉네임을 2~8자로 지어주세요"
-    case lvNotInt = "숫자만 입력해주세요"
-    case lvOutOfBounds = "1~200 사잇값만 넣어주세요"
-}
-
-enum TextFieldType {
-    case normal
-    case password
-}
-
 class CustomTextField: UIStackView {
     // MARK: - Properties
     
@@ -157,6 +133,10 @@ private extension CustomTextField {
 
 // MARK: - Methods
 extension CustomTextField {
+    /// textField의 유효성 검사에 따라 테두리 색상과 footer 유무 설정
+    /// - Parameters:
+    ///   - state: textField의 상태
+    ///   - isCorrect: footer의 유무
     func checkState(state: TextState, isCorrect: Bool) {
         self.state = state
         switch state {
@@ -175,6 +155,7 @@ extension CustomTextField {
         contentView.layer.borderColor = isCorrect ? UIColor.semanticColor.bolder.interactive.secondary?.cgColor : UIColor.semanticColor.bolder.distructive?.cgColor
     }
     
+    /// 비밀번호 textField의 비밀번호 보이기 / 안보이기 설정
     private func changeAdditionalButton() {
         switch type {
         case .normal:
@@ -192,18 +173,25 @@ extension CustomTextField {
             }
         }
     }
+    /**
     
+    */
+    /// textField가 클릭되지 않으면 additional 버튼을 hidden하기 위한 메소드
+    /// - Parameter text: 클릭된 textField의 텍스트
     private func setAdditional(text: String) {
         additionalButton.isHidden = text == "" ? true : false
     }
-
-    func setPasswordFooter(checkPassword: [Bool], state: TextState) {
+    
+    /// 비밀번호 유효성 검사에 따라 footer의 텍스트를 변경
+    /// - Parameters:
+    ///   - checkPassword: 유효성 검사의 종류
+    func setPasswordFooter(checkPassword: [Bool]) {
         footerLabel.isHidden = false
 
-        let greenAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.semanticColor.text.success_bold]
-        let redAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.semanticColor.text.distructive_bold]
+        let greenAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.semanticColor.text.success_bold ?? UIColor.white]
+        let redAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.semanticColor.text.distructive_bold ?? UIColor.white]
         
-        for i in 0...3 {
+        for i in 0 ... 3 {
             switch i {
             case 0:
                 guard let range = attributedString.string.range(of: "8자리 이상") else { return }
@@ -240,10 +228,18 @@ extension CustomTextField {
         footerLabel.attributedText = attributedString
     }
     
+    /// 레벨을 입력받는 textField의 footer 설정
     func setLevelField() {
         footerLabel.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
         footerLabel.textColor = .semanticColor.text.secondary
         footerLabel.text = "숫자 1~200 사이의 값만 넣어주세요"
         footerLabel.isHidden = false
+    }
+}
+
+extension CustomTextField {
+    enum TextFieldType {
+        case normal
+        case password
     }
 }

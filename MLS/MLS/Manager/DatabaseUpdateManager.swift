@@ -14,21 +14,6 @@ struct DictionaryNameLinkUpdateItem: Codable {
     var link: String
 }
 
-struct DictionaryLinkUpdateMap: Codable {
-    var name: String
-    var code: String
-}
-
-struct DictionaryLinkUpdateNPC: Codable {
-    var name: String
-    var code: String
-}
-
-struct DictionaryLinkUpdateQuest: Codable {
-    var name: String
-    var code: String
-}
-
 class DatabaseUpdateManager {
     // MARK: - Update Links
     
@@ -264,10 +249,10 @@ extension DatabaseUpdateManager {
                     }
                     doc.css("div.search-page-add-content").forEach { doc2 in
                         var key = doc2.css("h4.text-bold.fs-3.search-page-add-content-box-main-title.mt-2").compactMap { $0.text }
-                        var value = doc2.css("span.text-bold-underline").compactMap { $0.text }
+                        let value = doc2.css("span.text-bold-underline").compactMap { $0.text }
                         guard let money = doc2.css("span.favorite-item-info-text.fs-4.text-bold").first?.css("div").first?.text else { return }
                         key.insert(money, at: 0)
-                        var zip = zip(key, value)
+                        let zip = zip(key, value)
                         for (key, value) in zip {
                             item.dropTable.append(DictionaryNameDescription(name: key, description: value))
                         }
@@ -443,48 +428,48 @@ extension DatabaseUpdateManager {
         }
     }
     
-    func readyToJson(fileName: Filename, completion: @escaping () -> Void) {
+    func readyToJson(fileName: DictType, completion: @escaping () -> Void) {
         switch fileName {
-        case .items:
-            FirebaseManager.firebaseManager.fetchDatas(colName: Filename.items.rawValue) { (items: [DictItem]?) in
+        case .item:
+            FirebaseManager.firebaseManager.fetchDatas(colName: DictType.item.rawValue) { (items: [DictItem]?) in
                 guard let items = items else { return }
-                self.changeToJson(items: items, fileName: Filename.items) {
+                self.changeToJson(items: items, fileName: DictType.item) {
                     completion()
                 }
                 
             }
-        case .monsters:
-            FirebaseManager.firebaseManager.fetchDatas(colName: Filename.monsters.rawValue) { (items: [DictMonster]?) in
+        case .monster:
+            FirebaseManager.firebaseManager.fetchDatas(colName: DictType.monster.rawValue) { (items: [DictMonster]?) in
                 guard let items = items else { return }
-                self.changeToJson(items: items, fileName: Filename.monsters) {
+                self.changeToJson(items: items, fileName: DictType.monster) {
                     completion()
                 }
             }
-        case .maps:
-            FirebaseManager.firebaseManager.fetchDatas(colName: Filename.maps.rawValue) { (items: [DictMap]?) in
+        case .map:
+            FirebaseManager.firebaseManager.fetchDatas(colName: DictType.map.rawValue) { (items: [DictMap]?) in
                 guard let items = items else { return }
-                self.changeToJson(items: items, fileName: Filename.maps) {
+                self.changeToJson(items: items, fileName: DictType.map) {
                     completion()
                 }
             }
-        case .npcs:
-            FirebaseManager.firebaseManager.fetchDatas(colName: Filename.npcs.rawValue) { (items: [DictNPC]?) in
+        case .npc:
+            FirebaseManager.firebaseManager.fetchDatas(colName: DictType.npc.rawValue) { (items: [DictNPC]?) in
                 guard let items = items else { return }
-                self.changeToJson(items: items, fileName: Filename.npcs) {
+                self.changeToJson(items: items, fileName: DictType.npc) {
                     completion()
                 }
             }
-        case .quests:
-            FirebaseManager.firebaseManager.fetchDatas(colName: Filename.quests.rawValue) { (items: [DictQuest]?) in
+        case .quest:
+            FirebaseManager.firebaseManager.fetchDatas(colName: DictType.quest.rawValue) { (items: [DictQuest]?) in
                 guard let items = items else { return }
-                self.changeToJson(items: items, fileName: Filename.quests) {
+                self.changeToJson(items: items, fileName: DictType.quest) {
                     completion()
                 }
             }
         }
     }
     
-    func changeToJson<T: Codable>(items: [T], fileName: Filename, completion: @escaping () -> Void) {
+    func changeToJson<T: Codable>(items: [T], fileName: DictType, completion: @escaping () -> Void) {
         do {
             let jsonData = try JSONEncoder().encode(items)
             if let documentDirectory = FileManager.default.urls(for: .documentDirectory,
@@ -523,35 +508,10 @@ extension DatabaseUpdateManager {
         }
     }
     
-    func searchDirectory(fileName: Filename) {
+    func searchDirectory(fileName: DictType) {
         if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             let pathWithFileName = documentDirectory.appendingPathComponent("\(fileName.rawValue).json")
             print(pathWithFileName)
-        }
-    }
-}
-
-enum Filename: String {
-    case monsters
-    case items
-    case maps
-    case npcs
-    case quests
-}
-
-extension Filename {
-    var tableName: String {
-        switch self {
-        case .monsters:
-            return "dictMonsterTable"
-        case .items:
-            return "dictItemTable"
-        case .maps:
-            return "dictMapTable"
-        case .npcs:
-            return "dictNpcTable"
-        case .quests:
-            return "dictQuestTable"
         }
     }
 }

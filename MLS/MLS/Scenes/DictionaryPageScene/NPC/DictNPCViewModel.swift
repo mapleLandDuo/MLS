@@ -7,37 +7,46 @@
 
 import Foundation
 
-class DictNPCViewModel {
+import RxCocoa
+
+class DictNPCViewModel: DictBaseViewModel {
     // MARK: Properties
-    let sqliteManager = SqliteManager()
+    var tabMenus = BehaviorRelay<[String]>(value: ["출현 장소", "수락 퀘스트"])
+
+    var selectedNPC = BehaviorRelay<DictNPC?>(value: nil)
     
-    var selectedTab: Observable<Int> = Observable(0)
-    var tabMenus = ["출현 장소","수락 퀘스트"]
+    var tappedCellName = PublishRelay<String>()
+    var tappedExpandButton = PublishRelay<Bool>()
     
-    var selectedName: String?
-    
-    var selectedNPC: Observable<DictNPC> = Observable(nil)
-    
-    init(selectedName: String) {
-        self.selectedName = selectedName
+    override init(selectedName: String) {
+        super.init(selectedName: selectedName)
+        fetchData(type: .npc, data: selectedNPC)
+        checkEmptyData()
     }
 }
 
 // MARK: Methods
 extension DictNPCViewModel {
-    func fetchMenuIndex() -> Int {
-        guard let index = selectedTab.value else { return 0 }
-        return index
+    func fetchTagMaps() {
+        guard let tagInfos = selectedNPC.value?.maps else { return }
+        let section = Section(index: 1, items: [.tagInfo(tagInfos)])
+        sectionData.updateSection(newSection: section)
     }
     
-    func setMenuIndex(index: Int) {
-        selectedTab.value = index
+    func fetchTagQuests() {
+        guard let tagInfos = selectedNPC.value?.quests else { return }
+        let section = Section(index: 1, items: [.tagInfo(tagInfos)])
+        sectionData.updateSection(newSection: section)
     }
     
-    func fetchNPC() {
-        guard let name = self.selectedName else { return }
-        sqliteManager.searchDetailData(dataName: name) { [weak self] (item: DictNPC) in
-            self?.selectedNPC.value = item
+    func checkEmptyData() {
+        if let value = selectedNPC.value {
+            if value.maps.isEmpty {
+                emptyData.append(0)
+            }
+            if value.quests.isEmpty {
+                emptyData.append(1)
+            }
         }
     }
 }

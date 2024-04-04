@@ -7,9 +7,9 @@
 
 import UIKit
 
-import SnapKit
 import RxCocoa
 import RxDataSources
+import SnapKit
 
 class DictNPCViewController: BasicController {
     // MARK: Properties
@@ -62,9 +62,7 @@ extension DictNPCViewController {
 private extension DictNPCViewController {
     func setUp() {
         dictNPCTableView.delegate = self
-
         infoMenuCollectionView.delegate = self
-        infoMenuCollectionView.dataSource = self
 
         setUpConstraints()
         setUpNavigation(title: "상세정보")
@@ -82,6 +80,7 @@ private extension DictNPCViewController {
 // MARK: Bind
 extension DictNPCViewController {
     func bind() {
+        // MARK: Bind tableView
         let dataSource = RxTableViewSectionedReloadDataSource<Section>(
             configureCell: { [weak self] _, tableView, indexPath, item in
                 var cell = UITableViewCell()
@@ -104,7 +103,6 @@ extension DictNPCViewController {
                         tempCell.tappedCell = { [weak self] name in
                             self?.viewModel.tappedCellName
                                 .accept(name)
-                            
                         }
                         let type = self?.viewModel.selectedTab.value == 0 ? DictType.map : DictType.quest
                         tempCell.bind(items: tagItem, descriptionType: type)
@@ -117,11 +115,11 @@ extension DictNPCViewController {
                 return cell
             }
         )
-        
+
         viewModel.sectionData
             .bind(to: dictNPCTableView.rx.items(dataSource: dataSource))
             .disposed(by: viewModel.disposeBag)
-        
+
         viewModel.tappedCellName
             .withUnretained(self)
             .subscribe(onNext: { owner, name in
@@ -155,7 +153,7 @@ extension DictNPCViewController {
                 }
             })
             .disposed(by: viewModel.disposeBag)
-        
+
         viewModel.selectedTab
             .withUnretained(self)
             .subscribe(onNext: { owner, selectedTab in
@@ -169,11 +167,33 @@ extension DictNPCViewController {
                 }
             })
             .disposed(by: viewModel.disposeBag)
-        
+
         viewModel.tappedExpandButton
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
                 owner.dictNPCTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        // MARK: Bind collectionView
+        viewModel.tabMenus
+            .bind(to: infoMenuCollectionView.rx.items(cellIdentifier: DictSearchMenuCell.identifier, cellType: DictSearchMenuCell.self)) { _, text, cell in
+                cell.bind(text: text)
+            }
+            .disposed(by: viewModel.disposeBag)
+
+        infoMenuCollectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                self?.viewModel.setMenuIndex(index: indexPath.row)
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] index in
+                guard let self = self else { return }
+
+                let indexPath = IndexPath(item: index, section: 0)
+                self.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             })
             .disposed(by: viewModel.disposeBag)
     }
@@ -213,25 +233,7 @@ extension DictNPCViewController: UITableViewDelegate {
     }
 }
 
-extension DictNPCViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.tabMenus.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchMenuCell.identifier, for: indexPath) as? DictSearchMenuCell else { return UICollectionViewCell() }
-        cell.bind(text: viewModel.tabMenus[indexPath.row])
-        if indexPath.item == viewModel.fetchMenuIndex() {
-            cell.isSelected = true
-            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
-        }
-        return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.setMenuIndex(index: indexPath.row)
-    }
-    
+extension DictNPCViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         for index in viewModel.emptyData {
             if indexPath.row == index {

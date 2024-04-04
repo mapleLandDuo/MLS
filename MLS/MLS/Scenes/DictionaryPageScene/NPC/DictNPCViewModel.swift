@@ -11,7 +11,7 @@ import RxCocoa
 
 class DictNPCViewModel: DictBaseViewModel {
     // MARK: Properties
-    var tabMenus = ["출현 장소", "수락 퀘스트"]
+    var tabMenus = BehaviorRelay<[String]>(value: ["출현 장소", "수락 퀘스트"])
 
     var selectedNPC = BehaviorRelay<DictNPC?>(value: nil)
     

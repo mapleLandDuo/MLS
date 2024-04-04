@@ -64,9 +64,7 @@ extension DictQuestViewController {
 private extension DictQuestViewController {
     func setUp() {
         dictQuestTableView.delegate = self
-
         infoMenuCollectionView.delegate = self
-        infoMenuCollectionView.dataSource = self
 
         setUpConstraints()
         setUpNavigation(title: "상세정보")
@@ -84,6 +82,7 @@ private extension DictQuestViewController {
 // MARK: Bind
 private extension DictQuestViewController {
     func bind() {
+        // MARK: Bind tableView
         let dataSource = RxTableViewSectionedReloadDataSource<Section>(
             configureCell: { [weak self] _, tableView, indexPath, item in
                 var cell = UITableViewCell()
@@ -182,7 +181,6 @@ private extension DictQuestViewController {
                 }
             })
             .disposed(by: viewModel.disposeBag)
-        
         viewModel.selectedTab
             .withUnretained(self)
             .subscribe(onNext: { owner, selectedTab in
@@ -205,6 +203,28 @@ private extension DictQuestViewController {
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
                 owner.dictQuestTableView.reloadData()
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        // MARK: Bind collectionView
+        viewModel.tabMenus
+            .bind(to: infoMenuCollectionView.rx.items(cellIdentifier: DictSearchMenuCell.identifier, cellType: DictSearchMenuCell.self)) { _, text, cell in
+                cell.bind(text: text)
+            }
+            .disposed(by: viewModel.disposeBag)
+
+        infoMenuCollectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                self?.viewModel.setMenuIndex(index: indexPath.row)
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.selectedTab
+            .subscribe(onNext: { [weak self] index in
+                guard let self = self else { return }
+
+                let indexPath = IndexPath(item: index, section: 0)
+                self.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             })
             .disposed(by: viewModel.disposeBag)
     }
@@ -245,21 +265,7 @@ extension DictQuestViewController: UITableViewDelegate {
     }
 }
 
-extension DictQuestViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.tabMenus.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DictSearchMenuCell.identifier, for: indexPath) as? DictSearchMenuCell else { return UICollectionViewCell() }
-        cell.bind(text: viewModel.tabMenus[indexPath.row])
-        if indexPath.item == viewModel.fetchMenuIndex() {
-            cell.isSelected = true
-            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
-        }
-        return cell
-    }
-    
+extension DictQuestViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         for index in viewModel.emptyData {
             if indexPath.row == index {
@@ -268,10 +274,6 @@ extension DictQuestViewController: UICollectionViewDelegateFlowLayout, UICollect
             }
         }
         return true
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.setMenuIndex(index: indexPath.row)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -11,7 +11,7 @@ import RxCocoa
 
 class DictMonsterViewModel: DictBaseViewModel {
     // MARK: Properties
-    var tabMenus = ["몬스터 정보","출현 장소","드롭 정보"]
+    var tabMenus = BehaviorRelay<[String]>(value: ["몬스터 정보","출현 장소","드롭 정보"])
 
     var selectedMonster = BehaviorRelay<DictMonster?>(value: nil)
     var totalTextSize = BehaviorRelay<CGFloat>(value: 0.0)

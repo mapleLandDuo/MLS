@@ -11,7 +11,7 @@ import RxCocoa
 
 class DictQuestViewModel: DictBaseViewModel {
     // MARK: Properties
-    var tabMenus = ["정보 & 완료조건","퀘스트 보상","퀘스트 순서"]
+    var tabMenus = BehaviorRelay<[String]>(value: ["정보 & 완료조건","퀘스트 보상","퀘스트 순서"])
     
     var selectedQuest = BehaviorRelay<DictQuest?>(value: nil)
     

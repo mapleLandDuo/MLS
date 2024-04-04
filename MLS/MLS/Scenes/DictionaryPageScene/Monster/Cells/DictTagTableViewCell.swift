@@ -9,15 +9,11 @@ import UIKit
 
 import SnapKit
 
-protocol DictTagTableViewCellDelegate: AnyObject {
-    func didTapTagCell(title: String)
-}
-
 class DictTagTableViewCell: UITableViewCell {
     // MARK: Properties
-    weak var delegate: DictTagTableViewCellDelegate?
-    
     private var items: [String]?
+    
+    var tappedCell: ((String) -> Void)?
 
     // MARK: Components
     let leadingView: UIView = {
@@ -159,6 +155,6 @@ extension DictTagTableViewCell: UICollectionViewDelegateFlowLayout, UICollection
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = items?[indexPath.row] else { return }
-        delegate?.didTapTagCell(title: item)
+        tappedCell?(item)
     }
 }

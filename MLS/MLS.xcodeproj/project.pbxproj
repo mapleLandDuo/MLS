@@ -114,6 +114,7 @@
 		08F95DFB2B8DC43E00AD79DF /* DictSearchFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DFA2B8DC43E00AD79DF /* DictSearchFilterHeaderView.swift */; };
 		08F95DFD2B8E18A300AD79DF /* DictSearchFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DFC2B8E18A300AD79DF /* DictSearchFilterViewController.swift */; };
 		08F95DFF2B8E1C0A00AD79DF /* DictSearchSortedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DFE2B8E1C0A00AD79DF /* DictSearchSortedViewController.swift */; };
+		770152CF2BB549CC00ABB8A6 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 770152CE2BB549CC00ABB8A6 /* RxDataSources */; };
 		77017A7B2B97675400D60411 /* mlsDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 77017A792B97674200D60411 /* mlsDatabase.db */; };
 		770411A72BAAE003007BEA18 /* DictBaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770411A62BAAE003007BEA18 /* DictBaseViewModel.swift */; };
 		770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */; };
@@ -353,6 +354,7 @@
 				082D0C512B53CFC800D84CE2 /* FirebaseAppCheck in Frameworks */,
 				082D0C5B2B53CFC800D84CE2 /* FirebaseDatabase in Frameworks */,
 				082D0C4F2B53CFC800D84CE2 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				770152CF2BB549CC00ABB8A6 /* RxDataSources in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -855,6 +857,7 @@
 				77F221022BB264F400335EDD /* RxCocoa */,
 				77F221042BB264F400335EDD /* RxRelay */,
 				77F221062BB264F400335EDD /* RxSwift */,
+				770152CE2BB549CC00ABB8A6 /* RxDataSources */,
 			);
 			productName = MLS;
 			productReference = 082D0C252B53CF4600D84CE2 /* MLS.app */;
@@ -893,6 +896,7 @@
 				082D0C722B53CFFE00D84CE2 /* XCRemoteSwiftPackageReference "Kanna" */,
 				7709A4892B83B784005DD264 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 				77F221012BB264F400335EDD /* XCRemoteSwiftPackageReference "RxSwift" */,
+				770152CD2BB549CC00ABB8A6 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = 082D0C262B53CF4600D84CE2 /* Products */;
 			projectDirPath = "";
@@ -1323,6 +1327,14 @@
 				minimumVersion = 5.2.7;
 			};
 		};
+		770152CD2BB549CC00ABB8A6 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		7709A4892B83B784005DD264 /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pinocchio22/SQLite.swift.git";
@@ -1466,6 +1478,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 082D0C722B53CFFE00D84CE2 /* XCRemoteSwiftPackageReference "Kanna" */;
 			productName = Kanna;
+		};
+		770152CE2BB549CC00ABB8A6 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 770152CD2BB549CC00ABB8A6 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 		7709A48A2B83B784005DD264 /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;

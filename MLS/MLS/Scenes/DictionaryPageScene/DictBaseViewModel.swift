@@ -12,9 +12,14 @@ import RxSwift
 
 class DictBaseViewModel {
     let sqliteManager = SqliteManager()
+    
     var selectedName: String?
-//    var selectedTab: TempObservable<Int> = TempObservable(0)
+    var emptyData = [Int]()
+    
     var selectedTab = BehaviorRelay<Int>(value: 0)
+    var mainInfo = BehaviorRelay<Sqlable?>(value: nil)
+    var sectionData = BehaviorRelay<[Section]>(value: [])
+    
     let disposeBag = DisposeBag()
     
     init(selectedName: String) {
@@ -24,7 +29,6 @@ class DictBaseViewModel {
 
 extension DictBaseViewModel {
     func fetchMenuIndex() -> Int {
-//        guard let index = selectedTab.value else { return 0 }
         return selectedTab.value
     }
 
@@ -32,14 +36,25 @@ extension DictBaseViewModel {
         selectedTab.accept(index)
     }
 
-    func fetchData<T: Sqlable>(type: DictType, completion: @escaping (T?) -> Void) {
+    func fetchData<T: Sqlable>(type: DictType, data: BehaviorRelay<T?>) {
         guard let name = selectedName else {
-            completion(nil)
             return
         }
         
-        sqliteManager.searchDetailData(dataName: name) { (item: T?) in
-            completion(item)
+        sqliteManager.searchDetailData(dataName: name) { [weak self] (item: T?) in
+            data.accept(item)
+            self?.bind(data: data)
+            
         }
+    }
+    
+    func bind<T: Sqlable>(data: BehaviorRelay<T?>) {
+        data
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                guard let value = data.value else { return }
+                owner.sectionData.updateSection(newSection: Section(index: 0, items: [.mainInfo(value)]))
+            })
+            .disposed(by: disposeBag)
     }
 }

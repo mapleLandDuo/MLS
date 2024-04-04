@@ -21,7 +21,7 @@ class CustomButton: UIButton {
     // MARK: Properties
     private var bgColor: UIColor?
     private var borderColor: UIColor?
-    private var titleColor: UIColor?
+    private var titleColor: UIColor = .semanticColor.text.secondary ?? .black
     private var clickedBackgroundColor: UIColor?
     private var clickedBorderColor: UIColor?
     private var clickedTitleColor: UIColor?
@@ -67,7 +67,7 @@ class CustomButton: UIButton {
     func setButtonClicked(backgroundColor: UIColor?, borderColor: UIColor?, titleColor: UIColor?, clickedBackgroundColor: UIColor?, clickedBorderColor: UIColor?, clickedTitleColor: UIColor?) {
         self.bgColor = backgroundColor
         self.borderColor = borderColor
-        self.titleColor = titleColor
+        self.titleColor = titleColor ?? .black
         self.clickedBackgroundColor = clickedBackgroundColor
         self.clickedBorderColor = clickedBorderColor
         self.clickedTitleColor = clickedTitleColor

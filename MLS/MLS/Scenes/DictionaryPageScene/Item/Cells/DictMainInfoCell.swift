@@ -9,19 +9,13 @@ import UIKit
 
 import SnapKit
 
-protocol DictMainInfoCellDelegate: BasicController {
-    func didTapExpandButton()
-}
-
 class DictMainInfoCell: UITableViewCell {
     // MARK: Properties
     private var descriptionText: String?
-
-    weak var delegate: DictMainInfoCellDelegate?
-    
-    private var isExpanded = false
     
     private var descriptionViewHeight: CGFloat = 0.0
+    
+    var tappedExpandButton: ((Bool) -> Void)?
     
     // MARK: Components
     
@@ -204,7 +198,7 @@ extension DictMainInfoCell {
             }
         }
         expandButton.isSelected.toggle()
-        delegate?.didTapExpandButton()
+        tappedExpandButton?(expandButton.isSelected)
     }
     
     func checkDescriptionLines(completion: @escaping () -> Void) {

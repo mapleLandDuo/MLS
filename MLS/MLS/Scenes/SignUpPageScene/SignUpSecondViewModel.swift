@@ -13,11 +13,6 @@ import RxSwift
 
 class SignUpSecondViewModel {
     // MARK: Properties
-//    var nickNameState: TempObservable<TextState> = TempObservable(.default)
-//    var levelState: TempObservable<TextState> = TempObservable(.default)
-//    var isAccountExist: TempObservable<Bool> = TempObservable(nil)
-//    var job: TempObservable<Job> = TempObservable(nil)
-
     var nickNameState = BehaviorRelay<TextState>(value: .default)
     var levelState = BehaviorRelay<TextState>(value: .default)
     var isAccountExist = BehaviorRelay<Bool?>(value: nil)
@@ -62,46 +57,40 @@ extension SignUpSecondViewModel {
             }
         }
     }
-
-    func isComplete(completion: @escaping (Bool) -> Void) {
-        guard let isAccountExist = isAccountExist.value else {
-            completion(false)
-            return
-        }
-        if isAccountExist {
-            guard nickNameState.value != .default else {
-                completion(false)
-                return
+    
+    func isComplete() -> Observable<Bool> {
+        Observable.combineLatest(isAccountExist.asObservable().map{ $0 ?? false }, nickNameState, levelState, job.startWith(nil))
+            .map { isAccountExist, nickNameState, levelState, job in
+                if isAccountExist {
+                    return nickNameState != .default && levelState != .default && job != nil
+                } else {
+                    return nickNameState != .default
+                }
             }
-            guard levelState.value != .default else {
-                completion(false)
-                return
-            }
-            guard job.value != nil else {
-                completion(false)
-                return
-            }
-        } else {
-            guard nickNameState.value != .default else {
-                completion(false)
-                return
-            }
-        }
-        completion(true)
+            .distinctUntilChanged()
     }
+    
+    func isValidSignUp() -> Observable<TextState> {
+        return Observable.create { observer in
+            guard let isAccountExist = self.isAccountExist.value else {
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            
+            if self.nickNameState.value == .nickNameExist {
+                observer.onNext(.nickNameExist)
+            } else if self.nickNameState.value == .nickNameNotCorrect {
+                observer.onNext(.nickNameNotCorrect)
+            } else if isAccountExist, self.levelState.value == .lvNotInt {
+                observer.onNext(.lvNotInt)
+            } else if isAccountExist, self.levelState.value == .lvOutOfBounds {
+                observer.onNext(.lvOutOfBounds)
+            } else {
+                observer.onNext(.complete)
+            }
 
-    func isValidSignUp(completion: @escaping (TextState) -> Void) {
-        guard let isAccountExist = isAccountExist.value else { return }
-        if nickNameState.value == .nickNameExist {
-            completion(.nickNameExist)
-        } else if nickNameState.value == .nickNameNotCorrect {
-            completion(.nickNameNotCorrect)
-        } else if isAccountExist, levelState.value == .lvNotInt {
-            completion(.lvNotInt)
-        } else if isAccountExist, levelState.value == .lvOutOfBounds {
-            completion(.lvOutOfBounds)
-        } else {
-            completion(.complete)
+            observer.onCompleted()
+            return Disposables.create()
         }
     }
 

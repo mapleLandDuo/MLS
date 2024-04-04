@@ -9,18 +9,14 @@ import UIKit
 
 import SnapKit
 
-protocol DictMonsterDropCellDelegate: AnyObject {
-    func didTapDropTableCell(title: String, type: DictType?)
-}
-
 class DictMonsterDropCell: UITableViewCell {
-    weak var delegate: DictMonsterDropCellDelegate?
-    
     // MARK: Properties
     private var items: [DictDropContent]?
 
     private var type: String?
 
+    var tappedCell: ((String, DictType) -> Void)?
+    
     // MARK: Components
 
     private let monsterDropTableView: UITableView = {
@@ -93,9 +89,9 @@ extension DictMonsterDropCell: UITableViewDelegate, UITableViewDataSource {
         guard let item = items?[indexPath.row] else { return }
         if item.name != "메소" {
             if item.description.contains("전달") {
-                delegate?.didTapDropTableCell(title: item.name, type: .item)
+                tappedCell?(item.name, .item)
             } else {
-                delegate?.didTapDropTableCell(title: item.name, type: .monster)
+                tappedCell?(item.name, .monster)
             }
         }
     }

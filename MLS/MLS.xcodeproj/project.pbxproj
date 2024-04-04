@@ -103,7 +103,6 @@
 		08EF650A2B540A4A004CC842 /* FontsSizeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65092B540A4A004CC842 /* FontsSizeEnum.swift */; };
 		08EF65122B554710004CC842 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65112B554710004CC842 /* UILabel+.swift */; };
 		08EF65142B554722004CC842 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65132B554722004CC842 /* UIColor+.swift */; };
-		08EF65242B5572E3004CC842 /* TempObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF65232B5572E3004CC842 /* TempObservable.swift */; };
 		08F95DBC2B89E50900AD79DF /* DictSearchDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DBB2B89E50900AD79DF /* DictSearchDataCell.swift */; };
 		08F95DBE2B89F0BD00AD79DF /* DictSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DBD2B89F0BD00AD79DF /* DictSectionHeaderView.swift */; };
 		08F95DC12B8A06BA00AD79DF /* DictSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F95DC02B8A06BA00AD79DF /* DictSearchEmptyView.swift */; };
@@ -253,7 +252,6 @@
 		08EF65092B540A4A004CC842 /* FontsSizeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsSizeEnum.swift; sourceTree = "<group>"; };
 		08EF65112B554710004CC842 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		08EF65132B554722004CC842 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
-		08EF65232B5572E3004CC842 /* TempObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempObservable.swift; sourceTree = "<group>"; };
 		08F95DBB2B89E50900AD79DF /* DictSearchDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchDataCell.swift; sourceTree = "<group>"; };
 		08F95DBD2B89F0BD00AD79DF /* DictSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSectionHeaderView.swift; sourceTree = "<group>"; };
 		08F95DC02B8A06BA00AD79DF /* DictSearchEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictSearchEmptyView.swift; sourceTree = "<group>"; };
@@ -450,7 +448,6 @@
 				082D0C7C2B53D24400D84CE2 /* Controllers */,
 				082D0C7D2B53D26800D84CE2 /* Constants.swift */,
 				08EF65092B540A4A004CC842 /* FontsSizeEnum.swift */,
-				08EF65232B5572E3004CC842 /* TempObservable.swift */,
 				08D5F1062B86156200E56482 /* PopUpMaker.swift */,
 			);
 			path = Helper;
@@ -997,7 +994,6 @@
 				7724EF592B94485600C59FE6 /* DictQuestViewController.swift in Sources */,
 				77F359012B95F4D600B0C5A2 /* PopularTableViewCell.swift in Sources */,
 				7719DD442B9356CA003797F4 /* DictMapViewModel.swift in Sources */,
-				08EF65242B5572E3004CC842 /* TempObservable.swift in Sources */,
 				08CB4E572B8F375300336FE6 /* DictSectionDatas.swift in Sources */,
 				08D50A802B5EB56E00E94442 /* User.swift in Sources */,
 				77A2808F2B73B8B40079D0EB /* DictionaryNPC.swift in Sources */,
@@ -1218,7 +1214,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.donggle.MLS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1251,7 +1247,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.donggle.MLS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

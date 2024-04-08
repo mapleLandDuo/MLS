@@ -203,9 +203,8 @@ private extension DictMonsterViewController {
             .disposed(by: viewModel.disposeBag)
 
         infoMenuCollectionView.rx.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
-                self?.viewModel.setMenuIndex(index: indexPath.row)
-            })
+            .map { $0.row }
+            .bind(to: viewModel.selectedTab)
             .disposed(by: viewModel.disposeBag)
         
         viewModel.selectedTab
@@ -254,10 +253,6 @@ extension DictMonsterViewController: UITableViewDelegate {
 }
 
 extension DictMonsterViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.setMenuIndex(index: indexPath.row)
-    }
-    
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         for index in viewModel.emptyData {
             if indexPath.row == index {

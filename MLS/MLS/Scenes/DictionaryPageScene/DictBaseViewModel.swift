@@ -32,10 +32,6 @@ extension DictBaseViewModel {
         return selectedTab.value
     }
 
-    func setMenuIndex(index: Int) {
-        selectedTab.accept(index)
-    }
-
     func fetchData<T: Sqlable>(type: DictType, data: BehaviorRelay<T?>) {
         guard let name = selectedName else {
             return

@@ -144,6 +144,7 @@
 		7752C25D2B93023800C891A5 /* DictMonsterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C25C2B93023800C891A5 /* DictMonsterViewModel.swift */; };
 		7752C2602B93085000C891A5 /* DictTagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C25F2B93085000C891A5 /* DictTagTableViewCell.swift */; };
 		7752C2622B9308A100C891A5 /* DictTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7752C2612B9308A100C891A5 /* DictTagCell.swift */; };
+		777B86512BBEBAEF0007F591 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 777B86502BBEBAEF0007F591 /* GoogleService-Info.plist */; };
 		778D04A72BA0179300BF9F9E /* TextState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778D04A62BA0179300BF9F9E /* TextState.swift */; };
 		778D04A92BA0189900BF9F9E /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778D04A82BA0189900BF9F9E /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		778EB92F2B91A0AA00DC9B63 /* DictItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EB92E2B91A0AA00DC9B63 /* DictItemViewController.swift */; };
@@ -293,6 +294,7 @@
 		7752C25C2B93023800C891A5 /* DictMonsterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMonsterViewModel.swift; sourceTree = "<group>"; };
 		7752C25F2B93085000C891A5 /* DictTagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictTagTableViewCell.swift; sourceTree = "<group>"; };
 		7752C2612B9308A100C891A5 /* DictTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictTagCell.swift; sourceTree = "<group>"; };
+		777B86502BBEBAEF0007F591 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		778D04A62BA0179300BF9F9E /* TextState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextState.swift; sourceTree = "<group>"; };
 		778D04A82BA0189900BF9F9E /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		778EB92E2B91A0AA00DC9B63 /* DictItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictItemViewController.swift; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 		082D0C7F2B53D33400D84CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				777B86502BBEBAEF0007F591 /* GoogleService-Info.plist */,
 				77017A792B97674200D60411 /* mlsDatabase.db */,
 				08D2A3DC2B9645E900E236D1 /* GIF */,
 				08D5F0C22B81E6D700E56482 /* Fonts */,
@@ -917,6 +920,7 @@
 			files = (
 				774FB6B32BA1447000F8C675 /* Assets.xcassets in Resources */,
 				77017A7B2B97675400D60411 /* mlsDatabase.db in Resources */,
+				777B86512BBEBAEF0007F591 /* GoogleService-Info.plist in Resources */,
 				082D0C352B53CF4800D84CE2 /* LaunchScreen.storyboard in Resources */,
 				08CEA7242B972AC00060EC82 /* launchScreen.gif in Resources */,
 				08D5F0E62B81F3A800E56482 /* Pretendard-Bold.otf in Resources */,

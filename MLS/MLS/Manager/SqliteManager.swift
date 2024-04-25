@@ -110,7 +110,7 @@ class SqliteManager {
 
     // MARK: Record
 
-    func saveData<T: Sqlable>(data: [T], completion: @escaping () -> Void) {
+    func saveData<T: DictEntity>(data: [T], completion: @escaping () -> Void) {
         let columns = T.columnOrder.joined(separator: ", ")
         let placeholders = String(repeating: "?, ", count: T.columnOrder.count).dropLast(2)
         let query = "INSERT OR REPLACE INTO \(T.tableName.tableName) (\(columns)) VALUES (\(placeholders))"
@@ -135,7 +135,7 @@ class SqliteManager {
         completion()
     }
 
-    func fetchData<T: Sqlable>(completion: @escaping ([T]) -> Void) {
+    func fetchData<T: DictEntity>(completion: @escaping ([T]) -> Void) {
         var result: [T] = []
         let table = Table(T.tableName.tableName)
 
@@ -166,7 +166,7 @@ class SqliteManager {
         completion(result)
     }
 
-    func searchData<T: Sqlable>(dataName: String, completion: @escaping ([T]) -> Void) {
+    func searchData<T: DictEntity>(dataName: String, completion: @escaping ([T]) -> Void) {
         var result: [T] = []
 
         do {
@@ -201,7 +201,7 @@ class SqliteManager {
         completion(result)
     }
 
-    func searchDetailData<T: Sqlable>(dataName: String, completion: @escaping (T) -> Void) {
+    func searchDetailData<T: DictEntity>(dataName: String, completion: @escaping (T) -> Void) {
         do {
             let table = Table(T.tableName.tableName)
 
@@ -360,7 +360,7 @@ class SqliteManager {
 //    }
 
     // 정렬 아이템
-    func sortItem<T: Sqlable>(field: FieldMenu, sortMenu: SortMenu, order: OrderMenu, completion: @escaping ([T]) -> Void) {
+    func sortItem<T: DictEntity>(field: FieldMenu, sortMenu: SortMenu, order: OrderMenu, completion: @escaping ([T]) -> Void) {
         var result: [T] = []
 
         do {
@@ -412,7 +412,7 @@ extension SqliteManager {
             let detailValues = self.decodeToJSON(row[Expression<String>("detailValues")], type: [DictionaryNameDescription].self) ?? []
             let dropTable = self.decodeToJSON(row[Expression<String>("dropTable")], type: [DictionaryNameDescription].self) ?? []
 
-            return DictItem(name: name, code: code, division: division, mainCategory: mainCategory, subCategory: subCategory, defaultValues: defaultValues, detailValues: detailValues, dropTable: dropTable)
+            return DictItem(name: name, code: code, defaultValues: defaultValues, detailValues: detailValues, dropTable: dropTable, division: division, mainCategory: mainCategory, subCategory: subCategory)
         } else if let row = row as? [Binding?] {
             guard let name = row[0] as? String,
                   let code = row[1] as? String,
@@ -426,7 +426,7 @@ extension SqliteManager {
                 return nil
             }
 
-            return DictItem(name: name, code: code, division: division, mainCategory: mainCategory, subCategory: subCategory, defaultValues: defaultValues, detailValues: detailValues, dropTable: dropTable)
+            return DictItem(name: name, code: code, defaultValues: defaultValues, detailValues: detailValues, dropTable: dropTable, division: division, mainCategory: mainCategory, subCategory: subCategory)
         } else {
             return nil
         }
@@ -544,7 +544,7 @@ extension SqliteManager {
         return jsonString
     }
 
-    func encodeData<T: Sqlable>(item: T) -> [String?] {
+    func encodeData<T: DictEntity>(item: T) -> [String?] {
         switch item {
         case is DictItem:
             guard let item = item as? DictItem else { return [] }

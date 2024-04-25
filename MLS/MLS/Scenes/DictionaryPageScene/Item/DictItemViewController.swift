@@ -165,9 +165,8 @@ private extension DictItemViewController {
             .disposed(by: viewModel.disposeBag)
 
         infoMenuCollectionView.rx.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
-                self?.viewModel.setMenuIndex(index: indexPath.row)
-            })
+            .map { $0.row }
+            .bind(to: viewModel.selectedTab)
             .disposed(by: viewModel.disposeBag)
         
         viewModel.selectedTab

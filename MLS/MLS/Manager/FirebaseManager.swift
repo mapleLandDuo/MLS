@@ -583,80 +583,80 @@ extension FirebaseManager {
 
 // MARK: ItemSearch/MonsterSearch
 extension FirebaseManager {
-    func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping ([T]?) -> Void) {
-        let collectionName = getCollectionName(for: type)
-        db.collection(collectionName).order(by: "name").whereField("name", isGreaterThanOrEqualTo: name).whereField("name", isLessThanOrEqualTo: name + "\u{f8ff}").getDocuments { querySnapshot, err in
-            if let err = err {
-                print("검색 데이터 없음: \(err)")
-                completion(nil)
-            } else {
-                do {
-                    var results: [T] = []
-                    for document in querySnapshot!.documents {
-                        let data = try Firestore.Decoder().decode(T.self, from: document.data())
-                        results.append(data)
-                    }
-                    completion(results)
-                } catch {
-                    print("검색 데이터 디코딩 실패: \(error)")
-                    completion(nil)
-                }
-            }
-        }
-    }
+//    func searchData<T: Decodable>(name: String, type: T.Type, completion: @escaping ([T]?) -> Void) {
+//        let collectionName = getCollectionName(for: type)
+//        db.collection(collectionName).order(by: "name").whereField("name", isGreaterThanOrEqualTo: name).whereField("name", isLessThanOrEqualTo: name + "\u{f8ff}").getDocuments { querySnapshot, err in
+//            if let err = err {
+//                print("검색 데이터 없음: \(err)")
+//                completion(nil)
+//            } else {
+//                do {
+//                    var results: [T] = []
+//                    for document in querySnapshot!.documents {
+//                        let data = try Firestore.Decoder().decode(T.self, from: document.data())
+//                        results.append(data)
+//                    }
+//                    completion(results)
+//                } catch {
+//                    print("검색 데이터 디코딩 실패: \(error)")
+//                    completion(nil)
+//                }
+//            }
+//        }
+//    }
 
-    func fetchItemsByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
-        db.collection(CollectionName.dictionaryItems.rawValue)
-            .whereField("detailDescription.직업", isGreaterThanOrEqualTo: roll)
-            .whereField("detailDescription.직업", isLessThanOrEqualTo: roll + "\u{f8ff}").order(by: "detailDescription.직업").order(by: "level")
-            .getDocuments { querySnapshot, err in
-                if let err = err {
-                    print("검색 데이터 없음: \(err)")
-                } else {
-                    do {
-                        var results = [DictionaryItem]()
-                        for document in querySnapshot!.documents {
-                            let data = try Firestore.Decoder().decode(DictionaryItem.self, from: document.data())
-                            results.append(data)
-                        }
-                        completion(results)
-                    } catch {
-                        print("검색 데이터 디코딩 실패: \(error)")
-                    }
-                }
-            }
-    }
+//    func fetchItemsByRoll(roll: String, completion: @escaping ([DictionaryItem]) -> Void) {
+//        db.collection(CollectionName.dictionaryItems.rawValue)
+//            .whereField("detailDescription.직업", isGreaterThanOrEqualTo: roll)
+//            .whereField("detailDescription.직업", isLessThanOrEqualTo: roll + "\u{f8ff}").order(by: "detailDescription.직업").order(by: "level")
+//            .getDocuments { querySnapshot, err in
+//                if let err = err {
+//                    print("검색 데이터 없음: \(err)")
+//                } else {
+//                    do {
+//                        var results = [DictionaryItem]()
+//                        for document in querySnapshot!.documents {
+//                            let data = try Firestore.Decoder().decode(DictionaryItem.self, from: document.data())
+//                            results.append(data)
+//                        }
+//                        completion(results)
+//                    } catch {
+//                        print("검색 데이터 디코딩 실패: \(error)")
+//                    }
+//                }
+//            }
+//    }
 
-    func fetchMonstersByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
-        db.collection(CollectionName.dictionaryMonsters.rawValue).whereField("level", isGreaterThanOrEqualTo: minLevel).whereField("level", isLessThanOrEqualTo: maxLevel).order(by: "level")
-            .getDocuments { querySnapshot, err in
-                if let err = err {
-                    print("검색 데이터 없음: \(err)")
-                } else {
-                    do {
-                        var results = [DictionaryMonster]()
-                        for document in querySnapshot!.documents {
-                            let data = try Firestore.Decoder().decode(DictionaryMonster.self, from: document.data())
-                            results.append(data)
-                        }
-                        completion(results)
-                    } catch {
-                        print("검색 데이터 디코딩 실패: \(error)")
-                    }
-                }
-            }
-    }
+//    func fetchMonstersByLevel(minLevel: Int, maxLevel: Int, completion: @escaping ([DictionaryMonster]) -> Void) {
+//        db.collection(CollectionName.dictionaryMonsters.rawValue).whereField("level", isGreaterThanOrEqualTo: minLevel).whereField("level", isLessThanOrEqualTo: maxLevel).order(by: "level")
+//            .getDocuments { querySnapshot, err in
+//                if let err = err {
+//                    print("검색 데이터 없음: \(err)")
+//                } else {
+//                    do {
+//                        var results = [DictionaryMonster]()
+//                        for document in querySnapshot!.documents {
+//                            let data = try Firestore.Decoder().decode(DictionaryMonster.self, from: document.data())
+//                            results.append(data)
+//                        }
+//                        completion(results)
+//                    } catch {
+//                        print("검색 데이터 디코딩 실패: \(error)")
+//                    }
+//                }
+//            }
+//    }
 
-    func getCollectionName<T>(for type: T.Type) -> String {
-        switch type {
-        case is DictionaryItem.Type:
-            return CollectionName.dictionaryItems.rawValue
-        case is DictionaryMonster.Type:
-            return CollectionName.dictionaryMonsters.rawValue
-        default:
-            return "defaultCollection"
-        }
-    }
+//    func getCollectionName<T>(for type: T.Type) -> String {
+//        switch type {
+//        case is DictionaryItem.Type:
+//            return CollectionName.dictionaryItems.rawValue
+//        case is DictionaryMonster.Type:
+//            return CollectionName.dictionaryMonsters.rawValue
+//        default:
+//            return "defaultCollection"
+//        }
+//    }
 }
 
 // MARK: - Dictionary

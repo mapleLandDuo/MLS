@@ -159,12 +159,12 @@ extension DatabaseUpdateManager {
                 var item = DictItem(
                     name: data.name,
                     code: data.link,
-                    division: "",
-                    mainCategory: "",
-                    subCategory: "",
                     defaultValues: [],
                     detailValues: [],
-                    dropTable: []
+                    dropTable: [],
+                    division: "",
+                    mainCategory: "",
+                    subCategory: ""
                 )
                 if let doc = try? HTML(url: url, encoding: .utf8) {
                     var count = 0
@@ -419,7 +419,7 @@ extension DatabaseUpdateManager {
 // MARK: DB to JSON
 extension DatabaseUpdateManager {
     
-    func readyToJson<T: Sqlable>(type: T.Type, completion: @escaping () -> Void) {
+    func readyToJson<T: DictEntity>(type: T.Type, completion: @escaping () -> Void) {
         FirebaseManager.firebaseManager.fetchDatas(colName: T.tableName.rawValue) { (items: [T]?) in
             guard let items = items else { return }
             self.changeToJson(items: items, fileName: T.tableName) {
@@ -486,7 +486,7 @@ extension DatabaseUpdateManager {
         }
     }
     
-    func fetchJson<T: Sqlable>(type: T.Type) {
+    func fetchJson<T: DictEntity>(type: T.Type) {
         let db = SqliteManager()
         if let url = Bundle.main.url(forResource: T.tableName.rawValue, withExtension: "json") {
             do {

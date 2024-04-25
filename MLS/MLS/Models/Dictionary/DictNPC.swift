@@ -15,7 +15,7 @@ import Foundation
 //}
 
 // MARK: - Dev 1.0.1
-struct DictNPC: DictEntity, Sqlable {
+struct DictNPC: DictEntity {
     var code: String
     var name: String
     var maps: [String]

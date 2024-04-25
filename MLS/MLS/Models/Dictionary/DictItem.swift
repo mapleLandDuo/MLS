@@ -33,7 +33,7 @@ import Foundation
 //}
 
 // MARK: - Dev 1.0.1
-struct DictItem: DictEntity, Sqlable {
+struct DictItem: DictEntity {
     // 이름
     var name: String
     // id

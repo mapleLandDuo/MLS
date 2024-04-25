@@ -17,7 +17,7 @@ class DictBaseViewModel {
     var emptyData = [Int]()
     
     var selectedTab = BehaviorRelay<Int>(value: 0)
-    var mainInfo = BehaviorRelay<Sqlable?>(value: nil)
+    var mainInfo = BehaviorRelay<DictEntity?>(value: nil)
     var sectionData = BehaviorRelay<[Section]>(value: [])
     
     let disposeBag = DisposeBag()
@@ -32,7 +32,7 @@ extension DictBaseViewModel {
         return selectedTab.value
     }
 
-    func fetchData<T: Sqlable>(type: DictType, data: BehaviorRelay<T?>) {
+    func fetchData<T: DictEntity>(type: DictType, data: BehaviorRelay<T?>) {
         guard let name = selectedName else {
             return
         }
@@ -44,7 +44,7 @@ extension DictBaseViewModel {
         }
     }
     
-    func bind<T: Sqlable>(data: BehaviorRelay<T?>) {
+    func bind<T: DictEntity>(data: BehaviorRelay<T?>) {
         data
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in

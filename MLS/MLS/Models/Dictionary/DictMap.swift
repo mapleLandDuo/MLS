@@ -16,7 +16,7 @@ import Foundation
 //}
 
 // MARK: - Dev 1.0.1
-struct DictMap: DictEntity, Sqlable {
+struct DictMap: DictEntity {
     var code: String
     var name: String
     var monsters: [DictionaryNameDescription] // 이름 , 갯수

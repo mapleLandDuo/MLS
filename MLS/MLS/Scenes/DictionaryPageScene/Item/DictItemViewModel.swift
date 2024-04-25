@@ -91,7 +91,7 @@ struct Section {
 }
 
 enum SectionItem {
-    case mainInfo(Sqlable)
+    case mainInfo(DictEntity)
     case detailInfo([DetailContent])
     case tagInfo([String])
     case dropItem([DictDropContent])

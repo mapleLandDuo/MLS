@@ -7,10 +7,7 @@
 
 import Foundation
 
-protocol DictEntity {
+protocol DictEntity: Sqlable {
     var name: String { get }
     var code: String { get }
-
-    static var columnOrder: [String] { get }
-    static var tableName: DictType { get }
 }

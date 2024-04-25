@@ -36,7 +36,7 @@ import Foundation
 //}
 
 // MARK: - Dev 1.0.1
-struct DictQuest: DictEntity, Sqlable {
+struct DictQuest: DictEntity {
     var code: String
     var name: String
     //이전 퀘스트

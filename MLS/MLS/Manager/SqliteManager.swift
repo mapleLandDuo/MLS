@@ -412,7 +412,7 @@ extension SqliteManager {
             let detailValues = self.decodeToJSON(row[Expression<String>("detailValues")], type: [DictionaryNameDescription].self) ?? []
             let dropTable = self.decodeToJSON(row[Expression<String>("dropTable")], type: [DictionaryNameDescription].self) ?? []
 
-            return DictItem(name: name, code: code, division: division, mainCategory: mainCategory, subCategory: subCategory, defaultValues: defaultValues, detailValues: detailValues, dropTable: dropTable)
+            return DictItem(name: name, code: code, defaultValues: defaultValues, detailValues: detailValues, dropTable: dropTable, division: division, mainCategory: mainCategory, subCategory: subCategory)
         } else if let row = row as? [Binding?] {
             guard let name = row[0] as? String,
                   let code = row[1] as? String,
@@ -426,7 +426,7 @@ extension SqliteManager {
                 return nil
             }
 
-            return DictItem(name: name, code: code, division: division, mainCategory: mainCategory, subCategory: subCategory, defaultValues: defaultValues, detailValues: detailValues, dropTable: dropTable)
+            return DictItem(name: name, code: code, defaultValues: defaultValues, detailValues: detailValues, dropTable: dropTable, division: division, mainCategory: mainCategory, subCategory: subCategory)
         } else {
             return nil
         }

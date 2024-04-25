@@ -159,12 +159,12 @@ extension DatabaseUpdateManager {
                 var item = DictItem(
                     name: data.name,
                     code: data.link,
-                    division: "",
-                    mainCategory: "",
-                    subCategory: "",
                     defaultValues: [],
                     detailValues: [],
-                    dropTable: []
+                    dropTable: [],
+                    division: "",
+                    mainCategory: "",
+                    subCategory: ""
                 )
                 if let doc = try? HTML(url: url, encoding: .utf8) {
                     var count = 0

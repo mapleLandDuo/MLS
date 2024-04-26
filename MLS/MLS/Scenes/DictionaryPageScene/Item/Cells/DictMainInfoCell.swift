@@ -135,14 +135,14 @@ extension DictMainInfoCell {
             itemName = item.name
             itemCode = item.code
             itemType = .item
-            itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
+            itemDescription = item.detailValues.filter { $0.title == "설명" }.first?.description
             descriptionText = itemDescription
         case is DictMonster:
             guard let item = item as? DictMonster else { return }
             itemName = item.name
             itemCode = item.code
             itemType = .monster
-            itemDescription = item.detailValues.filter { $0.name == "설명" }.first?.description
+            itemDescription = item.detailValues.filter { $0.title == "설명" }.first?.description
             descriptionText = itemDescription
         case is DictMap:
             guard let item = item as? DictMap else { return }

@@ -201,26 +201,26 @@ extension DictDBViewModel {
             }
         case .highestLevel:
             filterMonsterData.sort { first, second in
-                guard let firstNum = Int(first.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0"),
-                      let secondNum = Int(second.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0") else { return true }
+                guard let firstNum = Int(first.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0"),
+                      let secondNum = Int(second.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0") else { return true }
                 return firstNum > secondNum
             }
         case .lowestLevel:
             filterMonsterData.sort { first, second in
-                guard let firstNum = Int(first.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0"),
-                      let secondNum = Int(second.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0") else { return true }
+                guard let firstNum = Int(first.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0"),
+                      let secondNum = Int(second.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0") else { return true }
                 return firstNum < secondNum
             }
         case .highestExp:
             filterMonsterData.sort { first, second in
-                guard let firstNum = Int(first.defaultValues.filter({$0.name == "EXP"}).first?.description ?? "0"),
-                      let secondNum = Int(second.defaultValues.filter({$0.name == "EXP"}).first?.description ?? "0") else { return true }
+                guard let firstNum = Int(first.defaultValues.filter({$0.title == "EXP"}).first?.description ?? "0"),
+                      let secondNum = Int(second.defaultValues.filter({$0.title == "EXP"}).first?.description ?? "0") else { return true }
                 return firstNum > secondNum
             }
         case .lowestExp:
             filterMonsterData.sort { first, second in
-                guard let firstNum = Int(first.defaultValues.filter({$0.name == "EXP"}).first?.description ?? "0"),
-                      let secondNum = Int(second.defaultValues.filter({$0.name == "EXP"}).first?.description ?? "0") else { return true }
+                guard let firstNum = Int(first.defaultValues.filter({$0.title == "EXP"}).first?.description ?? "0"),
+                      let secondNum = Int(second.defaultValues.filter({$0.title == "EXP"}).first?.description ?? "0") else { return true }
                 return firstNum < secondNum
             }
         default :
@@ -233,14 +233,14 @@ extension DictDBViewModel {
             }
         case .highestLevel:
             filterItemData.sort { first, second in
-                guard let firstNum = Int(first.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0"),
-                      let secondNum = Int(second.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0") else { return true }
+                guard let firstNum = Int(first.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0"),
+                      let secondNum = Int(second.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0") else { return true }
                 return firstNum > secondNum
             }
         case .lowestLevel:
             filterItemData.sort { first, second in
-                guard let firstNum = Int(first.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0"),
-                      let secondNum = Int(second.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0") else { return true }
+                guard let firstNum = Int(first.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0"),
+                      let secondNum = Int(second.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0") else { return true }
                 return firstNum < secondNum
             }
         default:

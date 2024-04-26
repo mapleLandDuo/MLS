@@ -31,9 +31,9 @@ extension DictMapViewModel {
         var apearMonsterInfos = [DictDropContent]()
         guard let monsters = selectedMap.value?.monsters else { return }
         for monster in monsters {
-            self.sqliteManager.searchDetailData(dataName: monster.name) { (item: DictMonster) in
-                guard let level = item.defaultValues.filter({ $0.name == "LEVEL" }).first?.description else { return}
-                apearMonsterInfos.append(DictDropContent(name: item.name, code: item.code, level: level, description: monster.description))
+            self.sqliteManager.searchDetailData(dataName: monster.title) { (item: DictMonster) in
+                guard let level = item.defaultValues.filter({ $0.title == "LEVEL" }).first?.description else { return}
+                apearMonsterInfos.append(DictDropContent(title: item.name, code: item.code, level: level, description: monster.description))
             }
         }
         let section = Section(index: 1, items: [.dropItem(apearMonsterInfos)])
@@ -45,7 +45,7 @@ extension DictMapViewModel {
         guard let npcs = selectedMap.value?.npcs else { return }
         for npc in npcs {
             self.sqliteManager.searchDetailData(dataName: npc) { (item: DictNPC) in
-                apearNPCInfo.append(DictDropContent(name: item.name, code: item.code, level: "", description: ""))
+                apearNPCInfo.append(DictDropContent(title: item.name, code: item.code, level: "", description: ""))
             }
         }
         let section = Section(index: 1, items: [.dropItem(apearNPCInfo)])

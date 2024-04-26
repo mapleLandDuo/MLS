@@ -34,7 +34,7 @@ extension DictQuestViewModel {
         var defaultInfos = [DetailContent]()
         guard let times = selectedQuest.value?.times else { return }
         defaultInfos.append(DetailContent(title: "반복", description: times))
-        selectedQuest.value?.defaultValues.forEach { value in defaultInfos.append(DetailContent(title: value.name, description: value.description)) }
+        selectedQuest.value?.defaultValues.forEach { value in defaultInfos.append(DetailContent(title: value.title, description: value.description)) }
         let section = Section(index: 1, items: [.detailInfo(defaultInfos)])
         sectionData.updateSection(newSection: section)
     }
@@ -46,12 +46,12 @@ extension DictQuestViewModel {
         guard let completions = selectedQuest.value?.toCompletion else { return }
         for completion in completions {
             if completion.description.contains("전달") {
-                self.sqliteManager.searchDetailData(dataName: completion.name) { (item: DictItem) in
-                    completionInfos.append(DictDropContent(name: item.name, code: item.code, level: "", description: completion.description))
+                self.sqliteManager.searchDetailData(dataName: completion.title) { (item: DictItem) in
+                    completionInfos.append(DictDropContent(title: item.name, code: item.code, level: "", description: completion.description))
                 }
             } else {
-                self.sqliteManager.searchDetailData(dataName: completion.name) { (item: DictMonster) in
-                   completionInfos.append(DictDropContent(name: item.name, code: item.code, level: "", description: completion.description))
+                self.sqliteManager.searchDetailData(dataName: completion.title) { (item: DictMonster) in
+                   completionInfos.append(DictDropContent(title: item.name, code: item.code, level: "", description: completion.description))
                 }
             }
         }
@@ -64,17 +64,17 @@ extension DictQuestViewModel {
     func fetchRewardTableContents() {
         var rewardInfos = [DetailContent]()
         selectedQuest.value.map {
-            if let meso = $0.reward.first(where: { $0.name == "메소" })?.description {
+            if let meso = $0.reward.first(where: { $0.title == "메소" })?.description {
                 rewardInfos.append(DetailContent(title: "메소", description: meso))
             }
         }
         selectedQuest.value.map {
-            if let exp = $0.reward.first(where: { $0.name == "경험치" })?.description {
+            if let exp = $0.reward.first(where: { $0.title == "경험치" })?.description {
                 rewardInfos.append(DetailContent(title: "경험치", description: exp))
             }
         }
         selectedQuest.value.map {
-            if let popularity = $0.reward.first(where: { $0.name == "인기도" })?.description {
+            if let popularity = $0.reward.first(where: { $0.title == "인기도" })?.description {
                 rewardInfos.append(DetailContent(title: "인기도", description: popularity))
             }
         }
@@ -88,8 +88,8 @@ extension DictQuestViewModel {
         var rewardInfos = [DictDropContent]()
         guard let rewards = selectedQuest.value?.reward else { return }
         for reward in rewards {
-            self.sqliteManager.searchDetailData(dataName: reward.name) { (item: DictItem) in
-                rewardInfos.append(DictDropContent(name: item.name, code: item.code, level: "", description: reward.description))
+            self.sqliteManager.searchDetailData(dataName: reward.title) { (item: DictItem) in
+                rewardInfos.append(DictDropContent(title: item.name, code: item.code, level: "", description: reward.description))
             }
         }
         let section = Section(index: 2, items: [.dropItem(rewardInfos)])

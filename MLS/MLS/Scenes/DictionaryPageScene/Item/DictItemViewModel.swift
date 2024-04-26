@@ -33,7 +33,7 @@ extension DictItemViewModel {
     /// - Returns: 테이블뷰에 띄워주기 위한 DetailContent의 배열
     func fetchDefaultInfos() {
         var defaultInfos = [DetailContent]()
-        selectedItem.value?.defaultValues.forEach { value in defaultInfos.append(DetailContent(title: value.name, description: value.description)) }
+        selectedItem.value?.defaultValues.forEach { value in defaultInfos.append(DetailContent(title: value.title, description: value.description)) }
         if let mainCategoty = selectedItem.value?.mainCategory {
             defaultInfos.append(DetailContent(title: "주카테고리", description: mainCategoty))
         }
@@ -48,8 +48,8 @@ extension DictItemViewModel {
     /// - Returns: 테이블뷰에 띄워주기 위한 DetailContent의 배열
     func fetchDetailInfos() {
         var detailInfos = [DetailContent]()
-        selectedItem.value?.detailValues.filter { $0.name != "설명" }.forEach {
-            detailInfos.append(DetailContent(title: $0.name, description: $0.description))
+        selectedItem.value?.detailValues.filter { $0.title != "설명" }.forEach {
+            detailInfos.append(DetailContent(title: $0.title, description: $0.description))
         }
         let section = Section(index: 1, items: [.detailInfo(detailInfos)])
         sectionData.updateSection(newSection: section)
@@ -61,9 +61,9 @@ extension DictItemViewModel {
         var dropInfos = [DictDropContent]()
         guard let dropTable = selectedItem.value?.dropTable else { return }
         for dropContent in dropTable {
-            sqliteManager.searchDetailData(dataName: dropContent.name) { (item: DictMonster) in
-                guard let level = item.defaultValues.filter({ $0.name == "LEVEL" }).first?.description else { return }
-                dropInfos.append(DictDropContent(name: item.name, code: item.code, level: level, description: dropContent.description))
+            sqliteManager.searchDetailData(dataName: dropContent.title) { (item: DictMonster) in
+                guard let level = item.defaultValues.filter({ $0.title == "LEVEL" }).first?.description else { return }
+                dropInfos.append(DictDropContent(title: item.name, code: item.code, level: level, description: dropContent.description))
             }
         }
         let section = Section(index: 1, items: [.dropItem(dropInfos)])

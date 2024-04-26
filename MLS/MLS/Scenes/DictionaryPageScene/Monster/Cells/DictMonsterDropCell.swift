@@ -87,11 +87,11 @@ extension DictMonsterDropCell: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let item = items?[indexPath.row] else { return }
-        if item.name != "메소" {
+        if item.title != "메소" {
             if item.description.contains("전달") {
-                tappedCell?(item.name, .item)
+                tappedCell?(item.title, .item)
             } else {
-                tappedCell?(item.name, .monster)
+                tappedCell?(item.title, .monster)
             }
         }
     }

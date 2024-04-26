@@ -37,14 +37,14 @@ extension DictLandingViewModel {
                 itemSearchCountDatas.forEach { itemData in
                     dbManager.searchData(dataName: itemData.name) { (items: [DictItem]) in
                         guard let item = items.first else { return }
-                        let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "-", type: .item)
+                        let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "-", type: .item)
                         itemDatas.append(dictData)
                     }
                 }
                 monsterSearchCountDatas.forEach { monsterData in
                     dbManager.searchData(dataName: monsterData.name) { (items: [DictMonster]) in
                         guard let item = items.first else { return }
-                        let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "-", type: .monster)
+                        let dictData = DictSectionData(image: item.code, title: item.name, level: item.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "-", type: .monster)
                         monsterDatas.append(dictData)
                     }
                 }

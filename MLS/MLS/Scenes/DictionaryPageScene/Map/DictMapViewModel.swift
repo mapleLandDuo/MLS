@@ -11,16 +11,14 @@ import RxCocoa
 
 class DictMapViewModel: DictBaseViewModel {
     // MARK: Properties
-    var tabMenus = BehaviorRelay<[String]>(value: ["출현 몬스터","NPC"])
-    
     var selectedMap = BehaviorRelay<DictMap?>(value: nil)
     
     var tappedCellName = PublishRelay<String>()
     var tappedExpandButton = PublishRelay<Bool>()
     
-    override init(selectedName: String) {
-        super.init(selectedName: selectedName)
-        fetchData(type: .map, data: selectedMap)
+    override init(selectedName: String, type: DictType) {
+        super.init(selectedName: selectedName, type: type)
+        fetchData(type: type, data: selectedMap)
         checkEmptyData()
     }
 }

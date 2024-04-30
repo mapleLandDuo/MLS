@@ -11,17 +11,15 @@ import RxCocoa
 
 class DictQuestViewModel: DictBaseViewModel {
     // MARK: Properties
-    var tabMenus = BehaviorRelay<[String]>(value: ["정보 & 완료조건","퀘스트 보상","퀘스트 순서"])
-    
     var selectedQuest = BehaviorRelay<DictQuest?>(value: nil)
     
     var tappedCellData = PublishRelay<(String, DictType)>()
     var tappedCellQuest = PublishRelay<String>()
     var tappedExpandButton = PublishRelay<Bool>()
     
-    override init(selectedName: String) {
-        super.init(selectedName: selectedName)
-        fetchData(type: .quest, data: selectedQuest)
+    override init(selectedName: String, type: DictType) {
+        super.init(selectedName: selectedName, type: type)
+        fetchData(type: type, data: selectedQuest)
         checkEmptyData()
     }
 }

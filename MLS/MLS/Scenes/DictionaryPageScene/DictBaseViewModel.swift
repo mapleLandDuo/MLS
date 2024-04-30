@@ -16,14 +16,20 @@ class DictBaseViewModel {
     var selectedName: String?
     var emptyData = [Int]()
     
+    var selectedType: DictType?
+    
     var selectedTab = BehaviorRelay<Int>(value: 0)
     var mainInfo = BehaviorRelay<DictEntity?>(value: nil)
     var sectionData = BehaviorRelay<[Section]>(value: [])
     
+    var tabMenus = BehaviorRelay<[String]>(value: [])
+    
     let disposeBag = DisposeBag()
     
-    init(selectedName: String) {
+    init(selectedName: String, type: DictType) {
+        self.selectedType = type
         self.selectedName = selectedName
+        setTabMenus(type: type)
     }
 }
 
@@ -44,7 +50,7 @@ extension DictBaseViewModel {
         }
     }
     
-    func bind<T: DictEntity>(data: BehaviorRelay<T?>) {
+    private func bind<T: DictEntity>(data: BehaviorRelay<T?>) {
         data
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
@@ -52,5 +58,20 @@ extension DictBaseViewModel {
                 owner.sectionData.updateSection(newSection: Section(index: 0, items: [.mainInfo(value)]))
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func setTabMenus(type: DictType) {
+        switch type {
+        case .item:
+            tabMenus.accept(["아이템 정보", "세부 정보", "드롭 정보"])
+        case .monster:
+            tabMenus.accept(["몬스터 정보","출현 장소","드롭 정보"])
+        case .map:
+            tabMenus.accept(["출현 몬스터","NPC"])
+        case .npc:
+            tabMenus.accept(["출현 장소", "수락 퀘스트"])
+        case .quest:
+            tabMenus.accept(["정보 & 완료조건","퀘스트 보상","퀘스트 순서"])
+        }
     }
 }

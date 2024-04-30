@@ -12,17 +12,14 @@ import RxDataSources
 
 class DictItemViewModel: DictBaseViewModel {
     // MARK: Properties
-//    var tabMenus = ["아이템 정보", "세부 정보", "드롭 정보"]
-    var tabMenus = BehaviorRelay<[String]>(value: ["아이템 정보", "세부 정보", "드롭 정보"])
-
     var selectedItem = BehaviorRelay<DictItem?>(value: nil)
 
     var tappedCellName = PublishRelay<String>()
     var tappedExpandButton = PublishRelay<Bool>()
 
-    override init(selectedName: String) {
-        super.init(selectedName: selectedName)
-        fetchData(type: .item, data: selectedItem)
+    override init(selectedName: String, type: DictType) {
+        super.init(selectedName: selectedName, type: type)
+        fetchData(type: type, data: selectedItem)
         checkEmptyData()
     }
 }

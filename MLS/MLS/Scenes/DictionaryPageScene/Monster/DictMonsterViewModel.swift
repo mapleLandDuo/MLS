@@ -11,8 +11,6 @@ import RxCocoa
 
 class DictMonsterViewModel: DictBaseViewModel {
     // MARK: Properties
-    var tabMenus = BehaviorRelay<[String]>(value: ["몬스터 정보","출현 장소","드롭 정보"])
-
     var selectedMonster = BehaviorRelay<DictMonster?>(value: nil)
     var totalTextSize = BehaviorRelay<CGFloat>(value: 0.0)
     
@@ -20,9 +18,9 @@ class DictMonsterViewModel: DictBaseViewModel {
     var tappedDropName = PublishRelay<String>()
     var tappedExpandButton = PublishRelay<Bool>()
     
-    override init(selectedName: String) {
-        super.init(selectedName: selectedName)
-        fetchData(type: .monster, data: selectedMonster)
+    override init(selectedName: String, type: DictType) {
+        super.init(selectedName: selectedName, type: type)
+        fetchData(type: type, data: selectedMonster)
         checkEmptyData()
     }
 }

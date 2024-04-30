@@ -152,16 +152,16 @@ private extension DictQuestViewController {
                 switch owner.viewModel.selectedTab.value {
                 case 0:
                     if type == .item {
-                        let vm = DictItemViewModel(selectedName: name)
+                        let vm = DictItemViewModel(selectedName: name, type: .item)
                         let vc = DictItemViewController(viewModel: vm)
                         owner.navigationController?.pushViewController(vc, animated: true)
                     } else {
-                        let vm = DictMonsterViewModel(selectedName: name)
+                        let vm = DictMonsterViewModel(selectedName: name, type: .monster)
                         let vc = DictMonsterViewController(viewModel: vm)
                         owner.navigationController?.pushViewController(vc, animated: true)
                     }
                 case 1:
-                    let vm = DictItemViewModel(selectedName: name)
+                    let vm = DictItemViewModel(selectedName: name, type: .item)
                     let vc = DictItemViewController(viewModel: vm)
                     owner.navigationController?.pushViewController(vc, animated: true)
 
@@ -175,7 +175,7 @@ private extension DictQuestViewController {
             .withUnretained(self)
             .subscribe(onNext: { owner, name in
                 if name != owner.viewModel.selectedQuest.value?.currentQuest {
-                    let vm = DictQuestViewModel(selectedName: name.trimmingCharacters(in: .whitespaces))
+                    let vm = DictQuestViewModel(selectedName: name.trimmingCharacters(in: .whitespaces), type: .quest)
                     let vc = DictQuestViewController(viewModel: vm)
                     owner.navigationController?.pushViewController(vc, animated: true)
                 }

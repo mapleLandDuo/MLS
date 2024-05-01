@@ -9,16 +9,21 @@ import UIKit
 
 import SnapKit
 
+import RxSwift
+import RxCocoa
+
 class MyPageEditViewController: BasicController {
     // MARK: - Properties
     private let viewModel: MyPageEditViewModel
+    
+    let disposeBag = DisposeBag()
     
     // MARK: - Components
     
     lazy var nickNameTextField = CustomTextField(type: .normal, header: "닉네임", placeHolder: viewModel.fetchUser().nickName)
     
     lazy var levelTextField = CustomTextField(type: .normal, header: "레벨", placeHolder: String(viewModel.fetchUser().level ?? 0))
-
+    
     private let jobTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(fontSize: .body_sm, fontType: .medium)
@@ -54,6 +59,10 @@ class MyPageEditViewController: BasicController {
     init(viewModel: MyPageEditViewModel) {
         self.viewModel = viewModel
         super.init()
+    }
+    
+    deinit {
+
     }
     
     required init?(coder: NSCoder) {
@@ -130,43 +139,37 @@ private extension MyPageEditViewController {
 // MARK: - Bind
 private extension MyPageEditViewController {
     func bind() {
-        viewModel.nickNameState.bind { [weak self] state in
-            guard let state = state else { return }
+        viewModel.nickNameState.subscribe { [weak self] state in
             if state != .default {
                 let isCorrect = state == .complete
                 self?.nickNameTextField.checkState(state: state, isCorrect: isCorrect)
             }
             self?.viewModel.isValidButton()
-        }
+        }.disposed(by: disposeBag)
         
-        viewModel.levelState.bind { [weak self] state in
-            if let state = state {
-                if state != .default {
-                    let isCorrect = state == .complete
-                    self?.levelTextField.checkState(state: state, isCorrect: isCorrect)
-                }
+        viewModel.levelState.subscribe { [weak self] state in
+            if state != .default {
+                let isCorrect = state == .complete
+                self?.levelTextField.checkState(state: state, isCorrect: isCorrect)
+            }
+            self?.viewModel.isValidButton()
+        }.disposed(by: disposeBag)
+        
+        viewModel.jobState.subscribe { [weak self] job in
+            self?.viewModel.isValidButton()
+        }.disposed(by: disposeBag)
+        
+        viewModel.buttonState.subscribe { [weak self] state in
+            if state {
+                self?.editButton.setTitleColor(.themeColor(color: .base, value: .value_white), for: .disabled)
+                self?.editButton.backgroundColor = .semanticColor.bg.interactive.primary
+                self?.editButton.isUserInteractionEnabled = true
             } else {
-                self?.levelTextField.footerLabel.isHidden = false
+                self?.editButton.setTitleColor(.semanticColor.text.interactive.secondary, for: .disabled)
+                self?.editButton.backgroundColor = .semanticColor.bg.disabled
+                self?.editButton.isUserInteractionEnabled = false
             }
-            self?.viewModel.isValidButton()
-        }
-        viewModel.jobState.bind { [weak self] job in
-            self?.viewModel.isValidButton()
-        }
-        
-        viewModel.buttonState.bind { [weak self] state in
-            if let state = state {
-                if state {
-                    self?.editButton.setTitleColor(.themeColor(color: .base, value: .value_white), for: .disabled)
-                    self?.editButton.backgroundColor = .semanticColor.bg.interactive.primary
-                    self?.editButton.isUserInteractionEnabled = true
-                } else {
-                    self?.editButton.setTitleColor(.semanticColor.text.interactive.secondary, for: .disabled)
-                    self?.editButton.backgroundColor = .semanticColor.bg.disabled
-                    self?.editButton.isUserInteractionEnabled = false
-                }
-            }
-        }
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -214,7 +217,8 @@ extension MyPageEditViewController: UICollectionViewDelegate, UICollectionViewDa
         
         if let job = viewModel.fetchUser().job {
             if Job.allCases[indexPath.row] == job {
-                viewModel.jobState.value = job
+//                viewModel.jobState.value = job
+                viewModel.jobState.accept(job)
                 cell.isSelected = true
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
             }
@@ -223,7 +227,8 @@ extension MyPageEditViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.jobState.value = Job.allCases[indexPath.row]
+//        viewModel.jobState.value = Job.allCases[indexPath.row]
+        viewModel.jobState.accept(Job.allCases[indexPath.row])
         viewModel.user.job = Job.allCases[indexPath.row]
     }
 }

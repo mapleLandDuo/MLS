@@ -342,23 +342,23 @@ extension DictSearchResultViewController: UITableViewDelegate, UITableViewDataSo
         FirebaseManager.firebaseManager.countUpDictSearch(type: data.type, name: data.title)
         switch data.type {
         case .monster:
-            let vm = DictMonsterViewModel(selectedName: data.title)
+            let vm = DictMonsterViewModel(selectedName: data.title, type: .monster)
             let vc = DictMonsterViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
         case .item:
-            let vm = DictItemViewModel(selectedName: data.title)
+            let vm = DictItemViewModel(selectedName: data.title, type: .item)
             let vc = DictItemViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
         case .map:
-            let vm = DictMapViewModel(selectedName: data.title)
+            let vm = DictMapViewModel(selectedName: data.title, type: .map)
             let vc = DictMapViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
         case .npc:
-            let vm = DictNPCViewModel(selectedName: data.title)
+            let vm = DictNPCViewModel(selectedName: data.title, type: .npc)
             let vc = DictNPCViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
         case .quest:
-            let vm = DictQuestViewModel(selectedName: data.title)
+            let vm = DictQuestViewModel(selectedName: data.title, type: .quest)
             let vc = DictQuestViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
         }

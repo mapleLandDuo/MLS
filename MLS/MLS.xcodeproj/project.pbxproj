@@ -119,8 +119,8 @@
 		770744102B558A8F00FCEDED /* BoardSeparatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */; };
 		77082A4C2B63A2C300187906 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77082A4B2B63A2C300187906 /* Comment.swift */; };
 		770848952B88971B008B68E1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848942B88971B008B68E1 /* FindPasswordViewController.swift */; };
-		770848972B889A0C008B68E1 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770848962B889A0C008B68E1 /* PresentationController.swift */; };
 		7709A48B2B83B784005DD264 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 7709A48A2B83B784005DD264 /* SQLite */; };
+		77156A1C2BDB346C00CAD246 /* DictCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77156A1B2BDB346C00CAD246 /* DictCellProtocol.swift */; };
 		7717D6E92B8714AD0050BD07 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6E82B8714AD0050BD07 /* LoginViewController.swift */; };
 		7717D6EB2B871B200050BD07 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6EA2B871B200050BD07 /* LoginViewModel.swift */; };
 		7717D6ED2B871CD00050BD07 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717D6EC2B871CD00050BD07 /* CustomTextField.swift */; };
@@ -135,6 +135,7 @@
 		7724EF592B94485600C59FE6 /* DictQuestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7724EF582B94485600C59FE6 /* DictQuestViewController.swift */; };
 		7724EF5B2B94486700C59FE6 /* DictQuestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7724EF5A2B94486700C59FE6 /* DictQuestViewModel.swift */; };
 		7724EF5E2B9448D600C59FE6 /* DictQuestOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7724EF5D2B9448D600C59FE6 /* DictQuestOrderCell.swift */; };
+		7731325E2BE269BF00259FF9 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7731325D2BE269BF00259FF9 /* PresentationController.swift */; };
 		773B3FFB2B92577F008670AE /* DictDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773B3FFA2B92577F008670AE /* DictDescriptionCell.swift */; };
 		774FB6B32BA1447000F8C675 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 082D0C312B53CF4800D84CE2 /* Assets.xcassets */; };
 		7751CEFD2B54129C000E5E74 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7751CEFC2B54129C000E5E74 /* CustomLabel.swift */; };
@@ -270,8 +271,8 @@
 		7707440F2B558A8F00FCEDED /* BoardSeparatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSeparatorType.swift; sourceTree = "<group>"; };
 		77082A4B2B63A2C300187906 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		770848942B88971B008B68E1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
-		770848962B889A0C008B68E1 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 		7709A4842B83A254005DD264 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		77156A1B2BDB346C00CAD246 /* DictCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictCellProtocol.swift; sourceTree = "<group>"; };
 		7717D6E82B8714AD0050BD07 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7717D6EA2B871B200050BD07 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		7717D6EC2B871CD00050BD07 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -286,6 +287,7 @@
 		7724EF582B94485600C59FE6 /* DictQuestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictQuestViewController.swift; sourceTree = "<group>"; };
 		7724EF5A2B94486700C59FE6 /* DictQuestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictQuestViewModel.swift; sourceTree = "<group>"; };
 		7724EF5D2B9448D600C59FE6 /* DictQuestOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictQuestOrderCell.swift; sourceTree = "<group>"; };
+		7731325D2BE269BF00259FF9 /* PresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 		773B3FFA2B92577F008670AE /* DictDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictDescriptionCell.swift; sourceTree = "<group>"; };
 		7751CEFC2B54129C000E5E74 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		7752C25A2B9301F800C891A5 /* DictMonsterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictMonsterViewController.swift; sourceTree = "<group>"; };
@@ -463,10 +465,10 @@
 		082D0C7C2B53D24400D84CE2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7731325D2BE269BF00259FF9 /* PresentationController.swift */,
 				082D0C772B53D11900D84CE2 /* BasicController.swift */,
 				08CBCB8B2B7F09E000C051F7 /* TestController.swift */,
 				08CEA72F2B974E500060EC82 /* LaunchViewController.swift */,
-				770848962B889A0C008B68E1 /* PresentationController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -780,6 +782,7 @@
 			children = (
 				77A3608A2BDA33E200A1ACB0 /* DictEntity.swift */,
 				77A3608C2BDA4B7300A1ACB0 /* Sqlable.swift */,
+				77156A1B2BDB346C00CAD246 /* DictCellProtocol.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -954,6 +957,7 @@
 				0812F8982BA18EA900057696 /* UIImageView+.swift in Sources */,
 				77DBAE892BA02BE00092E140 /* SignUpAccountView.swift in Sources */,
 				77DBAE882BA02BCF0092E140 /* Constants.swift in Sources */,
+				77156A1C2BDB346C00CAD246 /* DictCellProtocol.swift in Sources */,
 				08CB4E782B92101200336FE6 /* MyPageEditViewController.swift in Sources */,
 				7717D6EB2B871B200050BD07 /* LoginViewModel.swift in Sources */,
 				08D5F1272B88CE4100E56482 /* DictSearchMenuCell.swift in Sources */,
@@ -988,7 +992,6 @@
 				08F95DFB2B8DC43E00AD79DF /* DictSearchFilterHeaderView.swift in Sources */,
 				08971A772B70C1AA00FE46BE /* DictionaryNameDescription.swift in Sources */,
 				08D5F1072B86156200E56482 /* PopUpMaker.swift in Sources */,
-				770848972B889A0C008B68E1 /* PresentationController.swift in Sources */,
 				0848DE872BB2D86C009E3BC3 /* Int+.swift in Sources */,
 				77EF47592B5CD63800181D35 /* FirebaseManager.swift in Sources */,
 				087D251E2B932FDB00A998E4 /* DictNameCount.swift in Sources */,
@@ -1050,6 +1053,7 @@
 				778EF8D32B877CE5006CA0AB /* SignUpFirstViewModel.swift in Sources */,
 				779B72BD2B56DA0F007CB6C1 /* Date+.swift in Sources */,
 				08D5F0FB2B833F7C00E56482 /* DictHorizontalCollectionViewCell.swift in Sources */,
+				7731325E2BE269BF00259FF9 /* PresentationController.swift in Sources */,
 				778EF8D12B877C8E006CA0AB /* SignUpFirstViewController.swift in Sources */,
 				77A3608B2BDA33E200A1ACB0 /* DictEntity.swift in Sources */,
 				08CB4E7C2B921F5000336FE6 /* MyPageBottomViewController.swift in Sources */,
@@ -1234,7 +1238,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.donggle.MLS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1267,7 +1271,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.donggle.MLS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

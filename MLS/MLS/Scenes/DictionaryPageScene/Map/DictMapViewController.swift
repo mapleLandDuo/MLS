@@ -127,11 +127,11 @@ extension DictMapViewController {
             .subscribe(onNext: { owner, name in
                 switch owner.viewModel.selectedTab.value {
                 case 0:
-                    let vm = DictMonsterViewModel(selectedName: name)
+                    let vm = DictMonsterViewModel(selectedName: name, type: .monster)
                     let vc = DictMonsterViewController(viewModel: vm)
                     owner.navigationController?.pushViewController(vc, animated: true)
                 case 1:
-                    let vm = DictNPCViewModel(selectedName: name)
+                    let vm = DictNPCViewModel(selectedName: name, type: .npc)
                     let vc = DictNPCViewController(viewModel: vm)
                     owner.navigationController?.pushViewController(vc, animated: true)
                 default:

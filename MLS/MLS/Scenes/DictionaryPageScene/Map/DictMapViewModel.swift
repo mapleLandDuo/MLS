@@ -11,16 +11,14 @@ import RxCocoa
 
 class DictMapViewModel: DictBaseViewModel {
     // MARK: Properties
-    var tabMenus = BehaviorRelay<[String]>(value: ["출현 몬스터","NPC"])
-    
     var selectedMap = BehaviorRelay<DictMap?>(value: nil)
     
     var tappedCellName = PublishRelay<String>()
     var tappedExpandButton = PublishRelay<Bool>()
     
-    override init(selectedName: String) {
-        super.init(selectedName: selectedName)
-        fetchData(type: .map, data: selectedMap)
+    override init(selectedName: String, type: DictType) {
+        super.init(selectedName: selectedName, type: type)
+        fetchData(type: type, data: selectedMap)
         checkEmptyData()
     }
 }
@@ -31,9 +29,9 @@ extension DictMapViewModel {
         var apearMonsterInfos = [DictDropContent]()
         guard let monsters = selectedMap.value?.monsters else { return }
         for monster in monsters {
-            self.sqliteManager.searchDetailData(dataName: monster.name) { (item: DictMonster) in
-                guard let level = item.defaultValues.filter({ $0.name == "LEVEL" }).first?.description else { return}
-                apearMonsterInfos.append(DictDropContent(name: item.name, code: item.code, level: level, description: monster.description))
+            self.sqliteManager.searchDetailData(dataName: monster.title) { (item: DictMonster) in
+                guard let level = item.defaultValues.filter({ $0.title == "LEVEL" }).first?.description else { return}
+                apearMonsterInfos.append(DictDropContent(title: item.name, code: item.code, level: level, description: monster.description))
             }
         }
         let section = Section(index: 1, items: [.dropItem(apearMonsterInfos)])
@@ -45,7 +43,7 @@ extension DictMapViewModel {
         guard let npcs = selectedMap.value?.npcs else { return }
         for npc in npcs {
             self.sqliteManager.searchDetailData(dataName: npc) { (item: DictNPC) in
-                apearNPCInfo.append(DictDropContent(name: item.name, code: item.code, level: "", description: ""))
+                apearNPCInfo.append(DictDropContent(title: item.name, code: item.code, level: "", description: ""))
             }
         }
         let section = Section(index: 1, items: [.dropItem(apearNPCInfo)])

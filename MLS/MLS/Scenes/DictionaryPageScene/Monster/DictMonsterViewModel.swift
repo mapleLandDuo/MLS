@@ -11,8 +11,6 @@ import RxCocoa
 
 class DictMonsterViewModel: DictBaseViewModel {
     // MARK: Properties
-    var tabMenus = BehaviorRelay<[String]>(value: ["몬스터 정보","출현 장소","드롭 정보"])
-
     var selectedMonster = BehaviorRelay<DictMonster?>(value: nil)
     var totalTextSize = BehaviorRelay<CGFloat>(value: 0.0)
     
@@ -20,9 +18,9 @@ class DictMonsterViewModel: DictBaseViewModel {
     var tappedDropName = PublishRelay<String>()
     var tappedExpandButton = PublishRelay<Bool>()
     
-    override init(selectedName: String) {
-        super.init(selectedName: selectedName)
-        fetchData(type: .monster, data: selectedMonster)
+    override init(selectedName: String, type: DictType) {
+        super.init(selectedName: selectedName, type: type)
+        fetchData(type: type, data: selectedMonster)
         checkEmptyData()
     }
 }
@@ -32,9 +30,9 @@ extension DictMonsterViewModel {
     func fetchDetailInfos() {
         var detailInfos = [DetailContent]()
         selectedMonster.value?.defaultValues.forEach { value in
-            detailInfos.append(DetailContent(title: value.name, description: value.description)) }
+            detailInfos.append(DetailContent(title: value.title, description: value.description)) }
         selectedMonster.value?.detailValues.forEach { value in
-            detailInfos.append(DetailContent(title: value.name, description: value.description)) }
+            detailInfos.append(DetailContent(title: value.title, description: value.description)) }
         let section = Section(index: 1, items: [.detailInfo(detailInfos)])
         sectionData.updateSection(newSection: section)
     }
@@ -49,11 +47,11 @@ extension DictMonsterViewModel {
         var dropInfos = [DictDropContent]()
         guard let dropTable = selectedMonster.value?.dropTable else { return }
         for dropContent in dropTable {
-            if dropContent.name.contains("메소 드랍") {
-                dropInfos.append(DictDropContent(name: "메소", code: "", level: dropContent.name.replacingOccurrences(of: " 드랍", with: ""), description: dropContent.description))
+            if dropContent.title.contains("메소 드랍") {
+                dropInfos.append(DictDropContent(title: "메소", code: "", level: dropContent.title.replacingOccurrences(of: " 드랍", with: ""), description: dropContent.description))
             }
-            self.sqliteManager.searchDetailData(dataName: dropContent.name) { (item: DictItem) in
-                dropInfos.append(DictDropContent(name: item.name, code: item.code, level: dropContent.name, description: dropContent.description))
+            self.sqliteManager.searchDetailData(dataName: dropContent.title) { (item: DictItem) in
+                dropInfos.append(DictDropContent(title: item.name, code: item.code, level: dropContent.title, description: dropContent.description))
             }
         }
         let section = Section(index: 1, items: [.dropItem(dropInfos)])

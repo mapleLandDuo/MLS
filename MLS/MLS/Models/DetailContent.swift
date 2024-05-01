@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DetailContent {
+struct DetailContent: DictCellProtocol {
     var title: String
     var description: String
 }

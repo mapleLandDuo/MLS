@@ -128,7 +128,7 @@ private extension DictItemViewController {
         viewModel.tappedCellName
             .withUnretained(self)
             .subscribe(onNext: { owner, name in
-                let vm = DictMonsterViewModel(selectedName: name)
+                let vm = DictMonsterViewModel(selectedName: name, type: .monster)
                 let vc = DictMonsterViewController(viewModel: vm)
                 owner.navigationController?.pushViewController(vc, animated: true)
             })

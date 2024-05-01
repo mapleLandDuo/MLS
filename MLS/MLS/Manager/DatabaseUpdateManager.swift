@@ -177,7 +177,7 @@ extension DatabaseUpdateManager {
                         let zip = zip(keys, values)
                         for (key, value) in zip {
                             if count == 0 {
-                                item.defaultValues.append(DictionaryNameDescription(name: key, description: value))
+                                item.defaultValues.append(DictionaryNameDescription(title: key, description: value))
                             } else {
                                 if key == "분류" {
                                     item.division = value
@@ -188,9 +188,9 @@ extension DatabaseUpdateManager {
                                 } else {
                                     if key == "상점 판매가" {
                                         let money = value.replacingOccurrences(of: "메소", with: "").replacingOccurrences(of: ",", with: "")
-                                        item.detailValues.append(DictionaryNameDescription(name: key, description: money))
+                                        item.detailValues.append(DictionaryNameDescription(title: key, description: money))
                                     } else {
-                                        item.detailValues.append(DictionaryNameDescription(name: key, description: value))
+                                        item.detailValues.append(DictionaryNameDescription(title: key, description: value))
                                     }
                                 }
                             }
@@ -201,7 +201,7 @@ extension DatabaseUpdateManager {
                     let dropTableValues = doc.css("span.text-bold-underline").compactMap { $0.text }
                     let dropTables = zip(dropTableNames, dropTableValues)
                     for (name, value) in dropTables {
-                        item.dropTable.append(DictionaryNameDescription(name: name, description: value))
+                        item.dropTable.append(DictionaryNameDescription(title: name, description: value))
                     }
                 }
                 result.append(item)
@@ -227,7 +227,7 @@ extension DatabaseUpdateManager {
                             let zip = zip(key, value)
                             for (key, value) in zip {
                                 let defaultValue = value.replacingOccurrences(of: ",", with: "")
-                                item.defaultValues.append(DictionaryNameDescription(name: key, description: defaultValue))
+                                item.defaultValues.append(DictionaryNameDescription(title: key, description: defaultValue))
                             }
                             doc2.css("div.search-page-info-content-spawnmap").forEach { doc3 in
                                 let maps = doc3.css("span").compactMap { $0.text }
@@ -242,7 +242,7 @@ extension DatabaseUpdateManager {
                             }
                             let zip = zip(key, value)
                             for (key, value) in zip {
-                                item.detailValues.append(DictionaryNameDescription(name: key, description: value))
+                                item.detailValues.append(DictionaryNameDescription(title: key, description: value))
                             }
                         }
                         count += 1
@@ -254,7 +254,7 @@ extension DatabaseUpdateManager {
                         key.insert(money, at: 0)
                         let zip = zip(key, value)
                         for (key, value) in zip {
-                            item.dropTable.append(DictionaryNameDescription(name: key, description: value))
+                            item.dropTable.append(DictionaryNameDescription(title: key, description: value))
                         }
                     }
                 }
@@ -284,7 +284,7 @@ extension DatabaseUpdateManager {
                             case "mob":
                                 guard let title = titles[i],
                                       let description = descriptions[i] else { return }
-                                mapItem.monsters.append(DictionaryNameDescription(name: title, description: description))
+                                mapItem.monsters.append(DictionaryNameDescription(title: title, description: description))
                             case "npc":
                                 guard let npcName = titles[i] else { return }
                                 mapItem.npcs.append(npcName)
@@ -354,15 +354,15 @@ extension DatabaseUpdateManager {
                                   let maxLevel = contents[2],
                                   let money = contents[3] else { return }
                             questItem.times = times
-                            questItem.defaultValues.append(DictionaryNameDescription(name: "시작 최소 레벨", description: minLevel))
-                            questItem.defaultValues.append(DictionaryNameDescription(name: "시작 최대 레벨", description: maxLevel))
-                            questItem.defaultValues.append(DictionaryNameDescription(name: "시작 최소 메소", description: money))
+                            questItem.defaultValues.append(DictionaryNameDescription(title: "시작 최소 레벨", description: minLevel))
+                            questItem.defaultValues.append(DictionaryNameDescription(title: "시작 최대 레벨", description: maxLevel))
+                            questItem.defaultValues.append(DictionaryNameDescription(title: "시작 최소 메소", description: money))
                             
                             let npcs = content.css("a.search-page-info-content-box-default.text-bold").map { $0.css("span").first?.text }
                             guard let startNPC = npcs[0],
                                   let endNPC = npcs[1] else { return }
-                            questItem.defaultValues.append(DictionaryNameDescription(name: "시작 NPC", description: startNPC))
-                            questItem.defaultValues.append(DictionaryNameDescription(name: "종료 NPC", description: endNPC))
+                            questItem.defaultValues.append(DictionaryNameDescription(title: "시작 NPC", description: startNPC))
+                            questItem.defaultValues.append(DictionaryNameDescription(title: "종료 NPC", description: endNPC))
                             
                             content.css("div.search-page-info-content-box-detail.text-bold").forEach { item in
                                 item.css("h4").forEach { job in
@@ -378,7 +378,7 @@ extension DatabaseUpdateManager {
                             for i in 0 ..< titles.count {
                                 guard let title = titles[i],
                                       let description = descriptions[i] else { return }
-                                questItem.toCompletion.append(DictionaryNameDescription(name: title, description: description))
+                                questItem.toCompletion.append(DictionaryNameDescription(title: title, description: description))
                             }
                         case "보상":
                             content.css("div.search-page-add-content-box").forEach { item in
@@ -389,7 +389,7 @@ extension DatabaseUpdateManager {
                                     guard let title = titles[i],
                                           let description = descriptions[i] else { return }
                                     let value = description.replacingOccurrences(of: "+", with: "").replacingOccurrences(of: ",", with: "")
-                                    questItem.reward.append(DictionaryNameDescription(name: title, description: value))
+                                    questItem.reward.append(DictionaryNameDescription(title: title, description: value))
                                 }
                             }
                             content.css("a.search-page-add-content-box").forEach { item in
@@ -400,7 +400,7 @@ extension DatabaseUpdateManager {
                                 for i in 0 ..< titles.count {
                                     guard let title = titles[i],
                                           let description = descriptions[i] else { return }
-                                    questItem.reward.append(DictionaryNameDescription(name: title, description: description))
+                                    questItem.reward.append(DictionaryNameDescription(title: title, description: description))
                                 }
                             }
                         default:

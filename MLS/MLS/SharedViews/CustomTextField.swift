@@ -151,7 +151,7 @@ extension CustomTextField {
     private func setFooterLabel(isCorrect: Bool, state: TextState) {
         footerLabel.isHidden = isCorrect
         footerLabel.textColor = isCorrect ? UIColor.semanticColor.text.secondary : UIColor.semanticColor.text.distructive
-        footerLabel.text = state.rawValue
+        footerLabel.text = state.description
         contentView.layer.borderColor = isCorrect ? UIColor.semanticColor.bolder.interactive.secondary?.cgColor : UIColor.semanticColor.bolder.distructive?.cgColor
     }
     

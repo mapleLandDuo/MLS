@@ -219,11 +219,10 @@ private extension DictQuestViewController {
             .disposed(by: viewModel.disposeBag)
         
         viewModel.selectedTab
-            .subscribe(onNext: { [weak self] index in
-                guard let self = self else { return }
-
+            .withUnretained(self)
+            .subscribe(onNext: { owner, index in
                 let indexPath = IndexPath(item: index, section: 0)
-                self.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                owner.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             })
             .disposed(by: viewModel.disposeBag)
     }

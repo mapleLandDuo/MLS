@@ -52,9 +52,9 @@ extension DictBaseViewModel {
     
     private func bind<T: DictEntity>(data: BehaviorRelay<T?>) {
         data
+            .compactMap{ $0 }
             .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                guard let value = data.value else { return }
+            .subscribe(onNext: { owner, value in
                 owner.sectionData.updateSection(newSection: Section(index: 0, items: [.mainInfo(value)]))
             })
             .disposed(by: disposeBag)

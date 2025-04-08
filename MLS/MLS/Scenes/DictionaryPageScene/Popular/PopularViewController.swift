@@ -106,11 +106,11 @@ extension PopularViewController {
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
                 if item.type == .item {
-                    let vm = DictItemViewModel(selectedName: item.title)
+                    let vm = DictItemViewModel(selectedName: item.title, type: .item)
                     let vc = DictItemViewController(viewModel: vm)
                     owner.navigationController?.pushViewController(vc, animated: true)
                 } else {
-                    let vm = DictMonsterViewModel(selectedName: item.title)
+                    let vm = DictMonsterViewModel(selectedName: item.title, type: .monster)
                     let vc = DictMonsterViewController(viewModel: vm)
                     owner.navigationController?.pushViewController(vc, animated: true)
                 }

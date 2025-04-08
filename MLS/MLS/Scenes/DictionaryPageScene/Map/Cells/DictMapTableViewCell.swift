@@ -94,6 +94,6 @@ extension DictMapTableViewCell: UICollectionViewDelegateFlowLayout, UICollection
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = items?[indexPath.row] else { return }
-        tappedCell?(item.name)
+        tappedCell?(item.title)
     }
 }

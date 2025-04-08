@@ -11,16 +11,14 @@ import RxCocoa
 
 class DictNPCViewModel: DictBaseViewModel {
     // MARK: Properties
-    var tabMenus = BehaviorRelay<[String]>(value: ["출현 장소", "수락 퀘스트"])
-
     var selectedNPC = BehaviorRelay<DictNPC?>(value: nil)
     
     var tappedCellName = PublishRelay<String>()
     var tappedExpandButton = PublishRelay<Bool>()
     
-    override init(selectedName: String) {
-        super.init(selectedName: selectedName)
-        fetchData(type: .npc, data: selectedNPC)
+    override init(selectedName: String, type: DictType) {
+        super.init(selectedName: selectedName, type: type)
+        fetchData(type: type, data: selectedNPC)
         checkEmptyData()
     }
 }

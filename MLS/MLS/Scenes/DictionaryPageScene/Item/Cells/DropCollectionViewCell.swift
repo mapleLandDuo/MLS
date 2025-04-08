@@ -147,7 +147,7 @@ extension DropCollectionViewCell {
         descriptionTitleLabel.isHidden = false
         descriptionLabel.isHidden = false
         
-        nameLabel.text = data.name
+        nameLabel.text = data.title
         levelLabel.text = data.level
         descriptionLabel.text = data.description
         switch type {

@@ -282,26 +282,26 @@ extension DictSearchViewModel {
                     }
                 case .highestLevel:
                     monsters.sort { first, second in
-                        guard let firstNum = Int(first.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0"),
-                              let secondNum = Int(second.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0") else { return true }
+                        guard let firstNum = Int(first.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0"),
+                              let secondNum = Int(second.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0") else { return true }
                         return firstNum > secondNum
                     }
                 case .lowestLevel:
                     monsters.sort { first, second in
-                        guard let firstNum = Int(first.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0"),
-                              let secondNum = Int(second.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0") else { return true }
+                        guard let firstNum = Int(first.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0"),
+                              let secondNum = Int(second.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0") else { return true }
                         return firstNum < secondNum
                     }
                 case .highestExp:
                     monsters.sort { first, second in
-                        guard let firstNum = Int(first.defaultValues.filter({$0.name == "EXP"}).first?.description ?? "0"),
-                              let secondNum = Int(second.defaultValues.filter({$0.name == "EXP"}).first?.description ?? "0") else { return true }
+                        guard let firstNum = Int(first.defaultValues.filter({$0.title == "EXP"}).first?.description ?? "0"),
+                              let secondNum = Int(second.defaultValues.filter({$0.title == "EXP"}).first?.description ?? "0") else { return true }
                         return firstNum > secondNum
                     }
                 case .lowestExp:
                     monsters.sort { first, second in
-                        guard let firstNum = Int(first.defaultValues.filter({$0.name == "EXP"}).first?.description ?? "0"),
-                              let secondNum = Int(second.defaultValues.filter({$0.name == "EXP"}).first?.description ?? "0") else { return true }
+                        guard let firstNum = Int(first.defaultValues.filter({$0.title == "EXP"}).first?.description ?? "0"),
+                              let secondNum = Int(second.defaultValues.filter({$0.title == "EXP"}).first?.description ?? "0") else { return true }
                         return firstNum < secondNum
                     }
                 }
@@ -318,14 +318,14 @@ extension DictSearchViewModel {
                     }
                 case .highestLevel:
                     items.sort { first, second in
-                        guard let firstNum = Int(first.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0"),
-                              let secondNum = Int(second.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0") else { return true }
+                        guard let firstNum = Int(first.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0"),
+                              let secondNum = Int(second.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0") else { return true }
                         return firstNum > secondNum
                     }
                 case .lowestLevel:
                     items.sort { first, second in
-                        guard let firstNum = Int(first.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0"),
-                              let secondNum = Int(second.defaultValues.filter({$0.name == "LEVEL"}).first?.description ?? "0") else { return true }
+                        guard let firstNum = Int(first.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0"),
+                              let secondNum = Int(second.defaultValues.filter({$0.title == "LEVEL"}).first?.description ?? "0") else { return true }
                         return firstNum < secondNum
                     }
                 default:

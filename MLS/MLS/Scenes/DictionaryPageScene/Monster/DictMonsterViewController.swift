@@ -149,7 +149,7 @@ private extension DictMonsterViewController {
                         return
                     } else {
                         guard let name = item.first?.name else { return }
-                        let vm = DictMapViewModel(selectedName: name)
+                        let vm = DictMapViewModel(selectedName: name, type: .map)
                         let vc = DictMapViewController(viewModel: vm)
                         owner.navigationController?.pushViewController(vc, animated: true)
                     }
@@ -160,7 +160,7 @@ private extension DictMonsterViewController {
         viewModel.tappedDropName
             .withUnretained(self)
             .subscribe(onNext: { owner, name in
-                let vm = DictItemViewModel(selectedName: name)
+                let vm = DictItemViewModel(selectedName: name, type: .item)
                 let vc = DictItemViewController(viewModel: vm)
                 owner.navigationController?.pushViewController(vc, animated: true)
             })
@@ -183,8 +183,9 @@ private extension DictMonsterViewController {
             .disposed(by: viewModel.disposeBag)
         
         viewModel.totalTextSize
-            .subscribe(onNext: { [weak self] _ in
-                self?.dictMonsterTableView.reloadData()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.dictMonsterTableView.reloadData()
             })
             .disposed(by: viewModel.disposeBag)
         
@@ -208,11 +209,10 @@ private extension DictMonsterViewController {
             .disposed(by: viewModel.disposeBag)
         
         viewModel.selectedTab
-            .subscribe(onNext: { [weak self] index in
-                guard let self = self else { return }
-
+            .withUnretained(self)
+            .subscribe(onNext: { owner, index in
                 let indexPath = IndexPath(item: index, section: 0)
-                self.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                owner.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             })
             .disposed(by: viewModel.disposeBag)
     }

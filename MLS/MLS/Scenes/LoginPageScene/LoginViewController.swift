@@ -195,33 +195,32 @@ private extension LoginViewController {
         
         Observable
             .of(emailTextField.textField.rx.text
-            .orEmpty
-            .map { text in !text.isEmpty },
-            pwTextField.textField.rx.text
                 .orEmpty
-                .map { text in !text.isEmpty })
+                .map { text in !text.isEmpty },
+                pwTextField.textField.rx.text
+                    .orEmpty
+                    .map { text in !text.isEmpty })
             .merge()
-            .subscribe(onNext: { [weak self] isEmpty in
-                self?.logInButton.type.accept(isEmpty ? .clickabled : .disabled)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isEmpty in
+                owner.logInButton.type.accept(isEmpty ? .clickabled : .disabled)
             })
             .disposed(by: viewModel.disposeBag)
         
         Observable
             .of(pwTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.pwTextField },
-                      emailTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.emailTextField })
+                emailTextField.textField.rx.controlEvent(.editingDidBegin).map { [unowned self] in self.emailTextField })
             .merge()
-            .withUnretained(self)
-            .subscribe(onNext: { _, textField in
+            .subscribe(onNext: { textField in
                 textField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.primary_pressed?.cgColor
             })
             .disposed(by: viewModel.disposeBag)
         
         Observable
             .of(emailTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.emailTextField },
-                      pwTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.pwTextField })
+                pwTextField.textField.rx.controlEvent(.editingDidEnd).map { [unowned self] in self.pwTextField })
             .merge()
-            .withUnretained(self)
-            .subscribe(onNext: { _, textField in
+            .subscribe(onNext: { textField in
                 textField.contentView.layer.borderColor = UIColor.semanticColor.bolder.interactive.secondary?.cgColor
             })
             .disposed(by: viewModel.disposeBag)

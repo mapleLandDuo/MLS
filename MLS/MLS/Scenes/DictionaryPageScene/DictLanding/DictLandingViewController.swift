@@ -239,19 +239,19 @@ extension DictLandingViewController: DictHorizontalSectionTableViewCellDelegate 
         var vc: BasicController
         switch type {
         case .monster:
-            let vm = DictMonsterViewModel(selectedName: itemTitle)
+            let vm = DictMonsterViewModel(selectedName: itemTitle, type: .monster)
             vc = DictMonsterViewController(viewModel: vm)
         case .item:
-            let vm = DictItemViewModel(selectedName: itemTitle)
+            let vm = DictItemViewModel(selectedName: itemTitle, type: .item)
             vc = DictItemViewController(viewModel: vm)
         case .map:
-            let vm = DictMapViewModel(selectedName: itemTitle)
+            let vm = DictMapViewModel(selectedName: itemTitle, type: .map)
             vc = DictMapViewController(viewModel: vm)
         case .npc:
-            let vm = DictNPCViewModel(selectedName: itemTitle)
+            let vm = DictNPCViewModel(selectedName: itemTitle, type: .npc)
             vc = DictNPCViewController(viewModel: vm)
         case .quest:
-            let vm = DictQuestViewModel(selectedName: itemTitle)
+            let vm = DictQuestViewModel(selectedName: itemTitle, type: .quest)
             vc = DictQuestViewController(viewModel: vm)
         }
         navigationController?.pushViewController(vc, animated: true)

@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct DictionaryNameDescription: Codable {
-    var name: String
+struct DictionaryNameDescription: DictCellProtocol, Codable {
+    var title: String
     var description: String
+
+    enum CodingKeys: String, CodingKey {
+        case title = "name"
+        case description
+    }
 }

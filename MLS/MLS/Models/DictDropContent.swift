@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct DictDropContent {
-    var name: String
+struct DictDropContent: DictCellProtocol {
+    var title: String
     var code: String
     var level: String
     var description: String

@@ -134,7 +134,7 @@ extension DropTableViewCell {
 // MARK: - Bind
 extension DropTableViewCell {
     func bind(item: DictDropContent, type: String) {
-        if item.name == "메소" {
+        if item.title == "메소" {
             descriptionTitleLabel.text = "드롭률"
             nameLabel.isHidden = false
             nameLabel.text = item.level
@@ -164,6 +164,6 @@ extension DropTableViewCell {
                 break
             }
         }
-        nameTitleLabel.text = item.name
+        nameTitleLabel.text = item.title
     }
 }

@@ -131,7 +131,7 @@ extension DictNPCViewController {
                             AlertManager.showAlert(vc: owner, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
                         } else {
                             guard let name = item.first?.name else { return }
-                            let vm = DictMapViewModel(selectedName: name)
+                            let vm = DictMapViewModel(selectedName: name, type: .map)
                             let vc = DictMapViewController(viewModel: vm)
                             owner.navigationController?.pushViewController(vc, animated: true)
                         }
@@ -143,7 +143,7 @@ extension DictNPCViewController {
                             AlertManager.showAlert(vc: owner, type: .red, title: nil, description: "해당 컨텐츠에 표기할 내용이 없어요.", location: .center)
                         } else {
                             guard let name = item.first?.name else { return }
-                            let vm = DictQuestViewModel(selectedName: name)
+                            let vm = DictQuestViewModel(selectedName: name, type: .quest)
                             let vc = DictQuestViewController(viewModel: vm)
                             owner.navigationController?.pushViewController(vc, animated: true)
                         }
@@ -188,11 +188,10 @@ extension DictNPCViewController {
             .disposed(by: viewModel.disposeBag)
         
         viewModel.selectedTab
-            .subscribe(onNext: { [weak self] index in
-                guard let self = self else { return }
-
+            .withUnretained(self)
+            .subscribe(onNext: { owner, index in
                 let indexPath = IndexPath(item: index, section: 0)
-                self.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                owner.infoMenuCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             })
             .disposed(by: viewModel.disposeBag)
     }
